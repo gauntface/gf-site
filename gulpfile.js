@@ -29,10 +29,16 @@ var runSequence = require('run-sequence');
 // Load custom tasks from the `tasks` directory
 require('require-dir')('setup/gulp-tasks');
 
+gulp.task('build', [], function(cb) {
+  runSequence(
+    ['copy-fonts', 'generate-dev-css', 'build-ci', 'scripts', 'images'],
+    cb);
+});
+
 // Build production files, the default task
 gulp.task('default', [], function(cb) {
   runSequence(
-    ['copy-fonts', 'generate-dev-css', 'build-ci', 'scripts', 'images'],
+    ['build'],
     'start-watching',
     cb);
 });
