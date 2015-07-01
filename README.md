@@ -1,4 +1,4 @@
-Build Status: [![Build Status](https://travis-ci.org/gauntface/gf-site.svg?branch=master)](https://travis-ci.org/gauntface/gf-site)
+[![Build Status](https://travis-ci.org/gauntface/gf-site.svg?branch=master)](https://travis-ci.org/gauntface/gf-site)
 
 # What is this?
 
