@@ -26,20 +26,22 @@ class Welcome extends CI_Controller {
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
 
-    $pageData->setInlineStylesheets(['styles/styleguide-index.css']);
-    $pageData->setRemoteScripts(['scripts/analytics.js']);
+    $pageData->setInlineStylesheets(['styles/index.css']);
+    $pageData->setRemoteScripts(['scripts/analytics.js', 'scripts/debug.js']);
 
     $data['page'] = $pageData;
 
     //$this->load->view('welcome_message');
-    $this->load->view('templates/header', $data);
-    $this->load->view('styleguide/components/appbar');
-    $this->load->view('styleguide/components/home-header');
-    $this->load->view('styleguide/components/title-block-item');
-    $this->load->view('styleguide/components/youtube-block');
-    $this->load->view('styleguide/components/twitter-block');
-    $this->load->view('styleguide/components/title-block-item');
-    $this->load->view('styleguide/components/footer');
-    $this->load->view('templates/footer', $data);
+    $this->load->view('layouts/index', $data);
+
+    //$this->load->view('templates/header', $data);
+    //$this->load->view('styleguide/components/appbar');
+    //$this->load->view('styleguide/components/home-header');
+    //$this->load->view('styleguide/components/title-block-item');
+    //$this->load->view('styleguide/components/youtube-block');
+    //$this->load->view('styleguide/components/twitter-block');
+    //$this->load->view('styleguide/components/title-block-item');
+    //$this->load->view('styleguide/components/footer');
+    //$this->load->view('templates/footer', $data);
   }
 }

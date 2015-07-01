@@ -1,8 +1,7 @@
 <section class="youtube-block">
   <div class="youtube-play-icon"><?php include('images/youtube-block-play-icon.svg'); ?></div>
-  <header class="youtube-block__series-title">
-    <h1>Totally Tooling Tips</h1>
-  </header>
+
+  <h1 class="youtube-block__series-title">Totally Tooling Tips</h1>
 
   <div class="divider__horizontal is-light-version"></div>
 

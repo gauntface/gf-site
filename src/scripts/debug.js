@@ -43,25 +43,26 @@ Debug.prototype.hideBaselineGrid = function() {
 
 Debug.prototype.setEnableBaselineGrid = function(enable) {
   if (enable) {
+    this.setBaselineGridHeight();
     this.showBaselineGrid();
   } else {
     this.hideBaselineGrid();
   }
 };
 
+
+Debug.prototype.setBaselineGridHeight = function() {
+  this.debugElement.style.height = document.body.clientHeight + 'px';
+};
+
 Debug.prototype.toggleBaselineGrid = function() {
-  console.log('toggleBaselineGrid: currentVariant = ', this.currentVariant);
   var indexOfCurrentVariant = this.variants.indexOf(this.currentVariant);
-  console.log('toggleBaselineGrid: indexOfCurrentVariant = ', indexOfCurrentVariant);
   if ((indexOfCurrentVariant + 1) >= this.variants.length) {
-    console.log('toggleBaselineGrid: resetting debug ');
     this.setVariantClass(null);
     this.setEnableBaselineGrid(false);
     return;
   }
   indexOfCurrentVariant = indexOfCurrentVariant + 1;
-  console.log('toggleBaselineGrid: using = ', indexOfCurrentVariant);
-  console.log('toggleBaselineGrid: using = ', this.variants[indexOfCurrentVariant]);
   this.setEnableBaselineGrid(true);
   this.setVariantClass(this.variants[indexOfCurrentVariant]);
 };
