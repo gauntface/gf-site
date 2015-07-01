@@ -1,0 +1,75 @@
+@import "../colors";
+@import "../breakpoints";
+
+.youtube-block {
+  padding: $base-line-height ($base-line-height * 0.5);
+
+  background-color: $youtube-block-bg-color;
+  color: $youtube-block-font-color;
+  text-align: center;
+
+  background-image: url(/images/matt-addy-ttt.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.youtube-play-icon {
+  width: $base-line-height * 2;
+  height: $base-line-height * 2;
+
+  margin: 0 auto ($base-line-height * 0.5) auto;
+
+  fill: $youtube-play-icon-color;
+
+  svg {
+    width: $base-line-height * 2;
+    height: $base-line-height * 2;
+  }
+}
+
+.youtube-block__series-title {
+  h1 {
+    color: $youtube-block-font-color;
+  }
+}
+
+.youtube-block__episode-title {
+  color: $youtube-block-font-color;
+}
+
+@media (min-width: $break-xsmall) {
+  .youtube-block {
+    padding: ($base-line-height * 2) $base-line-height;
+  }
+
+  .youtube-play-icon {
+
+  }
+
+  .youtube-block__series-title {
+
+  }
+
+  .youtube-block__episode-title {
+
+  }
+}
+
+@media (min-width: $break-small) {
+  .youtube-block {
+    padding: ($base-line-height * 2.5) ($base-line-height * 4.5) ($base-line-height * 5) ($base-line-height * 4.5);
+  }
+
+  .youtube-play-icon {
+
+  }
+
+  .youtube-block__series-title {
+    font-size: $base-line-height * 2;
+  }
+
+  .youtube-block__episode-title {
+
+  }
+}

@@ -1,0 +1,241 @@
+@import "_adam-font";
+@import "breakpoints";
+
+@function strip-unit($value) {
+    @return $value / ($value * 0 + 1);
+}
+
+/**
+* Font ideas from: http://hivelogic.com/articles/top-10-programming-fonts;
+**/
+$code-font-family: "Monaco", "Andale Mono", "AndaleMono", "Droid Sans Mono", "DroidSansMono", "Courier", monospace;
+$base-font-family: "Futura", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Open Sans", sans-serif;
+$title-font-family: "adam.cg_proregular", $base-font-family;
+
+/**
+ * Sizes
+ */
+$base-font-size:        12px !default;
+$base-line-height:      24px !default;
+
+$font-size-h1:          24px !default;
+$font-size-h2:          22px !default;
+$font-size-h3:          20px !default;
+$font-size-h4:          18px !default;
+$font-size-h5:          16px !default;
+$font-size-h6:          14px !default;
+$font-size-code:		    12px !default;
+$small-font-size:		    12px !default;
+$tiny-font-size:		    10px !default;
+$medium-font-size:      36px !default;
+$large-font-size:       48px !default;
+
+$baseline: strip-unit($base-line-height);
+
+/**
+ * Colors
+ */
+$title-color: 			#333333 !default;
+$font-color: 			#333333 !default;
+$blockquote-mark-color: #bbbbbb !default;
+$btn-text-color: 		#333333 !default;
+$copyright-font-color: 	rgba(50, 50, 50, 0.4) !default;
+
+/**
+ * Settings
+ */
+$link-underlined:       false !default;
+$link-underlined-hover: false !default;
+
+@mixin typography-font-size($font-size) {
+    font-size: $font-size;
+    font-size: ($font-size / $base-font-size) * 1rem;
+    line-height: ceil($font-size / $base-line-height) * ($base-line-height / $font-size);
+}
+
+.small-font-size {
+  @include typography-font-size($small-font-size);
+}
+
+.tiny-font-size {
+  @include typography-font-size($tiny-font-size);
+}
+
+h1, h2, h3, h4, h5, h6,
+p {
+  margin-top: 0;
+  margin-bottom: $base-line-height * 0.5;
+  padding: 0;
+}
+
+html {
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+    font-family: $base-font-family;
+    color: $font-color;
+}
+
+body {
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $title-font-family;
+  font-weight: normal;
+  color: $title-color;
+}
+
+h1 {
+    @include typography-font-size($font-size-h1);
+}
+
+h2 {
+    @include typography-font-size($font-size-h2);
+}
+
+h3 {
+    @include typography-font-size($font-size-h3);
+}
+
+h4 {
+    @include typography-font-size($font-size-h4);
+}
+
+h5 {
+    @include typography-font-size($font-size-h5);
+}
+
+h6 {
+    @include typography-font-size($font-size-h6);
+}
+
+p {
+  word-wrap: break-word;
+}
+
+a {
+    @if ($link-underlined == false) {
+        text-decoration: none;
+    }
+
+    &:hover {
+        @if ($link-underlined-hover == false) {
+            text-decoration: none;
+        }
+
+        @if ($link-underlined-hover == true) {
+            text-decoration: underline;
+        }
+
+    }
+
+}
+
+code, pre {
+  font-family: $code-font-family;
+  @include typography-font-size($font-size-code);
+  margin: 0;
+  margin-bottom: $base-line-height;
+  padding: $base-line-height;
+  word-wrap: initial;
+}
+
+pre code {
+  margin: -$base-line-height;
+}
+
+p code {
+  padding: 0 4px;
+  @include typography-font-size($base-font-size);
+}
+
+blockquote {
+  margin: 0;
+  padding: (0.5 * $base-line-height);
+  font-family: inherit;
+}
+
+blockquote::before, blockquote::after {
+  @include typography-font-size($base-font-size * 3);
+  color: $blockquote-mark-color;
+}
+
+blockquote::before {
+  line-height: 1;
+}
+
+blockquote::after {
+  line-height: 0;
+}
+
+ul, ol {
+  margin: 0;
+  margin-bottom: $base-line-height;
+  padding-left: 1 * $base-line-height;
+}
+
+li > ul, li > ol {
+  margin: ($base-line-height / 2) 0;
+}
+
+input[type='text'], input[type='textarea'], textarea {
+  margin: 0;
+  margin-bottom: $base-line-height;
+  padding: ($base-line-height / 2);
+
+  @include typography-font-size($base-font-size);
+  color: inherit;
+}
+
+label {
+  @include typography-font-size($base-font-size);
+  color: inherit;
+}
+
+$btn-height: $base-line-height * 2;
+$btn-padding: ($base-line-height / 2);
+$btn-internal-size: $btn-height - ($btn-padding * 2);
+
+button, .btn, input[type="button"], input[type="reset"], input[type="submit"] {
+  padding: $btn-padding;
+  color: $btn-text-color;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: $btn-internal-size;
+  vertical-align: top;
+  text-decoration: none;
+
+  img, svg {
+    display: block;
+
+    width: $btn-internal-size;
+    height: $btn-internal-size;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+iframe {
+  width: $base-line-height * 8;
+  height: $base-line-height * 8;
+  max-width: 100%;
+
+  margin-bottom: $base-line-height;
+}
+
+.embed {
+  margin-bottom: $base-line-height;
+}
+
+@media (min-width: $break-xsmall) {
+  h1, h2, h3, h4, h5, h6,
+  p {
+    margin-bottom: $base-line-height;
+  }
+}
+
+@media (min-width: $break-small) {
+
+}
