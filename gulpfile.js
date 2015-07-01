@@ -8,6 +8,10 @@ GLOBAL.config = {
     styles: 'src/styles',
     fonts: 'src/fonts',
     scripts: 'src/scripts',
+    configs: {
+      root: 'src/configs',
+      codeigniter: 'src/configs/codeigniter'
+    }
   },
   build: {
     root: 'build',

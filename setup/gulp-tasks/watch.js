@@ -13,6 +13,8 @@ gulp.task('start-watching', function() {
 
   gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
     ['build-ci', browserSync.reload]);
+  gulp.watch([GLOBAL.config.src.configs.root + '/**/*'],
+    ['build-ci', browserSync.reload]);
   gulp.watch([GLOBAL.config.src.styles + '/**/*'],
     ['generate-dev-css', browserSync.reload]);
   gulp.watch([GLOBAL.config.src.fonts + '/**/*'],

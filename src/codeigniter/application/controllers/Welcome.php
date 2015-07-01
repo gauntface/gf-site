@@ -20,7 +20,9 @@ class Welcome extends CI_Controller {
    */
   public function index()
   {
-    $this->load->model('pagemodel');
+    log_message('error', 'Start of index() in welcome.php');
+    $this->load->model('Pagemodel');
+    log_message('error', 'Got pagemodel?');
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
 

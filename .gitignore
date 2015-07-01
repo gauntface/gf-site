@@ -2,4 +2,5 @@
 build/
 node_modules/
 src/fonts/adam.cg_pro/
+configs/
 .DS_Store
