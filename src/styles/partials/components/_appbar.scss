@@ -12,6 +12,8 @@ $underline-extension-total: 4px !default;
   background-color: $header-bg-color;
 
   overflow-y: auto;
+
+  font-family: $title-font-family;
 }
 
 .appbar__link, .appbar__menu {
