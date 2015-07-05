@@ -1,5 +1,5 @@
 <section class="youtube-block">
-  <div class="youtube-play-icon"><?php include('images/youtube-block-play-icon.svg'); ?></div>
+  <div class="youtube-play-icon"><?php include('images/components/youtube-block/youtube-block-play-icon.svg'); ?></div>
 
   <h1 class="youtube-block__series-title">Totally Tooling Tips</h1>
 

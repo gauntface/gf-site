@@ -38,6 +38,10 @@ class TitleModel extends CI_Model {
     return $this->_date;
   }
 
+  public function setSmallTopText($smallTopText) {
+    $this->_smallTopText = $smallTopText;
+  }
+
   public function getSmallTopText() {
     return $this->_smallTopText;
   }

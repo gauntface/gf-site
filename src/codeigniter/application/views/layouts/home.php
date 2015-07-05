@@ -3,7 +3,7 @@
 $this->load->view('templates/header', $page);
 $this->load->view('styleguide/components/appbar');
 $this->load->view('styleguide/components/home-header');
-$this->load->view('styleguide/components/title-block-item');
+$this->load->view('styleguide/components/title-block-item', array('title' => $topTitleModel));
 
 ?>
 <div class="grid-container--half">
@@ -14,7 +14,7 @@ $this->load->view('styleguide/components/title-block-item');
 </div>
 
 <?php
-$this->load->view('styleguide/components/title-block-item');
+$this->load->view('styleguide/components/title-block-item', array('title' => $bottomTitleModel));
 $this->load->view('styleguide/components/footer');
 
 $this->load->view('templates/footer', $page);

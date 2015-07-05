@@ -17,17 +17,25 @@ class Home extends CI_Controller {
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');
 
-    $titleData = new TitleModel();
-    $titleData->setTitle('Test Title');
-    $titleData->setDescription('Test Description');
-    $titleData->setDate();
-    $titleData->setBackgroundImage('/images/example/gass.png');
-    $titleData->makePadded(true);
+    $topTitleModel = new TitleModel();
+    $topTitleModel->setTitle('Test Title');
+    $topTitleModel->setDescription('Test Description');
+    $topTitleModel->setDate();
+    $topTitleModel->setBackgroundImage('/images/example/gass.png');
+    $topTitleModel->makePadded(true);
+
+    $bottomTitleModel = new TitleModel();
+    $bottomTitleModel->setTitle('Smashing Book 5: Real-Life Responsive Web Design');
+    $bottomTitleModel->setDescription('I’ve been writing a chapter in this book about service worker and it’s finally coming out! <a href="#">Get the print or ebook HERE</a>');
+    $bottomTitleModel->setSmallTopText('News');
+    $bottomTitleModel->setBackgroundImage('/images/pages/home/smashing-mag.png');
+    $bottomTitleModel->makePadded(true);
 
     $data['page'] = $pageData;
     $data['appbar'] = $appBarData;
-    $data['title'] = $titleData;
+    $data['topTitleModel'] = $topTitleModel;
+    $data['bottomTitleModel'] = $bottomTitleModel;
 
-    $this->load->view('layouts/index', $data);
+    $this->load->view('layouts/home', $data);
   }
 }
