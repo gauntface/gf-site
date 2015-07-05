@@ -56,6 +56,10 @@ $about-matt-bg-color: #606363;
   list-style: none;
 }
 
+.about__fact-list-item:last-child .about__fact-list-content {
+  padding-bottom: 0;
+}
+
 @media (min-width: $break-small) {
   .about__fact-list {
     padding: 0 ($base-line-height);

@@ -38,7 +38,7 @@ footer {
 @media (min-width: $break-xsmall) {
   footer {
     height: auto;
-    padding: ($base-line-height * 2) ($base-line-height);
+    padding: ($base-line-height) 0;
   }
 
   .footer__social-link-item {
@@ -72,6 +72,6 @@ footer {
 
 @media (min-width: $break-small) {
   footer {
-    padding: ($base-line-height * 3) ($base-line-height * 2);
+    padding: ($base-line-height * 2) 0;
   }
 }
