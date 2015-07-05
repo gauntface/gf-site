@@ -42,10 +42,6 @@ grid without any issues.</p>
 
 <p><a href="/styleguide/view/youtube-block">YouTube Block</a></p>
 
-<h3>Social Buttons</h3>
-
-<p><a href="/styleguide/view/socialbuttons">Social Buttons</a></p>
-
 <h2>Third Party</h2>
 
 <p>This is for third party UI that I use which may need additional styling

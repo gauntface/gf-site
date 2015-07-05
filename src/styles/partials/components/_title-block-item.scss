@@ -5,10 +5,11 @@
 
   width: 100%;
 
-  padding-bottom: $base-line-height * 0.5;
   box-sizing: border-box;
+}
 
-  background-color: #EDEDEB;
+.title-block-item.is-padded {
+  padding-bottom: $base-line-height * 0.5;
 }
 
 .title-block__content {
@@ -46,7 +47,7 @@
 }
 
 @media (min-width: $break-xsmall) {
-  .title-block-item {
+  .title-block-item.is-padded {
     padding: ($base-line-height * 1.5) ($base-line-height * 1.5) ($base-line-height * 2) ($base-line-height * 1.5);
   }
 
@@ -66,7 +67,7 @@
 }
 
 @media (min-width: $break-small) {
-  .title-block-item {
+  .title-block-item.is-padded {
     padding: ($base-line-height * 1.5) ($base-line-height * 1.5) ($base-line-height * 4) ($base-line-height * 1.5);
   }
 

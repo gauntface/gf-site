@@ -22,7 +22,8 @@ function compileSassAutoprefix(genSourceMaps) {
     ])
     .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.init()))
     .pipe(plugins.sass({
-      precision: 10
+      precision: 10,
+      errLogToConsole: true
     })
     .on('error', plugins.sass.logError))
     .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS));

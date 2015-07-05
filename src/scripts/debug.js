@@ -12,7 +12,8 @@ function Debug() {
     return this.debugElement.classList.contains('debug-enabled');
   };
 
-  window.onmessage = function(e) {
+  window.addEventListener('message', function(e) {
+    console.log('Debug: Received message');
     if (e.data.action !== 'cmd') {
       return;
     }
@@ -22,7 +23,11 @@ function Debug() {
       console.log('Debug received message, no method though to handle it',
         e.data);
     }
-  }.bind(this);
+  }.bind(this));
+
+  window.addEventListener('resize', function() {
+    this.setBaselineGridHeight();
+  }.bind(this));
 }
 
 Debug.prototype.setVariantClass = function(newVariant) {
@@ -67,7 +72,16 @@ Debug.prototype.toggleBaselineGrid = function() {
   this.setVariantClass(this.variants[indexOfCurrentVariant]);
 };
 
-window.addEventListener('load', function() {
+function initialiseDebug() {
+  console.log('initialising Debug');
   window.GauntFace = window.GauntFace || {};
   window.GauntFace.debug = window.GauntFace.debug || new Debug();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  initialiseDebug();
 });
+
+if (document.readyState !== 'loading') {
+  initialiseDebug();
+}

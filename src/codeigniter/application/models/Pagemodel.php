@@ -20,7 +20,7 @@ class PageModel extends CI_Model {
     // Call the Model constructor
     parent::__construct();
 
-    $themeColor = '#000000';
+    $this->_themeColor = '#000000';
   }
 
   public function getThemeColor() {

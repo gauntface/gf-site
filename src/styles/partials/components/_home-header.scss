@@ -1,5 +1,7 @@
 @import "../_breakpoints";
 @import "../colors";
+@import "../dimens";
+@import "../../mixins/responsive-images";
 
 .gf-header {
   display: flex;
@@ -34,12 +36,16 @@
 
 @media (min-width: $break-xsmall) {
   .gf-header {
-    height: 12 * $base-line-height;
+    height: $top-img-xsmall-height;
   }
 }
 
 @media (min-width: $break-small) {
   .gf-header {
-    height: 20 * $base-line-height;
+    height: $top-img-small-height;
   }
 }
+
+//@include responsive-image-width-based('/images/header', 'jpg', '.gf-header',
+//  (200,       300,        400,        500,        600,        700,        800),
+//  ('300x300', '400x300',  '500x300',  '600x300',  '700x300', '800x300',   '900x300'), (1, 2, 3, 4));

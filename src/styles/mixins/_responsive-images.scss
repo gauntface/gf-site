@@ -1,0 +1,45 @@
+@charset "UTF-8";
+
+@mixin responsive-image-height-based($imageName, $imageExtension, $className, $mqHeights, $imgHeights, $pixelDensities) {
+  @each $density in $pixelDensities {
+    @for $i from 1 through length($mqHeights) {
+      $mqHeight: nth($mqHeights, $i);
+      $imgHeight: nth($imgHeights, $i);
+
+      $densityMediaQuery: 'all';
+      @if $density != 1 {
+        $densityMediaQuery: $densityMediaQuery + 'and (min-resolution: ' + $density + 'dppx)';
+      }
+
+      $densityMediaQuery: $densityMediaQuery + ' and (min-device-height: ' +  $mqHeight + 'px)';
+
+      @media #{$densityMediaQuery} {
+        #{$className} {
+          background-image: url('#{$imageName}_#{$imgHeight}x#{$density}.#{$imageExtension}');
+        }
+      }
+    }
+  }
+}
+
+@mixin responsive-image-width-based($imageName, $imageExtension, $className, $mqWidths, $imgWidths, $pixelDensities) {
+  @each $density in $pixelDensities {
+    @for $i from 1 through length($mqWidths) {
+      $mqWidth: nth($mqWidths, $i);
+      $imgWidth: nth($imgWidths, $i);
+
+      $densityMediaQuery: 'all';
+      @if $density != 1 {
+        $densityMediaQuery: $densityMediaQuery + 'and (min-resolution: ' + $density + 'dppx)';
+      }
+
+      $densityMediaQuery: $densityMediaQuery + ' and (min-device-width: ' +  $mqWidth + 'px)';
+
+      @media #{$densityMediaQuery} {
+        #{$className} {
+          background-image: url('#{$imageName}_#{$imgWidth}x#{$density}.#{$imageExtension}');
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@import "colors";
+
 $blockquote-z-index: -1;
 
 /*****************************************
@@ -7,8 +9,6 @@ $blockquote-z-index: -1;
 * Colors
 *
 *****************************************/
-$bg-color: #fefefe !default;
-
 $highlight-color: #000000 !default;
 $secondary-bg-color: #bbbbbb !default;
 
@@ -71,7 +71,7 @@ body {
   width: 100%;
   min-height: 100%;
 
-  background-color: $bg-color;
+  background-color: $page-bg-color;
   box-sizing: border-box;
 }
 

@@ -24,6 +24,7 @@ function setIframeClass(className) {
 
 function postMessageToIframe(message) {
   var iframeElement = document.querySelector('.js-styleguide-contents-iframe');
+  console.log('Posting ', message, ' to iframe');
   iframeElement.contentWindow.postMessage(message, '*');
 }
 
