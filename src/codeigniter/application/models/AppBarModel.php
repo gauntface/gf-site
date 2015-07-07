@@ -2,7 +2,7 @@
 
 class AppBarModel extends CI_Model {
 
-  private $_leftMenuElements;
+  protected $_leftMenuElements;
 
   function __construct() {
     // Call the Model constructor

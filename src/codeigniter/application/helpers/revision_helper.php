@@ -13,12 +13,12 @@ function addRevisionToFilePath($unrevisionedFilepath) {
     // Glob looks for files mataching a particular pattern
     $filenames = glob($unrevisionedFilepath);
     if(!is_array($filenames)) {
-      log_message('error', 'revisiong_helper: glob() returned no array');
+      log_message('error', 'revision_helper: glob() returned no array');
       return $unrevisionedFilepath;
     }
 
     if(count($filenames) != 1) {
-      log_message('error', 'revisiong_helper: glob() failed to return a single result');
+      log_message('error', 'revision_helper: glob() failed to return a single result for '.$unrevisionedFilepath);
       return $unrevisionedFilepath;
     }
 

@@ -3,15 +3,24 @@
 var gulp = require('gulp');
 var del = require('del');
 var runSequence = require('run-sequence');
-var plugins = require('gulp-load-plugins')();
 var fs = require('fs');
 
 // Copy over the CI files
 gulp.task('copy-ci', function() {
   return gulp.src([
-      GLOBAL.config.src.codeigniter + '/**/*.{php,html}'
+      GLOBAL.config.src.codeigniter + '/**/*.{php,html}',
+      '!' + GLOBAL.config.src.codeigniter +
+        '/application/{third_party,third_party/**}'
     ])
     .pipe(gulp.dest(GLOBAL.config.build.root));
+});
+
+// Copy over all CI third_party files
+gulp.task('copy-ci-third-party', function() {
+  return gulp.src([
+      GLOBAL.config.src.codeigniter + '/application/third_party/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/third_party'));
 });
 
 gulp.task('ci-custom-configs', function() {
@@ -46,7 +55,7 @@ gulp.task('ci:clean', del.bind(null, [
 // Perform all the tasks to build the CI files
 gulp.task('build-ci', ['ci:clean'], function(cb) {
   runSequence(
-    ['copy-ci', 'ci-custom-configs'],
+    ['copy-ci', 'copy-ci-third-party', 'ci-custom-configs'],
     'set-ci-file-permissions',
   cb);
 });
