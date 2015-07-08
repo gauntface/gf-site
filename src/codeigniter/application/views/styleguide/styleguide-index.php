@@ -42,6 +42,10 @@ grid without any issues.</p>
 
 <p><a href="/styleguide/view/youtube-block">YouTube Block</a></p>
 
+<h3>Sub-AppBar</h3>
+
+<p><a href="/styleguide/view/sub-appbar">Sub-AppBar</a></p>
+
 <h2>Third Party</h2>
 
 <p>This is for third party UI that I use which may need additional styling

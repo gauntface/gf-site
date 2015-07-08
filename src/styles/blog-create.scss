@@ -1,0 +1,43 @@
+@charset 'UTF-8';
+
+@import 'third_party/_normalize.scss';
+@import 'partials/_typography.scss';
+@import 'partials/_base.scss';
+@import 'partials/_debug.scss';
+@import 'partials/components/_subappbar.scss';
+
+.body__blogcreate {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.blogcreate {
+  display: flex;
+
+  width: 100%;
+  flex: 1;
+
+  flex-direction: row;
+}
+
+.blogcreate__create-section {
+  width: 0;
+
+  flex: 3;
+}
+
+.blogcreate__preview {
+  width: 0;
+  height: auto;
+
+  flex: 2;
+
+  margin: 0;
+}
+
+.blogcreate__tabs {
+  display: flex;
+  
+  width: 100%;
+}

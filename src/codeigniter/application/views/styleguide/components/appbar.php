@@ -1,4 +1,11 @@
 <?php
+$this->load->helper('url');
+if(strrpos(uri_string(), 'styleguide', -strlen(uri_string())) !== FALSE) {
+  $this->load->model('AppBarModel');
+  $appbar = new AppBarModel();
+  $appbar->setSelectedItem('home');
+}
+
 if (!isset($appbar)) {
   log_message('error', 'App bar template requested, but no AppBarModel provided');
   return;

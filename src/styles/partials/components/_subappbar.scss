@@ -1,0 +1,98 @@
+@import "../_breakpoints";
+@import "../_colors";
+
+.subappbar {
+  display: flex;
+
+  width: 100%;
+  height: 100vh;
+
+  background-color: $header-bg-color;
+
+  overflow-y: auto;
+
+  font-family: $title-font-family;
+}
+
+.subappbar__link, .subappbar__title {
+  display: flex;
+  position: relative;
+
+  min-width: 100%;
+  height: 100%;
+
+  justify-content: center;
+  align-items: center;
+
+  @include typography-font-size($base-line-height * 1.2);
+  color: $sub-app-bar-color;
+
+  will-change: opacity;
+}
+
+.subappbar__spacer {
+  display: none;
+}
+
+@media (min-width: $break-xsmall) {
+  .subappbar {
+    display: flex;
+
+    height: auto;
+    flex-wrap: wrap;
+
+    background-color: transparent;
+
+    padding: 0 $base-line-height;
+    box-sizing: border-box;
+  }
+
+  .subappbar__title {
+    display: block;
+
+    width: 100%;
+  }
+
+  .subappbar__link {
+    display: inline-block;
+    position: relative;
+
+    min-width: initial;
+
+    text-align: center;
+    font-size: $base-font-size;
+    line-height: $base-line-height;
+  }
+
+  .subappbar__link {
+    margin-right: $base-line-height;
+  }
+
+  .subappbar__link:last-of-type {
+    margin-right: 0;
+  }
+}
+
+@media (min-width: $break-small) {
+  .subappbar {
+    padding: 0 (2 * $base-line-height);
+
+    align-items: center;
+  }
+
+  .subappbar__spacer {
+    display: block;
+    flex: 1;
+  }
+
+  .subappbar__title {
+    display: inline-block;
+
+    width: auto;
+    min-width: initial;
+  }
+
+  .subappbar__link, .subappbar__title {
+    padding: $base-line-height 0;
+  }
+}
