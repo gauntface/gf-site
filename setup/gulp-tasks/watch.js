@@ -11,16 +11,27 @@ gulp.task('start-watching', function() {
     notify: false
   });
 
+  // Codeigniter
   gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
     ['build-ci', browserSync.reload]);
-  gulp.watch([GLOBAL.config.src.configs.root + '/**/*'],
-    ['build-ci', browserSync.reload]);
+  gulp.watch([GLOBAL.config.deploy.codeigniter.root + '/**/*'],
+    ['ci-deploy-files', browserSync.reload]);
+
+  // Fonts
+  gulp.watch([GLOBAL.config.deploy.fonts + '/**/*'],
+    ['copy-deploy-fonts', browserSync.reload]);
+  gulp.watch([GLOBAL.config.src.fonts + '/**/*'],
+    ['copy-included-fonts', browserSync.reload]);
+
+  // Sass / CSS
   gulp.watch([GLOBAL.config.src.styles + '/**/*'],
     ['generate-dev-css', browserSync.reload]);
-  gulp.watch([GLOBAL.config.src.fonts + '/**/*'],
-    ['copy-fonts', browserSync.reload]);
+
+  // Scripts
   gulp.watch([GLOBAL.config.src.scripts + '/**/*'],
     ['scripts', browserSync.reload]);
+
+  // Images
   gulp.watch([GLOBAL.config.src.images + '/**/*'],
     ['images', browserSync.reload]);
 });

@@ -1,10 +1,11 @@
 'use strict';
 
 GLOBAL.config = {
-  deply: {
+  deploy: {
     fonts: 'deploy/assets/fonts',
     scripts: 'deploy/assets/scripts',
     codeigniter: {
+      root: 'deploy/assets/codeigniter',
       controllers: 'deploy/assets/codeigniter/controllers',
       models: 'deploy/assets/codeigniter/models',
       views: 'deploy/assets/codeigniter/views',
@@ -18,10 +19,6 @@ GLOBAL.config = {
     styles: 'src/styles',
     fonts: 'src/fonts',
     scripts: 'src/scripts',
-    configs: {
-      root: 'src/configs',
-      codeigniter: 'src/configs/codeigniter'
-    }
   },
   build: {
     root: 'build',

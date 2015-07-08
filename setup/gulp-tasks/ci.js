@@ -23,11 +23,43 @@ gulp.task('copy-ci-third-party', function() {
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/third_party'));
 });
 
-gulp.task('ci-custom-configs', function() {
+gulp.task('ci-deploy-configs', function() {
   return gulp.src([
-      GLOBAL.config.src.configs.codeigniter + '/**/*'
+      GLOBAL.config.deploy.codeigniter.configs + '/**/*'
     ])
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/config/'));
+});
+
+gulp.task('ci-deploy-controllers', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.controllers + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/controllers/'));
+});
+
+gulp.task('ci-deploy-models', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.models + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/models/'));
+});
+
+gulp.task('ci-deploy-views', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.views + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
+});
+
+gulp.task('ci-deploy-files', function(cb) {
+  runSequence(
+    [
+      'ci-deploy-configs',
+      'ci-deploy-controllers',
+      'ci-deploy-models',
+      'ci-deploy-views'
+    ],
+  cb);
 });
 
 gulp.task('set-ci-file-permissions', function(cb) {
@@ -55,7 +87,11 @@ gulp.task('ci:clean', del.bind(null, [
 // Perform all the tasks to build the CI files
 gulp.task('build-ci', ['ci:clean'], function(cb) {
   runSequence(
-    ['copy-ci', 'copy-ci-third-party', 'ci-custom-configs'],
+    [
+      'copy-ci',
+      'copy-ci-third-party',
+      'ci-deploy-files'
+    ],
     'set-ci-file-permissions',
   cb);
 });
