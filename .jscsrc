@@ -2,5 +2,6 @@
   "preset": "google",
   "validateLineBreaks": "LF",
   "validateIndentation": 2,
+  "esnext": true,
   "excludeFiles": ["node_modules/**"]
 }

@@ -14,5 +14,6 @@
   "undef"         : true,
   "unused"        : "vars",
   "strict"        : true,
+  "esnext"        : true,
   "globalstrict"  : true
 }

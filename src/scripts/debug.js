@@ -1,28 +1,19 @@
 'use strict';
 
-class Debug {
+export default class Debug {
 
   constructor() {
-    this.debugElement = document.createElement('div');
-    this.debugElement.classList.add('debug-element');
-    document.body.appendChild(this.debugElement);
-
     this.currentVariant = null;
     this.variants = ['dark', 'light'];
 
-    this.isBaselineGridEnable = function() {
-      return this.debugElement.classList.contains('debug-enabled');
-    };
-
     window.addEventListener('message', function(e) {
-      console.log('Debug: Received message');
       if (e.data.action !== 'cmd') {
         return;
       }
-      if (window.GauntFace.debug[e.data.functionName]) {
-        window.GauntFace.debug[e.data.functionName](e.data.variable);
+      if (this[e.data.functionName]) {
+        this[e.data.functionName](e.data.variable);
       } else {
-        console.log('Debug received message, no method though to handle it',
+        console.log('Debug received message, no method to handle it however.',
           e.data);
       }
     }.bind(this));
@@ -30,6 +21,19 @@ class Debug {
     window.addEventListener('resize', function() {
       this.setBaselineGridHeight();
     }.bind(this));
+  }
+
+  get debugElement () {
+    if (typeof this.debugElement_ === 'undefined') {
+      this.debugElement_ = document.createElement('div');
+      this.debugElement_.classList.add('debug-element');
+      document.body.appendChild(this.debugElement_);
+    }
+    return this.debugElement_;
+  }
+
+  isBaselineGridEnabled () {
+    return this.debugElement.classList.contains('debug-enabled');
   }
 
   setVariantClass (newVariant) {
@@ -57,7 +61,6 @@ class Debug {
     }
   }
 
-
   setBaselineGridHeight () {
     this.debugElement.style.height = document.body.clientHeight + 'px';
   }
@@ -75,17 +78,3 @@ class Debug {
   }
 
 }
-
-/**function initialiseDebug() {
-  console.log('initialising Debug');
-  window.GauntFace = window.GauntFace || {};
-  window.GauntFace.debug = window.GauntFace.debug || new Debug();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  initialiseDebug();
-});
-
-if (document.readyState !== 'loading') {
-  initialiseDebug();
-}**/

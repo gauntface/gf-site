@@ -8,7 +8,7 @@ class Styleguide extends CI_Controller {
     $pageData->setTitle('Styleguide');
 
     $pageData->setInlineStylesheets(['styles/styleguide-view-window.css']);
-    $pageData->setRemoteScripts(['scripts/styleguide-view-options.js', 'scripts/analytics.js']);
+    $pageData->setRemoteScripts(['scripts/styleguide/styleguide-viewer-controller.es6.js']);
 
     $data['page'] = $pageData;
 
@@ -29,7 +29,7 @@ class Styleguide extends CI_Controller {
     }
 
     $pageData->setInlineStylesheets(['styles/styleguide-index.css']);
-    $pageData->setRemoteScripts(['scripts/debug.js', 'scripts/analytics.js', 'scripts/styleguide-window-viewer-messenger.js']);
+    $pageData->setRemoteScripts(['scripts/styleguide/styleguide-messenger-controller.es6.js']);
 
     $data['page'] = $pageData;
 

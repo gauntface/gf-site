@@ -21,6 +21,7 @@ class PageModel extends CI_Model {
     parent::__construct();
 
     $this->_themeColor = '#000000';
+    $this->_remoteScripts = ['scripts/standard-page.es6.js'];
   }
 
   public function getThemeColor() {

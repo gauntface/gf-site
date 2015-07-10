@@ -12,7 +12,6 @@ class Home extends CI_Controller {
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
     $pageData->setInlineStylesheets(['styles/index.css']);
-    $pageData->setRemoteScripts(['scripts/analytics.js', 'scripts/debug.js']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');
