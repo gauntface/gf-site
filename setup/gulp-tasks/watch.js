@@ -29,9 +29,9 @@ gulp.task('start-watching', function() {
 
   // Scripts
   gulp.watch([GLOBAL.config.src.scripts + '/**/*'],
-    ['scripts-src', browserSync.reload]);
+    ['scripts', browserSync.reload]);
   gulp.watch([GLOBAL.config.deploy.scripts + '/**/*'],
-    ['scripts-deploy', browserSync.reload]);
+    ['scripts', browserSync.reload]);
 
   // Images
   gulp.watch([GLOBAL.config.src.images + '/**/*'],
