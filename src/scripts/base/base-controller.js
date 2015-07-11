@@ -7,9 +7,13 @@ export default class BaseController {
     addAnalytics();
 
     window.GauntFace = window.GauntFace || {};
+
+    if (this.onDOMContentLoaded) {
+      this.addDOMContentLoadedCallback(() => this.onDOMContentLoaded());
+    }
   }
 
-  onDOMContentLoaded (cb) {
+  addDOMContentLoadedCallback (cb) {
     document.addEventListener('DOMContentLoaded', cb);
     if (document.readyState !== 'loading') {
       cb();

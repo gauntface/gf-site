@@ -5,11 +5,9 @@ import BaseController from '../base/base-controller';
 class StyleguideViewerController extends BaseController {
   constructor () {
     super();
-
-    super.onDOMContentLoaded(() => this.prepareUI());
   }
 
-  prepareUI () {
+  onDOMContentLoaded () {
     this.wrapperElement = document.querySelector(
       '.js-styleguide-window-wrapper');
     this.iframeElement = document.querySelector(

@@ -1,0 +1,35 @@
+.drag-over-view__drag-container {
+  display: flex;
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+  background-color: rgba(0, 0, 0, 0.75);
+  opacity: 0;
+}
+
+.drag-over-view__message {
+  opacity: 0;
+
+  color: white;
+}
+
+.drag-over-view__drag-container.js-drag-over-view__is-hovering {
+  pointer-events: all;
+
+  opacity: 1;
+
+  & .drag-over-view__message {
+    opacity: 1;
+  }
+}

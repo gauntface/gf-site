@@ -6,8 +6,6 @@ import Debug from '../debug';
 class StyleguideMessageContainer extends BaseController {
   constructor () {
     super();
-
-    super.onDOMContentLoaded(() => this.onDOMContentLoaded());
   }
 
   onDOMContentLoaded () {
