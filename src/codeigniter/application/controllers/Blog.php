@@ -25,7 +25,9 @@ class Blog extends CI_Controller {
     //    Check if page isn't published then check auth token
 
     $leftSectionCSS = read_file('styles/templates/inline-split-section.css');
-    $leftSectionCSS = str_replace('{{left-section-bg-color}}', 'green', $leftSectionCSS);
+
+    // TODO Select appropriate color for image background
+    $leftSectionCSS = str_replace('\'{{left-section-bg-color}}\'', $postModel->getMainImgBgColor(), $leftSectionCSS);
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
     //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
 
@@ -41,7 +43,6 @@ class Blog extends CI_Controller {
     // TODO: Change to Blog Content
     // $contentData->setRightContentView('content/about');
     // TODO: Add Left Content Change / Image
-
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('blog');

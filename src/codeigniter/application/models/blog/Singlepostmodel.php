@@ -70,6 +70,9 @@ class SinglePostModel extends CI_Model {
   }
 
   public function getMainImgBgColor() {
+    if (!isset($this->_mainImgBGColor)) {
+      return '#333333';
+    }
     return $this->_mainImgBGColor;
   }
 
