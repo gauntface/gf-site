@@ -1,9 +1,13 @@
 'use strict';
 
+import BlogView from './blog-view';
+
 const TAB_SELECTED_CLASSNAME = 'tab-view__is-selected';
 
-export default class TabView {
+export default class TabView extends BlogView {
   constructor () {
+    super();
+
     var tabBtns = document.querySelectorAll('.js-tab-view__tab-btn');
     var tabPairs = [];
     for (var i = 0; i < tabBtns.length; i++) {

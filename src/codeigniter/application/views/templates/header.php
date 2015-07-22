@@ -74,19 +74,28 @@
 
         <?php
             $inlineStylesheets = $page->getInlineStylesheets();
-            if(isset($inlineStylesheets) || isset($rawstyles)) {
-                echo('<style>');
-                foreach($inlineStylesheets as $singleStylesheet) {
-                    echo(read_file($singleStylesheet));
-                }
-                if(isset($rawstyles)) {
-                    echo($rawstyles);
-                }
-                echo('</style>');
+            $inlineRawCSS = $page->getInlineRawCSS();
+            if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
+              echo('<style>');
             }
-        ?>
 
-        <?php
+            if (isset($inlineStylesheets)) {
+              foreach($inlineStylesheets as $singleStylesheet) {
+                echo(read_file($singleStylesheet));
+              }
+            }
+
+            if(isset($inlineRawCSS)) {
+              foreach($inlineRawCSS as $rawCSS) {
+                echo($rawCSS);
+              }
+            }
+
+            if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
+              echo('</style>');
+            }
+          ?>
+          <?php
             if(isset($fileStylesheets)) {
                 foreach($fileStylesheets as $singleFile) {
                     ?>

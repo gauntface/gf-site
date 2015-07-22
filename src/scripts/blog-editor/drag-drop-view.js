@@ -1,16 +1,19 @@
 'use strict';
 
-const IS_HOVERING_CLASSNAME = 'js-drag-over-view__is-hovering';
+import BlogView from './blog-view';
 
-export default class DragDropView {
+const IS_HOVERING_CLASSNAME = 'is-displayed';
+
+export default class DragDropView extends BlogView {
   constructor () {
-    this.dragContainerElement = document.querySelector(
-      '.js-drag-over-view__drag-container');
-    if (!this.dragContainerElement) {
-      console.log('No js-drag-over-view__drag-container view found. ' +
-        'Skipping for now.');
-      return;
-    }
+    super();
+
+    this.addDOMElements([
+      {
+        className: 'js-drag-over-view__drag-container',
+        localName: 'dragContainerElement'
+      },
+    ]);
 
     this.onDragEnter = this.onDragEnter.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);

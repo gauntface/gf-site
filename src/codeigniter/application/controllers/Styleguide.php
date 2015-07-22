@@ -7,7 +7,7 @@ class Styleguide extends CI_Controller {
     $pageData = new PageModel();
     $pageData->setTitle('Styleguide');
 
-    $pageData->setInlineStylesheets(['styles/styleguide-view-window.css']);
+    $pageData->setInlineStylesheets(['styles/pages/styleguide-view-window.css']);
     $pageData->setRemoteScripts(['scripts/styleguide/styleguide-viewer-controller.es6.js']);
 
     $data['page'] = $pageData;
@@ -28,7 +28,7 @@ class Styleguide extends CI_Controller {
       $viewToRender = 'styleguide/components/' . $component;
     }
 
-    $pageData->setInlineStylesheets(['styles/styleguide-index.css']);
+    $pageData->setInlineStylesheets(['styles/pages/styleguide-index.css']);
     $pageData->setRemoteScripts(['scripts/styleguide/styleguide-messenger-controller.es6.js']);
 
     $data['page'] = $pageData;

@@ -11,7 +11,7 @@ class Home extends CI_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
-    $pageData->setInlineStylesheets(['styles/index.css']);
+    $pageData->setInlineStylesheets(['styles/pages/index.css']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');

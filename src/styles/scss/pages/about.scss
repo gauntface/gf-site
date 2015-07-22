@@ -1,16 +1,16 @@
 @charset 'UTF-8';
 
-@import 'third_party/_normalize.scss';
-@import 'partials/_debug.scss';
-@import 'partials/_typography.scss';
-@import 'partials/_base.scss';
-@import 'partials/_dividers.scss';
-@import 'partials/_grid.scss';
-@import 'partials/_breakpoints.scss';
-@import 'partials/components/_home-header.scss';
-@import 'partials/components/_appbar.scss';
-@import 'partials/components/_subtle-footer.scss';
-@import 'partials/components/_title-block-item.scss';
+@import '../../partials/third_party/_normalize.scss';
+@import '../../partials/_debug.scss';
+@import '../../partials/_typography.scss';
+@import '../../partials/_base.scss';
+@import '../../partials/_dividers.scss';
+@import '../../partials/_grid.scss';
+@import '../../partials/_breakpoints.scss';
+@import '../../partials/components/_home-header.scss';
+@import '../../partials/components/_appbar.scss';
+@import '../../partials/components/_subtle-footer.scss';
+@import '../../partials/components/_title-block-item.scss';
 
 $about-matt-bg-color: #606363;
 

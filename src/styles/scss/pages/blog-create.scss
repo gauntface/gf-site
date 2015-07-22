@@ -1,13 +1,13 @@
 @charset 'UTF-8';
 
-@import 'third_party/_normalize.scss';
-@import 'partials/_typography.scss';
-@import 'partials/_base.scss';
-@import 'partials/_debug.scss';
-@import 'partials/_colors.scss';
-@import 'partials/components/_subappbar.scss';
-@import 'partials/pages/blog-create/_tabs.scss';
-@import 'partials/pages/blog-create/_drag-drop-view.scss';
+@import '../../partials/third_party/_normalize.scss';
+@import '../../partials/_typography.scss';
+@import '../../partials/_base.scss';
+@import '../../partials/_debug.scss';
+@import '../../partials/_colors.scss';
+@import '../../partials/components/_subappbar.scss';
+@import '../../partials/components/_full-page-overlay.scss';
+@import '../../partials/pages/blog-create/_tabs.scss';
 
 .body__blogcreate {
   display: flex;

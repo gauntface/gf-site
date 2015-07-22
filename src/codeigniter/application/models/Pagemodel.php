@@ -12,6 +12,7 @@ class PageModel extends CI_Model {
   private $_description;
   private $_bodyClass;
   private $_inlineStylesheets;
+  private $_inlineRawCSS;
   private $_remoteStylesheets;
   private $_inlineScripts;
   private $_remoteScripts;
@@ -72,6 +73,14 @@ class PageModel extends CI_Model {
 
   public function getInlineStylesheets() {
     return $this->_inlineStylesheets;
+  }
+
+  public function setInlineRawCSS($inlineStyles) {
+    $this->_inlineRawCSS = $inlineStyles;
+  }
+
+  public function getInlineRawCSS() {
+    return $this->_inlineRawCSS;
   }
 
   public function setRemoteScripts($remoteScripts) {

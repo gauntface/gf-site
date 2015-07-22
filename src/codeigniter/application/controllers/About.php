@@ -12,7 +12,7 @@ class About extends CI_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('About');
-    $pageData->setInlineStylesheets(['styles/about.css']);
+    $pageData->setInlineStylesheets(['styles/pages/about.css']);
 
     $contentData = new ContentGridModel();
     $contentData->setRightContentView('content/about');

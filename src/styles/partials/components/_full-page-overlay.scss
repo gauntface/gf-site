@@ -1,4 +1,4 @@
-.drag-over-view__drag-container {
+.full-page-overlay {
   display: flex;
 
   position: fixed;
@@ -9,27 +9,20 @@
   width: 100vw;
   height: 100vh;
 
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   pointer-events: none;
 
-  background-color: rgba(0, 0, 0, 0.75);
-  opacity: 0;
-}
-
-.drag-over-view__message {
+  background-color: $full-overlay-color;
   opacity: 0;
 
   color: white;
 }
 
-.drag-over-view__drag-container.js-drag-over-view__is-hovering {
+.full-page-overlay.is-displayed {
   pointer-events: all;
 
   opacity: 1;
-
-  & .drag-over-view__message {
-    opacity: 1;
-  }
 }

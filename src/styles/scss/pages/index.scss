@@ -1,0 +1,42 @@
+@charset 'UTF-8';
+
+@import '../../partials/third_party/_normalize.scss';
+@import '../../partials/_debug.scss';
+@import '../../partials/_typography.scss';
+@import '../../partials/_base.scss';
+@import '../../partials/_dividers.scss';
+@import '../../partials/_grid.scss';
+@import '../../partials/_breakpoints.scss';
+@import '../../partials/components/_home-header.scss';
+@import '../../partials/components/_appbar.scss';
+@import '../../partials/components/_footer.scss';
+@import '../../partials/components/_title-block-item.scss';
+@import '../../partials/components/_twitter-block.scss';
+@import '../../partials/components/_youtube-block.scss';
+
+body {
+  display: flex;
+
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+
+
+@media (min-width: $break-xsmall) {
+
+}
+
+@media (min-width: $break-small) {
+  .twitter-block, .youtube-block {
+    width: 50%;
+  }
+
+  @include youtube-block-xsmall();
+  @include twitter-block-xsmall();
+}
+
+@media (min-width: $break-medium) {
+  @include youtube-block-small();
+  @include twitter-block-small();
+}

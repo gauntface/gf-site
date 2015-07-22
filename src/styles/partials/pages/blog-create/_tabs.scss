@@ -20,14 +20,14 @@
   display: flex;
 
   flex: 1;
+
+  overflow-y: auto;
 }
 
 .blogcreate__tab_content {
   display: none;
 
   width: 100%;
-
-  overflow-y: auto;
 }
 
 .blogcreate__tab_content.tab-view__is-selected {
