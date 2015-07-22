@@ -15,7 +15,7 @@ $this->load->view('styleguide/components/appbar');
   $this->load->view('styleguide/components/title-block-item', $page);
 
   if ($contentgrid && $contentgrid->getRightContentView()) {
-    $this->load->view($contentgrid->getRightContentView());
+    $this->load->view($contentgrid->getRightContentView(), $contentgrid->getContentData());
   }
 
   $this->load->view('styleguide/components/footer', $page);

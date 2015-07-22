@@ -4,9 +4,11 @@ class ContentGridModel extends CI_Model {
 
   private $_rightContentView;
 
-  function __construct() {
+  function __construct($data = null) {
     // Call the Model constructor
     parent::__construct();
+
+    $this->_contentData = $data;
   }
 
   public function setRightContentView($rightContentView) {
@@ -15,5 +17,9 @@ class ContentGridModel extends CI_Model {
 
   public function getRightContentView() {
     return $this->_rightContentView;
+  }
+
+  public function getContentData() {
+    return $this->_contentData;
   }
 }

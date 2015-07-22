@@ -38,11 +38,10 @@ class Blog extends CI_Controller {
       $leftSectionCSS
     ]);
 
-    $contentData = new ContentGridModel();
-
-    // TODO: Change to Blog Content
-    // $contentData->setRightContentView('content/about');
-    // TODO: Add Left Content Change / Image
+    $contentGridModel = array();
+    $contentGridModel['postModel'] = $postModel;
+    $contentData = new ContentGridModel($contentGridModel);
+    $contentData->setRightContentView('content/blog-post');
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('blog');

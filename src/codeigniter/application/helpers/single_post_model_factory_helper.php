@@ -21,13 +21,13 @@ function singlePostModelFactory($data) {
   }
 
   if (!empty($data['excerpt'])) {
-      $singlePostModel->setExcerpt(urldecode($data['excerpt']));
-      log_message('error', 'excerpt: '.$singlePostModel->getExcerpt());
+      $singlePostModel->setExcerptMarkdown(urldecode($data['excerpt']));
+      log_message('error', 'excerpt: '.$singlePostModel->getExcerptMarkdown());
   }
 
   if (!empty($data['markdown'])) {
-    $singlePostModel->setMarkdown(urldecode($data['markdown']));
-    log_message('error', 'markdown: '.$singlePostModel->getMarkdown());
+    $singlePostModel->setContentMarkdown(urldecode($data['markdown']));
+    log_message('error', 'markdown: '.$singlePostModel->getContentMarkdown());
   }
 
   if (!empty($data['greyScaleImg'])) {

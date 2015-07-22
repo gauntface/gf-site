@@ -14,6 +14,8 @@ class SinglePostModel extends CI_Model {
     // Call the Model constructor
     parent::__construct();
 
+    $this->load->library('md');
+
     if($blogPostQuery) {
       $this->_id = $blogPostQuery->post_id;
       $this->_title = $blogPostQuery->post_title;
@@ -41,11 +43,11 @@ class SinglePostModel extends CI_Model {
     return $this->_title;
   }
 
-  public function setExcerpt($excerpt) {
+  public function setExcerptMarkdown($excerpt) {
       $this->_excerpt = urldecode($excerpt);
   }
 
-  public function getExcerpt() {
+  public function getExcerptMarkdown() {
     return $this->_excerpt;
   }
 
@@ -76,11 +78,11 @@ class SinglePostModel extends CI_Model {
     return $this->_mainImgBGColor;
   }
 
-  public function setMarkdown($markdown) {
+  public function setContentMarkdown($markdown) {
     $this->_markdown = urldecode($markdown);
   }
 
-  public function getMarkdown() {
+  public function getContentMarkdown() {
     return $this->_markdown;
   }
 
@@ -88,4 +90,11 @@ class SinglePostModel extends CI_Model {
     return $this->_id;
   }
 
+  public function getExcerptHTML() {
+    return $this->md->defaultTransform(urldecode($this->getExcerptMarkdown()));
+  }
+
+  public function getContentHTML() {
+    return $this->md->defaultTransform(urldecode($this->getContentMarkdown()));
+  }
 }

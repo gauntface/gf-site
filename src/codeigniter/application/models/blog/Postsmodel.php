@@ -125,8 +125,8 @@ class PostsModel extends CI_Model {
       )";
     $this->db->query($sql, array(
       $singlePostModel->getTitle(),
-      $singlePostModel->getExcerpt(),
-      $singlePostModel->getMarkdown(),
+      $singlePostModel->getExcerptMarkdown(),
+      $singlePostModel->getContentMarkdown(),
       $singlePostModel->getGreyScaleImg(),
       $singlePostModel->getMainImg(),
       $singlePostModel->getMainImgBgColor(),
@@ -144,11 +144,11 @@ class PostsModel extends CI_Model {
       post_main_img = ?,
       post_main_img_bg_color = ?
       WHERE post_id = ?";
-      
+
     $this->db->query($sql, array(
       $singlePostModel->getTitle(),
-      $singlePostModel->getExcerpt(),
-      $singlePostModel->getMarkdown(),
+      $singlePostModel->getExcerptMarkdown(),
+      $singlePostModel->getContentMarkdown(),
       $singlePostModel->getGreyScaleImg(),
       $singlePostModel->getMainImg(),
       $singlePostModel->getMainImgBgColor(),
