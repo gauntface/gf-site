@@ -9,6 +9,8 @@ class SinglePostModel extends CI_Model {
   private $_greyScaleImg;
   private $_mainImg;
   private $_mainImgBGColor;
+  private $_postStatus;
+  private $_publishDate;
 
   function __construct($blogPostQuery = null) {
     // Call the Model constructor
@@ -24,6 +26,8 @@ class SinglePostModel extends CI_Model {
       $this->_greyScaleImg = $blogPostQuery->post_grey_scale_img;
       $this->_mainImg = $blogPostQuery->post_main_img;
       $this->_mainImgBGColor = $blogPostQuery->post_main_img_bg_color;
+      $this->_postStatus = $blogPostQuery->post_status;
+      $this->_publishTime = strtotime($blogPostQuery->publish_date);
     }
   }
 
@@ -72,9 +76,6 @@ class SinglePostModel extends CI_Model {
   }
 
   public function getMainImgBgColor() {
-    if (!isset($this->_mainImgBGColor)) {
-      return '#333333';
-    }
     return $this->_mainImgBGColor;
   }
 
@@ -96,5 +97,17 @@ class SinglePostModel extends CI_Model {
 
   public function getContentHTML() {
     return $this->md->defaultTransform(urldecode($this->getContentMarkdown()));
+  }
+
+  public function getPostStatus() {
+    return $this->_postStatus;
+  }
+
+  public function isPublished() {
+    return $this->_postStatus == 'published';
+  }
+
+  public function getPublishTime() {
+    return $this->_publishTime;
   }
 }

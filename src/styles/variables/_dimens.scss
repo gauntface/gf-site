@@ -1,0 +1,27 @@
+/**
+ * Typography
+ */
+$base-font-size:        14px !default;
+$base-line-height:      24px !default;
+
+$font-size-h1:          24px !default;
+$font-size-h2:          22px !default;
+$font-size-h3:          20px !default;
+$font-size-h4:          18px !default;
+$font-size-h5:          16px !default;
+$font-size-h6:          14px !default;
+$font-size-code:		    12px !default;
+$small-font-size:		    12px !default;
+$tiny-font-size:		    10px !default;
+$medium-font-size:      36px !default;
+$large-font-size:       48px !default;
+
+$top-img-xsmall-height: $base-line-height * 12 !default;
+$top-img-small-height: $base-line-height * 20 !default;
+
+/**
+ * Breakpoints
+ */
+$break-xsmall: 300px;
+$break-small: 450px;
+$break-medium: 950px;

@@ -1,46 +1,8 @@
 @charset "UTF-8";
 
-@import "colors";
+@import "../variables/colors";
 
 $blockquote-z-index: -1;
-
-/*****************************************
-*
-* Colors
-*
-*****************************************/
-$highlight-color: #000000 !default;
-$secondary-bg-color: #bbbbbb !default;
-
-$title-color-faded: rgba($highlight-color, 0.6) !default;
-
-$code-bg-color: #f0f0f0 !default;
-
-$input-bg-color: $secondary-bg-color !default;
-$input-focus-bg-color: lighten($secondary-bg-color, 8%) !default;
-
-$input-place-holder-color: $highlight-color !default;
-
-$svg-btn-fill-color: $highlight-color !default;
-
-$button-bg: rgba($secondary-bg-color, 0.2) !default;
-
-$btn-bg-hover: rgba($secondary-bg-color, 0.3) !default;
-$btn-bg-focus: rgba($secondary-bg-color, 0.3) !default;
-$btn-bg-active: rgba($secondary-bg-color, 0.5) !default;
-
-$link-text-color: inherit; //$highlight-color !default;
-
-$iframe-border-color: $highlight-color !default;
-$iframe-bg-color: #fefefe !default;
-
-/*****************************************
-*
-* Dimensions
-*
-*****************************************/
-
-$padding: ($base-font-size / 2) !default;
 
 /*****************************************
 *
@@ -135,36 +97,33 @@ ol {
   list-style-type: decimal;
 }
 
-input[type='text'], input[type='textarea'], textarea {
+input[type='text'], textarea {
   display: block;
   width: 100%;
 
   box-sizing: border-box;
 
-  background-color: $input-bg-color;
+  background-color: transparent;
+  //background-color: $input-bg-color;
+
+  color: rgba(255, 255, 255, 0.8);
 
   border: 0;
   border-radius: 0;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
 }
 
-input[type='text']:focus, input[type='textarea']:focus, textarea:focus {
+input[type='text']:focus, textarea:focus {
   outline: 0;
-  background-color: $input-focus-bg-color;
+
+  //background-color: $input-focus-bg-color;
+  border-bottom-color: rgba(255, 255, 255, 0.8);
 }
 
-input::-webkit-input-placeholder {
-   color: $input-place-holder-color;
-   opacity: 0.6;
-}
-
-input::-moz-placeholder {
-   color: $input-place-holder-color;
-   opacity: 0.6;
-}
-
-input:-ms-input-placeholder {
-   color: $input-place-holder-color;
-   opacity: 0.6;
+input[placeholder], textarea[placeholder] {
+  //color: $input-place-holder-color;
 }
 
 button.transparent {
@@ -219,14 +178,12 @@ button, .btn, input[type="button"], input[type="reset"], input[type="submit"] {
 
 .btn.image-text {
   img, svg {
-    margin-right: $padding;
+    margin-right: ($base-line-height / 4);
   }
 }
 
 a {
-    text-decoration: none;
-    color: $link-text-color;
-    font-weight: bold;
+  color: $link-text-color;
 }
 
 iframe {
@@ -268,4 +225,8 @@ img {
 
 .center {
   text-align: center;
+}
+
+.no-decoration {
+  text-decoration: none;
 }

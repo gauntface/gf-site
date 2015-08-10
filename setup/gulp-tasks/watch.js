@@ -24,7 +24,7 @@ gulp.task('start-watching', function() {
     ['copy-included-fonts', browserSync.reload]);
 
   // Sass / CSS
-  gulp.watch([GLOBAL.config.src.styles + '/**/*'],
+  gulp.watch([GLOBAL.config.src.styles.root + '/**/*'],
     ['generate-dev-css', browserSync.reload]);
 
   // Scripts

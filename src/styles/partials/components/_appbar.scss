@@ -1,5 +1,6 @@
-@import "../_breakpoints";
-@import "../_colors";
+@import "../../variables/dimens";
+@import "../../variables/colors";
+@import "../../variables/font-families";
 
 $underline-extension-total: 4px !default;
 
@@ -28,6 +29,7 @@ $underline-extension-total: 4px !default;
 
   font-size: $base-line-height * 1.2;
   color: $app-bar-color;
+  text-decoration: none;
 
   opacity: 0.4;
 

@@ -1,0 +1,30 @@
+@charset 'UTF-8';
+
+@import '../../variables/dimens';
+
+@import '../../partials/third_party/normalize';
+@import '../../partials/debug';
+@import '../../partials/typography';
+@import '../../partials/base';
+@import '../../partials/dividers';
+@import '../../partials/grid';
+@import '../../partials/components/appbar';
+@import '../../partials/components/block-footer';
+@import '../../partials/components/title-block-item';
+
+body {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.blog-index__list-container {
+  display: flex;
+
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-index__list-container a:first-child .title-block-item.is-padded {
+  padding-top: ($base-line-height * 4);
+}

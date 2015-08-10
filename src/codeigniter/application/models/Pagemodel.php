@@ -75,6 +75,15 @@ class PageModel extends CI_Model {
     return $this->_inlineStylesheets;
   }
 
+  public function setRemoteStylesheets($remoteStylesheet) {
+    $this->_remoteStylesheets = $remoteStylesheet;
+  }
+
+  public function getRemoteStylesheets() {
+    //return $this->_remoteStylesheets;
+    return array();
+  }
+
   public function setInlineRawCSS($inlineStyles) {
     $this->_inlineRawCSS = $inlineStyles;
   }

@@ -16,7 +16,10 @@ GLOBAL.config = {
     root: 'src',
     codeigniter: 'src/codeigniter',
     images: 'src/images',
-    styles: 'src/styles/scss',
+    styles: {
+      root: 'src/styles',
+      sass: 'src/styles/scss'
+    },
     fonts: 'src/fonts',
     scripts: 'src/scripts',
   },

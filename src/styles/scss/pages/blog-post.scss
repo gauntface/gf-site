@@ -1,0 +1,19 @@
+@charset 'UTF-8';
+
+@import '../../variables/dimens';
+
+@import '../../partials/third_party/normalize';
+@import '../../partials/debug';
+@import '../../partials/typography';
+@import '../../partials/base';
+@import '../../partials/dividers';
+@import '../../partials/grid';
+@import '../../partials/components/home-header';
+@import '../../partials/components/appbar';
+@import '../../partials/components/subtle-footer';
+@import '../../partials/components/title-block-item';
+@import '../../partials/components/geshi-code';
+
+.grid-container__left-section {
+  background-color: $title-color;
+}

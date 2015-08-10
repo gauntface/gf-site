@@ -91,11 +91,33 @@ class PostsModel extends CI_Model {
   }
 
   // This is from draft_date as it's for the admin panel
-  public function getDraftPosts($startIndex = 0, $numberOfResults = 20, $sort_field = 'draft_date') {
+  public function getDraftPosts(
+    $startIndex = 0,
+    $numberOfResults = 20,
+    $sort_field = 'draft_date') {
+    return $this->getPosts($startIndex, $numberOfResults, $sort_field);
+  }
+
+  public function getPublishedPosts(
+    $startIndex = 0,
+    $numberOfResults = 20,
+    $sort_field = 'draft_date') {
+      return $this->getPosts($startIndex, $numberOfResults, $sort_field, 'published');
+  }
+
+  private function getPosts($startIndex, $numberOfResults, $sort_field, $postStatus = null) {
     $this->load->model('blog/SinglePostModel');
 
-    $sql = "SELECT * FROM posts_table WHERE post_status != 'deleted' ORDER BY ".$sort_field." DESC LIMIT ?, ?";
-    $query = $this->db->query($sql, array(intval($startIndex), intval($numberOfResults)));
+    $sqlVaraibles = array();
+    $sql = "SELECT * FROM posts_table WHERE post_status != 'deleted'";
+    if(isset($postStatus)) {
+      $sql .= " AND post_status = ?";
+      array_push($sqlVaraibles, $postStatus);
+    }
+    $sql .= " ORDER BY ".$sort_field." DESC LIMIT ?, ?";
+
+    array_push($sqlVaraibles, intval($startIndex), intval($numberOfResults));
+    $query = $this->db->query($sql, $sqlVaraibles);
 
     $reslts = array();
     foreach ($query->result() as $row) {
@@ -153,6 +175,26 @@ class PostsModel extends CI_Model {
       $singlePostModel->getMainImg(),
       $singlePostModel->getMainImgBgColor(),
       $singlePostModel->getPostId(),
+      ));
+
+    return $this->db->affected_rows() > 0;
+  }
+
+  public function deletePost($singlePostModel) {
+    $sql = "UPDATE posts_table SET post_status = 'deleted' WHERE post_id = ?";
+
+    $this->db->query($sql, array(
+      $singlePostModel->getPostId()
+      ));
+
+    return $this->db->affected_rows() > 0;
+  }
+
+  public function publishPost($singlePostModel) {
+    $sql = "UPDATE posts_table SET post_status = 'published', publish_date = (now()) WHERE post_id = ?";
+
+    $this->db->query($sql, array(
+      $singlePostModel->getPostId()
       ));
 
     return $this->db->affected_rows() > 0;

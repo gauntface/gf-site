@@ -7,17 +7,8 @@
  */
 
 html {
-  font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
   -webkit-text-size-adjust: 100%; /* 2 */
-}
-
-/**
- * Remove default margin.
- */
-
-body {
-  margin: 0;
 }
 
 /* HTML5 display definitions
@@ -120,24 +111,6 @@ strong {
 }
 
 /**
- * Address styling not present in Safari and Chrome.
- */
-
-dfn {
-  font-style: italic;
-}
-
-/**
- * Address variable `h1` font-size and margin within `section` and `article`
- * contexts in Firefox 4+, Safari, and Chrome.
- */
-
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-
-/**
  * Address styling not present in IE 8/9.
  */
 
@@ -230,7 +203,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: monospace;
   font-size: 1em;
 }
 

@@ -6,7 +6,7 @@ set_include_path(APPPATH.'third_party/'.PATH_SEPARATOR.get_include_path());
 
 require_once APPPATH.'third_party/Md/MarkdownInterface.php';
 require_once APPPATH.'third_party/Md/Markdown.php';
-require_once APPPATH.'third_party/geshi/class.geshi.php';
+require_once APPPATH.'third_party/geshi-1.0-master/src/geshi.php';
 
 class Md extends Michelf\Markdown {
 
@@ -23,19 +23,19 @@ class Md extends Michelf\Markdown {
       return parent::_doCodeBlocks_callback($matches);
     }
 
-    // TODO: Remove First Line Here
+    // Remove First Line Here
     // Plus one to include the new line character
     $srcCode = substr($rawSrc, strlen($firstLine)+1);
+    $cleanSrcCode = $this->cleanSrc($srcCode);
 
-    $geshi = new GeSHi($srcCode, $language);
+    $geshi = new GeSHi($cleanSrcCode, $language);
     $geshi->enable_classes();
-    $geshi->set_overall_class('syntax_highlight');
-    //$geshi->enable_line_numbers(GESHI_NORMAL_LINE_NUMBERS);
+    $geshi->set_overall_class('geshi_highlight');
     $geshi->set_tab_width(2);
     $geshi->set_header_type(GESHI_HEADER_DIV);
     $highlighted = $geshi->parse_code();
 
-    return "\n\n".$this->hashBlock($highlighted)."\n\n";
+    return "\n\n".$this->hashBlock("<div class=\"geshi_highlight__container\">".$highlighted."</div>")."\n\n";
   }
 
   function findLanguage($firstLine) {
@@ -50,6 +50,18 @@ class Md extends Michelf\Markdown {
     }
 
     return false;
+  }
+
+  // This method goes through the source code and removes the
+  // initial 4 spaces required to render this as code.
+  function cleanSrc($rawSrc) {
+    $srcLines = explode("\n" , $rawSrc);
+    $cleanSrc = '';
+    for($i = 0; $i < count($srcLines); $i++) {
+      $cleanSrc .= substr($srcLines[$i], 4) . "\n";
+    }
+
+    return $cleanSrc;
   }
 
   protected function _doImages_inline_callback($matches) {

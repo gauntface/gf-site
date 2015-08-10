@@ -45,7 +45,8 @@
         <?php } ?>
 
         <!-- RSS Feed -->
-        <link rel="alternate" type="application/rss+xml" title="Gaunt Face | Matt Gaunt - Blog" href="<?php echo(base_url().'blog/feed'); ?>">
+        <link rel="alternate" type="application/rss+xml" title="RSS Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/rss'); ?>">
+        <link rel="alternate" type="application/atom+xml" title="Atom Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/atom'); ?>">
 
         <!-- IE Specific Tags -->
         <meta name="msapplication-tap-highlight" content="no"/>
@@ -96,8 +97,9 @@
             }
           ?>
           <?php
-            if(isset($fileStylesheets)) {
-                foreach($fileStylesheets as $singleFile) {
+            $remoteStylesheets = $page->getRemoteStylesheets();
+            if(isset($remoteStylesheets)) {
+                foreach($remoteStylesheets as $singleFile) {
                     ?>
                     <link rel="stylesheet" href="<?php echo(base_url().addRevisionToFilePath($singleFile)); ?>">
                     <?php

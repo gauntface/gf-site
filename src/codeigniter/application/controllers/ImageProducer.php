@@ -1,6 +1,9 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ImageProducer extends CI_Controller {
+require_once APPPATH.'controllers/Base_controller.php';
+
+class ImageProducer extends Base_Controller {
 
   protected $GENERATED_IMG_DIR = 'generated/';
 

@@ -1,17 +1,18 @@
 @charset 'UTF-8';
 
-@import '../../partials/third_party/_normalize.scss';
-@import '../../partials/_typography.scss';
-@import '../../partials/_base.scss';
-@import '../../partials/_debug.scss';
-@import '../../partials/_dividers.scss';
-@import '../../partials/components/_home-header.scss';
-@import '../../partials/components/_appbar.scss';
-@import '../../partials/components/_subappbar.scss';
-@import '../../partials/components/_footer.scss';
-@import '../../partials/components/_title-block-item.scss';
-@import '../../partials/components/_twitter-block.scss';
-@import '../../partials/components/_youtube-block.scss';
+@import '../../partials/third_party/normalize';
+@import '../../partials/typography';
+@import '../../partials/base';
+@import '../../partials/debug';
+@import '../../partials/dividers';
+@import '../../partials/components/home-header';
+@import '../../partials/components/appbar';
+@import '../../partials/components/subappbar';
+@import '../../partials/components/block-footer';
+@import '../../partials/components/subtle-footer';
+@import '../../partials/components/title-block-item';
+@import '../../partials/components/twitter-block';
+@import '../../partials/components/youtube-block';
 
 body {
 

@@ -18,7 +18,7 @@ var AUTOPREFIXER_BROWSERS = [
 
 function compileSassAutoprefix(genSourceMaps) {
   return gulp.src([
-      GLOBAL.config.src.styles + '/**/*.scss'
+      GLOBAL.config.src.styles.sass + '/**/*.scss'
     ])
     .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.init()))
     .pipe(plugins.sass({

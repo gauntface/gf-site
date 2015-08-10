@@ -4,14 +4,19 @@ class TitleModel extends CI_Model {
 
   private $_title;
   private $_description;
-  private $_date;
+  private $_time;
   private $_smallTopText;
-  private $_backgroundImage;
+  private $_fullbleedBackgroundImg;
+  private $_smallBackgroundImage;
+  private $_useLightDivider;
   private $_isPadded;
+  private $_linkHref;
 
   function __construct() {
     // Call the Model constructor
     parent::__construct();
+
+    $_useLightDivider = false;
   }
 
   public function setTitle($title) {
@@ -30,12 +35,12 @@ class TitleModel extends CI_Model {
     return $this->_description;
   }
 
-  public function setDate() {
-    $this->_date = '29.06.2015';
+  public function setTime($time) {
+    $this->_time = $time;
   }
 
-  public function getDate() {
-    return $this->_date;
+  public function getTime() {
+    return $this->_time;
   }
 
   public function setSmallTopText($smallTopText) {
@@ -46,12 +51,20 @@ class TitleModel extends CI_Model {
     return $this->_smallTopText;
   }
 
-  public function setBackgroundImage($imageUrl) {
-    $this->_backgroundImage = $imageUrl;
+  public function setSmallBackgroundImage($imageUrl) {
+    $this->_smallBackgroundImage = $imageUrl;
   }
 
-  public function getBackgroundImage() {
-    return $this->_backgroundImage;
+  public function getSmallBackgroundImage() {
+    return $this->_smallBackgroundImage;
+  }
+
+  public function setFullbleedBackgroundImage($imageUrl) {
+    $this->_fullbleedBackgroundImg = $imageUrl;
+  }
+
+  public function getFullbleedBackgroundImage() {
+    return $this->_fullbleedBackgroundImg;
   }
 
   public function makePadded($isPadded) {
@@ -60,5 +73,21 @@ class TitleModel extends CI_Model {
 
   public function isPadded() {
     return $this->_isPadded;
+  }
+
+  public function setLinkURL($url) {
+    $this->_linkHref = $url;
+  }
+
+  public function getLinkURL() {
+    return $this->_linkHref;
+  }
+
+  public function setUseLightDivider($useLightDivider) {
+    $this->_useLightDivider = $useLightDivider;
+  }
+
+  public function useLightDivider() {
+    return $this->_useLightDivider;
   }
 }

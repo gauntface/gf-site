@@ -28,7 +28,8 @@ grid without any issues.</p>
 
 <h3>Footer</h3>
 
-<p><a href="/styleguide/view/footer">Footer</a></p>
+<p><a href="/styleguide/view/block-footer">Block Footer</a></p>
+<p><a href="/styleguide/view/subtle-footer">Subtle Footer</a></p>
 
 <h3>Title Block Item</h3>
 
@@ -45,6 +46,10 @@ grid without any issues.</p>
 <h3>Sub-AppBar</h3>
 
 <p><a href="/styleguide/view/sub-appbar">Sub-AppBar</a></p>
+
+<h3>GeSHi Code Example</h3>
+
+<p><a href="/styleguide/view/geshi-code">GeSHi Code Example</a></p>
 
 <h2>Third Party</h2>
 

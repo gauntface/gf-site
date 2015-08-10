@@ -2,10 +2,10 @@
 
 export default class BlogModel {
 
-  constructor (options) {
-    if (typeof options.postId !== 'undefined' ||
-      options.postId !== null) {
-      this._postId = options.postId;
+  constructor (postId) {
+    if (typeof postId !== 'undefined' &&
+      postId !== null) {
+      this._postId = postId;
     }
   }
 
@@ -77,6 +77,7 @@ export default class BlogModel {
     this._greyScaleImg = imgUrl;
 
     this.onUpdateRequiringUIUpdate();
+    this.onIframeUpdateRequired();
   }
 
   get mainImg() {
@@ -87,6 +88,7 @@ export default class BlogModel {
     this._mainImg = imgUrl;
 
     this.onUpdateRequiringUIUpdate();
+    this.onIframeUpdateRequired();
   }
 
   getJSONData () {

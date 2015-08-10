@@ -1,6 +1,9 @@
 <?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Styleguide extends CI_Controller {
+require_once APPPATH.'controllers/Base_controller.php';
+
+class Styleguide extends Base_Controller {
 
   public function index() {
     $this->load->model('pagemodel');

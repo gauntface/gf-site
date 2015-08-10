@@ -1,9 +1,77 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once APPPATH.'controllers/admin/Admin_controller.php';
+require_once APPPATH.'controllers/Base_controller.php';
 
-class Blog extends CI_Controller {
+class Blog extends Base_Controller {
+
+  public function index($page = 0) {
+    if($page < 0) {
+      return show_404();
+    }
+
+    $this->load->model('PageModel');
+    $this->load->model('ContentGridModel');
+    $this->load->model('AppBarModel');
+    $this->load->model('TitleModel');
+    $this->load->model('blog/PostsModel');
+
+    $postsModel = new PostsModel();
+
+    $numberOfResults = 20;
+    $offset = $page * $numberOfResults;
+    $posts = $postsModel->getPublishedPosts($startIndex = $offset, $numberOfResults);
+
+    $pageData = new PageModel();
+    $pageData->setTitle('Blog');
+    $pageData->setInlineStylesheets(['styles/pages/blog-index.css']);
+
+    $appBarData = new AppBarModel();
+    $appBarData->setSelectedItem('blog');
+
+    $data['page'] = $pageData;
+    $data['appbar'] = $appBarData;
+
+    $data['postTitles'] = array();
+
+    if(count($posts) === 0) {
+      // TODO: No post scenario
+      $titleModel = new TitleModel();
+      $titleModel->setTitle("No Posts Yet");
+      $titleModel->setDescription("<p>Give me a couple of minutes to put something together</p>");
+      $titleModel->setSmallBackgroundImage("images/pages/blog/coffee.png");
+      $titleModel->makePadded(true);
+
+      array_push($data['postTitles'] , $titleModel);
+    } else {
+      // Top image of the blog should be the main img
+      $titleModel = new TitleModel();
+      $titleModel->setTitle($posts[0]->getTitle());
+      $titleModel->setDescription($posts[0]->getExcerptHTML());
+      $titleModel->setFullbleedBackgroundImage($posts[0]->getMainImg());
+      $titleModel->makePadded(true);
+      $titleModel->setUseLightDivider(true);
+      $titleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
+
+      array_push($data['postTitles'] , $titleModel);
+
+      for ($i = 1; $i < count($posts); $i++) {
+        $post = $posts[$i];
+
+        $titleModel = new TitleModel();
+        $titleModel->setTitle($post->getTitle());
+        $titleModel->setDescription($post->getExcerptHTML());
+        $titleModel->setDate();
+        $titleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
+        $titleModel->makePadded(true);
+        $titleModel->setLinkURL('/blog/view/'.$post->getId());
+
+        array_push($data['postTitles'] , $titleModel);
+      }
+    }
+
+    $this->load->view('layouts/blog-index', $data);
+  }
 
   public function view ($postId = null) {
     $this->load->helper('file');
@@ -15,25 +83,25 @@ class Blog extends CI_Controller {
     $this->load->model('blog/PostsModel');
 
     if ($postId == null) {
-      show_404();
-      return;
+      return show_404();
     }
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
-    // TODO List:
-    //    Check if page isn't published then check auth token
+    if (!$postModel->isPublished() && !$this->verifyLoggedIn()) {
+      return show_404();
+    }
 
     $leftSectionCSS = read_file('styles/templates/inline-split-section.css');
-
-    // TODO Select appropriate color for image background
     $leftSectionCSS = str_replace('\'{{left-section-bg-color}}\'', $postModel->getMainImgBgColor(), $leftSectionCSS);
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
+
+    // This will handle responsive image template when needed
     //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
 
     $pageData = new PageModel();
     $pageData->setTitle($postModel->getTitle());
-    $pageData->setInlineStylesheets(['styles/pages/blog.css']);
+    $pageData->setRemoteStylesheets(['styles/pages/blog-post.css']);
     $pageData->setInlineRawCSS([
       $leftSectionCSS
     ]);
@@ -57,5 +125,4 @@ class Blog extends CI_Controller {
 
     $this->load->view('layouts/split-sections', $data);
   }
-
 }

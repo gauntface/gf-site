@@ -1,57 +1,20 @@
 @import "_adam-font";
-@import "breakpoints";
+@import "../variables/colors";
+@import "../variables/dimens";
+@import "../variables/font-families";
+@import "../mixins/typography";
 
 @function strip-unit($value) {
     @return $value / ($value * 0 + 1);
 }
 
-/**
-* Font ideas from: http://hivelogic.com/articles/top-10-programming-fonts;
-**/
-$code-font-family: "Monaco", "Andale Mono", "AndaleMono", "Droid Sans Mono", "DroidSansMono", "Courier", monospace;
-$base-font-family: "Futura", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Open Sans", sans-serif;
-$title-font-family: "adam.cg_proregular", $base-font-family;
-
-/**
- * Sizes
- */
-$base-font-size:        14px !default;
-$base-line-height:      24px !default;
-
-$font-size-h1:          24px !default;
-$font-size-h2:          22px !default;
-$font-size-h3:          20px !default;
-$font-size-h4:          18px !default;
-$font-size-h5:          16px !default;
-$font-size-h6:          14px !default;
-$font-size-code:		    12px !default;
-$small-font-size:		    12px !default;
-$tiny-font-size:		    10px !default;
-$medium-font-size:      36px !default;
-$large-font-size:       48px !default;
-
 $baseline: strip-unit($base-line-height);
-
-/**
- * Colors
- */
-$title-color: 			#333333 !default;
-$font-color: 			#333333 !default;
-$blockquote-mark-color: #bbbbbb !default;
-$btn-text-color: 		#333333 !default;
-$copyright-font-color: 	rgba(50, 50, 50, 0.4) !default;
 
 /**
  * Settings
  */
-$link-underlined:       false !default;
+$link-underlined:       true !default;
 $link-underlined-hover: false !default;
-
-@mixin typography-font-size($font-size) {
-    font-size: $font-size;
-    font-size: ($font-size / $base-font-size) * 1rem;
-    line-height: ceil($font-size / $base-line-height) * ($base-line-height / $font-size);
-}
 
 .small-font-size {
   @include typography-font-size($small-font-size);

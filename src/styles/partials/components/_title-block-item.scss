@@ -1,4 +1,6 @@
-@import "../_breakpoints";
+@import "../../variables/dimens";
+@import "../../variables/colors";
+@import "../../mixins/typography";
 
 .title-block-item {
   display: block;
@@ -6,10 +8,18 @@
   width: 100%;
 
   box-sizing: border-box;
+
+  background-size: cover;
+  background-position: center;
+}
+
+.title-block-item.is-light-text {
+  color: $light-text-color;
 }
 
 .title-block-item.is-padded {
-  padding-bottom: $base-line-height * 0.5;
+  padding-top: $base-line-height;
+  padding-bottom: $base-line-height;
 }
 
 .title-block__content {
@@ -35,7 +45,10 @@
 .title-block-item__title {
   display: block;
   width: 100%;
-  margin-bottom: $base-line-height * 0.5;
+  max-width: 800px;
+  margin-bottom: $base-line-height;
+  margin-left: auto;
+  margin-right: auto;
   text-align: center;
   letter-spacing: 0.4rem;
 }
@@ -48,7 +61,7 @@
 
 @media (min-width: $break-xsmall) {
   .title-block-item.is-padded {
-    padding: ($base-line-height * 1.5) ($base-line-height * 1.5) ($base-line-height * 2) ($base-line-height * 1.5);
+    padding: ($base-line-height * 2) ($base-line-height * 1.5);
   }
 
   .title-block-item__toptext {
@@ -68,7 +81,7 @@
 
 @media (min-width: $break-small) {
   .title-block-item.is-padded {
-    padding: ($base-line-height * 1.5) ($base-line-height * 1.5) ($base-line-height * 4) ($base-line-height * 1.5);
+    padding: ($base-line-height * 4) ($base-line-height * 1.5);
   }
 
   .title-block-item__toptext {

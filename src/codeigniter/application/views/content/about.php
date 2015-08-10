@@ -20,7 +20,7 @@ to be a full time mobile software engineer.</p>
       Blog
     </div>
     <div class="about__fact-list-content">
-      <p>Check out my blog, the latest was titled <a href="#">"Gulp & Sass"</a></p>
+      <p>Check out my blog, the latest was titled "<a href="#">Gulp &amp; Sass</a>"</p>
     </div>
   </li>
   <li class="about__fact-list-item">

@@ -1,40 +1,72 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends CI_Controller {
+require_once APPPATH.'controllers/Base_controller.php';
+require_once APPPATH.'third_party/twitteroauth-0.5.3/autoload.php';
+use Abraham\TwitterOAuth\TwitterOAuth;
+
+class Home extends Base_Controller {
 
   public function index()
   {
     $this->load->model('PageModel');
     $this->load->model('AppBarModel');
     $this->load->model('TitleModel');
+    $this->load->model('blog/PostsModel');
+    $this->load->model('TwitterKeys');
 
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
-    $pageData->setInlineStylesheets(['styles/pages/index.css']);
+    $pageData->setRemoteStylesheets(['styles/pages/index/index-remote.css']);
+    $pageData->setInlineStylesheets(['styles/pages/index/index-inline.css']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');
 
-    $topTitleModel = new TitleModel();
-    $topTitleModel->setTitle('Test Title');
-    $topTitleModel->setDescription('Test Description');
-    $topTitleModel->setDate();
-    $topTitleModel->setBackgroundImage('/images/example/gass.png');
-    $topTitleModel->makePadded(true);
+    $postsModel = new PostsModel();
+    $posts = $postsModel->getPublishedPosts($startIndex = 0, 1);
+
+    $firstPostTitleModel = new TitleModel();
+    $firstPostTitleModel->setTitle($posts[0]->getTitle());
+    $firstPostTitleModel->setDescription($posts[0]->getExcerptHTML());
+    $firstPostTitleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
+    $firstPostTitleModel->makePadded(true);
+    $firstPostTitleModel->setTime($posts[0]->getPublishTime());
+    $firstPostTitleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
 
     $bottomTitleModel = new TitleModel();
-    $bottomTitleModel->setTitle('Smashing Book 5: Real-Life Responsive Web Design');
-    $bottomTitleModel->setDescription('I’ve been writing a chapter in this book about service worker and it’s finally coming out! <a href="#">Get the print or ebook HERE</a>');
+    $bottomTitleModel->setTitle('Smashing Book 5');
+    $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now!</p><p><a href="#">Get the print or ebook HERE</a></p>');
     $bottomTitleModel->setSmallTopText('News');
-    $bottomTitleModel->setBackgroundImage('/images/pages/home/smashing-mag.png');
+    $bottomTitleModel->setSmallBackgroundImage('/images/pages/home/smashing-mag.png');
     $bottomTitleModel->makePadded(true);
 
     $data['page'] = $pageData;
     $data['appbar'] = $appBarData;
-    $data['topTitleModel'] = $topTitleModel;
+    $data['blogTitleModel'] = $firstPostTitleModel;
     $data['bottomTitleModel'] = $bottomTitleModel;
+    $data['tweetTitleModel'] = $this->getLatestTweet();
 
     $this->load->view('layouts/home', $data);
+  }
+
+  private function getLatestTweet() {
+    try {
+      $twitterKeys = new TwitterKeys();
+      $connection = new TwitterOAuth($twitterKeys->consumerKey, $twitterKeys->consumerSecret, $twitterKeys->accessToken, $twitterKeys->accessSecret);
+      $statuses = $connection->get("statuses/user_timeline", array("q" => "screen_name=gauntface&count=1"));
+      if(count($statuses) <= 0) {
+        return;
+      }
+
+      $tweetModel = new TitleModel();
+      $tweetModel->setDescription($statuses[0]->text);
+      $tweetModel->setTime(strtotime($statuses[0]->created_at));
+
+      return $tweetModel;
+    } catch(Exception $e) {
+      // Unable to get tweet
+    }
+    return null;
   }
 }

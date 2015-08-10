@@ -19,11 +19,11 @@ class AppBarModel extends CI_Model {
       ),
       'blog' => array(
           'title' => 'Blog',
-          'link' => '#'
+          'link' => '/blog'
       ),
       'contact' => array(
           'title' => 'Contact',
-          'link' => '#'
+          'link' => '/contact'
       ),
     );
   }

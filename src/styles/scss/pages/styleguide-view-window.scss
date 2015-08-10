@@ -1,8 +1,8 @@
 @charset 'UTF-8';
 
-@import '../../partials/third_party/_normalize.scss';
-@import '../../partials/_typography.scss';
-@import '../../partials/_base.scss';
+@import '../../partials/third_party/normalize';
+@import '../../partials/typography';
+@import '../../partials/base';
 
 body {
   display: flex;
@@ -105,7 +105,7 @@ body {
 }
 
 .styleguide-window-wrapper.is-square-watch {
-  border-radius: $padding;
+  border-radius: ($base-line-height / 4);
 }
 
 .styleguide-contents-iframe.is-phone, .styleguide-window-wrapper.is-phone {
@@ -116,7 +116,7 @@ body {
 }
 
 .styleguide-window-wrapper.is-phone {
-  border-radius: $padding * 2;
+  border-radius: ($base-line-height / 2);
 }
 
 .styleguide-contents-iframe.is-desktop, .styleguide-window-wrapper.is-desktop {

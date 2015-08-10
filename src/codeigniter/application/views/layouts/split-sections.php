@@ -7,19 +7,19 @@ $this->load->view('templates/header', $page);
 $this->load->view('styleguide/components/appbar');
 ?>
 
-<div class="grid-container__left-section--content-style"></div>
+<div class="grid-container__left-section"></div>
 
-<div class="grid-container__right-section--content-style">
-  <div class="grid-container_right-section-content--content-style">
-  <?php
-  $this->load->view('styleguide/components/title-block-item', $page);
+<div class="grid-container__right-section">
+  <div class="grid-container__right-section-container">
+    <?php
+    $this->load->view('styleguide/components/title-block-item', $page);
 
-  if ($contentgrid && $contentgrid->getRightContentView()) {
-    $this->load->view($contentgrid->getRightContentView(), $contentgrid->getContentData());
-  }
+    if ($contentgrid && $contentgrid->getRightContentView()) {
+      $this->load->view($contentgrid->getRightContentView(), $contentgrid->getContentData());
+    }
 
-  $this->load->view('styleguide/components/footer', $page);
-  ?>
+    $this->load->view('styleguide/components/subtle-footer', $page);
+    ?>
   </div>
 </div>
 

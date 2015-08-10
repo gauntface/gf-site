@@ -1,7 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class About extends CI_Controller {
+require_once APPPATH.'controllers/Base_controller.php';
+
+class About extends Base_Controller {
 
   public function index()
   {

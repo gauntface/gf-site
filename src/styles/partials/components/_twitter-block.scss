@@ -1,5 +1,5 @@
-@import "../colors";
-@import "../breakpoints";
+@import "../../variables/colors";
+@import "../../variables/dimens";
 
 .twitter-block {
   width: 100%;
@@ -29,6 +29,8 @@
 
   a, time {
     display: block;
+
+    text-decoration: none;
   }
 }
 
@@ -37,7 +39,7 @@
 }
 
 .twitter-block__tweet {
-
+  text-align: center;
 }
 
 @mixin twitter-block-xsmall () {

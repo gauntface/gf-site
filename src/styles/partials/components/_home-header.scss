@@ -1,6 +1,5 @@
-@import "../_breakpoints";
-@import "../colors";
-@import "../dimens";
+@import "../../variables/colors";
+@import "../../variables/dimens";
 @import "../../mixins/responsive-images";
 
 .gf-header {
