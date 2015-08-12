@@ -1,0 +1,27 @@
+{
+  "urlsToTest": [
+    "http://localhost/"
+  ],
+  "name": "index",
+  "components": [
+    "home-header",
+    "appbar",
+    "title-block-item",
+    "block-footer",
+    "twitter-block",
+    "youtube-block",
+    "debug"
+  ],
+  "layouts": [
+    "split-half"
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/base/_utils.scss",
+    "src/styles/partials/_typography.scss",
+    "src/styles/pages/index/_index-inline.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

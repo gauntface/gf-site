@@ -17,10 +17,6 @@ export default class Debug {
           e.data);
       }
     }.bind(this));
-
-    window.addEventListener('resize', function() {
-      this.setBaselineGridHeight();
-    }.bind(this));
   }
 
   get debugElement () {
@@ -28,6 +24,11 @@ export default class Debug {
       this.debugElement_ = document.createElement('div');
       this.debugElement_.classList.add('debug-element');
       document.body.appendChild(this.debugElement_);
+
+      // Add Resize once the debug element exists
+      window.addEventListener('resize', function() {
+        this.setBaselineGridHeight();
+      }.bind(this));
     }
     return this.debugElement_;
   }

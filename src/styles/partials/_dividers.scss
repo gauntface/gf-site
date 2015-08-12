@@ -1,8 +1,5 @@
 @import "../variables/dimens";
-
-$divider-color: black !default;
-$divider-color-light: white !default;
-$divider-thickness: 2px !default;
+@import "../variables/colors";
 
 .divider__horizontal {
   display: block;

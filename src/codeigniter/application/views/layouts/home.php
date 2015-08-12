@@ -8,7 +8,7 @@ if (isset($blogTitleModel)) {
   $this->load->view('styleguide/components/title-block-item', array('title' => $blogTitleModel));
 }
 ?>
-<div class="grid-container--half">
+<div class="split-section--half-container">
   <?php
   $this->load->view('styleguide/components/youtube-block');
   $this->load->view('styleguide/components/twitter-block', array('title' => $tweetTitleModel));

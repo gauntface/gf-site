@@ -1,0 +1,20 @@
+{
+  "urlsToTest": [
+
+  ],
+  "name": "blog-editor",
+  "components": [
+    "subappbar"
+  ],
+  "layouts": [
+
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/_typography.scss",
+    "src/styles/pages/blog-editor/_blog-editor-inline.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

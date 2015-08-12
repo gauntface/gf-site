@@ -1,0 +1,23 @@
+{
+  "urlsToTest": [
+    "http://localhost/about"
+  ],
+  "name": "about",
+  "components": [
+    "appbar",
+    "title-block-item",
+    "subtle-footer",
+    "debug"
+  ],
+  "layouts": [
+    "content-split"
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/_typography.scss",
+    "src/styles/pages/about/_about-inline.scss"
+  ],
+  "extrasRemote": [
+    "src/styles/pages/about/_about-remote.scss"
+  ]
+}

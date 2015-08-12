@@ -13,7 +13,8 @@ class Contact extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('Contact');
-    $pageData->setInlineStylesheets(['styles/pages/contact.css']);
+    $pageData->setRemoteStylesheets(['styles/contact-remote.css']);
+    $pageData->setInlineStylesheets(['styles/contact-inline.css']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('contact');

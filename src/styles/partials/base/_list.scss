@@ -1,0 +1,12 @@
+ul, ol {
+  list-style-position: outside;
+  list-style-image: none;
+}
+
+ul {
+  list-style-type: circle;
+}
+
+ol {
+  list-style-type: decimal;
+}

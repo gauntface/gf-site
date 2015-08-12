@@ -1,0 +1,24 @@
+{
+  "urlsToTest": [
+    "http://localhost/blog"
+  ],
+  "name": "blog-index",
+  "components": [
+    "appbar",
+    "title-block-item",
+    "block-footer",
+    "debug"
+  ],
+  "layouts": [
+
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/base/_utils.scss",
+    "src/styles/partials/_typography.scss",
+    "src/styles/pages/blog-index/_blog-index-inline.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

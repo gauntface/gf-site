@@ -25,3 +25,19 @@ $top-img-small-height: $base-line-height * 20 !default;
 $break-xsmall: 300px;
 $break-small: 450px;
 $break-medium: 950px;
+
+/**
+ * Appbar
+ **/
+$underline-extension-total: 4px !default;
+
+/**
+ * Divider
+ **/
+$divider-thickness: 2px !default;
+
+/**
+ * Content Split
+ **/
+$contentLeftSectionProportion: 42;
+$contentRightSectionProportion: 100 - 42;

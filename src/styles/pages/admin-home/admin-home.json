@@ -1,0 +1,23 @@
+{
+  "urlsToTest": [
+
+  ],
+  "name": "admin-home",
+  "components": [
+    "home-header",
+    "appbar",
+    "subappbar",
+    "debug"
+  ],
+  "layouts": [
+
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/_typography.scss",
+    "src/styles/pages/admin-home/admin-home-inline.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

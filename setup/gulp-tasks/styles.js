@@ -2,7 +2,11 @@
 
 var gulp = require('gulp');
 var del = require('del');
+var streamify = require('gulp-streamify');
 var plugins = require('gulp-load-plugins')();
+var merge = require('merge-stream');
+
+var components = require('./components-gen');
 
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
@@ -16,17 +20,16 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-function compileSassAutoprefix(genSourceMaps) {
-  return gulp.src([
-      GLOBAL.config.src.styles.sass + '/**/*.scss'
-    ])
-    .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.init()))
-    .pipe(plugins.sass({
-      precision: 10,
-      errLogToConsole: true
-    })
-    .on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS));
+function compileSassAutoprefix(genSourceMaps, stream) {
+  return stream
+    .pipe(streamify(plugins.if(genSourceMaps, plugins.sourcemaps.init())))
+    .pipe(
+      streamify(
+        plugins.sass()
+          .on('error', plugins.sass.logError)
+      )
+    )
+    .pipe(streamify(plugins.autoprefixer(AUTOPREFIXER_BROWSERS)));
 }
 
 // Clean output directory
@@ -35,15 +38,42 @@ gulp.task('styles:clean', del.bind(null, [
   ], {dot: true}));
 
 gulp.task('generate-dev-css', ['styles:clean'], function() {
-  return compileSassAutoprefix(true)
-    .pipe(plugins.sourcemaps.write())
-    .pipe(gulp.dest(GLOBAL.config.build.styles))
-    .pipe(plugins.size({title: 'generate-dev-css'}));
+  var streams = components.generateComponentSass(GLOBAL.config.src.components);
+
+  var mergedStreams = merge();
+  for (var i = 0; i < streams.length; i++) {
+    mergedStreams.add(
+      compileSassAutoprefix(true, streams[i].stream)
+        .pipe(streamify(plugins.sourcemaps.write()))
+        .pipe(gulp.dest(GLOBAL.config.build.styles))
+    );
+  }
+
+  return mergedStreams;
 });
 
-gulp.task('generate-prod-css', ['styles:clean'], function() {
-  return compileSassAutoprefix(false)
-    .pipe(plugins.if('*.css', plugins.csso()))
+function handleEachStream(index, streams, cb) {
+  if (index >= streams.length) {
+    return cb();
+  }
+
+  var sassStream = compileSassAutoprefix(false, streams[index].stream)
+
+  var finalStream = sassStream;
+  if (streams[index].urlsToTest && streams[index].urlsToTest.length > 0) {
+    finalStream = sassStream.pipe(streamify(plugins.uncss({
+        html: streams[index].urlsToTest
+      })));
+  }
+
+  finalStream.pipe(streamify(plugins.if('*.css', plugins.csso())))
     .pipe(gulp.dest(GLOBAL.config.build.styles))
-    .pipe(plugins.size({title: 'generate-prod-css'}));
+    .on('finish', function() {
+      handleEachStream(index + 1, streams, cb);
+    })
+}
+
+gulp.task('generate-prod-css', ['styles:clean'], function(cb) {
+  var streams = components.generateComponentSass(GLOBAL.config.src.components);
+  handleEachStream(0, streams, cb);
 });

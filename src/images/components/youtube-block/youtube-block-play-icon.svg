@@ -4,7 +4,7 @@
     <title>youtube-block-play-icon</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="#BAB8BC" fill-rule="evenodd" sketch:type="MSPage">
         <g id="youtube-block-play-icon" sketch:type="MSArtboardGroup">
             <path d="M28,4.66666667 C15.12,4.66666667 4.66666667,15.12 4.66666667,28 C4.66666667,40.88 15.12,51.3333333 28,51.3333333 C40.88,51.3333333 51.3333333,40.88 51.3333333,28 C51.3333333,15.12 40.88,4.66666667 28,4.66666667 L28,4.66666667 Z M23.3333333,38.5 L23.3333333,17.5 L37.3333333,28 L23.3333333,38.5 L23.3333333,38.5 Z" id="Shape" sketch:type="MSShapeGroup"></path>
         </g>

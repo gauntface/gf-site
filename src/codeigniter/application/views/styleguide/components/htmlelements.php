@@ -16,7 +16,7 @@
 
   <h1>Center Text</h1>
 
-  <p class="center">This text should centered</p>
+  <p class="u-center">This text should centered</p>
 
   <h1>This is &lt;code&gt;</h1>
 

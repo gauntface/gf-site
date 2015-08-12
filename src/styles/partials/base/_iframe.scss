@@ -1,0 +1,11 @@
+iframe {
+  width: $base-line-height * 8;
+  height: $base-line-height * 8;
+  max-width: 100%;
+
+  margin-bottom: $base-line-height;
+}
+
+.embed {
+  margin-bottom: $base-line-height;
+}

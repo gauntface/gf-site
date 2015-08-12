@@ -24,7 +24,8 @@ class Blog extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('Blog');
-    $pageData->setInlineStylesheets(['styles/pages/blog-index.css']);
+    $pageData->setRemoteStylesheets(['styles/blog-index-remote.css']);
+    $pageData->setInlineStylesheets(['styles/blog-index-inline.css']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('blog');
@@ -101,7 +102,8 @@ class Blog extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle($postModel->getTitle());
-    $pageData->setRemoteStylesheets(['styles/pages/blog-post.css']);
+    $pageData->setRemoteStylesheets(['styles/blog-post-remote.css']);
+    $pageData->setInlineStylesheets(['styles/blog-post-inline.css']);
     $pageData->setInlineRawCSS([
       $leftSectionCSS
     ]);

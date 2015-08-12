@@ -74,10 +74,12 @@ RUN chmod g+s /usr/share/nginx/html
 #
 # RUN useradd -g www-data gfscriptuser
 
+
 #
 # Get gauntface code
 #
 # This rm -rf is to make git clone happy.
+# This will be changed to CWD /home/gauntface <- This should get code from git
 RUN mkdir -p /home/gauntface/
 RUN git clone https://github.com/gauntface/gf-site.git /home/gauntface/
 COPY ./deploy/docker.sh /docker.sh
@@ -86,6 +88,7 @@ RUN rm /docker.sh
 # RUN chown gfscriptuser -R /home/gauntface/
 
 # Build site
+# This will change to ONBUILD 
 RUN cd /home/gauntface/ && npm install
 RUN cd /home/gauntface/ && gulp build
 
@@ -94,9 +97,6 @@ RUN cd /home/gauntface/ && gulp build
 #
 # Expose ports
 EXPOSE 80
-
-# Start PHP-FPM
-# RUN service php5-fpm start
 
 # Set the default command to execute
 # when creating a new container

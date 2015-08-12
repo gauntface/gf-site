@@ -1,16 +1,16 @@
 <?php
 $currentBodyClass = $page->getBodyClass();
-$currentBodyClass .= ' grid-container--content-style';
+$currentBodyClass .= ' content-split__container';
 $page->setBodyClass($currentBodyClass);
 
 $this->load->view('templates/header', $page);
 $this->load->view('styleguide/components/appbar');
 ?>
 
-<div class="grid-container__left-section"></div>
+<div class="content-split__left-section"></div>
 
-<div class="grid-container__right-section">
-  <div class="grid-container__right-section-container">
+<div class="content-split__right-section">
+  <div class="content-split__right-section-container">
     <?php
     $this->load->view('styleguide/components/title-block-item', $page);
 

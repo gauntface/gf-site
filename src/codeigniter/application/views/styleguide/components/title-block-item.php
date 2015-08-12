@@ -35,7 +35,7 @@ if ($title->getSmallBackgroundImage()) {
 
 <?php if ($title->getLinkURL()) {
   ?>
-  <a class="no-decoration" href="<?php echo $title->getLinkURL(); ?>">
+  <a class="u-no-decoration" href="<?php echo $title->getLinkURL(); ?>">
   <?php
 }?>
 <section class="title-block-item<?php echo ' '.$additionalStyles ?>"<?php echo $inlineFullbleedBackgroundStyle; ?>>

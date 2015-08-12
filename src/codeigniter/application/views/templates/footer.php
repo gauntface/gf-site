@@ -1,7 +1,4 @@
 <?php
-//if(!(isset($showFooter) && !$showFooter)) {
-//  $this->view('components/footer/footer', $this);
-//}
 $scripts = $page->getRemoteScripts();
 foreach($scripts as $script) {
   $scriptUrl;

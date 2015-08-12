@@ -1,0 +1,20 @@
+{
+  "name": "blog-post",
+  "components": [
+    "appbar",
+    "title-block-item",
+    "subtle-footer",
+    "geshi-code",
+    "debug"
+  ],
+  "layouts": [
+    "content-split"
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/_typography.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

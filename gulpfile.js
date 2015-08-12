@@ -18,8 +18,9 @@ GLOBAL.config = {
     images: 'src/images',
     styles: {
       root: 'src/styles',
-      sass: 'src/styles/scss'
+      sass: 'src/styles/pages'
     },
+    components: 'src/styles/pages',
     fonts: 'src/fonts',
     scripts: 'src/scripts',
   },
@@ -39,16 +40,26 @@ var runSequence = require('run-sequence');
 // Load custom tasks from the `tasks` directory
 require('require-dir')('setup/gulp-tasks');
 
+var commonBuildTasks = ['copy-fonts', 'build-ci', 'scripts', 'images'];
+
+gulp.task('build-dev', [], function(cb) {
+  commonBuildTasks.push('generate-dev-css');
+  runSequence(
+    commonBuildTasks,
+    cb);
+});
+
 gulp.task('build', [], function(cb) {
   runSequence(
-    ['copy-fonts', 'generate-dev-css', 'build-ci', 'scripts', 'images'],
+    commonBuildTasks,
+    'generate-prod-css',
     cb);
 });
 
 // Build production files, the default task
 gulp.task('default', [], function(cb) {
   runSequence(
-    ['build'],
+    ['build-dev'],
     'start-watching',
     cb);
 });

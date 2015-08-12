@@ -14,7 +14,8 @@ class About extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('About');
-    $pageData->setInlineStylesheets(['styles/pages/about.css']);
+    $pageData->setRemoteStylesheets(['styles/about-remote.css']);
+    $pageData->setInlineStylesheets(['styles/about-inline.css']);
 
     $contentData = new ContentGridModel();
     $contentData->setRightContentView('content/about');

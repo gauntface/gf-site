@@ -1,0 +1,20 @@
+{
+  "urlsToTest": [
+
+  ],
+  "name": "signin",
+  "components": [
+
+  ],
+  "layouts": [
+
+  ],
+  "extrasInline": [
+    "src/styles/partials/base/_core.scss",
+    "src/styles/partials/base/_buttons.scss",
+    "src/styles/partials/_typography.scss"
+  ],
+  "extrasRemote": [
+
+  ]
+}

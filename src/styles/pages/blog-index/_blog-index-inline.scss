@@ -1,0 +1,16 @@
+body {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.blog-index__list-container {
+  display: flex;
+
+  flex-direction: column;
+  flex: 1;
+}
+
+.blog-index__list-container a:first-child .title-block-item.is-padded {
+  padding-top: ($base-line-height * 4);
+}

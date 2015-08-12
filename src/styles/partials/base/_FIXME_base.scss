@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+@import "../variables/dimens";
+@import "../variables/colors";
+@import "../variables/zindex";
+
+pre, code {
+  display: block;
+
+  background-color: $code-bg-color;
+
+  overflow: auto;
+}
+
+pre code {
+  border-style: none;
+
+  background-color: transparent;
+
+  overflow-x: auto;
+}
+
+p code {
+  display: inline;
+}
+
+blockquote {
+  display: block;
+  position: relative;
+}
+
+blockquote::before, blockquote::after {
+  position: absolute;
+
+  opacity: 0.5;
+
+  z-index: $blockquote-z-index;
+}
+
+blockquote::before {
+  content: '“';
+
+  top: 0;
+  left: 0;
+}
+
+blockquote::after {
+  content: '”';
+
+  bottom: 0;
+  right: 0;
+}
+
+
+
+
+
+iframe {
+  display: block;
+  box-sizing: border-box;
+  background-color: $iframe-bg-color;
+  border-style: solid;
+  border-width: 1px;
+  border-color: $iframe-border-color;
+}
+
+.embed {
+  height: 0;
+
+  position: relative;
+
+    padding-bottom: 56.25%;
+
+    /** Padding top is for YouTube Chrome **/
+    padding-top: 35px;
+
+    overflow: hidden;
+}
+
+.embed > iframe {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+
+    top:0;
+    left: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
