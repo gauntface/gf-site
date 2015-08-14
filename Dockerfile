@@ -39,7 +39,8 @@ RUN apt-get update
 # nginx                         Nginx is nginx
 # php5                          Need the php
 # php5-fpm                      Need fpm-php
-RUN apt-get -y install nodejs nginx php5 php5-fpm
+# build-essential               Needed for phantomjs - used by uncss
+RUN apt-get -y install nodejs nginx php5 php5-fpm build-essential
 
 
 # Gulp                          Build process
