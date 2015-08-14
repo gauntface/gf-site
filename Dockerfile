@@ -1,6 +1,7 @@
 ############################################################
 # Dockerfile to build Nginx Installed Containers
 # Based on Ubuntu
+# Build with: docker build -t gf-site-img .
 ############################################################
 
 # Set the base image to Ubuntu
@@ -70,7 +71,7 @@ RUN chmod -R 755 /usr/share/nginx/html
 RUN chmod g+s /usr/share/nginx/html
 
 # Add nginx user to www-data (Nginx us doesn't exist)
-RUN usermod -G www-data nginx
+# RUN usermod -G www-data nginx
 
 #
 # Create safe user
