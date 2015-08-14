@@ -4,7 +4,7 @@ $currentBodyClass .= ' content-split__container';
 $page->setBodyClass($currentBodyClass);
 
 $this->load->view('templates/header', $page);
-$this->load->view('styleguide/components/appbar');
+$this->load->view('components/appbar');
 ?>
 
 <div class="content-split__left-section"></div>
@@ -12,13 +12,13 @@ $this->load->view('styleguide/components/appbar');
 <div class="content-split__right-section">
   <div class="content-split__right-section-container">
     <?php
-    $this->load->view('styleguide/components/title-block-item', $page);
+    $this->load->view('components/title-block-item', $page);
 
     if ($contentgrid && $contentgrid->getRightContentView()) {
       $this->load->view($contentgrid->getRightContentView(), $contentgrid->getContentData());
     }
 
-    $this->load->view('styleguide/components/subtle-footer', $page);
+    $this->load->view('components/subtle-footer', $page);
     ?>
   </div>
 </div>

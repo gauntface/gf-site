@@ -4,13 +4,17 @@
   ],
   "name": "blog-editor",
   "components": [
-    "subappbar"
+    "subappbar",
+    "tabs",
+    "full-page-overlay"
   ],
   "layouts": [
 
   ],
   "extrasInline": [
     "src/styles/partials/base/_core.scss",
+    "src/styles/partials/base/_buttons.scss",
+    "src/styles/partials/base/_text-inputs.scss",
     "src/styles/partials/_typography.scss",
     "src/styles/pages/blog-editor/_blog-editor-inline.scss"
   ],

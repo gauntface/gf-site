@@ -21,31 +21,34 @@ RUN apt-get update
 # nano                          In case viewing text in container is needed
 RUN apt-get -y install software-properties-common curl git nano
 
+
 #
 # Add repos
 #
 RUN add-apt-repository ppa:nginx/development
 RUN echo "deb http://ppa.launchpad.net/nginx/development/ubuntu vivid main " >> /etc/apt/sources.list
-RUN echo "deb-src http://ppa.launchpad.net/nginx/development/ubuntu vivid main " >> /etc/apt/sources.list
 RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+
 
 # Run apt-get update so we can find all packages we need
 RUN apt-get update
 
+
 # nodejs                        For gulp support
-# nginx
-# php5
-# php5-fpm
+# nginx                         Nginx is nginx
+# php5                          Need the php
+# php5-fpm                      Need fpm-php
 RUN apt-get -y install nodejs nginx php5 php5-fpm
+
 
 # Gulp                          Build process
 RUN npm install -g gulp
 
 
-
 #
 # Set up NGINX
 #
+
 # Remove the default Nginx configuration file
 RUN rm -v /etc/nginx/nginx.conf
 RUN rm /etc/nginx/sites-enabled/default
@@ -67,7 +70,7 @@ RUN chmod -R 755 /usr/share/nginx/html
 RUN chmod g+s /usr/share/nginx/html
 
 # Add nginx user to www-data (Nginx us doesn't exist)
-# RUN usermod -G www-data nginx
+RUN usermod -G www-data nginx
 
 #
 # Create safe user
@@ -75,22 +78,24 @@ RUN chmod g+s /usr/share/nginx/html
 # RUN useradd -g www-data gfscriptuser
 
 
+WORKDIR /home/gauntface
+
 #
 # Get gauntface code
 #
+
 # This rm -rf is to make git clone happy.
 # This will be changed to CWD /home/gauntface <- This should get code from git
-RUN mkdir -p /home/gauntface/
-RUN git clone https://github.com/gauntface/gf-site.git /home/gauntface/
-COPY ./deploy/docker.sh /docker.sh
-RUN /bin/bash -c "source /docker.sh"
-RUN rm /docker.sh
-# RUN chown gfscriptuser -R /home/gauntface/
+# RUN mkdir -p /home/gauntface/
+# RUN git clone https://github.com/gauntface/gf-site.git /home/gauntface/
+# COPY ./deploy/docker.sh /docker.sh
+# RUN /bin/bash -c "source /docker.sh"
+# RUN rm /docker.sh
 
 # Build site
-# This will change to ONBUILD 
-RUN cd /home/gauntface/ && npm install
-RUN cd /home/gauntface/ && gulp build
+# This will change to ONBUILD
+# RUN cd /home/gauntface/ && npm install
+# RUN cd /home/gauntface/ && gulp build
 
 #
 # Set up the Server / Docker

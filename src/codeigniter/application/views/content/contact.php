@@ -1,9 +1,9 @@
 <?php
 
 $this->load->view('templates/header', $page);
-$this->load->view('styleguide/components/appbar');
+$this->load->view('components/appbar');
 
-$this->load->view('styleguide/components/title-block-item', array('title' => $title));
+$this->load->view('components/title-block-item', array('title' => $title));
 ?>
 
 <p class="u-center">Send me an email or <a href="https://twitter.com/gauntface">tweet</a></p>
@@ -16,6 +16,6 @@ $this->load->view('styleguide/components/title-block-item', array('title' => $ti
 </section>
 
 <?php
-$this->load->view('styleguide/components/block-footer');
+$this->load->view('components/block-footer');
 
 $this->load->view('templates/footer', $page);

@@ -36,7 +36,6 @@ class Blog extends Base_Controller {
     $data['postTitles'] = array();
 
     if(count($posts) === 0) {
-      // TODO: No post scenario
       $titleModel = new TitleModel();
       $titleModel->setTitle("No Posts Yet");
       $titleModel->setDescription("<p>Give me a couple of minutes to put something together</p>");
@@ -71,7 +70,7 @@ class Blog extends Base_Controller {
       }
     }
 
-    $this->load->view('layouts/blog-index', $data);
+    $this->load->view('content/blog-index', $data);
   }
 
   public function view ($postId = null) {

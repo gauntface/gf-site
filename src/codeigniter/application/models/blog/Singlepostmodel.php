@@ -10,7 +10,7 @@ class SinglePostModel extends CI_Model {
   private $_mainImg;
   private $_mainImgBGColor;
   private $_postStatus;
-  private $_publishDate;
+  private $_publishTime;
 
   function __construct($blogPostQuery = null) {
     // Call the Model constructor

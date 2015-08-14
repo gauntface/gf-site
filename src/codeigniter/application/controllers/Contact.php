@@ -28,6 +28,6 @@ class Contact extends Base_Controller {
     $data['appbar'] = $appBarData;
     $data['title'] = $titleData;
 
-    $this->load->view('layouts/contact', $data);
+    $this->load->view('content/contact', $data);
   }
 }

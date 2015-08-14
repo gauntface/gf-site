@@ -47,7 +47,7 @@ class Home extends Base_Controller {
     $data['bottomTitleModel'] = $bottomTitleModel;
     $data['tweetTitleModel'] = $this->getLatestTweet();
 
-    $this->load->view('layouts/home', $data);
+    $this->load->view('content/home', $data);
   }
 
   private function getLatestTweet() {
