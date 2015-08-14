@@ -78,7 +78,8 @@ RUN chmod g+s /usr/share/nginx/html
 #
 # RUN useradd -g www-data gfscriptuser
 
-
+RUN mkdir -p /home/gauntface
+COPY . /home/gauntface
 WORKDIR /home/gauntface
 
 #
@@ -93,10 +94,7 @@ WORKDIR /home/gauntface
 # RUN /bin/bash -c "source /docker.sh"
 # RUN rm /docker.sh
 
-# Build site
-# This will change to ONBUILD
-# RUN cd /home/gauntface/ && npm install
-# RUN cd /home/gauntface/ && gulp build
+
 
 #
 # Set up the Server / Docker
@@ -106,4 +104,4 @@ EXPOSE 80
 
 # Set the default command to execute
 # when creating a new container
-CMD service php5-fpm start && service nginx start
+ONBUILD CMD service php5-fpm start && service nginx start
