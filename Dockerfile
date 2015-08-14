@@ -84,20 +84,6 @@ COPY . /home/gauntface
 WORKDIR /home/gauntface
 
 #
-# Get gauntface code
-#
-
-# This rm -rf is to make git clone happy.
-# This will be changed to CWD /home/gauntface <- This should get code from git
-# RUN mkdir -p /home/gauntface/
-# RUN git clone https://github.com/gauntface/gf-site.git /home/gauntface/
-# COPY ./deploy/docker.sh /docker.sh
-# RUN /bin/bash -c "source /docker.sh"
-# RUN rm /docker.sh
-
-
-
-#
 # Set up the Server / Docker
 #
 # Expose ports
