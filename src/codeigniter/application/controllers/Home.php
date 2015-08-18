@@ -27,12 +27,14 @@ class Home extends Base_Controller {
     $posts = $postsModel->getPublishedPosts($startIndex = 0, 1);
 
     $firstPostTitleModel = new TitleModel();
-    $firstPostTitleModel->setTitle($posts[0]->getTitle());
-    $firstPostTitleModel->setDescription($posts[0]->getExcerptHTML());
-    $firstPostTitleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
     $firstPostTitleModel->makePadded(true);
-    $firstPostTitleModel->setTime($posts[0]->getPublishTime());
-    $firstPostTitleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
+    if(count($posts)) {
+      $firstPostTitleModel->setTitle($posts[0]->getTitle());
+      $firstPostTitleModel->setDescription($posts[0]->getExcerptHTML());
+      $firstPostTitleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
+      $firstPostTitleModel->setTime($posts[0]->getPublishTime());
+      $firstPostTitleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
+    }
 
     $bottomTitleModel = new TitleModel();
     $bottomTitleModel->setTitle('Smashing Book 5');

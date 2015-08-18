@@ -20,7 +20,8 @@ RUN apt-get update
 # curl                          To retrieve node install script
 # git                           To clone site code
 # nano                          In case viewing text in container is needed
-RUN apt-get -y install software-properties-common curl git nano
+# php5-curl                     Used by twitter oauth
+RUN apt-get -y install software-properties-common curl git nano php5-curl
 
 
 #
