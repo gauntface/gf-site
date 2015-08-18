@@ -21,7 +21,8 @@ RUN apt-get update
 # git                           To clone site code
 # nano                          In case viewing text in container is needed
 # php5-curl                     Used by twitter oauth
-RUN apt-get -y install software-properties-common curl git nano php5-curl
+# php5-mysql                    DB
+RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql
 
 
 #
