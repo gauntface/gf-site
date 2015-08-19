@@ -60,9 +60,6 @@ RUN rm /etc/nginx/sites-enabled/default
 # Copy a configuration file from the current directory
 ADD ./setup/nginx/generic-nginx.conf /etc/nginx/nginx.conf
 
-# Append "daemon off;" to the beginning of the configuration
-# RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
 ADD ./setup/nginx/local-nginx.conf /etc/nginx/sites-enabled/gauntface.conf
 
 # Create symbolic link between enabled and available
@@ -93,4 +90,4 @@ EXPOSE 80
 
 # Set the default command to execute
 # when creating a new container
-# ONBUILD CMD service php5-fpm start && nginx -g 'daemon off;'
+ONBUILD CMD service php5-fpm start && nginx -g 'daemon off;'
