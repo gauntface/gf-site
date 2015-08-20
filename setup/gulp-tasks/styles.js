@@ -61,9 +61,10 @@ function handleEachStream(index, streams, cb) {
 
   var finalStream = sassStream;
   if (streams[index].urlsToTest && streams[index].urlsToTest.length > 0) {
-    finalStream = sassStream.pipe(streamify(plugins.uncss({
-        html: streams[index].urlsToTest
-      })));
+    // Disabled for travis and docker
+    //finalStream = sassStream.pipe(streamify(plugins.uncss({
+    //    html: streams[index].urlsToTest
+    //  })));
   }
 
   finalStream.pipe(streamify(plugins.if('*.css', plugins.csso())))
