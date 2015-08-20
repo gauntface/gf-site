@@ -11,12 +11,12 @@ class Styleguide extends Base_Controller {
     $pageData->setTitle('Styleguide');
 
     $pageData->setInlineStylesheets(['styles/styleguide-view-inline.css']);
-    $pageData->setRemoteScripts(['scripts/styleguide/styleguide-viewer-controller.es6.js']);
+    $pageData->setRemoteScripts(['scripts/styleguide/styleguide-frame-controller.es6.js']);
 
     $data['page'] = $pageData;
 
     $this->load->view('templates/header', $data);
-    $this->load->view('content/styleguide-view-window');
+    $this->load->view('content/styleguide-frame');
     $this->load->view('templates/footer', $data);
   }
 
