@@ -31,16 +31,14 @@ class Home extends Base_Controller {
     $postsModel = new PostsModel();
     $posts = $postsModel->getPublishedPosts($startIndex = 0, 1);
 
-    $firstPostTitleModel = new TitleModel();
-    $firstPostTitleModel->makePadded(true);
     if(count($posts) > 0) {
+      $firstPostTitleModel = new TitleModel();
+      $firstPostTitleModel->makePadded(true);
       $firstPostTitleModel->setTitle($posts[0]->getTitle());
       $firstPostTitleModel->setDescription($posts[0]->getExcerptHTML());
       $firstPostTitleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
       $firstPostTitleModel->setTime($posts[0]->getPublishTime());
       $firstPostTitleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
-    } else {
-      $firstPostTitleModel->setTitle('This is a test');
     }
 
     $bottomTitleModel = new TitleModel();
