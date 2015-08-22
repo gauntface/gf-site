@@ -80,8 +80,7 @@ class PageModel extends CI_Model {
   }
 
   public function getRemoteStylesheets() {
-    //return $this->_remoteStylesheets;
-    return array();
+    return $this->_remoteStylesheets;
   }
 
   public function setInlineRawCSS($inlineStyles) {

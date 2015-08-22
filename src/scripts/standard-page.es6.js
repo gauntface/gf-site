@@ -4,11 +4,11 @@ import BaseController from './base/base-controller';
 import Debug from './debug';
 
 class StandardPage extends BaseController {
-  constructor () {
+  constructor() {
     super();
   }
 
-  onDOMContentLoaded () {
+  onDOMContentLoaded() {
     window.GauntFace.Debug = new Debug();
   }
 }

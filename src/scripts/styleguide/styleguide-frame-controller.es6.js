@@ -3,11 +3,13 @@
 import BaseController from '../base/base-controller';
 
 class StyleguideViewerController extends BaseController {
-  constructor () {
+  constructor() {
     super();
+
+    this.enableRemoteStyles = true;
   }
 
-  onDOMContentLoaded () {
+  onDOMContentLoaded() {
     this.wrapperElement = document.querySelector(
       '.js-styleguide-window-wrapper');
     this.iframeElement = document.querySelector(
@@ -25,7 +27,7 @@ class StyleguideViewerController extends BaseController {
     window.addEventListener('message', (e) => this.onWindowMessage(e));
   }
 
-  prepareButtons () {
+  prepareButtons() {
     var buttons = [
       {
         className: 'js-styleguide-viewoptions__backbtn',
@@ -57,6 +59,10 @@ class StyleguideViewerController extends BaseController {
             action: 'cmd',
             functionName: 'toggleBaselineGrid',
           })
+      },
+      {
+        className: 'js-styleguide-viewoptions__remote-css',
+        action: () => this.toggleRemoteStyles()
       }
     ];
     for (var i = 0; i < buttons.length; i++) {
@@ -65,7 +71,7 @@ class StyleguideViewerController extends BaseController {
     }
   }
 
-  setIframeClass (className) {
+  setIframeClass(className) {
     for (var i = 0; i < this.iframeElement.classList.length; i++) {
       if (this.wrapperElement.classList.item(i).indexOf('is-') === 0) {
         this.wrapperElement.classList.remove(this.iframeElement.classList[i]);
@@ -85,29 +91,43 @@ class StyleguideViewerController extends BaseController {
     this.iframeElement.classList.add(className);
   }
 
-  postMessageToIframe (message) {
+  postMessageToIframe(message) {
     this.iframeElement.contentWindow.postMessage(message, '*');
   }
 
-  updateIframeSrc () {
+  toggleRemoteStyles() {
+    this.enableRemoteStyles = !this.enableRemoteStyles;
+
+    this.updateIframeSrc();
+  }
+
+  updateIframeSrc() {
     var hash = window.location.hash;
+    var iframeUrl;
     if (hash) {
       this.backBtn.disabled = false;
       var viewName = hash.substr(1);
-      this.iframeElement.src = window.location.origin +
+      iframeUrl = window.location.origin +
         '/styleguide/view/' +
         viewName;
     } else {
       this.backBtn.disabled = true;
-      this.iframeElement.src = window.location.origin + '/styleguide/view/';
+      iframeUrl = window.location.origin + '/styleguide/view/';
     }
+
+    var getVariables = '?';
+    if (!this.enableRemoteStyles) {
+      getVariables += 'enableRemoteStyles=' + 0;
+    }
+
+    this.iframeElement.src = iframeUrl + getVariables;
   }
 
-  onPopState (e) {
+  onPopState(e) {
     this.updateIframeSrc();
   }
 
-  onWindowMessage (e) {
+  onWindowMessage(e) {
     if (window.location.hash === '#' + e.data) {
       return;
     }

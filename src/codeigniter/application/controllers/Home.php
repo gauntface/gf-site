@@ -31,6 +31,7 @@ class Home extends Base_Controller {
     $postsModel = new PostsModel();
     $posts = $postsModel->getPublishedPosts($startIndex = 0, 1);
 
+    $firstPostTitleModel = null;
     if(count($posts) > 0) {
       $firstPostTitleModel = new TitleModel();
       $firstPostTitleModel->makePadded(true);

@@ -96,16 +96,6 @@
               echo('</style>');
             }
           ?>
-          <?php
-            $remoteStylesheets = $page->getRemoteStylesheets();
-            if(isset($remoteStylesheets)) {
-                foreach($remoteStylesheets as $singleFile) {
-                    ?>
-                    <link rel="stylesheet" href="<?php echo(base_url().addRevisionToFilePath($singleFile)); ?>">
-                    <?php
-                }
-            }
-        ?>
 
         <!-- Manifest File -->
         <link rel="manifest" href="manifest.json">

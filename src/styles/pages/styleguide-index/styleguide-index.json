@@ -12,7 +12,8 @@
   "extrasInline": [
     "src/styles/partials/base/_core.scss",
     "src/styles/partials/_typography.scss",
-    "src/styles/pages/styleguide-index/_styleguide-index-inline.scss"
+    "src/styles/pages/styleguide-index/_styleguide-index-inline.scss",
+    "src/styles/components/debug/_debug-remote.scss"
   ],
   "extrasRemote": [
 
