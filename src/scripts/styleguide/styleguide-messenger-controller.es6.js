@@ -4,17 +4,17 @@ import BaseController from '../base/base-controller';
 import Debug from '../debug';
 
 class StyleguideMessageContainer extends BaseController {
-  constructor () {
+  constructor() {
     super();
   }
 
-  onDOMContentLoaded () {
+  onDOMContentLoaded() {
     this.sendMessageToContainer();
 
     this.debug = new Debug();
   }
 
-  sendMessageToContainer () {
+  sendMessageToContainer() {
     // This method let's the container know there is a new URL to
     // manage on the stack
     var pathSections = window.location.pathname.split('/');

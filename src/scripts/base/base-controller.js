@@ -17,12 +17,12 @@ export default class BaseController {
   }
 
   asyncLoadCSS() {
-    if (!window._gfRemoteStylesheets) {
+    if (!window.GauntFace._remoteStylesheets) {
       return;
     }
 
-    for (var i = 0; i < window._gfRemoteStylesheets.length; i++) {
-      LoadCSS.loadCSS(window._gfRemoteStylesheets[i]);
+    for (var i = 0; i < window.GauntFace._remoteStylesheets.length; i++) {
+      LoadCSS.loadCSS(window.GauntFace._remoteStylesheets[i]);
     }
   }
 

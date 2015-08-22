@@ -3,6 +3,7 @@
 export default class Debug {
 
   constructor() {
+    this.enableRemoteStyles = true;
     this.currentVariant = null;
     this.variants = ['dark', 'light'];
 
@@ -10,6 +11,7 @@ export default class Debug {
       if (e.data.action !== 'cmd') {
         return;
       }
+
       if (this[e.data.functionName]) {
         this[e.data.functionName](e.data.variable);
       } else {
@@ -62,11 +64,11 @@ export default class Debug {
     }
   }
 
-  setBaselineGridHeight () {
+  setBaselineGridHeight() {
     this.debugElement.style.height = document.body.clientHeight + 'px';
   }
 
-  toggleBaselineGrid () {
+  toggleBaselineGrid() {
     var indexOfCurrentVariant = this.variants.indexOf(this.currentVariant);
     if ((indexOfCurrentVariant + 1) >= this.variants.length) {
       this.setVariantClass(null);
@@ -76,6 +78,17 @@ export default class Debug {
     indexOfCurrentVariant = indexOfCurrentVariant + 1;
     this.setEnableBaselineGrid(true);
     this.setVariantClass(this.variants[indexOfCurrentVariant]);
+  }
+
+  toggleRemoteStyles() {
+    this.enableRemoteStyles = !this.enableRemoteStyles;
+    var media = this.enableRemoteStyles ? 'all' : 'only x';
+    var sheets = window.document.styleSheets;
+    for (var i = 0; i < sheets.length; i++) {
+      if (sheets[i].href) {
+        sheets[i].disabled = !this.enableRemoteStyles;
+      }
+    }
   }
 
 }

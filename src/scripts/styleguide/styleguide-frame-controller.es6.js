@@ -62,7 +62,10 @@ class StyleguideViewerController extends BaseController {
       },
       {
         className: 'js-styleguide-viewoptions__remote-css',
-        action: () => this.toggleRemoteStyles()
+        action: () => this.postMessageToIframe({
+            action: 'cmd',
+            functionName: 'toggleRemoteStyles',
+          })
       }
     ];
     for (var i = 0; i < buttons.length; i++) {
@@ -95,12 +98,6 @@ class StyleguideViewerController extends BaseController {
     this.iframeElement.contentWindow.postMessage(message, '*');
   }
 
-  toggleRemoteStyles() {
-    this.enableRemoteStyles = !this.enableRemoteStyles;
-
-    this.updateIframeSrc();
-  }
-
   updateIframeSrc() {
     var hash = window.location.hash;
     var iframeUrl;
@@ -116,9 +113,6 @@ class StyleguideViewerController extends BaseController {
     }
 
     var getVariables = '?';
-    if (!this.enableRemoteStyles) {
-      getVariables += 'enableRemoteStyles=' + 0;
-    }
 
     this.iframeElement.src = iframeUrl + getVariables;
   }

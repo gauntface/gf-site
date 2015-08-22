@@ -6,7 +6,8 @@
     <?php
       foreach($remoteStylesheets as $singleFile) {
       ?>
-      var _gfRemoteStylesheets = [
+      window.GauntFace = window.GauntFace || {};
+      window.GauntFace._remoteStylesheets = [
         '<?php echo(base_url().addRevisionToFilePath($singleFile)); ?>'
       ];
       <?php
