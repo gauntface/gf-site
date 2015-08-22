@@ -83,7 +83,7 @@ export default class Debug {
   toggleRemoteStyles() {
     this.enableRemoteStyles = !this.enableRemoteStyles;
     var media = this.enableRemoteStyles ? 'all' : 'only x';
-    var sheets = window.document.styleSheets;
+    var sheets = document.styleSheets;
     for (var i = 0; i < sheets.length; i++) {
       if (sheets[i].href) {
         sheets[i].disabled = !this.enableRemoteStyles;
