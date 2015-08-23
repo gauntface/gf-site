@@ -23,7 +23,12 @@ if ($title->isPadded()) {
 
 $inlineFullbleedBackgroundStyle = '';
 if ($title->getFullbleedBackgroundImage()) {
-  $inlineFullbleedBackgroundStyle = ' style="background-image: url('.$title->getFullbleedBackgroundImage().');"';
+  $inlineFullbleedBackgroundStyle = ' style="background-image: url('.$title->getFullbleedBackgroundImage().');';
+  if($title->getFullbleedBackgroundColor()) {
+      $inlineFullbleedBackgroundStyle .= ' background-color: '.$title->getFullbleedBackgroundColor().';';
+  }
+
+  $inlineFullbleedBackgroundStyle .= '"';
   $additionalStyles .= ' is-light-text';
 }
 

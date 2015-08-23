@@ -14,27 +14,27 @@ gulp.task('start-watching', function() {
 
   // Codeigniter
   gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
-    ['build-ci', browserSync.reload]);
+    ['build-ci'], browserSync.reload);
   gulp.watch([GLOBAL.config.deploy.codeigniter.root + '/**/*'],
-    ['ci-deploy-files', browserSync.reload]);
+    ['ci-deploy-files'], browserSync.reload);
 
   // Fonts
   gulp.watch([GLOBAL.config.deploy.fonts + '/**/*'],
-    ['copy-deploy-fonts', browserSync.reload]);
+    ['copy-deploy-fonts'], browserSync.reload);
   gulp.watch([GLOBAL.config.src.fonts + '/**/*'],
-    ['copy-included-fonts', browserSync.reload]);
+    ['copy-included-fonts'], browserSync.reload);
 
   // Sass / CSS
   gulp.watch([GLOBAL.config.src.styles.root + '/**/*'],
-    ['generate-dev-css', browserSync.reload]);
+    ['styles:dev'], browserSync.reload);
 
   // Scripts
   gulp.watch([GLOBAL.config.src.scripts + '/**/*'],
-    ['scripts', browserSync.reload]);
+    ['scripts:dev'], browserSync.reload);
   gulp.watch([GLOBAL.config.deploy.scripts + '/**/*'],
-    ['scripts', browserSync.reload]);
+    ['scripts:dev'], browserSync.reload);
 
   // Images
   gulp.watch([GLOBAL.config.src.images + '/**/*'],
-    ['images', browserSync.reload]);
+    ['images:dev'], browserSync.reload);
 });

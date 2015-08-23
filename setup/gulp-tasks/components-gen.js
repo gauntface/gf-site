@@ -1,9 +1,6 @@
 'use strict';
 
-var gulp = require('gulp');
-var del = require('del');
 var path = require('path');
-var plugins = require('gulp-load-plugins')();
 var glob = require('glob');
 var fs = require('fs');
 var source = require('vinyl-source-stream');
@@ -20,7 +17,7 @@ function stringToStream(filename, directoryOfFile, string) {
 
 function getComponentObject(componentFile) {
   try {
-    var componentFileContents = fs.readFileSync(componentFile)
+    var componentFileContents = fs.readFileSync(componentFile);
     return JSON.parse(componentFileContents.toString());
   } catch (exception) {
     console.log('Issue when parsing ' + componentFile, exception);
@@ -39,7 +36,6 @@ function handleComponentFile(componentFile) {
   var importPrefix = '@import \'';
   var importSuffix = '\';\n';
 
-  var relativeDirectory = 'src/styles/';
   var pathPrefix = 'src/styles/';
 
   var possibleInlineFiles = [];
@@ -114,7 +110,7 @@ function handleComponentFile(componentFile) {
     }
   }
 
-  for (var i = 0; i < possibleRemoteFiles.length; i++) {
+  for (i = 0; i < possibleRemoteFiles.length; i++) {
     if (fs.existsSync(possibleRemoteFiles[i])) {
       sassRemoteString += importPrefix + possibleRemoteFiles[i] + importSuffix;
     }

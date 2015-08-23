@@ -67,6 +67,14 @@ class TitleModel extends CI_Model {
     return $this->_fullbleedBackgroundImg;
   }
 
+  public function setFullbleedBackgroundColor($color) {
+    $this->_fullbleedBackgroundColor = $color;
+  }
+
+  public function getFullbleedBackgroundColor() {
+    return $this->_fullbleedBackgroundColor;
+  }
+
   public function makePadded($isPadded) {
     $this->_isPadded = $isPadded;
   }

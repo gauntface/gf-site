@@ -49,6 +49,7 @@ class Blog extends Base_Controller {
       $titleModel->setTitle($posts[0]->getTitle());
       $titleModel->setDescription($posts[0]->getExcerptHTML());
       $titleModel->setFullbleedBackgroundImage($posts[0]->getMainImg());
+      $titleModel->setFullbleedBackgroundColor($posts[0]->getMainImgBgColor());
       $titleModel->makePadded(true);
       $titleModel->setUseLightDivider(true);
       $titleModel->setLinkURL('/blog/view/'.$posts[0]->getId());

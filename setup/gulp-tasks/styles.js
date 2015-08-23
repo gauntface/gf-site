@@ -5,6 +5,7 @@ var del = require('del');
 var streamify = require('gulp-streamify');
 var plugins = require('gulp-load-plugins')();
 var merge = require('merge-stream');
+var runSequence = require('run-sequence');
 
 var components = require('./components-gen');
 
@@ -20,6 +21,21 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
+// Clean output directory
+gulp.task('styles:clean', del.bind(null, [
+    GLOBAL.config.build.styles + '/**/*'
+  ], {dot: true}));
+
+gulp.task('compile-sass', function() {
+  gulp.src('src/styles/**/*.scss')
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass()
+      .on('error', plugins.sass.logError))
+    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(plugins.sourcemaps.write())
+    .pipe(gulp.dest(GLOBAL.config.build.styles));
+});
+
 function compileSassAutoprefix(genSourceMaps, stream) {
   return stream
     .pipe(streamify(plugins.if(genSourceMaps, plugins.sourcemaps.init())))
@@ -31,58 +47,6 @@ function compileSassAutoprefix(genSourceMaps, stream) {
     )
     .pipe(streamify(plugins.autoprefixer(AUTOPREFIXER_BROWSERS)));
 }
-
-// Clean output directory
-gulp.task('styles:clean', del.bind(null, [
-    GLOBAL.config.build.styles + '/**/*'
-  ], {dot: true}));
-
-gulp.task('generate-template-css', function() {
-  gulp.src('src/styles/templates/**/*.scss')
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.sass()
-      .on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(streamify(plugins.sourcemaps.write()))
-    .pipe(gulp.dest(GLOBAL.config.build.styles + '/templates/'));
-});
-
-gulp.task('generate-partials-css', function() {
-  gulp.src('src/styles/partials/**/*.scss')
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.sass()
-      .on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(streamify(plugins.sourcemaps.write()))
-    .pipe(gulp.dest(GLOBAL.config.build.styles + '/partials/'));
-});
-
-gulp.task('generate-component-css', function() {
-  gulp.src('src/styles/components/**/*.scss')
-    .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.sass()
-      .on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(streamify(plugins.sourcemaps.write()))
-    .pipe(gulp.dest(GLOBAL.config.build.styles + '/components/'));
-});
-
-gulp.task('generate-dev-css', ['styles:clean', 'generate-component-css',
-  'generate-partials-css', 'generate-template-css'],
-function() {
-  var streams = components.generateComponentSass(GLOBAL.config.src.components);
-
-  var mergedStreams = merge();
-  for (var i = 0; i < streams.length; i++) {
-    mergedStreams.add(
-      compileSassAutoprefix(true, streams[i].stream)
-        .pipe(streamify(plugins.sourcemaps.write()))
-        .pipe(gulp.dest(GLOBAL.config.build.styles))
-    );
-  }
-
-  return mergedStreams;
-});
 
 function handleEachStream(index, streams, cb) {
   if (index >= streams.length) {
@@ -106,9 +70,38 @@ function handleEachStream(index, streams, cb) {
     });
 }
 
-gulp.task('generate-prod-css', ['styles:clean', 'generate-component-css',
-  'generate-partials-css', 'generate-template-css'],
-function(cb) {
+gulp.task('generate-page-css:prod', function(cb) {
   var streams = components.generateComponentSass(GLOBAL.config.src.components);
   handleEachStream(0, streams, cb);
 });
+
+gulp.task('generate-page-css:dev', function() {
+  var streams = components.generateComponentSass(GLOBAL.config.src.components);
+
+  var mergedStreams = merge();
+  for (var i = 0; i < streams.length; i++) {
+    mergedStreams.add(
+      compileSassAutoprefix(true, streams[i].stream)
+        .pipe(streamify(plugins.sourcemaps.write()))
+        .pipe(gulp.dest(GLOBAL.config.build.styles))
+    );
+  }
+});
+
+gulp.task('styles:dev', ['styles:clean'],
+  function() {
+    runSequence(
+      [
+        'generate-page-css:dev',
+        'compile-sass'
+      ]);
+  });
+
+gulp.task('styles:prod', ['styles:clean'],
+  function() {
+    runSequence(
+      [
+        'generate-page-css:prod',
+        'compile-sass'
+      ]);
+  });

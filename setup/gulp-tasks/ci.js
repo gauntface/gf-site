@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var del = require('del');
+var mkdirp = require('mkdirp');
 var runSequence = require('run-sequence');
 var fs = require('fs');
 
@@ -64,6 +65,8 @@ gulp.task('ci-deploy-files', function(cb) {
 
 gulp.task('set-ci-file-permissions', function(cb) {
   // TODO This needs fixing to a more secure permission
+  mkdirp(GLOBAL.config.build.root + '/uploads/');
+  fs.chmodSync(GLOBAL.config.build.root + '/uploads/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/application/logs/', '777');
   cb();
 });

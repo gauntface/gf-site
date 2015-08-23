@@ -23,6 +23,7 @@
     "gulp-uncss": "^1.0.3",
     "gulp-util": "^3.0.6",
     "merge-stream": "^1.0.0",
+    "mkdirp": "^0.5.1",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.1",
     "vinyl-source-stream": "^1.1.0"

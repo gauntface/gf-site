@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
+var streamify = require('gulp-streamify');
 
 var glob = require('glob');
 var path = require('path');
@@ -15,7 +16,7 @@ gulp.task('scripts:clean', del.bind(null, [
     GLOBAL.config.build.scripts + '/**/*.{js}'
   ], {dot: true}));
 
-function compileES6Classes(browserifyFileEntries) {
+function compileES6Classes(browserifyFileEntries, minimise) {
   browserifyFileEntries.forEach(function(fileEntry) {
     var browserifyBundle = browserify({
         entries: [fileEntry.srcPath]
@@ -27,11 +28,16 @@ function compileES6Classes(browserifyFileEntries) {
       .on('error', plugins.util.log.bind(plugins.util, 'Browserify Error'))
       .pipe(source(fileEntry.outputFilename));
 
-    return bundleStream.pipe(gulp.dest(fileEntry.dest));
+    var finalStream = bundleStream;
+    if (minimise) {
+      finalStream = bundleStream.pipe(streamify(plugins.uglify()));
+    }
+
+    return finalStream.pipe(gulp.dest(fileEntry.dest));
   });
 }
 
-function handleES6Scripts(srcPath) {
+function handleES6Scripts(srcPath, minimise) {
   var es6Filepaths = glob.sync(srcPath + '/**/*.es6.js');
 
   var browserifyFileEntries = [];
@@ -49,26 +55,43 @@ function handleES6Scripts(srcPath) {
     });
   });
 
-  compileES6Classes(browserifyFileEntries);
+  compileES6Classes(browserifyFileEntries, minimise);
 }
 
-gulp.task('scripts-deploy', function(cb) {
-  handleES6Scripts(GLOBAL.config.deploy.scripts);
-
+gulp.task('scripts-deploy:prod', function(cb) {
+  handleES6Scripts(GLOBAL.config.deploy.scripts, true);
   cb();
 });
 
-gulp.task('scripts-src', function(cb) {
-  handleES6Scripts(GLOBAL.config.src.scripts);
-
+gulp.task('scripts-src:prod', function(cb) {
+  handleES6Scripts(GLOBAL.config.src.scripts, true);
   cb();
 });
 
-gulp.task('scripts', ['scripts:clean'], function(cb) {
+gulp.task('scripts-deploy:dev', function(cb) {
+  handleES6Scripts(GLOBAL.config.deploy.scripts, false);
+  cb();
+});
+
+gulp.task('scripts-src:dev', function(cb) {
+  handleES6Scripts(GLOBAL.config.src.scripts, false);
+  cb();
+});
+
+gulp.task('scripts:dev', ['scripts:clean'], function(cb) {
   runSequence(
     [
-      'scripts-src',
-      'scripts-deploy',
+      'scripts-src:dev',
+      'scripts-deploy:dev',
+    ],
+  cb);
+});
+
+gulp.task('scripts:prod', ['scripts:clean'], function(cb) {
+  runSequence(
+    [
+      'scripts-src:prod',
+      'scripts-deploy:prod',
     ],
   cb);
 });
