@@ -41,7 +41,7 @@ function singlePostModelFactory($data) {
   }
 
   if (!empty($data['mainImgBGColor'])) {
-    $singlePostModel->setMainImgBgColor($data['mainImgBGColor']);
+    $singlePostModel->setMainImgBgColor(urldecode($data['mainImgBGColor']));
     log_message('error', 'mainImgBGColor: '.$singlePostModel->getMainImgBgColor());
   }
 

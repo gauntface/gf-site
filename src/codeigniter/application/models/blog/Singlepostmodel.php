@@ -19,15 +19,15 @@ class SinglePostModel extends CI_Model {
     $this->load->library('md');
 
     if($blogPostQuery) {
-      $this->_id = $blogPostQuery->post_id;
-      $this->_title = $blogPostQuery->post_title;
-      $this->_excerpt = $blogPostQuery->post_excerpt;
-      $this->_markdown = $blogPostQuery->post_markdown;
-      $this->_greyScaleImg = $blogPostQuery->post_grey_scale_img;
-      $this->_mainImg = $blogPostQuery->post_main_img;
-      $this->_mainImgBGColor = $blogPostQuery->post_main_img_bg_color;
-      $this->_postStatus = $blogPostQuery->post_status;
-      $this->_publishTime = strtotime($blogPostQuery->publish_date);
+      $this->_id = urldecode($blogPostQuery->post_id);
+      $this->_title = urldecode($blogPostQuery->post_title);
+      $this->_excerpt = urldecode($blogPostQuery->post_excerpt);
+      $this->_markdown = urldecode($blogPostQuery->post_markdown);
+      $this->_greyScaleImg = urldecode($blogPostQuery->post_grey_scale_img);
+      $this->_mainImg = urldecode($blogPostQuery->post_main_img);
+      $this->_mainImgBGColor = urldecode($blogPostQuery->post_main_img_bg_color);
+      $this->_postStatus = urldecode($blogPostQuery->post_status);
+      $this->_publishTime = strtotime(urldecode($blogPostQuery->publish_date));
     }
   }
 
@@ -40,6 +40,7 @@ class SinglePostModel extends CI_Model {
   }
 
   public function setTitle($title) {
+    log_message('error', 'TITLE <-------------------' + $title);
       $this->_title = urldecode($title);
   }
 
