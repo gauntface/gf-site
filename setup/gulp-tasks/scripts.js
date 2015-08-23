@@ -5,6 +5,7 @@ var plugins = require('gulp-load-plugins')();
 var del = require('del');
 var runSequence = require('run-sequence');
 var streamify = require('gulp-streamify');
+var stylish = require('jshint-stylish');
 
 var glob = require('glob');
 var path = require('path');
@@ -33,7 +34,10 @@ function compileES6Classes(browserifyFileEntries, minimise) {
       finalStream = bundleStream.pipe(streamify(plugins.uglify()));
     }
 
-    return finalStream.pipe(gulp.dest(fileEntry.dest));
+    return finalStream
+      .pipe(plugins.jshint())
+      .pipe(plugins.jshint.reporter(stylish))
+      .pipe(gulp.dest(fileEntry.dest));
   });
 }
 
