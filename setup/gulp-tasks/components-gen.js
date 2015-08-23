@@ -48,20 +48,20 @@ function handleComponentFile(componentFile) {
   // Add Components
   componentObject.components.forEach(function(componentName) {
     possibleInlineFiles.push(
-      pathPrefix + 'components/' + componentName + '/_' +
+      pathPrefix + 'components/' + componentName + '/' +
         componentName + '-mixins.scss'
     );
     possibleInlineFiles.push(
-      pathPrefix + 'components/' + componentName + '/_' +
+      pathPrefix + 'components/' + componentName + '/' +
         componentName + '-inline.scss'
     );
 
     possibleRemoteFiles.push(
-      pathPrefix + 'components/' + componentName + '/_' +
+      pathPrefix + 'components/' + componentName + '/' +
         componentName + '-mixins.scss'
     );
     possibleRemoteFiles.push(
-      pathPrefix + 'components/' + componentName + '/_' +
+      pathPrefix + 'components/' + componentName + '/' +
         componentName + '-remote.scss'
     );
   });
@@ -69,20 +69,20 @@ function handleComponentFile(componentFile) {
   // Add Layouts
   componentObject.layouts.forEach(function(componentName) {
     possibleInlineFiles.push(
-      pathPrefix + 'layouts/' + componentName + '/_' +
+      pathPrefix + 'layouts/' + componentName + '/' +
         componentName + '-mixins.scss'
     );
     possibleInlineFiles.push(
-      pathPrefix + 'layouts/' + componentName + '/_' +
+      pathPrefix + 'layouts/' + componentName + '/' +
         componentName + '-inline.scss'
     );
 
     possibleRemoteFiles.push(
-      pathPrefix + 'layouts/' + componentName + '/_' +
+      pathPrefix + 'layouts/' + componentName + '/' +
         componentName + '-mixins.scss'
     );
     possibleRemoteFiles.push(
-      pathPrefix + 'layouts/' + componentName + '/_' +
+      pathPrefix + 'layouts/' + componentName + '/' +
         componentName + '-remote.scss'
     );
   });

@@ -10,9 +10,8 @@
 
   ],
   "extrasInline": [
-    "src/styles/partials/base/_core.scss",
-    "src/styles/partials/base/_buttons.scss",
-    "src/styles/partials/_typography.scss"
+    "src/styles/partials/base/core.scss",
+    "src/styles/partials/base/buttons.scss"
   ],
   "extrasRemote": [
 

@@ -17,18 +17,14 @@ class StyleguideMessageContainer extends BaseController {
   sendMessageToContainer() {
     // This method let's the container know there is a new URL to
     // manage on the stack
-    var pathSections = window.location.pathname.split('/');
-    var value = null;
-    while (pathSections.length > 0 && value === null) {
-      var popValue = pathSections.pop();
-      if (popValue && popValue.length > 0) {
-        value = popValue;
-      }
-    }
-
-    if (value === null || value === 'view') {
+    var removeTrailingSlash = window.location.pathname.replace(/^\/?|\/?$/g, '');
+    var pathSections = removeTrailingSlash.split('/');
+    if (pathSections.length < 4) {
       return;
     }
+
+    var value = pathSections[pathSections.length - 2] + '/' +
+      pathSections[pathSections.length - 1];
 
     window.top.postMessage(value, '*');
   }

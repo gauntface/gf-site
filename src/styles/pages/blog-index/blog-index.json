@@ -13,9 +13,8 @@
 
   ],
   "extrasInline": [
-    "src/styles/partials/base/_core.scss",
-    "src/styles/partials/base/_utils.scss",
-    "src/styles/partials/_typography.scss",
+    "src/styles/partials/base/core.scss",
+    "src/styles/partials/base/utils.scss",
     "src/styles/pages/blog-index/_blog-index-inline.scss"
   ],
   "extrasRemote": [

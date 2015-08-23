@@ -4,7 +4,7 @@
 $link-underlined:       true !default;
 $link-underlined-hover: false !default;
 
-$baseline: strip-unit($base-line-height);
+//$baseline: strip-unit($base-line-height);
 
 @mixin typography-font-size($font-size) {
     font-size: $font-size;
@@ -12,6 +12,6 @@ $baseline: strip-unit($base-line-height);
     line-height: ceil($font-size / $base-line-height) * ($base-line-height / $font-size);
 }
 
-@function strip-unit($value) {
-    @return $value / ($value * 0 + 1);
-}
+//@function strip-unit($value) {
+    //@return $value / ($value * 0 + 1);
+//}

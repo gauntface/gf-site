@@ -12,7 +12,6 @@
   ],
   "extrasInline": [
     "src/styles/partials/base/_core.scss",
-    "src/styles/partials/_typography.scss",
     "src/styles/partials/_geshi-code.scss"
   ],
   "extrasRemote": [

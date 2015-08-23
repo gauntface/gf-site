@@ -8,7 +8,8 @@ gulp.task('start-watching', function() {
     proxy: 'localhost',
     logPrefix: 'GF',
     // Prevent browser sync from display in page notifications
-    notify: false
+    notify: false,
+    open: false
   });
 
   // Codeigniter

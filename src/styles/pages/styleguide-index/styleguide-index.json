@@ -10,10 +10,9 @@
 
   ],
   "extrasInline": [
-    "src/styles/partials/base/_core.scss",
-    "src/styles/partials/_typography.scss",
+    "src/styles/partials/base-core.scss",
     "src/styles/pages/styleguide-index/_styleguide-index-inline.scss",
-    "src/styles/components/debug/_debug-remote.scss"
+    "src/styles/components/debug/debug-remote.scss"
   ],
   "extrasRemote": [
 

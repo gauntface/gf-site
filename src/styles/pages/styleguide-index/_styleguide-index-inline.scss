@@ -1,6 +1,7 @@
-body {
-  padding: $base-line-height;
+@import '../../variables/dimens';
 
+.styleguide-index-page {
+  padding: $base-line-height;
 }
 
 // This color is just to help with debugging

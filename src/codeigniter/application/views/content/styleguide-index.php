@@ -6,56 +6,54 @@
 helpful to figure how my site should and can be structured if I first
 deconstruct the building blocks / components I intend to use.</p>
 
-<h2>HTML Elements</h2>
+<h2>Base</h2>
 
-<p>This is a list of general elements which should all sit on a baseline
-grid without any issues.</p>
+<p><a href="/styleguide/view/partial/base-core">Base Core</a></p>
+<p><a href="/styleguide/view/partial/base-buttons">Base Buttons</a></p>
+<p><a href="/styleguide/view/partial/base-iframe">Base Iframe</a></p>
+<p><a href="/styleguide/view/partial/base-list">Base List</a></p>
+<p><a href="/styleguide/view/partial/base-text-inputs">Base Text Input</a></p>
+<p><a href="/styleguide/view/partial/base-utils">Base Utils</a></p>
+<p><a href="/styleguide/view/partial/base-code">Base Code</a></p>
 
-<p><a href="/styleguide/view/htmlelements">HTML Elements</a></p>
+<h2>GeSHi Code Example</h2>
 
-<h2>Components</h2>
+<p><a href="/styleguide/view/partial/geshi-code">GeSHi Code Example</a></p>
 
-<p>Components are elements of the page that can be treated as a seperate
-  part of the UI that can have self contained styles and logic.</p>
+<h2>App Bar</h2>
 
-<h3>App Bar</h3>
+<p><a href="/styleguide/view/component/appbar">App Bar</a></p>
 
-<p><a href="/styleguide/view/appbar">App Bar</a></p>
+<h2>Home Header</h2>
 
-<h3>Home Header</h3>
+<p><a href="/styleguide/view/component/home-header">Home Header</a></p>
 
-<p><a href="/styleguide/view/home-header">Home Header</a></p>
+<h2>Footer</h2>
 
-<h3>Footer</h3>
+<p><a href="/styleguide/view/component/block-footer">Block Footer</a></p>
+<p><a href="/styleguide/view/component/subtle-footer">Subtle Footer</a></p>
 
-<p><a href="/styleguide/view/block-footer">Block Footer</a></p>
-<p><a href="/styleguide/view/subtle-footer">Subtle Footer</a></p>
+<h2>Title Block Item</h2>
 
-<h3>Title Block Item</h3>
+<p><a href="/styleguide/view/component/title-block-item">Title Block Item</a></p>
 
-<p><a href="/styleguide/view/title-block-item">Title Block Item</a></p>
+<h2>Twitter Block</h2>
 
-<h3>Twitter Block</h3>
+<p><a href="/styleguide/view/component/twitter-block">Twitter Block</a></p>
 
-<p><a href="/styleguide/view/twitter-block">Twitter Block</a></p>
+<h2>YouTube Block</h2>
 
-<h3>YouTube Block</h3>
+<p><a href="/styleguide/view/component/youtube-block">YouTube Block</a></p>
 
-<p><a href="/styleguide/view/youtube-block">YouTube Block</a></p>
+<h2>Sub-AppBar</h2>
 
-<h3>Sub-AppBar</h3>
+<p><a href="/styleguide/view/component/sub-appbar">Sub-AppBar</a></p>
 
-<p><a href="/styleguide/view/sub-appbar">Sub-AppBar</a></p>
-
-<h3>GeSHi Code Example</h3>
-
-<p><a href="/styleguide/view/geshi-code">GeSHi Code Example</a></p>
-
-<h2>Third Party</h2>
+<!--<h2>Third Party</h2>
 
 <p>This is for third party UI that I use which may need additional styling
 or consideration.</p>
 
-<h3>Disqus Comments</h3>
+<h2>Disqus Comments</h2>
 
-<p><a href="/styleguide/view/disqus">Disqus Comments</a></p>
+<p><a href="/styleguide/view/disqus">Disqus Comments</a></p>-->

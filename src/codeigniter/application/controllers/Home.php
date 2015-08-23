@@ -22,8 +22,8 @@ class Home extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('Welcome');
-    $pageData->setRemoteStylesheets(['styles/index-remote.css']);
-    $pageData->setInlineStylesheets(['styles/index-inline.css']);
+    $pageData->setRemoteStylesheets(['styles/home-remote.css']);
+    $pageData->setInlineStylesheets(['styles/home-inline.css']);
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');

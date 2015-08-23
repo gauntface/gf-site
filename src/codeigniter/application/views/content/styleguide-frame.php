@@ -27,11 +27,11 @@
   <div class="styleguide-viewoptions__spacer should-flex"></div>
 
   <button class="transparent styleguide-viewoptions__btn js-styleguide-viewoptions__remote-css">
-    <?php include('images/third_party/ic_bug_report_black_48px.svg'); ?>
+    <?php include('images/third_party/ic_block_black_48px.svg'); ?>
   </button>
 
   <button class="transparent styleguide-viewoptions__btn js-styleguide-viewoptions__debug">
-    <?php include('images/third_party/ic_bug_report_black_48px.svg'); ?>
+    <?php include('images/third_party/ic_border_clear_black_48px.svg'); ?>
   </button>
 </div>
 

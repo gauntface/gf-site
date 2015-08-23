@@ -112,9 +112,9 @@ class StyleguideViewerController extends BaseController {
       iframeUrl = window.location.origin + '/styleguide/view/';
     }
 
-    var getVariables = '?';
+    // Handle get variables here
 
-    this.iframeElement.src = iframeUrl + getVariables;
+    this.iframeElement.src = iframeUrl;
   }
 
   onPopState(e) {

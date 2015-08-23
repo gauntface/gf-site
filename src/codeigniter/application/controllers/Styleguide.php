@@ -10,7 +10,7 @@ class Styleguide extends Base_Controller {
     $pageData = new PageModel();
     $pageData->setTitle('Styleguide');
 
-    $pageData->setInlineStylesheets(['styles/styleguide-view-inline.css']);
+    $pageData->setInlineStylesheets(['styles/styleguide-frame-inline.css']);
     $pageData->setRemoteScripts(['scripts/styleguide/styleguide-frame-controller.es6.js']);
 
     $data['page'] = $pageData;
@@ -20,18 +20,43 @@ class Styleguide extends Base_Controller {
     $this->load->view('templates/footer', $data);
   }
 
-  public function view($component = null) {
+  public function view($type = null, $id = null) {
     $this->load->model('pagemodel');
     $pageData = new PageModel();
     $pageData->setTitle('Styleguide');
 
-    $viewToRender = 'content/styleguide-index.php';
-    if($component != null) {
+    if($type == null && $id == null) {
+      $viewToRender = 'content/styleguide-index.php';
+
+      $pageData->setBodyClass('styleguide-index-page');
+      $pageData->setInlineStylesheets([
+        'styles/styleguide-index-inline.css'
+      ]);
+    } else {
+      switch($type) {
+        case 'component':
+          $pageData->setInlineStylesheets([
+            'styles/components/'.$id.'/'.$id.'-inline.css',
+            'styles/styleguide-index-inline.css'
+          ]);
+          $pageData->setRemoteStylesheets(['styles/components/'.$id.'/'.$id.'-remote.css']);
+          break;
+        case 'partial':
+          $inlineStyles = array('styles/partials/base-core.css');
+          if($id != 'base-core') {
+            array_push($inlineStyles, 'styles/partials/'.$id.'.css');
+          }
+          $pageData->setInlineStylesheets($inlineStyles);
+          break;
+        default:
+          show_404();
+          break;
+      }
+
       $pageData->setBodyClass('styleguide-element-test');
-      $viewToRender = 'components/' . $component;
+      $viewToRender = $type . '/' . $id;
     }
 
-    $pageData->setInlineStylesheets(['styles/styleguide-index-inline.css']);
     $pageData->setRemoteScripts(['scripts/styleguide/styleguide-messenger-controller.es6.js']);
 
     $data['page'] = $pageData;
