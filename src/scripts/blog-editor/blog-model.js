@@ -91,6 +91,16 @@ export default class BlogModel {
     this.onIframeUpdateRequired();
   }
 
+  get mainImgBGColor() {
+    return this._mainImgColor;
+  }
+
+  set mainImgBGColor(hexString) {
+    this._mainImgColor = hexString;
+
+    this.onIframeUpdateRequired();
+  }
+
   getJSONData () {
     var apiData = [];
     apiData.push({key: 'postId', value: this.postId});
@@ -99,6 +109,7 @@ export default class BlogModel {
     apiData.push({key: 'markdown', value: this.markdown});
     apiData.push({key: 'greyScaleImg', value: this.greyScaleImg});
     apiData.push({key: 'mainImg', value: this.mainImg});
+    apiData.push({key: 'mainImgBGColor', value: this.mainImgBGColor});
 
     var responseObj = {};
     for (var i = 0; i < apiData.length; i++) {
@@ -111,6 +122,7 @@ export default class BlogModel {
       responseObj[key] = value;
     }
 
+    console.log(responseObj);
     return responseObj;
   }
 }

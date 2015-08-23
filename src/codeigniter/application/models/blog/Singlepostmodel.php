@@ -72,7 +72,7 @@ class SinglePostModel extends CI_Model {
   }
 
   public function setMainImgBgColor($color) {
-    $this->_mainImgBGColor;
+    $this->_mainImgBGColor = $color;
   }
 
   public function getMainImgBgColor() {

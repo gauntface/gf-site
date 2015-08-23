@@ -68,3 +68,19 @@ Full Page Overlay
 
   flex-direction: column;
 }
+
+.blogcreate__color-options {
+  display: flex;
+
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  margin-bottom: $base-line-height;
+}
+
+.blogcreate__color-option-item {
+  width: 40px;
+  height: 40px;
+
+  margin-right: $base-line-height;
+}

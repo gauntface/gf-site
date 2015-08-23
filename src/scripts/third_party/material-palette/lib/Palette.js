@@ -137,14 +137,13 @@ Palette.generate = function(image) {
 
 Palette._getScaledImageData = function(image) {
     var self = this;
-
     return new Promise(function(fullfill, reject) {
-        if (image[0].naturalWidth !== 0) {
-            fullfill(self._scaleImage(image[0]));
+        if (image.naturalWidth !== 0) {
+            fullfill(self._scaleImage(image));
         }
         image
             .on('load', function(a, b, c) {
-                fullfill(self._scaleImage(image[0]));
+                fullfill(self._scaleImage(image));
             })
             .on('error', function(a, b, c) {
                 console.error(this, a, b, c);
@@ -175,11 +174,15 @@ Palette._scaleImage = function(image) {
  * @private
  */
 Palette._getImageData = function(image, width, height) {
-    canvas = document.createElement('canvas');
+    var canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
-    ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = ctx.webkitImageSmoothingEnabled = false;
+    var ctx = canvas.getContext('2d');
+    if(ctx.imageSmoothingEnabled) {
+      ctx.imageSmoothingEnabled = false;
+    } else if(ctx.webkitImageSmoothingEnabled) {
+      ctx.webkitImageSmoothingEnabled = false
+    }
     ctx.drawImage(image, 0, 0, width, height);
 
     return ctx.getImageData(0, 0, width, height);

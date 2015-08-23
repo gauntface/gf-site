@@ -82,7 +82,7 @@ export default class ImageUploadView extends BlogView {
   }
 
   displayError (error) {
-
+    this.currentState = STATE_NOT_DISPLAYED;
   }
 
   onGreyScaleBtnClick () {

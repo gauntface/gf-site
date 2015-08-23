@@ -37,6 +37,16 @@ gulp.task('styles:clean', del.bind(null, [
     GLOBAL.config.build.styles + '/**/*'
   ], {dot: true}));
 
+gulp.task('generate-template-css', function() {
+  gulp.src('src/styles/templates/**/*.scss')
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass()
+      .on('error', plugins.sass.logError))
+    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
+    .pipe(streamify(plugins.sourcemaps.write()))
+    .pipe(gulp.dest(GLOBAL.config.build.styles + '/templates/'));
+});
+
 gulp.task('generate-partials-css', function() {
   gulp.src('src/styles/partials/**/*.scss')
     .pipe(plugins.sourcemaps.init())
@@ -57,7 +67,8 @@ gulp.task('generate-component-css', function() {
     .pipe(gulp.dest(GLOBAL.config.build.styles + '/components/'));
 });
 
-gulp.task('generate-dev-css', ['styles:clean', 'generate-component-css', 'generate-partials-css'],
+gulp.task('generate-dev-css', ['styles:clean', 'generate-component-css',
+  'generate-partials-css', 'generate-template-css'],
 function() {
   var streams = components.generateComponentSass(GLOBAL.config.src.components);
 
@@ -92,10 +103,11 @@ function handleEachStream(index, streams, cb) {
     .pipe(gulp.dest(GLOBAL.config.build.styles))
     .on('finish', function() {
       handleEachStream(index + 1, streams, cb);
-    })
+    });
 }
 
-gulp.task('generate-prod-css', ['styles:clean', 'generate-component-css', 'generate-partials-css'],
+gulp.task('generate-prod-css', ['styles:clean', 'generate-component-css',
+  'generate-partials-css', 'generate-template-css'],
 function(cb) {
   var streams = components.generateComponentSass(GLOBAL.config.src.components);
   handleEachStream(0, streams, cb);

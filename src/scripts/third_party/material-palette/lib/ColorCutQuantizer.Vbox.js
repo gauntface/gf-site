@@ -7,7 +7,7 @@ var PaletteItem = require('./PaletteItem');
  * @param upperIndex
  * @constructor
  */
-ColorCutQuantizerVbox = function(parent, lowerIndex, upperIndex) {
+var ColorCutQuantizerVbox = function(parent, lowerIndex, upperIndex) {
     this._parent = parent;
     this._lowerIndex = lowerIndex;
     this._upperIndex = upperIndex;
