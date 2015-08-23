@@ -1,0 +1,106 @@
+@import "../../variables/dimens";
+@import "../../variables/colors";
+@import "../../mixins/typography";
+
+.title-block-item__link-wrapper {
+  display: block;
+  text-decoration: none;
+}
+
+.title-block-item {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  background-size: cover;
+  background-position: center;
+}
+
+.title-block-item.is-light-text {
+  color: $light-text-color;
+}
+
+.title-block-item.is-padded {
+  padding-top: $base-line-height;
+  padding-bottom: $base-line-height;
+}
+
+.title-block__content {
+  padding-top: $base-line-height * 0.5;
+  padding-bottom: $base-line-height * 0.5;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.title-block-item__toptext {
+  display: block;
+  width: 100%;
+
+  margin: 0;
+  padding-bottom: $base-line-height;
+
+  text-align: center;
+
+  @include typography-font-size($tiny-font-size);
+}
+
+.title-block-item__title {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: $base-line-height;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  letter-spacing: 0.4rem;
+}
+
+.title-block-item__excerpt {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: $break-xsmall) {
+  .title-block-item.is-padded {
+    padding: ($base-line-height * 2) ($base-line-height * 1.5);
+  }
+
+  .title-block-item__toptext {
+    padding-bottom: $base-line-height * 1;
+  }
+
+  .title-block-item__title {
+    @include typography-font-size($medium-font-size);
+    letter-spacing: 0.8rem;
+  }
+
+  .title-block__content {
+    padding-top: $base-line-height;
+    padding-bottom: $base-line-height;
+  }
+}
+
+@media (min-width: $break-small) {
+  .title-block-item.is-padded {
+    padding: ($base-line-height * 4) ($base-line-height * 1.5);
+  }
+
+  .title-block-item__toptext {
+    padding-bottom: $base-line-height * 3;
+  }
+
+  .title-block-item__title {
+    @include typography-font-size($large-font-size);
+    margin-bottom: $base-line-height * 1.5;
+    letter-spacing: 1.3rem;
+  }
+
+  .title-block__content {
+    padding-top: 2 * $base-line-height;
+    padding-bottom: 2 * $base-line-height;
+  }
+}

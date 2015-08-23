@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+@import "../variables/colors";
+@import "../variables/dimens";
+@import "../variables/font-families";
+@import "../mixins/typography";
+
+@import "adam-font";
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  color: $font-color;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  display: inline-block;
+
+  width: 100%;
+  min-height: 100%;
+
+  background-color: $page-bg-color;
+  box-sizing: border-box;
+
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+  margin-bottom: $base-line-height * 0.5;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $title-font-family;
+  font-weight: normal;
+}
+
+h1 {
+    @include typography-font-size($font-size-h1);
+}
+
+h2 {
+    @include typography-font-size($font-size-h2);
+}
+
+h3 {
+    @include typography-font-size($font-size-h3);
+}
+
+h4 {
+    @include typography-font-size($font-size-h4);
+}
+
+h5 {
+    @include typography-font-size($font-size-h5);
+}
+
+h6 {
+    @include typography-font-size($font-size-h6);
+}
+
+p {
+  word-wrap: break-word;
+}
+
+a {
+  color: $link-text-color;
+
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: $break-xsmall) {
+  h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: $base-line-height;
+  }
+}

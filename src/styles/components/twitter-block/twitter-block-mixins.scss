@@ -1,0 +1,45 @@
+@import "../../variables/colors";
+@import "../../variables/dimens";
+
+@mixin twitter-block-xsmall () {
+  .twitter-block {
+    padding: ($base-line-height * 2) $base-line-height;
+  }
+
+  .twitter-block__twitter-logo {
+    margin-bottom: $base-line-height;
+  }
+
+  .twitter-block__tweet-info {
+    margin-bottom: $base-line-height;
+
+    a, time {
+      display: inline-block;
+    }
+  }
+
+  .twitter-block__info-spacer {
+    display: initial;
+  }
+}
+
+@mixin twitter-block-small () {
+  .twitter-block {
+    padding: ($base-line-height * 2.5) ($base-line-height * 4.5);
+  }
+
+  .twitter-block__twitter-logo {
+    margin-bottom: $base-line-height;
+  }
+
+  .twitter-block__tweet-info {
+    margin-bottom: $base-line-height;
+  }
+
+  .twitter-block__tweet {
+    max-width: $base-line-height * 20;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: ($base-line-height * 5);
+  }
+}

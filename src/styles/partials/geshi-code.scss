@@ -1,0 +1,130 @@
+@import "../variables/colors";
+@import "../variables/dimens";
+@import "../variables/font-families";
+@import "../mixins/typography";
+
+.geshi_highlight__container {
+  display: flex;
+
+  max-width: 100%;
+  width: 100%;
+
+  flex-direction: row;
+  justify-content: center;
+
+  padding: 0;
+
+  background-color: $code-bg-color;
+}
+
+.geshi_highlight {
+  font-family: $code-font-family;
+  @include typography-font-size($font-size-code);
+
+  padding: $base-line-height;
+
+  overflow-x: auto;
+  white-space: nowrap;
+
+  color: $code-text-color;
+
+  /* comments */
+  .co0, .co1, .co2, .coMULTI {
+    color: $commentColor;
+    font-style: italic;
+  }
+
+  /* methods */
+  .me0, .me1, .me2 {
+    color: $methodColor;
+  }
+
+  /* brackets */
+  .br0 {
+
+  }
+
+  /* strings */
+  .st_h {
+    color: $stringColor;
+  }
+
+  /* keywords */
+
+  /* if */
+  .kw1 {
+    color: $keywordOneColor;
+  }
+
+  /* <?php */
+  .kw2 {
+    font-weight: 700;
+  }
+
+  .kw3 {
+
+  }
+
+  /* numbers */
+  .nu0 {
+    color: $numberColor;
+  }
+
+  /* vars */
+  .re0 {
+    color: $variableColor;
+  }
+
+  /*
+  * CSS selectors
+  *****************/
+  /* classnames */
+
+  /*[lang=css] .kw2,
+  .css .kw2 {
+    color:#C24F24;
+  }
+  [lang=css] .kw1,
+  .css .kw1 {
+    color:#691C97;
+  }
+  [lang=css] .re0,
+  .css .re0 {
+    color: #C24F24;
+  }
+  .re1 {
+    color: #C24F24;
+  }
+  /* px values */
+  /*[lang=css] .re3,
+  .css .re3 {
+    color:#84252A;
+  }*/
+
+  /*
+  * Python
+  ****************/
+  /*[lang=python] ol li div,
+  .python ol li div {
+    color: #000;
+  }
+  [lang=python] .kw2,
+  .python .kw2 {
+    font-style: normal;
+  }
+  [lang=python] .kw1 {
+    color: #A91D5D;
+  }*/
+  /*
+  * Javascript
+  ****************/
+  /*[lang=javascript] .me1,
+  .javascript .me1 {
+    color: #794938;
+  }*/
+}
+
+.geshi_highlight a {
+  font-weight: inherit !important;
+  color: inherit !important;
+}

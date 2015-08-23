@@ -1,0 +1,36 @@
+@import '../variables/dimens';
+@import '../variables/colors';
+@import '../variables/font-families';
+@import '../mixins/typography';
+
+code, pre {
+  display: block;
+
+  background-color: $code-bg-color;
+
+  overflow: auto;
+
+  font-family: $code-font-family;
+  @include typography-font-size($font-size-code);
+  margin: 0;
+  margin-bottom: $base-line-height;
+  padding: $base-line-height;
+  word-wrap: initial;
+}
+
+pre code {
+  border-style: none;
+
+  background-color: transparent;
+
+  overflow-x: auto;
+
+  margin: -$base-line-height;
+}
+
+p code {
+  display: inline;
+
+  padding: 0 4px;
+  @include typography-font-size($base-font-size);
+}

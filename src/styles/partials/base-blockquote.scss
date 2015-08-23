@@ -1,0 +1,40 @@
+@import '../variables/dimens';
+@import '../variables/zindex';
+@import '../mixins/typography';
+
+blockquote {
+  display: block;
+  position: relative;
+
+  margin: 0;
+  padding: (0.5 * $base-line-height);
+  font-family: inherit;
+}
+
+blockquote::before, blockquote::after {
+  position: absolute;
+
+  @include typography-font-size($base-font-size * 3);
+
+  opacity: 0.5;
+
+  z-index: $blockquote-z-index;
+}
+
+blockquote::before {
+  content: '“';
+
+  line-height: 1;
+
+  top: 0;
+  left: 0;
+}
+
+blockquote::after {
+  content: '”';
+
+  line-height: 0;
+
+  bottom: 0;
+  right: 0;
+}

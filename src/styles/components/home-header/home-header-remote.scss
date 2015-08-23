@@ -1,0 +1,28 @@
+@import "../../variables/colors";
+@import "../../variables/dimens";
+@import "../../mixins/responsive-images";
+
+.gf-header {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-image: url(/images/components/home-header/header.jpg);
+}
+
+.gf-header__logo {
+  width: $base-line-height * 4;
+  height: $base-line-height * 4;
+
+  margin: 0;
+
+  color: white;
+
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url(/images/gf-logo.svg);
+}
+
+//@include responsive-image-width-based('/images/header', 'jpg', '.gf-header',
+//  (200,       300,        400,        500,        600,        700,        800),
+//  ('300x300', '400x300',  '500x300',  '600x300',  '700x300', '800x300',   '900x300'), (1, 2, 3, 4));
