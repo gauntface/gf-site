@@ -4,7 +4,7 @@
   ],
   "name": "blog-editor",
   "components": [
-    "subappbar",
+    "sub-appbar",
     "tabs",
     "full-page-overlay"
   ],
@@ -12,9 +12,9 @@
 
   ],
   "extrasInline": [
-    "src/styles/partials/base/core.scss",
-    "src/styles/partials/base/buttons.scss",
-    "src/styles/partials/base/text-inputs.scss",
+    "src/styles/partials/base-core.scss",
+    "src/styles/partials/base-buttons.scss",
+    "src/styles/partials/base-text-inputs.scss",
     "src/styles/pages/blog-editor/_blog-editor-inline.scss"
   ],
   "extrasRemote": [

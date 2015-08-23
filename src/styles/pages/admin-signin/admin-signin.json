@@ -2,11 +2,8 @@
   "urlsToTest": [
 
   ],
-  "name": "admin-home",
+  "name": "admin-signin",
   "components": [
-    "home-header",
-    "appbar",
-    "sub-appbar",
     "debug"
   ],
   "layouts": [
@@ -14,7 +11,7 @@
   ],
   "extrasInline": [
     "src/styles/partials/base-core.scss",
-    "src/styles/pages/admin-home/_admin-home-inline.scss"
+    "src/styles/partials/base-buttons.scss"
   ],
   "extrasRemote": [
 

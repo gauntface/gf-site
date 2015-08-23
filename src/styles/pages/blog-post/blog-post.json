@@ -11,8 +11,8 @@
     "content-split"
   ],
   "extrasInline": [
-    "src/styles/partials/base/_core.scss",
-    "src/styles/partials/_geshi-code.scss"
+    "src/styles/partials/base-core.scss",
+    "src/styles/partials/geshi-code.scss"
   ],
   "extrasRemote": [
 

@@ -63,7 +63,7 @@ Full Page Overlay
   max-height: 10 * $base-line-height;
 }
 
-blogcreate__tabs-contents--markdown.tab-view__is-selected {
+.blogcreate__tabs-contents--markdown.tab-view__is-selected {
   display: flex;
 
   flex-direction: column;

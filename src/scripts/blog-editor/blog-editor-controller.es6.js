@@ -11,13 +11,14 @@ import PublishView from './publish-view';
 import Debug from '../debug';
 
 import { uploadFile } from '../../../deploy/assets/scripts/api/file-upload';
-import { savePost, deletePost, publishPost } from '../../../deploy/assets/scripts/api/calls';
+import { savePost, deletePost, publishPost } from
+  '../../../deploy/assets/scripts/api/calls';
 
 var Signal = require(
     './../third_party/millermedeiros-js-signals-1a82bdd/dist/signals.js');
 
 class BlogEditorController extends BaseController {
-  constructor () {
+  constructor() {
     super();
 
     this.onWindowPopState = this.onWindowPopState.bind(this);
@@ -27,7 +28,7 @@ class BlogEditorController extends BaseController {
     this.setUpPubSub();
   }
 
-  onDOMContentLoaded () {
+  onDOMContentLoaded() {
     this.blogModel = new BlogModel(this.getPostIDFromURL());
 
     this.tabview = new TabView();
@@ -67,7 +68,7 @@ class BlogEditorController extends BaseController {
     return postId;
   }
 
-  setUpPubSub () {
+  setUpPubSub() {
     window.GauntFace.PubSub = {
       fileDropped: new Signal(),
       updateGreyScaleImg: new Signal(),
@@ -90,11 +91,11 @@ class BlogEditorController extends BaseController {
     window.GauntFace.PubSub.publishRequested.add(this.onPublishPost);
   }
 
-  onWindowPopState (e) {
+  onWindowPopState(e) {
     console.log('onWindowPopState()');
   }
 
-  onFileDropped (file) {
+  onFileDropped(file) {
     console.log('File Dropped: ', file);
     // Show UI During Upload
     this.imageUploadView.displayUploading();
@@ -112,24 +113,24 @@ class BlogEditorController extends BaseController {
       }.bind(this));
   }
 
-  onGreyScaleImageUpdate (imgUrl) {
+  onGreyScaleImageUpdate(imgUrl) {
     this.blogModel.greyScaleImg = imgUrl;
   }
 
-  onMainImageUpdate (imgUrl) {
+  onMainImageUpdate(imgUrl) {
     this.blogModel.mainImg = imgUrl;
   }
 
-  onCopyImgMarkdownToClipboard (imgUrl) {
+  onCopyImgMarkdownToClipboard(imgUrl) {
     console.log('TODO: onCopyMarkdown <- Implement');
   }
 
-  onPanelUpdateRequired () {
+  onPanelUpdateRequired() {
     console.log('Update UI');
     this.metaDataView.update();
   }
 
-  onIframeUpdateRequired () {
+  onIframeUpdateRequired() {
     savePost(this.blogModel)
       .then(function(postId) {
         if (postId) {
@@ -144,7 +145,7 @@ class BlogEditorController extends BaseController {
       });
   }
 
-  onPostIDUpdated (postId) {
+  onPostIDUpdated(postId) {
     var newUrl = '/crumpets/blog/edit/' + postId;
     var stateObj = {};
 
@@ -153,7 +154,7 @@ class BlogEditorController extends BaseController {
     window.history.replaceState(stateObj, 'Edit Blog Post', newUrl);
   }
 
-  onDeletePost (event) {
+  onDeletePost(event) {
     event.preventDefault();
 
     deletePost(this.blogModel)
@@ -165,7 +166,7 @@ class BlogEditorController extends BaseController {
       });
   }
 
-  onPublishPost () {
+  onPublishPost() {
     publishPost(this.blogModel)
       .then(function() {
         this.publishView.disablePublishBtn();

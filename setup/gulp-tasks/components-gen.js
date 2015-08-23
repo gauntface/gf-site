@@ -89,6 +89,10 @@ function handleComponentFile(componentFile) {
 
   // Add Inline Extras
   componentObject.extrasInline.forEach(function(extraInlineFilepath) {
+    if (!fs.existsSync(extraInlineFilepath)) {
+      throw new Error('Required extra not found from [' + componentFile +
+        ']: ' + extraInlineFilepath);
+    }
     possibleInlineFiles.push(
       extraInlineFilepath
     );
