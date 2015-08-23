@@ -34,14 +34,14 @@ class Styleguide extends Base_Controller {
       ]);
     } else {
       switch($type) {
-        case 'component':
+        case 'components':
           $pageData->setInlineStylesheets([
             'styles/components/'.$id.'/'.$id.'-inline.css',
             'styles/styleguide-index-inline.css'
           ]);
           $pageData->setRemoteStylesheets(['styles/components/'.$id.'/'.$id.'-remote.css']);
           break;
-        case 'partial':
+        case 'partials':
           $inlineStyles = array('styles/partials/base-core.css');
           if($id != 'base-core') {
             array_push($inlineStyles, 'styles/partials/'.$id.'.css');

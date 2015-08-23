@@ -13,11 +13,11 @@
 
   ],
   "extrasInline": [
-    "src/styles/partials/base/core.scss",
-    "src/styles/partials/base/utils.scss",
-    "src/styles/partials/base/text-inputs.scss",
-    "src/styles/partials/base/buttons.scss",
-    "src/styles/pages/contact/contact-inline.scss"
+    "src/styles/partials/base-core.scss",
+    "src/styles/partials/base-utils.scss",
+    "src/styles/partials/base-text-inputs.scss",
+    "src/styles/partials/base-buttons.scss",
+    "src/styles/pages/contact/_contact-inline.scss"
   ],
   "extrasRemote": [
 

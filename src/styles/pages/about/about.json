@@ -13,7 +13,7 @@
     "content-split"
   ],
   "extrasInline": [
-    "src/styles/partials/base/core.scss",
+    "src/styles/partials/base-core.scss",
     "src/styles/pages/about/_about-inline.scss"
   ],
   "extrasRemote": [
