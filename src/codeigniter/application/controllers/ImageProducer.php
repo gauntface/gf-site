@@ -8,8 +8,10 @@ class ImageProducer extends Base_Controller {
   protected $GENERATED_IMG_DIR = 'generated/';
 
   public function cloudupdate() {
-    $this->load->model('siteconfigmodel');
+    $this->load->model('cloudStorageKeys');
     $this->load->library('google');
+
+    /** Maybe try this out http://stackoverflow.com/questions/17279608/cant-upload-file-to-google-cloud-storage-with-php-client-library **/
 
     $this->google->setClientId(
       $this->siteconfigmodel->getGPlusOauthClientID()
@@ -21,9 +23,10 @@ class ImageProducer extends Base_Controller {
     $this->google->setScopes(
       'https://www.googleapis.com/auth/devstorage.full_control');
 
-    $params = array($this->google);
+    define('API_VERSION', 'v1');
+    define('DEFAULT_PROJECT', $this->cloudStorageKeys->projectID);
+    define('DEFAULT_BUCKET', $this->cloudStorageKeys->bucketName);
 
-    $this->load->library('cloudstorage', $params);
   }
 
 public function index() {
