@@ -48,8 +48,6 @@ class ImageProducer extends Base_Controller {
   }
 
 public function index() {
-  log_message('error', 'Hello index?');
-
   $pathinfo = pathinfo($this->uri->uri_string());
   $numOfSegments = $this->uri->total_segments();
 
