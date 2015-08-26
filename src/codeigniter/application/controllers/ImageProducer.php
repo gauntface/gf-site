@@ -3,33 +3,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH.'controllers/Base_controller.php';
 
+require_once APPPATH.'third_party/google-api-php-client/src/Google/autoload.php';
+require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
+require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Storage.php';
+
 class ImageProducer extends Base_Controller {
 
   protected $GENERATED_IMG_DIR = 'generated/';
 
-  public function cloudupdate() {
-    $this->load->model('cloudStorageKeys');
-    $this->load->library('google');
+  public function cloud() {
+    $this->config->load('confidential', TRUE);
 
-    /** Maybe try this out http://stackoverflow.com/questions/17279608/cant-upload-file-to-google-cloud-storage-with-php-client-library **/
-
-    $this->google->setClientId(
-      $this->siteconfigmodel->getGPlusOauthClientID()
+    /**
+     * Connect to Google Cloud Storage API
+     */
+    $client = new Google_Client();
+    $client->setApplicationName("GF Image Producer");
+    // $stored_access_token - your cached oauth access token
+    //if( $stored_access_token ) {
+    //	$client->setAccessToken( $stored_access_token );
+    //}
+    $credential = new Google_Auth_AssertionCredentials(
+      $this->config->item('storage-clientid', 'confidential'),
+    	['https://www.googleapis.com/auth/devstorage.read_write'],
+    	file_get_contents($this->config->item('storage-cert', 'confidential'))
     );
-    $this->google->setClientSecret(
-      $this->siteconfigmodel->getGPlusOauthClientSecret()
+    $client->setAssertionCredentials($credential);
+    if($client->getAuth()->isAccessTokenExpired()) {
+    	$client->getAuth()->refreshTokenWithAssertion($credential);
+    	// Cache the access token however you choose, getting the access token with $client->getAccessToken()
+    }
+    /**
+     * Upload a file to google cloud storage
+     */
+    $storage = new Google_Service_Storage($client);
+    $file_name = "download.png";
+    $obj = new Google_Service_Storage_StorageObject();
+    $obj->setName($file_name);
+    $storage->objects->insert(
+      $this->config->item('storage-bucketname', 'confidential'),
+    	$obj,
+    	['name' => $file_name, 'data' => file_get_contents("./download.png"), 'uploadType' => 'media']
     );
-
-    $this->google->setScopes(
-      'https://www.googleapis.com/auth/devstorage.full_control');
-
-    define('API_VERSION', 'v1');
-    define('DEFAULT_PROJECT', $this->cloudStorageKeys->projectID);
-    define('DEFAULT_BUCKET', $this->cloudStorageKeys->bucketName);
-
   }
 
 public function index() {
+  log_message('error', 'Hello index?');
+
   $pathinfo = pathinfo($this->uri->uri_string());
   $numOfSegments = $this->uri->total_segments();
 

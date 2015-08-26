@@ -238,7 +238,7 @@ class Google_Http_MediaFileUpload
   private function transformToUploadUrl()
   {
     $base = $this->request->getBaseComponent();
-    $this->request->setBaseComponent($base . '/upload');
+    $this->request->setBaseComponent($base . 'upload');
   }
 
   /**

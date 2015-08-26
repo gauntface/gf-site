@@ -2,6 +2,7 @@
 
 GLOBAL.config = {
   deploy: {
+    assets: 'deploy/assets',
     fonts: 'deploy/assets/fonts',
     scripts: 'deploy/assets/scripts',
     codeigniter: {
@@ -40,7 +41,7 @@ var runSequence = require('run-sequence');
 // Load custom tasks from the `tasks` directory
 require('require-dir')('setup/gulp-tasks');
 
-var commonBuildTasks = ['copy-fonts', 'build-ci'];
+var commonBuildTasks = ['copy', 'copy-fonts', 'build-ci'];
 
 gulp.task('build-dev', [], function(cb) {
   commonBuildTasks.push('styles:dev');
