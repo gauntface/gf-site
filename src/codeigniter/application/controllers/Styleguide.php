@@ -43,6 +43,7 @@ class Styleguide extends Base_Controller {
           break;
         case 'partials':
           $inlineStyles = array('styles/partials/base-core.css');
+          array_push($inlineStyles, 'styles/components/debug/debug-remote.css');
           if($id != 'base-core') {
             array_push($inlineStyles, 'styles/partials/'.$id.'.css');
           }
