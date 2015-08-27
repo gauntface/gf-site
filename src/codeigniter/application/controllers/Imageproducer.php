@@ -10,6 +10,7 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Stora
 class ImageProducer extends Base_Controller {
 
   protected $GENERATED_IMG_DIR = 'generated/';
+  protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
   public function cloud() {
     $this->config->load('confidential', TRUE);
@@ -47,37 +48,37 @@ class ImageProducer extends Base_Controller {
     );
   }
 
-public function index() {
-  $pathinfo = pathinfo($this->uri->uri_string());
-  $numOfSegments = $this->uri->total_segments();
+  public function index() {
+    $pathinfo = pathinfo($this->uri->uri_string());
+    $numOfSegments = $this->uri->total_segments();
 
-  $imageDirectory = '';
-  for($i = 2; $i < $numOfSegments; $i++) {
-    $imageDirectory .= $this->uri->segment($i);
-    if($i + 1 < $numOfSegments) {
-      $imageDirectory .= '/';
-    }
-  }
-
-  $pattern = '/(?P<origfilename>.+)_(?P<width>\d+)x(?P<height>\d+)x(?P<density>\d+)/';
-  $patternFound = preg_match($pattern, $pathinfo["filename"], $matches);
-
-  if($patternFound == 0) {
-    log_message('error', 'Pattern File Not Found: '.$patternFound);
-    // The regular expression didn't work, it must be a path to the original image required
-    $originalFile = $this->uri->uri_string();
-
-    // original image not found, show 404
-    if (!file_exists($originalFile)) {
-      log_message('error', 'Original File Not Found: '.$originalFile);
-      show_404($originalFile);
+    $imageDirectory = '';
+    for($i = 2; $i < $numOfSegments; $i++) {
+      $imageDirectory .= $this->uri->segment($i);
+      if($i + 1 < $numOfSegments) {
+        $imageDirectory .= '/';
+      }
     }
 
-    $this->serveImage($originalFile);
-  } else {
-    $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
+    $pattern = '/(?P<origfilename>.+)_(?P<width>\d+)x(?P<height>\d+)x(?P<density>\d+)/';
+    $patternFound = preg_match($pattern, $pathinfo["filename"], $matches);
+
+    if($patternFound == 0) {
+      log_message('error', 'Pattern File Not Found: '.$patternFound);
+      // The regular expression didn't work, it must be a path to the original image required
+      $originalFile = $this->uri->uri_string();
+
+      // original image not found, show 404
+      if (!file_exists($originalFile)) {
+        log_message('error', 'Original File Not Found: '.$originalFile);
+        show_404($originalFile);
+      }
+
+      $this->serveImage($originalFile);
+    } else {
+      $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
+    }
   }
-}
 
 function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
   log_message('error', 'serveUpAppropriateImage()');
@@ -169,7 +170,8 @@ function attemptToServeNormal($pathinfo, $matches, $width, $height, $density) {
   // Adjust path to look at the generated content
   // See if we've resized the image already
   $resizedFilepath =
-  str_replace('media/',
+  str_replace(
+  $this->URL_CONTROLLER_NAME,
   $this->GENERATED_IMG_DIR,
   $pathinfo["dirname"])."/".
   $matches["origfilename"]."/".

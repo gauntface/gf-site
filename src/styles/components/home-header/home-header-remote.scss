@@ -6,7 +6,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: url(/images/components/home-header/header.jpg);
+  //background-image: url(/images/components/home-header/header.jpg);
 }
 
 .gf-header__logo {
@@ -23,6 +23,11 @@
   background-image: url(/images/gf-logo.svg);
 }
 
-//@include responsive-image-width-based('/images/header', 'jpg', '.gf-header',
-//  (200,       300,        400,        500,        600,        700,        800),
-//  ('300x300', '400x300',  '500x300',  '600x300',  '700x300', '800x300',   '900x300'), (1, 2, 3, 4));
+@function strip-units($number) {
+  @return $number / ($number * 0 + 1);
+ }
+$maxHeight: strip-units($top-img-small-height);
+
+@include responsive-image-width-based('/images/header', 'jpg', '.gf-header',
+  (200,       300,        400,        500,        600,        700,        800),
+  ('300x#{$maxHeight}', '400x#{$maxHeight}',  '500x#{$maxHeight}',  '600x#{$maxHeight}',  '700x#{$maxHeight}', '800x#{$maxHeight}',   '900x#{$maxHeight}'), (1, 2, 3, 4));
