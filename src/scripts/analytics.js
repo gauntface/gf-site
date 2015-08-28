@@ -1,6 +1,6 @@
 'use strict';
 
-export function addAnalytics () {
+export function addAnalytics() {
   window.addEventListener('load', function() {
     //jscs:disable
     /* jshint ignore:start */
@@ -9,7 +9,7 @@ export function addAnalytics () {
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-27329140-3', {'siteSpeedSampleRate': 100});
+    ga('create', 'UA-27329140-3', {'siteSpeedSampleRate': 25});
     ga('send', 'pageview');
     /* jshint ignore:end */
     //jscs:enabled

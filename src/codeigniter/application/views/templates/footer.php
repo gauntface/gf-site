@@ -3,16 +3,23 @@
   if(isset($remoteStylesheets)) {
     ?>
     <script type="text/javascript">
-    <?php
-      foreach($remoteStylesheets as $singleFile) {
-      ?>
       window.GauntFace = window.GauntFace || {};
       window.GauntFace._remoteStylesheets = [
-        '<?php echo(base_url().addRevisionToFilePath($singleFile)); ?>'
+        <?php
+          foreach($remoteStylesheets as $singleFile) {
+            $length = strlen('http');
+            $stylesheetUrl = '';
+            if(substr($singleFile, 0, $length) === 'http') {
+              $stylesheetUrl = $singleFile;
+            } else {
+              $stylesheetUrl = base_url().addRevisionToFilePath($singleFile);
+            }
+          ?>
+          '<?php echo($stylesheetUrl); ?>'
+          <?php
+          }
+        ?>
       ];
-      <?php
-      }
-    ?>
     </script>
     <?php
   }

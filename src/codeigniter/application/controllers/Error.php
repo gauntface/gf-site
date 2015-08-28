@@ -29,6 +29,7 @@ class Error extends Base_Controller {
     $data['appbar'] = $appBarData;
     $data['title'] = $titleData;
 
+    $this->output->set_status_header('404');
     $this->load->view('layouts/split-sections', $data);
   }
 }

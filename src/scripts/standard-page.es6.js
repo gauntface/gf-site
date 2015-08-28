@@ -3,7 +3,7 @@
 import BaseController from './base/base-controller';
 import Debug from './debug';
 
-class StandardPage extends BaseController {
+export default class StandardPage extends BaseController {
   constructor() {
     super();
   }

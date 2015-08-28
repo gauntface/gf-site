@@ -20,7 +20,7 @@ export default class BaseController {
     if (!window.GauntFace || !window.GauntFace._remoteStylesheets) {
       return;
     }
-    
+
     for (var i = 0; i < window.GauntFace._remoteStylesheets.length; i++) {
       LoadCSS.loadCSS(window.GauntFace._remoteStylesheets[i]);
     }
