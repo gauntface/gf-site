@@ -40,7 +40,6 @@ class SinglePostModel extends CI_Model {
   }
 
   public function setTitle($title) {
-    log_message('error', 'TITLE <-------------------' + $title);
       $this->_title = urldecode($title);
   }
 

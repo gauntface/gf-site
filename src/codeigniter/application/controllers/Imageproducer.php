@@ -114,7 +114,7 @@ class ImageProducer extends Base_Controller {
       $this->load->helper('url');
       redirect('https://storage.googleapis.com/'.
         $this->config->item('storage-bucketname', 'confidential').
-        '/'.$generatedObjectPath, 'refresh');
+        '/'.$generatedObjectPath);
       return;
     }
 
@@ -186,7 +186,7 @@ class ImageProducer extends Base_Controller {
     $this->load->helper('url');
     redirect('https://storage.googleapis.com/'.
       $this->config->item('storage-bucketname', 'confidential').
-      '/'.$generatedObjectPath, 'refresh');
+      '/'.$generatedObjectPath);
   }
 
   private function serveUpAppropriateImageOld($pathinfo, $matches, $imageDirectory) {
