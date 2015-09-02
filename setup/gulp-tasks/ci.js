@@ -24,6 +24,14 @@ gulp.task('copy-ci-third-party', function() {
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/third_party'));
 });
 
+gulp.task('copy-ci-uploads', function() {
+  console.log(GLOBAL.config.src.codeigniter + '/uploads/**/*');
+  return gulp.src([
+      GLOBAL.config.src.codeigniter + '/uploads/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/uploads/'));
+});
+
 gulp.task('ci-deploy-configs', function() {
   return gulp.src([
       GLOBAL.config.deploy.codeigniter.configs + '/**/*'
@@ -95,6 +103,7 @@ gulp.task('build-ci', ['ci:clean'], function(cb) {
     [
       'copy-ci',
       'copy-ci-third-party',
+      'copy-ci-uploads',
       'ci-deploy-files'
     ],
     'set-ci-file-permissions',

@@ -9,10 +9,11 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Stora
 
 class ImageProducer extends Base_Controller {
 
+  protected $CLOUD_STORAGE_URL = 'https://storage.googleapis.com/gauntface-site-uploads/';
   protected $GENERATED_IMG_DIR = 'generated/';
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
-  public function cloud() {
+  private function getGoogleClient() {
     $this->config->load('confidential', TRUE);
 
     /**
@@ -26,7 +27,7 @@ class ImageProducer extends Base_Controller {
     //}
     $credential = new Google_Auth_AssertionCredentials(
       $this->config->item('storage-clientid', 'confidential'),
-    	['https://www.googleapis.com/auth/devstorage.read_write'],
+    	['https://www.googleapis.com/auth/devstorage.full_control'],
     	file_get_contents($this->config->item('storage-cert', 'confidential'))
     );
     $client->setAssertionCredentials($credential);
@@ -38,14 +39,8 @@ class ImageProducer extends Base_Controller {
      * Upload a file to google cloud storage
      */
     $storage = new Google_Service_Storage($client);
-    $file_name = "download.png";
-    $obj = new Google_Service_Storage_StorageObject();
-    $obj->setName($file_name);
-    $storage->objects->insert(
-      $this->config->item('storage-bucketname', 'confidential'),
-    	$obj,
-    	['name' => $file_name, 'data' => file_get_contents("./download.png"), 'uploadType' => 'media']
-    );
+
+    return $storage;
   }
 
   public function index() {
@@ -64,156 +59,212 @@ class ImageProducer extends Base_Controller {
     $patternFound = preg_match($pattern, $pathinfo["filename"], $matches);
 
     if($patternFound == 0) {
-      log_message('error', 'Pattern File Not Found: '.$patternFound);
       // The regular expression didn't work, it must be a path to the original image required
       $originalFile = $this->uri->uri_string();
 
       // original image not found, show 404
       if (!file_exists($originalFile)) {
-        log_message('error', 'Original File Not Found: '.$originalFile);
-        show_404($originalFile);
+        show_404();
       }
 
       $this->serveImage($originalFile);
-    } else {
-      $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
+      return;
     }
+
+    $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
   }
 
-function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
-  log_message('error', 'serveUpAppropriateImage()');
+  private function doesImageExist($storageService, $objectPath) {
+    try {
+      $imgObject = $storageService->objects->get(
+        $this->config->item('storage-bucketname', 'confidential'),
+        $objectPath
+      );
 
-  // Round sizes up to 50 and set density to max of 4
-  $width = $this->sanitiseSize($matches["width"]);
-  $height = $this->sanitiseSize($matches["height"]);
-  $density = $this->sanitiseDensity($matches["density"]);
-
-  // Ensure the path exists to add images to
-  $directoryToGenerateImages = $this->GENERATED_IMG_DIR.'/'.$imageDirectory.'/'.$matches["origfilename"];
-  if(!file_exists($directoryToGenerateImages)) {
-    $old = umask(0);
-    mkdir($directoryToGenerateImages, 0777, true);
-    umask($old);
+      return $imgObject;
+    } catch (Exception $e) {
+      // NOOP
+    }
+    return false;
   }
 
-  // Do we support WebP?
-  $position = strpos($_SERVER['HTTP_ACCEPT'], 'image/webp');
-  $webpsupport = FALSE;
-  if($position !== FALSE && $position >= 0) {
-    $webpsupport = TRUE;
+  private function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
+    // Round sizes up to 50 and set density to max of 4
+    $width = $this->sanitiseSize($matches["width"]);
+    $height = $this->sanitiseSize($matches["height"]);
+    $density = $this->sanitiseDensity($matches["density"]);
+    $fileName = $matches["origfilename"];
+    $fileExtension = $pathinfo["extension"];
+
+    log_message('error', '$width = '.$width);
+    log_message('error', '$height = '.$height);
+    log_message('error', '$density = '.$density);
+    log_message('error', '$imageDirectory = '.$imageDirectory);
+
+    $originalObjectPath = $imageDirectory.'/'.$fileName.'.'.$fileExtension;
+    $generatedObjectPath = $this->GENERATED_IMG_DIR.$imageDirectory.'/'.
+      $fileName."_".$width."x".$height."x".$density.".".$fileExtension;
+
+    log_message('error', '$originalObjectPath = '.$originalObjectPath);
+    log_message('error', '$generatedObjectPath = '.$generatedObjectPath);
+
+    $storageService = $this->getGoogleClient();
+
+    if ($this->doesImageExist($storageService, $generatedObjectPath) != false) {
+      $this->load->helper('url');
+      redirect('https://storage.googleapis.com/'.
+        $this->config->item('storage-bucketname', 'confidential').
+        '/'.$generatedObjectPath, 'refresh');
+      return;
+    }
+
+    // Get the original image
+    $originalImg = $this->doesImageExist($storageService, $originalObjectPath);
+    if ($originalImg == false) {
+      // If the response is false we can't find the original image to resize
+      show_404();
+      return;
+    }
+
+    // Resize the original image
+    log_message('error', print_r(json_decode(json_encode($originalImg), true),
+        true));
+    log_message('error', $originalImg->mediaLink);
+    $directoryToCopyTo = $this->GENERATED_IMG_DIR.$imageDirectory.'/';
+    if(!file_exists($directoryToCopyTo)) {
+      $old = umask(0);
+      mkdir($directoryToCopyTo, 0777, true);
+      umask($old);
+    }
+
+    $localOriginalFilepath = $this->GENERATED_IMG_DIR.$originalObjectPath;
+    copy($originalImg->mediaLink, $localOriginalFilepath);
+
+
+    if (!file_exists($localOriginalFilepath)) {
+      log_message('error', 'Problem seems to have occured when fetching the '.
+        'original file: '.$localOriginalFilepath);
+      show_404();
+      return;
+    }
+
+    // Original exists, so resize it and serve it
+    $localResizedFilepath = $generatedObjectPath;
+    $this->resizeImage(
+      $width,
+      $height,
+      $density,
+      $localOriginalFilepath,
+      $localResizedFilepath
+    );
+    if(!file_exists($localResizedFilepath)) {
+      log_message('error', 'Unable to find the resized image.');
+      show_404();
+      return;
+    }
+
+    $acl = new Google_Service_Storage_ObjectAccessControl();
+    $acl->setEntity('allUsers');
+    $acl->setRole('OWNER');
+
+    $obj = new Google_Service_Storage_StorageObject();
+    $obj->setName($generatedObjectPath);
+    $obj->setAcl(array($acl));
+    $obj->setContentType(mime_content_type($localResizedFilepath));
+
+    $storageService->objects->insert(
+      $this->config->item('storage-bucketname', 'confidential'),
+      $obj,
+      [
+        'name' => $generatedObjectPath,
+        'data' => file_get_contents($localResizedFilepath),
+        'mimeType' => mime_content_type($localResizedFilepath),
+        'uploadType' => 'media'
+      ]
+    );
+
+    $this->load->helper('url');
+    redirect('https://storage.googleapis.com/'.
+      $this->config->item('storage-bucketname', 'confidential').
+      '/'.$generatedObjectPath, 'refresh');
   }
 
-  // A bug makes webp have a transparency as black
-  //if($webpsupport && FALSE) {
-  //    $this->attemptToServeWebP($pathinfo, $matches, $width, $height, $density);
-  //} else {
-  $this->attemptToServeNormal($pathinfo, $matches, $width, $height, $density);
-  //}
-}
+  private function serveUpAppropriateImageOld($pathinfo, $matches, $imageDirectory) {
 
-/**function attemptToServeWebP(
-$pathinfo, $matches, $width, $height, $density) {
+    // Round sizes up to 50 and set density to max of 4
+    $width = $this->sanitiseSize($matches["width"]);
+    $height = $this->sanitiseSize($matches["height"]);
+    $density = $this->sanitiseDensity($matches["density"]);
 
-// Do  we have Imagick to convert?
-if (!extension_loaded('imagick')) {
-log_message('error', 'imagick not installed, can\'t convert WebP');
-$this->attemptToServeNormal($pathinfo, $matches, $width, $height, $density);
-return;
-} else {
-$v = Imagick::getVersion();
-log_message('error', 'imagick installed version: '.$v['versionString']);
-}
+    // Ensure the path exists to add images to
+    $directoryToGenerateImages = $this->GENERATED_IMG_DIR.'/'.$imageDirectory.'/'.$matches["origfilename"];
+    if(!file_exists($directoryToGenerateImages)) {
+      $old = umask(0);
+      mkdir($directoryToGenerateImages, 0777, true);
+      umask($old);
+    }
 
-// See if we've resized the image already
-$resizedWebPFilepath =
-$pathinfo["dirname"]."/".
-$matches["origfilename"]."/".
-$matches["origfilename"].
-"_".$width."x".$height."x".$density.
-".webp";
-if (file_exists($resizedWebPFilepath)) {
-$this->serveImage($resizedWebPFilepath);
-return;
-}
+    // Do we support WebP?
+    $position = strpos($_SERVER['HTTP_ACCEPT'], 'image/webp');
+    $webpsupport = FALSE;
+    if($position !== FALSE && $position >= 0) {
+      $webpsupport = TRUE;
+    }
 
-// Resized version doesn't exist, do we have the original
-$originalFilepath = $pathinfo["dirname"]."/".$matches["origfilename"].".".$pathinfo["extension"];
-if (!file_exists($originalFilepath)) {
-log_message('error', 'Original File Not Found: '.$originalFilepath);
-show_404($originalFilepath);
-}
-
-try {
-// Original exists, so resize it and serve it
-$this->resizeAndConvertImageWebP(
-$width,
-$height,
-$density,
-$originalFilepath,
-$resizedWebPFilepath);
-
-// check if the resulting image exists, else show the original
-if (file_exists($resizedWebPFilepath)) {
-$finalFilePath = $resizedWebPFilepath;
-} else {
-$finalFilePath = $originalFilepath;
-}
-
-$this->serveImage($finalFilePath);
-} catch(Exception $e) {
-log_message('error', $e);
-$this->attemptToServeNormal($pathinfo, $matches, $width, $height, $density);
-}
-}**/
-
-function attemptToServeNormal($pathinfo, $matches, $width, $height, $density) {
-  // Adjust path to look at the generated content
-  // See if we've resized the image already
-  $resizedFilepath =
-  str_replace(
-  $this->URL_CONTROLLER_NAME,
-  $this->GENERATED_IMG_DIR,
-  $pathinfo["dirname"])."/".
-  $matches["origfilename"]."/".
-  $matches["origfilename"].
-  "_".$width."x".$height."x".$density.
-  ".".$pathinfo["extension"];
-
-  if (file_exists($resizedFilepath)) {
-    log_message('error', 'Resized Image File Found: '.$resizedFilepath);
-    $this->serveImage($resizedFilepath);
-    return;
+    $this->attemptToServeNormal($pathinfo, $matches, $width, $height, $density);
   }
 
-  // Resized version doesn't exist, check we have the original
-  $originalFilepath = $pathinfo["dirname"]."/".$matches["origfilename"].".".$pathinfo["extension"];
-  if (!file_exists($originalFilepath)) {
-    log_message('error', 'Original File Not Found: '.$originalFilepath);
-    show_404($originalFilepath);
-    return;
+  private function attemptToServeNormal($pathinfo, $matches, $width, $height, $density) {
+    // Adjust path to look at the generated content
+    // See if we've resized the image already
+    $resizedFilepath =
+      str_replace(
+        $this->URL_CONTROLLER_NAME,
+        $this->GENERATED_IMG_DIR,
+        $pathinfo["dirname"]
+      )."/".
+      $matches["origfilename"]."/".
+      $matches["origfilename"].
+      "_".$width."x".$height."x".$density.
+      ".".$pathinfo["extension"];
+
+    log_message('error', 'Looking for: '.$resizedFilepath);
+
+    if (file_exists($resizedFilepath)) {
+      log_message('error', 'Resized Image File Found: '.$resizedFilepath);
+      $this->serveImage($resizedFilepath);
+      return;
+    }
+
+    // Resized version doesn't exist, check we have the original
+    $originalFilepath = $pathinfo["dirname"]."/".$matches["origfilename"].".".$pathinfo["extension"];
+    if (!file_exists($originalFilepath)) {
+      log_message('error', 'Original File Not Found: '.$originalFilepath);
+      show_404($originalFilepath);
+      return;
+    }
+
+    // Original exists, so resize it and serve it
+    $this->resizeImage(
+    $width,
+    $height,
+    $density,
+    $originalFilepath,
+    $resizedFilepath);
+
+    if(file_exists($resizedFilepath)) {
+      $this->stripMetaData($resizedFilepath);
+    }
+
+    // check if the resulting image exists, else show the original
+    if (file_exists($resizedFilepath)) {
+      $finalFilePath = $resizedFilepath;
+    } else {
+      $finalFilePath = $originalFilepath;
+    }
+
+    $this->serveImage($finalFilePath);
   }
-
-  // Original exists, so resize it and serve it
-  $this->resizeImage(
-  $width,
-  $height,
-  $density,
-  $originalFilepath,
-  $resizedFilepath);
-
-  if(file_exists($resizedFilepath)) {
-    $this->stripMetaData($resizedFilepath);
-  }
-
-  // check if the resulting image exists, else show the original
-  if (file_exists($resizedFilepath)) {
-    $finalFilePath = $resizedFilepath;
-  } else {
-    $finalFilePath = $originalFilepath;
-  }
-
-  $this->serveImage($finalFilePath);
-}
 
 /**function resizeAndConvertImageWebP(
 $width,
@@ -295,140 +346,140 @@ break;
 return $im;
 }**/
 
-function resizeImage(
- $width, $height, $density, $originalFilepath, $resizedFilepath) {
+  private function resizeImage(
+   $width, $height, $density, $originalFilepath, $resizedFilepath) {
 
-  // Check for Image Magick
-  if (!extension_loaded('imagick')) {
-    log_message('error', 'imagick not installed');
-    return;
-  }
-
-  if($width == 0 && $height == 0) {
-    log_message('error', 'Cannot resize image with both zero width and height');
-    return;
-  }
-
-  $image = new Imagick($originalFilepath);
-
-  $origImageDimens = $image->getImageGeometry();
-  $origImgWidth = $origImageDimens['width'];
-  $origImgHeight = $origImageDimens['height'];
-  $origImgRatio = $origImgWidth / $origImgHeight;
-
-  $newWidth = $width * $density;
-  $newHeight = $height * $density;
-  $newImageRatio;
-
-  if($newWidth == 0 || $newHeight == 0) {
-    $newImageRatio = $origImgRatio;
-
-    if($newWidth == 0) {
-      $newWidth = $newHeight * $newImageRatio;
-    } else if($newHeight == 0){
-      $newHeight = $newWidth / $newImageRatio;
-    }
-  } else {
-    $newImageRatio = $newWidth / $newHeight;
-  }
-
-  if($newWidth > $origImgWidth || $newHeight > $origImgHeight) {
-    if($newWidth > $origImgWidth) {
-      $newWidth = $origImgWidth;
-      $newHeight = $newWidth / $newImageRatio;
+    // Check for Image Magick
+    if (!extension_loaded('imagick')) {
+      log_message('error', 'imagick not installed');
+      return;
     }
 
-    if($newHeight > $origImgHeight) {
-      $newHeight = $origImgHeight;
-      $newWidth = $newHeight * $newImageRatio;
+    if($width == 0 && $height == 0) {
+      log_message('error', 'Cannot resize image with both zero width and height');
+      return;
     }
+
+    $image = new Imagick($originalFilepath);
+
+    $origImageDimens = $image->getImageGeometry();
+    $origImgWidth = $origImageDimens['width'];
+    $origImgHeight = $origImageDimens['height'];
+    $origImgRatio = $origImgWidth / $origImgHeight;
+
+    $newWidth = $width * $density;
+    $newHeight = $height * $density;
+    $newImageRatio;
+
+    if($newWidth == 0 || $newHeight == 0) {
+      $newImageRatio = $origImgRatio;
+
+      if($newWidth == 0) {
+        $newWidth = $newHeight * $newImageRatio;
+      } else if($newHeight == 0){
+        $newHeight = $newWidth / $newImageRatio;
+      }
+    } else {
+      $newImageRatio = $newWidth / $newHeight;
+    }
+
+    if($newWidth > $origImgWidth || $newHeight > $origImgHeight) {
+      if($newWidth > $origImgWidth) {
+        $newWidth = $origImgWidth;
+        $newHeight = $newWidth / $newImageRatio;
+      }
+
+      if($newHeight > $origImgHeight) {
+        $newHeight = $origImgHeight;
+        $newWidth = $newHeight * $newImageRatio;
+      }
+    }
+
+
+    $cropImageWidth = $origImgWidth;
+    $cropImageHeight = $origImgWidth / $newImageRatio;
+    if($newImageRatio < $origImgRatio) {
+      // We have use the width ratio.
+      $cropImageHeight = $origImgHeight;
+      $cropImageWidth = $origImgHeight * $newImageRatio;
+    }
+
+    // center the crop
+    $cropX = ($origImgWidth - $cropImageWidth) / 2;
+    $cropY = ($origImgHeight - $cropImageHeight) / 2;
+
+    if(false) {
+      $image->setImageFormat('webp');
+
+      $image->setImageAlphaChannel(imagick::ALPHACHANNEL_ACTIVATE);
+      $image->setBackgroundColor(new ImagickPixel('transparent'));
+    }
+
+    $image->stripImage();
+    $image->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
+
+    // TODO Only resize down - atm we resize up too despite there
+    // not being enough image
+    $image->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
+    $image->writeImage($resizedFilepath);
   }
 
+  /**private function stripMetaData($imgFile) {
+    if (!extension_loaded('imagick')) {
+      log_message('error', 'imagick not installed');
+      return;
+    } else {
+      $v = Imagick::getVersion();
+      log_message('error', 'imagick installed version: '.$v['versionString']);
+    }
 
-  $cropImageWidth = $origImgWidth;
-  $cropImageHeight = $origImgWidth / $newImageRatio;
-  if($newImageRatio < $origImgRatio) {
-    // We have use the width ratio.
-    $cropImageHeight = $origImgHeight;
-    $cropImageWidth = $origImgHeight * $newImageRatio;
+    $image = new Imagick($imgFile);
+    log_message('error', 'loading img: '.$imgFile);
+    $image->stripImage();
+    $image->writeImage($imgFile);
+  }**/
+
+  private function serveImage($imagePath) {
+    log_message('error', 'Serving image: '.$imagePath);
+    if(!file_exists($imagePath)) {
+      log_message('error', 'File doesn\'t exist: '.$imagePath);
+      return;
+    }
+    $info = getimagesize($imagePath);
+
+    // output the image
+    // Expires in 30 days
+    $expiresSeconds = (30 * 24 * 60 * 60);
+    $expiresTime = time() + $expiresSeconds;
+
+    header("Content-Disposition: filename={$imagePath};");
+    header("Content-Type: {$info["mime"]}");
+    header('Content-Transfer-Encoding: binary');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
+    header("Cache-Control: public, must-revalidate, proxy-revalidate");
+    header("Cache-Control: max-age=".$expiresSeconds, false);
+    header('Expires: ' . gmdate('D, d M Y H:i:s', $expiresTime) . ' GMT');
+    header("Pragma: public");
+
+    readfile($imagePath);
   }
 
-  // center the crop
-  $cropX = ($origImgWidth - $cropImageWidth) / 2;
-  $cropY = ($origImgHeight - $cropImageHeight) / 2;
-
-  if(false) {
-    $image->setImageFormat('webp');
-
-    $image->setImageAlphaChannel(imagick::ALPHACHANNEL_ACTIVATE);
-    $image->setBackgroundColor(new ImagickPixel('transparent'));
+  private function sanitiseSize($value) {
+    $remainder = $value % 50;
+    if($remainder != 0) {
+      $value += (50 - $remainder);
+    } else {
+    }
+    return $value;
   }
 
-  $image->stripImage();
-  $image->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
-
-  // TODO Only resize down - atm we resize up too despite there
-  // not being enough image
-  $image->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
-  $image->writeImage($resizedFilepath);
-}
-
-function stripMetaData($imgFile) {
-  if (!extension_loaded('imagick')) {
-    log_message('error', 'imagick not installed');
-    return;
-  } else {
-    $v = Imagick::getVersion();
-    log_message('error', 'imagick installed version: '.$v['versionString']);
+  private function sanitiseDensity($value) {
+    $value = round($value, 0, PHP_ROUND_HALF_DOWN);
+    if($value < 1) {
+      $value = 1;
+    } else if ($value > 4) {
+      $value = 4;
+    }
+    return $value;
   }
-
-  $image = new Imagick($imgFile);
-  log_message('error', 'loading img: '.$imgFile);
-  $image->stripImage();
-  $image->writeImage($imgFile);
-}
-
-function serveImage($imagePath) {
-  log_message('error', 'Serving image: '.$imagePath);
-  if(!file_exists($imagePath)) {
-    log_message('error', 'File doesn\'t exist: '.$imagePath);
-    return;
-  }
-  $info = getimagesize($imagePath);
-
-  // output the image
-  // Expires in 30 days
-  $expiresSeconds = (30 * 24 * 60 * 60);
-  $expiresTime = time() + $expiresSeconds;
-
-  header("Content-Disposition: filename={$imagePath};");
-  header("Content-Type: {$info["mime"]}");
-  header('Content-Transfer-Encoding: binary');
-  header('Last-Modified: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
-  header("Cache-Control: public, must-revalidate, proxy-revalidate");
-  header("Cache-Control: max-age=".$expiresSeconds, false);
-  header('Expires: ' . gmdate('D, d M Y H:i:s', $expiresTime) . ' GMT');
-  header("Pragma: public");
-
-  readfile($imagePath);
-}
-
-function sanitiseSize($value) {
-  $remainder = $value % 50;
-  if($remainder != 0) {
-    $value += (50 - $remainder);
-  } else {
-  }
-  return $value;
-}
-
-function sanitiseDensity($value) {
-  $value = round($value, 0, PHP_ROUND_HALF_DOWN);
-  if($value < 1) {
-    $value = 1;
-  } else if ($value > 4) {
-    $value = 4;
-  }
-  return $value;
-}
 }
