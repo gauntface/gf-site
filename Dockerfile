@@ -22,7 +22,8 @@ RUN apt-get update
 # nano                          In case viewing text in container is needed
 # php5-curl                     Used by twitter oauth
 # php5-mysql                    DB
-RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql
+# php-apc                       APC Cache
+RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql php-apc
 
 
 #

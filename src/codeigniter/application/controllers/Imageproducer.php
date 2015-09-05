@@ -75,11 +75,18 @@ class ImageProducer extends Base_Controller {
   }
 
   private function doesImageExist($storageService, $objectPath) {
+    $this->load->driver('cache', array('adapter' => 'apc'));
+    if ($this->cache->get($objectPath)) {
+      return true;
+    }
+
     try {
       $imgObject = $storageService->objects->get(
         $this->config->item('storage-bucketname', 'confidential'),
         $objectPath
       );
+
+      $this->cache->save($objectPath, true, 0);
 
       return $imgObject;
     } catch (Exception $e) {
@@ -138,7 +145,10 @@ class ImageProducer extends Base_Controller {
     }
 
     $localOriginalFilepath = $this->GENERATED_IMG_DIR.$originalObjectPath;
-    copy($originalImg->mediaLink, $localOriginalFilepath);
+    if (!file_exists($localOriginalFilepath)) {
+      // File doesn't exist locally so need to attempt a download of it
+      copy($originalImg->mediaLink, $localOriginalFilepath);
+    }
 
 
     if (!file_exists($localOriginalFilepath)) {
