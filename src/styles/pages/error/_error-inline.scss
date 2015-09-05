@@ -1,0 +1,57 @@
+
+@import '../../variables/colors';
+
+.content-split__left-section {
+  background-color: $about-matt-bg-color;
+}
+
+.about__fact-list {
+  display: table;
+
+  margin-bottom: 0;
+  padding: 0 ($base-line-height / 2);
+
+  list-style: none;
+}
+
+.about__fact-list-item {
+  display: table-row;
+}
+
+.about__fact-list-title, .about__fact-list-content {
+  display: table-cell;
+}
+
+.about__fact-list-title {
+  padding-right: $base-line-height / 2;
+
+  text-transform: uppercase;
+}
+
+.about__fact-list-content {
+  padding-bottom: $base-line-height / 2;
+}
+
+.about__fact-list-content ul, .about__fact-list-content ol,
+.about__fact-list-content p {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about__fact-list-item:last-child .about__fact-list-content {
+  padding-bottom: 0;
+}
+
+@media (min-width: $break-small) {
+  .about__fact-list {
+    padding: 0 ($base-line-height);
+  }
+  .about__fact-list-title {
+    padding-right: $base-line-height;
+  }
+
+  .about__fact-list-content {
+    padding-bottom: $base-line-height;
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "urlsToTest": [
+    "http://localhost/404"
+  ],
+  "name": "error",
+  "components": [
+    "appbar",
+    "title-block-item",
+    "subtle-footer",
+    "debug",
+    "dividers"
+  ],
+  "layouts": [
+    "content-split"
+  ],
+  "extrasInline": [
+    "src/styles/partials/base-core.scss",
+    "src/styles/pages/error/_error-inline.scss"
+  ],
+  "extrasRemote": [
+    "src/styles/pages/error/_error-remote.scss"
+  ]
+}

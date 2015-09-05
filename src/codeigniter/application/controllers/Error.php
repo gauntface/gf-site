@@ -14,7 +14,8 @@ class Error extends Base_Controller {
 
     $pageData = new PageModel();
     $pageData->setTitle('404 Oops');
-    $pageData->setInlineStylesheets(['styles/pages/about.css']);
+    $pageData->setRemoteStylesheets(['styles/error-remote.css']);
+    $pageData->setInlineStylesheets(['styles/error-inline.css']);
 
     $contentData = new ContentGridModel();
     $contentData->setRightContentView('content/404');
