@@ -13,37 +13,8 @@ class ImageProducer extends Base_Controller {
   protected $GENERATED_IMG_DIR = 'generated/';
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
-  private function getGoogleClient() {
-    $this->config->load('confidential', TRUE);
-
-    /**
-     * Connect to Google Cloud Storage API
-     */
-    $client = new Google_Client();
-    $client->setApplicationName("GF Image Producer");
-    // $stored_access_token - your cached oauth access token
-    //if( $stored_access_token ) {
-    //	$client->setAccessToken( $stored_access_token );
-    //}
-    $credential = new Google_Auth_AssertionCredentials(
-      $this->config->item('storage-clientid', 'confidential'),
-    	['https://www.googleapis.com/auth/devstorage.full_control'],
-    	file_get_contents($this->config->item('storage-cert', 'confidential'))
-    );
-    $client->setAssertionCredentials($credential);
-    if($client->getAuth()->isAccessTokenExpired()) {
-    	$client->getAuth()->refreshTokenWithAssertion($credential);
-    	// Cache the access token however you choose, getting the access token with $client->getAccessToken()
-    }
-    /**
-     * Upload a file to google cloud storage
-     */
-    $storage = new Google_Service_Storage($client);
-
-    return $storage;
-  }
-
   public function index() {
+
     $pathinfo = pathinfo($this->uri->uri_string());
     $numOfSegments = $this->uri->total_segments();
 
@@ -96,6 +67,8 @@ class ImageProducer extends Base_Controller {
   }
 
   private function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
+    $this->load->model('CloudStorageModel');
+
     // Round sizes up to 50 and set density to max of 4
     $width = $this->sanitiseSize($matches["width"]);
     $height = $this->sanitiseSize($matches["height"]);
