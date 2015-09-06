@@ -46,7 +46,7 @@ class Home extends Base_Controller {
     $bottomTitleModel->setTitle('Smashing Book 5');
     $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now!</p><p><a href="#">Get the print or ebook HERE</a></p>');
     $bottomTitleModel->setSmallTopText('News');
-    $bottomTitleModel->setSmallBackgroundImage('/images/pages/home/smashing-mag.png');
+    $bottomTitleModel->setSmallBackgroundImage('/imageproducer/static/smashing-mag/smashing-mag.png');
     $bottomTitleModel->makePadded(true);
 
     $data['page'] = $pageData;

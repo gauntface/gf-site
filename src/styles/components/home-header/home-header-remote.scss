@@ -1,12 +1,12 @@
 @import "../../variables/colors";
 @import "../../variables/dimens";
+@import "../../mixins/functions";
 @import "../../mixins/responsive-images";
 
 .gf-header {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  //background-image: url(/images/components/home-header/header.jpg);
 }
 
 .gf-header__logo {
@@ -23,9 +23,6 @@
   background-image: url(/images/gf-logo.svg);
 }
 
-@function strip-units($number) {
-  @return $number / ($number * 0 + 1);
- }
 $maxHeight: strip-units($top-img-small-height);
 
 @include responsive-image-width-based('/imageproducer/static/home-header/header', 'jpg', '.gf-header',

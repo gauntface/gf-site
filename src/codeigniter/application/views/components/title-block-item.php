@@ -16,9 +16,9 @@ if (!isset($title)) {
   return;
 }
 
-$additionalStyles = '';
+$additionalStyles = $title->getClassName();
 if ($title->isPadded()) {
-  $additionalStyles = 'is-padded';
+  $additionalStyles .= ' is-padded';
 }
 
 $inlineFullbleedBackgroundStyle = '';
@@ -34,7 +34,17 @@ if ($title->getFullbleedBackgroundImage()) {
 
 $inlineSmallBackgroundStyle = '';
 if ($title->getSmallBackgroundImage()) {
-  $inlineSmallBackgroundStyle = ' style="background-image: url('.$title->getSmallBackgroundImage().');"';
+  $titleBlockSmallBGCSS = read_file('styles/templates/title-block-greyscale-bg-img.css');
+  $titleBlockSmallBGCSS = str_replace('.class-name', '.'.$title->getClassName().' .title-block__content', $titleBlockSmallBGCSS);
+
+  $bgImgPathinfo = pathinfo($title->getSmallBackgroundImage());
+  $titleBlockSmallBGCSS = str_replace('{{img-url}}', $bgImgPathinfo['dirname'].'/'.$bgImgPathinfo['filename'], $titleBlockSmallBGCSS);
+  $titleBlockSmallBGCSS = str_replace('{{img-extension}}', $bgImgPathinfo['extension'], $titleBlockSmallBGCSS);
+  ?>
+  <style>
+  <?php echo $titleBlockSmallBGCSS; ?>
+  </style>
+  <?php
 }
 ?>
 
@@ -49,7 +59,7 @@ if ($title->getSmallBackgroundImage()) {
   <?php } else if ($title->getSmallTopText()){ ?>
     <p class="title-block-item__toptext"><?php echo $title->getSmallTopText() ?></p>
   <?php } ?>
-  <div class="title-block__content"<?php echo $inlineSmallBackgroundStyle ?>>
+  <div class="title-block__content">
     <h1 class="title-block-item__title"><?php echo $title->getTitle() ?></h1>
     <div class="divider__horizontal<?php if ($title->useLightDivider()) { echo(" is-light-version"); }?>"></div>
     <?php if ($title->getDescription()) { ?>

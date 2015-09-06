@@ -22,7 +22,7 @@ class Feed extends Base_Controller {
       case 'atom':
         return $this->load->view('layouts/atom', $data);
       default:
-        return show_404();
+        return $this->show_404();
     }
   }
 }

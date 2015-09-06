@@ -64,7 +64,7 @@ class ImageProducer extends Base_Controller {
 
       // original image not found, show 404
       if (!file_exists($originalFile)) {
-        show_404();
+        $this->show_404();
       }
 
       $this->serveImage($originalFile);
@@ -88,7 +88,7 @@ class ImageProducer extends Base_Controller {
 
       $this->cache->save($objectPath, true, 0);
 
-      return $imgObject;
+      return true;
     } catch (Exception $e) {
       // NOOP
     }
@@ -129,14 +129,11 @@ class ImageProducer extends Base_Controller {
     $originalImg = $this->doesImageExist($storageService, $originalObjectPath);
     if ($originalImg == false) {
       // If the response is false we can't find the original image to resize
-      show_404();
+      $this->show_404();
       return;
     }
 
     // Resize the original image
-    log_message('error', print_r(json_decode(json_encode($originalImg), true),
-        true));
-    log_message('error', $originalImg->mediaLink);
     $directoryToCopyTo = $this->GENERATED_IMG_DIR.$imageDirectory.'/';
     if(!file_exists($directoryToCopyTo)) {
       $old = umask(0);
@@ -147,14 +144,17 @@ class ImageProducer extends Base_Controller {
     $localOriginalFilepath = $this->GENERATED_IMG_DIR.$originalObjectPath;
     if (!file_exists($localOriginalFilepath)) {
       // File doesn't exist locally so need to attempt a download of it
-      copy($originalImg->mediaLink, $localOriginalFilepath);
+      $copyUrl = 'https://storage.googleapis.com/'.
+        $this->config->item('storage-bucketname', 'confidential').
+        '/'.$originalObjectPath;
+      copy($copyUrl, $localOriginalFilepath);
     }
 
 
     if (!file_exists($localOriginalFilepath)) {
       log_message('error', 'Problem seems to have occured when fetching the '.
         'original file: '.$localOriginalFilepath);
-      show_404();
+      $this->show_404();
       return;
     }
 
@@ -169,7 +169,7 @@ class ImageProducer extends Base_Controller {
     );
     if(!file_exists($localResizedFilepath)) {
       log_message('error', 'Unable to find the resized image.');
-      show_404();
+      $this->show_404();
       return;
     }
 

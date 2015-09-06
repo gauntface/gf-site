@@ -7,6 +7,7 @@ class TitleModel extends CI_Model {
   private $_time;
   private $_smallTopText;
   private $_fullbleedBackgroundImg;
+  private $_fullbleedBackgroundColor;
   private $_smallBackgroundImage;
   private $_useLightDivider;
   private $_isPadded;
@@ -97,5 +98,11 @@ class TitleModel extends CI_Model {
 
   public function useLightDivider() {
     return $this->_useLightDivider;
+  }
+
+  public function getClassName() {
+    $this->load->helper('slug');
+
+    return slugify($this->getTitle());
   }
 }

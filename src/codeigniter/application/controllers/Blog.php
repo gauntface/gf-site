@@ -7,7 +7,7 @@ class Blog extends Base_Controller {
 
   public function index($page = 0) {
     if($page < 0) {
-      return show_404();
+      return $this->show_404();
     }
 
     $this->load->model('PageModel');
@@ -84,13 +84,13 @@ class Blog extends Base_Controller {
     $this->load->model('blog/PostsModel');
 
     if ($postId == null) {
-      return show_404();
+      return $this->show_404();
     }
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
     if (!$postModel->isPublished() && !$this->verifyLoggedIn()) {
-      return show_404();
+      return $this->show_404();
     }
 
     $leftSectionCSS = read_file('styles/templates/inline-split-section.css');

@@ -50,7 +50,7 @@ class Styleguide extends Base_Controller {
           $pageData->setInlineStylesheets($inlineStyles);
           break;
         default:
-          show_404();
+          $this->show_404();
           break;
       }
 
