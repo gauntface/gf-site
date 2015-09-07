@@ -9,13 +9,10 @@ class Feed extends Base_Controller {
 
   public function index($feedType = 'rss') {
     $this->load->helper('url');
-    log_message('error', 'Feed HERE ---------------------------------- ');
     $this->load->model('blog/PostsModel');
 
     $postsModel = new PostsModel();
     $data['posts'] = $postsModel->getPublishedPosts($startIndex = 0, self::$FEED_POST_COUNT);
-
-    log_message('error', 'FeedType: ' . $feedType);
 
     switch($feedType) {
       case 'rss':
