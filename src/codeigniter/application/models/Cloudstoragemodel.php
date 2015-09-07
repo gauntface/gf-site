@@ -2,6 +2,8 @@
 
 class CloudStorageModel extends CI_Model {
 
+  public $GENERATED_IMG_DIR = 'generated/';
+
   function __construct() {
     // Call the Model constructor
     parent::__construct();
@@ -36,5 +38,49 @@ class CloudStorageModel extends CI_Model {
 
     return $storage;
   }
-  
+
+  public function doesImageExist($objectPath) {
+    $this->load->driver('cache', array('adapter' => 'apc'));
+    if ($this->cache->get($objectPath)) {
+      return true;
+    }
+
+    try {
+      $storageService = $this->getGoogleClient();
+      $imgObject = $storageService->objects->get(
+        $this->config->item('storage-bucketname', 'confidential'),
+        $objectPath
+      );
+
+      $this->cache->save($objectPath, true, 0);
+
+      return true;
+    } catch (Exception $e) {
+      // NOOP
+    }
+    return false;
+  }
+
+  public function saveImage($objectPath, $localFilepath) {
+    $acl = new Google_Service_Storage_ObjectAccessControl();
+    $acl->setEntity('allUsers');
+    $acl->setRole('OWNER');
+
+    $obj = new Google_Service_Storage_StorageObject();
+    $obj->setName($objectPath);
+    $obj->setAcl(array($acl));
+    $obj->setContentType(mime_content_type($localFilepath));
+
+    $storageService = $this->getGoogleClient();
+    $storageService->objects->insert(
+      $this->config->item('storage-bucketname', 'confidential'),
+      $obj,
+      [
+        'name' => $objectPath,
+        'data' => file_get_contents($localFilepath),
+        'mimeType' => mime_content_type($localFilepath),
+        'uploadType' => 'media'
+      ]
+    );
+  }
 }

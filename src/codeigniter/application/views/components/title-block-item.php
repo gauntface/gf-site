@@ -38,13 +38,19 @@ if ($title->getSmallBackgroundImage()) {
   $titleBlockSmallBGCSS = str_replace('.class-name', '.'.$title->getClassName().' .title-block__content', $titleBlockSmallBGCSS);
 
   $bgImgPathinfo = pathinfo($title->getSmallBackgroundImage());
-  $titleBlockSmallBGCSS = str_replace('{{img-url}}', $bgImgPathinfo['dirname'].'/'.$bgImgPathinfo['filename'], $titleBlockSmallBGCSS);
-  $titleBlockSmallBGCSS = str_replace('{{img-extension}}', $bgImgPathinfo['extension'], $titleBlockSmallBGCSS);
-  ?>
-  <style>
-  <?php echo $titleBlockSmallBGCSS; ?>
-  </style>
-  <?php
+  if (
+    isset($bgImgPathinfo['dirname']) &&
+    isset($bgImgPathinfo['filename']) &&
+    isset($bgImgPathinfo['extension'])
+  ) {
+    $titleBlockSmallBGCSS = str_replace('{{img-url}}', $bgImgPathinfo['dirname'].'/'.$bgImgPathinfo['filename'], $titleBlockSmallBGCSS);
+    $titleBlockSmallBGCSS = str_replace('{{img-extension}}', $bgImgPathinfo['extension'], $titleBlockSmallBGCSS);
+    ?>
+    <style>
+    <?php echo $titleBlockSmallBGCSS; ?>
+    </style>
+    <?php
+  }
 }
 ?>
 

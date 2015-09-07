@@ -10,7 +10,6 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Stora
 class ImageProducer extends Base_Controller {
 
   protected $CLOUD_STORAGE_URL = 'https://storage.googleapis.com/gauntface-site-uploads/';
-  protected $GENERATED_IMG_DIR = 'generated/';
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
   public function index() {
@@ -45,27 +44,6 @@ class ImageProducer extends Base_Controller {
     $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
   }
 
-  private function doesImageExist($storageService, $objectPath) {
-    $this->load->driver('cache', array('adapter' => 'apc'));
-    if ($this->cache->get($objectPath)) {
-      return true;
-    }
-
-    try {
-      $imgObject = $storageService->objects->get(
-        $this->config->item('storage-bucketname', 'confidential'),
-        $objectPath
-      );
-
-      $this->cache->save($objectPath, true, 0);
-
-      return true;
-    } catch (Exception $e) {
-      // NOOP
-    }
-    return false;
-  }
-
   private function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
     $this->load->model('CloudStorageModel');
 
@@ -82,15 +60,13 @@ class ImageProducer extends Base_Controller {
     log_message('error', '$imageDirectory = '.$imageDirectory);
 
     $originalObjectPath = $imageDirectory.'/'.$fileName.'.'.$fileExtension;
-    $generatedObjectPath = $this->GENERATED_IMG_DIR.$imageDirectory.'/'.
+    $generatedObjectPath = $this->CloudStorageModel->GENERATED_IMG_DIR.$imageDirectory.'/'.
       $fileName."_".$width."x".$height."x".$density.".".$fileExtension;
 
     log_message('error', '$originalObjectPath = '.$originalObjectPath);
     log_message('error', '$generatedObjectPath = '.$generatedObjectPath);
 
-    $storageService = $this->getGoogleClient();
-
-    if ($this->doesImageExist($storageService, $generatedObjectPath) != false) {
+    if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
       $this->load->helper('url');
       redirect('https://storage.googleapis.com/'.
         $this->config->item('storage-bucketname', 'confidential').
@@ -99,22 +75,21 @@ class ImageProducer extends Base_Controller {
     }
 
     // Get the original image
-    $originalImg = $this->doesImageExist($storageService, $originalObjectPath);
-    if ($originalImg == false) {
+    if ($this->CloudStorageModel->doesImageExist($originalObjectPath) == false) {
       // If the response is false we can't find the original image to resize
       $this->show_404();
       return;
     }
 
     // Resize the original image
-    $directoryToCopyTo = $this->GENERATED_IMG_DIR.$imageDirectory.'/';
+    $directoryToCopyTo = $this->CloudStorageModel->GENERATED_IMG_DIR.$imageDirectory.'/';
     if(!file_exists($directoryToCopyTo)) {
       $old = umask(0);
       mkdir($directoryToCopyTo, 0777, true);
       umask($old);
     }
 
-    $localOriginalFilepath = $this->GENERATED_IMG_DIR.$originalObjectPath;
+    $localOriginalFilepath = $this->CloudStorageModel->GENERATED_IMG_DIR.$originalObjectPath;
     if (!file_exists($localOriginalFilepath)) {
       // File doesn't exist locally so need to attempt a download of it
       $copyUrl = 'https://storage.googleapis.com/'.
@@ -146,25 +121,7 @@ class ImageProducer extends Base_Controller {
       return;
     }
 
-    $acl = new Google_Service_Storage_ObjectAccessControl();
-    $acl->setEntity('allUsers');
-    $acl->setRole('OWNER');
-
-    $obj = new Google_Service_Storage_StorageObject();
-    $obj->setName($generatedObjectPath);
-    $obj->setAcl(array($acl));
-    $obj->setContentType(mime_content_type($localResizedFilepath));
-
-    $storageService->objects->insert(
-      $this->config->item('storage-bucketname', 'confidential'),
-      $obj,
-      [
-        'name' => $generatedObjectPath,
-        'data' => file_get_contents($localResizedFilepath),
-        'mimeType' => mime_content_type($localResizedFilepath),
-        'uploadType' => 'media'
-      ]
-    );
+    $this->CloudStorageModel->storeImage($generatedObjectPath, $localResizedFilepath);
 
     $this->load->helper('url');
     redirect('https://storage.googleapis.com/'.
@@ -180,7 +137,7 @@ class ImageProducer extends Base_Controller {
     $density = $this->sanitiseDensity($matches["density"]);
 
     // Ensure the path exists to add images to
-    $directoryToGenerateImages = $this->GENERATED_IMG_DIR.'/'.$imageDirectory.'/'.$matches["origfilename"];
+    $directoryToGenerateImages = $this->CloudStorageModel->GENERATED_IMG_DIR.'/'.$imageDirectory.'/'.$matches["origfilename"];
     if(!file_exists($directoryToGenerateImages)) {
       $old = umask(0);
       mkdir($directoryToGenerateImages, 0777, true);
@@ -203,7 +160,7 @@ class ImageProducer extends Base_Controller {
     $resizedFilepath =
       str_replace(
         $this->URL_CONTROLLER_NAME,
-        $this->GENERATED_IMG_DIR,
+        $this->CloudStorageModel->GENERATED_IMG_DIR,
         $pathinfo["dirname"]
       )."/".
       $matches["origfilename"]."/".
