@@ -7,8 +7,9 @@ class Feed extends Base_Controller {
 
   private static $FEED_POST_COUNT = 50;
 
-  public function index($feedType = 'rss')
-  {
+  public function index($feedType = 'rss') {
+    $this->load->helper('url');
+    log_message('error', 'Feed HERE ---------------------------------- ');
     $this->load->model('blog/PostsModel');
 
     $postsModel = new PostsModel();
