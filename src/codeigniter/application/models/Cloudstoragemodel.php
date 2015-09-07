@@ -83,4 +83,11 @@ class CloudStorageModel extends CI_Model {
       ]
     );
   }
+
+  public function getCloudStorageUrl($objectPath) {
+    $this->config->load('confidential', TRUE);
+    return 'https://storage.googleapis.com/'.
+      $this->config->item('storage-bucketname', 'confidential').
+      '/'.$objectPath;
+  }
 }

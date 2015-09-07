@@ -122,7 +122,6 @@ export default class BlogModel {
       responseObj[key] = value;
     }
 
-    console.log(responseObj);
     return responseObj;
   }
 }

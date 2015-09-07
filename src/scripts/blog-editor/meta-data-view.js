@@ -76,11 +76,10 @@ export default class MetaDataView extends BlogView {
   }
 
   updateMainImgColors() {
-    console.log(this.mainImg);
+    console.log('updateMainImgColors()');
     Palette
       .generate(this.mainImg)
       .done((palette) => {
-        console.log(palette);
         var accentColors = palette.getAccentColors();
         var keys = Object.keys(accentColors);
 
@@ -94,8 +93,6 @@ export default class MetaDataView extends BlogView {
           if (!color) {
             continue;
           }
-
-          console.log(color);
 
           var hexString = '#' + color._color.red.toString(16) +
             color._color.green.toString(16) +

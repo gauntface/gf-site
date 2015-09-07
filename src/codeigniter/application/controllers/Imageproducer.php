@@ -13,7 +13,6 @@ class ImageProducer extends Base_Controller {
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
   public function index() {
-
     $pathinfo = pathinfo($this->uri->uri_string());
     $numOfSegments = $this->uri->total_segments();
 
@@ -68,9 +67,7 @@ class ImageProducer extends Base_Controller {
 
     if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
       $this->load->helper('url');
-      redirect('https://storage.googleapis.com/'.
-        $this->config->item('storage-bucketname', 'confidential').
-        '/'.$generatedObjectPath, 301);
+      redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
       return;
     }
 
@@ -121,12 +118,10 @@ class ImageProducer extends Base_Controller {
       return;
     }
 
-    $this->CloudStorageModel->storeImage($generatedObjectPath, $localResizedFilepath);
+    $this->CloudStorageModel->saveImage($generatedObjectPath, $localResizedFilepath);
 
     $this->load->helper('url');
-    redirect('https://storage.googleapis.com/'.
-      $this->config->item('storage-bucketname', 'confidential').
-      '/'.$generatedObjectPath, 301);
+    redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
   }
 
   private function serveUpAppropriateImageOld($pathinfo, $matches, $imageDirectory) {
