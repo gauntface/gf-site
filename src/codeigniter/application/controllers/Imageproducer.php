@@ -29,14 +29,16 @@ class ImageProducer extends Base_Controller {
 
     if($patternFound == 0) {
       // The regular expression didn't work, it must be a path to the original image required
-      $originalFile = $this->uri->uri_string();
+      $this->load->model('CloudStorageModel');
 
+      $objectPath = $imageDirectory.'/'.$pathinfo["filename"].'.'.$pathinfo["extension"];
       // original image not found, show 404
-      if (!file_exists($originalFile)) {
-        $this->show_404();
+      if ($this->CloudStorageModel->doesImageExist($objectPath) == false) {
+        return $this->show_404();
       }
 
-      $this->serveImage($originalFile);
+      $this->load->helper('url');
+      redirect($this->CloudStorageModel->getCloudStorageUrl($objectPath), 301);
       return;
     }
 
