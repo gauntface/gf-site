@@ -63,7 +63,7 @@ class Blog extends Base_Controller {
         $titleModel->setTitle($post->getTitle());
         $titleModel->setDescription($post->getExcerptHTML());
         $titleModel->setTime($post->getPublishTime());
-        $titleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
+        $titleModel->setSmallBackgroundImage($post->getGreyScaleImg());
         $titleModel->makePadded(true);
         $titleModel->setLinkURL('/blog/view/'.$post->getId());
 
