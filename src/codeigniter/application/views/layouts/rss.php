@@ -22,8 +22,7 @@
         $itemUrl = base_url().'blog/'.date("Y", $post->getPublishTime()).'/'.date("m", $post->getPublishTime()).'/'.date("d", $post->getPublishTime()).'/'.$post->getSlug();
 
         $rssfeed .= '<link>' . $itemUrl . '</link>'."\r\n";
-        // TODO Change to slug
-        //$rssfeed .= '<guid isPermaLink="false">' . base_url().'blog/'.$post['id'] . '</guid>'."\r\n";
+        $rssfeed .= '<guid isPermaLink="false">' . $post->getPublicURL() . '</guid>'."\r\n";
 
         $rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", $post->getPublishTime()) . '</pubDate>'."\r\n";
         $rssfeed .= '</item>'."\r\n";
