@@ -14,7 +14,8 @@
 }
 
 .gf-header__logo {
-  text-indent: -9999999px;
+  width: $base-line-height * 4;
+  height: $base-line-height * 4;
 }
 
 @media (min-width: $break-xsmall) {

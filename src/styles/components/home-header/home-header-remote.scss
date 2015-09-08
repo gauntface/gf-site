@@ -9,20 +9,6 @@
   background-position: center;
 }
 
-.gf-header__logo {
-  width: $base-line-height * 4;
-  height: $base-line-height * 4;
-
-  margin: 0;
-
-  color: white;
-
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  background-image: url(/images/gf-logo.svg);
-}
-
 $maxHeight: strip-units($top-img-small-height);
 
 @include responsive-image-width-based('/imageproducer/static/home-header/header', 'jpg', '.gf-header',
