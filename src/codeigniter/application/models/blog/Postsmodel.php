@@ -90,6 +90,23 @@ class PostsModel extends CI_Model {
     return new SinglePostModel($row);
   }
 
+  public function getPostByDetails($year, $month, $day, $slug) {
+    $this->load->model('blog/SinglePostModel');
+
+    $sql = "SELECT * FROM posts_table WHERE DATE(publish_date) = ? AND post_slug = ?";
+    $query = $this->db->query($sql, array($year.'-'.$month.'-'.$day, $slug));
+
+    if($query->num_rows() == 0) {
+        return null;
+    } else if($query->num_rows() != 1) {
+      log_message('error', '[PostsModel.php getPostById()] More than one result returned for a post ID.');
+      throw new Exception('Multiple posts found with ID: '.$postId);
+    }
+
+    $row = $query->row();
+    return new SinglePostModel($row);
+  }
+
   // This is from draft_date as it's for the admin panel
   public function getDraftPosts(
     $startIndex = 0,
@@ -191,9 +208,12 @@ class PostsModel extends CI_Model {
   }
 
   public function publishPost($singlePostModel) {
-    $sql = "UPDATE posts_table SET post_status = 'published', publish_date = (now()) WHERE post_id = ?";
+    $this->load->helper('slug');
+
+    $sql = "UPDATE posts_table SET post_status = 'published', publish_date = (now()), post_slug = ? WHERE post_id = ?";
 
     $this->db->query($sql, array(
+      slugify($singlePostModel->getTitle()),
       $singlePostModel->getPostId()
       ));
 

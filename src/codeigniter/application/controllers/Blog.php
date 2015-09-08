@@ -52,7 +52,7 @@ class Blog extends Base_Controller {
       $titleModel->setFullbleedBackgroundColor($posts[0]->getMainImgBgColor());
       $titleModel->makePadded(true);
       $titleModel->setUseLightDivider(true);
-      $titleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
+      $titleModel->setLinkURL($posts[0]->getPublicURL());
 
       array_push($data['postTitles'] , $titleModel);
 
@@ -65,7 +65,7 @@ class Blog extends Base_Controller {
         $titleModel->setTime($post->getPublishTime());
         $titleModel->setSmallBackgroundImage($post->getGreyScaleImg());
         $titleModel->makePadded(true);
-        $titleModel->setLinkURL('/blog/view/'.$post->getId());
+        $titleModel->setLinkURL($post->getPublicURL());
 
         array_push($data['postTitles'] , $titleModel);
       }
@@ -74,13 +74,15 @@ class Blog extends Base_Controller {
     $this->load->view('content/blog-index', $data);
   }
 
-  public function view ($postId = null) {
-    $this->load->helper('file');
+  public function viewByDetails($year, $month, $day, $slug) {
+    $this->load->model('blog/PostsModel');
 
-    $this->load->model('PageModel');
-    $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $postsModel = new PostsModel();
+    $postModel = $postsModel->getPostByDetails($year, $month, $day, $slug);
+    $this->render($postModel);
+  }
+
+  public function view ($postId = null) {
     $this->load->model('blog/PostsModel');
 
     if ($postId == null) {
@@ -89,6 +91,21 @@ class Blog extends Base_Controller {
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
+    $this->render($postModel);
+  }
+
+  private function render($postModel) {
+    $this->load->helper('file');
+
+    $this->load->model('PageModel');
+    $this->load->model('ContentGridModel');
+    $this->load->model('AppBarModel');
+    $this->load->model('TitleModel');
+
+    if($postModel == null) {
+      return $this->show_404();
+    }
+
     if (!$postModel->isPublished() && !$this->verifyLoggedIn()) {
       return $this->show_404();
     }

@@ -22,9 +22,6 @@ if ($title->isPadded()) {
 }
 
 if ($title->getFullbleedBackgroundImage()) {
-  //if($title->getFullbleedBackgroundColor()) {
-  //    $inlineFullbleedBackgroundStyle .= ' background-color: '.$title->getFullbleedBackgroundColor().';';
-  //}
   $additionalStyles .= ' is-light-text';
 
   $titleBlockFullbleedBGCSS = read_file('styles/templates/title-block-fullbleed-bg-img.css');

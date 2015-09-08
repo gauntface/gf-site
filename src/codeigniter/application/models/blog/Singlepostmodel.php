@@ -22,7 +22,7 @@ class SinglePostModel extends CI_Model {
     if($blogPostQuery) {
       $this->_id = urldecode($blogPostQuery->post_id);
       $this->_title = urldecode($blogPostQuery->post_title);
-      //$this->_slug = urldecode();
+      $this->_slug = urldecode($blogPostQuery->post_slug);
       $this->_excerpt = urldecode($blogPostQuery->post_excerpt);
       $this->_markdown = urldecode($blogPostQuery->post_markdown);
       $this->_greyScaleImg = urldecode($blogPostQuery->post_grey_scale_img);
@@ -115,5 +115,15 @@ class SinglePostModel extends CI_Model {
 
   public function getSlug() {
     return $this->_slug;
+  }
+
+  public function getPublicURL() {
+    $this->load->helper('url');
+
+    return base_url().'blog/'.
+      date("Y", $this->getPublishTime()).'/'.
+      date("m", $this->getPublishTime()).'/'.
+      date("d", $this->getPublishTime()).'/'.
+      $this->getSlug();
   }
 }

@@ -39,7 +39,7 @@ class Home extends Base_Controller {
       $firstPostTitleModel->setDescription($posts[0]->getExcerptHTML());
       $firstPostTitleModel->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
       $firstPostTitleModel->setTime($posts[0]->getPublishTime());
-      $firstPostTitleModel->setLinkURL('/blog/view/'.$posts[0]->getId());
+      $firstPostTitleModel->setLinkURL($posts[0]->getPublicURL());
     }
 
     $bottomTitleModel = new TitleModel();
