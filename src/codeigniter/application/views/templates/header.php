@@ -100,5 +100,10 @@
         <!-- Manifest File -->
         <link rel="manifest" href="manifest.json">
 
+        <!-- Prefetch -->
+        <link rel="dns-prefetch" href="http://localhost">
+        <link rel="dns-prefetch" href="http://www.google-analytics.com">
+        <link rel="dns-prefetch" href="https://storage.googleapis.com/">
+
     </head>
     <body <?php if($page->getBodyClass() != null) {echo('class="'.$page->getBodyClass().'"');} ?>>
