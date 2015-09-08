@@ -27,12 +27,15 @@ gulp.task('styles:clean', del.bind(null, [
   ], {dot: true}));
 
 gulp.task('compile-sass', function() {
+  // TODO: We only want to disable source maps here for templates/
+  // Styleguide can and should have source maps.
+  var genSourceMaps = false;
   gulp.src('src/styles/**/*.scss')
-    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.init()))
     .pipe(plugins.sass()
       .on('error', plugins.sass.logError))
     .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(plugins.sourcemaps.write())
+    .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.write()))
     .pipe(gulp.dest(GLOBAL.config.build.styles));
 });
 
