@@ -93,6 +93,10 @@ img {
   height: auto;
 }
 
+hr {
+  margin: $base-line-height;
+}
+
 @media (min-width: $break-xsmall) {
   h1, h2, h3, h4, h5, h6, p {
     margin-bottom: $base-line-height;

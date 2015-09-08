@@ -41,7 +41,7 @@ class Md extends Michelf\Markdown {
   function findLanguage($firstLine) {
     // TODO: Make this case insensitive
     $firstLine = strtolower(trim($firstLine));
-    $languages = array("javascript", "php", "java", "css", "html", "xml");
+    $languages = array("javascript", "php", "java", "css", "html", "xml", "python", "bash");
 
     for($i = 0; $i < count($languages); $i++) {
       if($firstLine == strtolower($languages[$i])) {
@@ -58,7 +58,11 @@ class Md extends Michelf\Markdown {
     $srcLines = explode("\n" , $rawSrc);
     $cleanSrc = '';
     for($i = 0; $i < count($srcLines); $i++) {
-      $cleanSrc .= substr($srcLines[$i], 4) . "\n";
+      $cleanSrc .= substr($srcLines[$i], 4);
+      // Avoid adding new line to end of code
+      if($i+1 < count($srcLines)) {
+        $cleanSrc .= "\n";
+      }
     }
 
     return $cleanSrc;

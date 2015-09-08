@@ -13,6 +13,8 @@
   ],
   "extrasInline": [
     "src/styles/partials/base-core.scss",
+    "src/styles/partials/base-code.scss",
+    "src/styles/partials/base-iframe.scss",
     "src/styles/partials/geshi-code.scss"
   ],
   "extrasRemote": [

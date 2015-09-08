@@ -185,12 +185,12 @@ class PostsModel extends CI_Model {
       WHERE post_id = ?";
 
     $this->db->query($sql, array(
-      $singlePostModel->getTitle(),
-      $singlePostModel->getExcerptMarkdown(),
-      $singlePostModel->getContentMarkdown(),
-      $singlePostModel->getGreyScaleImg(),
-      $singlePostModel->getMainImg(),
-      $singlePostModel->getMainImgBgColor(),
+      urlencode($singlePostModel->getTitle()),
+      urlencode($singlePostModel->getExcerptMarkdown()),
+      urlencode($singlePostModel->getContentMarkdown()),
+      urlencode($singlePostModel->getGreyScaleImg()),
+      urlencode($singlePostModel->getMainImg()),
+      urlencode($singlePostModel->getMainImgBgColor()),
       $singlePostModel->getPostId(),
       ));
 

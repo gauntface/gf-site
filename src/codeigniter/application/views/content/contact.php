@@ -6,13 +6,14 @@ $this->load->view('components/appbar');
 $this->load->view('components/title-block-item', array('title' => $title));
 ?>
 
-<p class="u-center">Send me an email or <a href="https://twitter.com/gauntface">tweet</a></p>
+<p class="u-center">Send me an <a href="mailto:gauntface.site@gauntface.co.uk">email</a> or <a href="https://twitter.com/gauntface">tweet</a></p>
 
 <section class="contact__message-form-container">
-  <p><input type="text" placeholder="Name" /></p>
-  <p><input type="text" placeholder="Email" /></p>
-  <p><textarea placeholder="Message"></textarea></p>
-  <p class="u-center"><button>Send</button></p>
+  <p class="u-center">This form will be enabled soon, sorry for the delay.</p>
+  <p><input type="text" placeholder="Name" disabled /></p>
+  <p><input type="text" placeholder="Email" disabled /></p>
+  <p><textarea placeholder="Message" disabled ></textarea></p>
+  <p class="u-center"><button disabled >Send</button></p>
 </section>
 
 <?php

@@ -80,6 +80,7 @@ export default class MetaDataView extends BlogView {
     Palette
       .generate(this.mainImg)
       .done((palette) => {
+        window.test = palette;
         var accentColors = palette.getAccentColors();
         var keys = Object.keys(accentColors);
 
@@ -94,9 +95,7 @@ export default class MetaDataView extends BlogView {
             continue;
           }
 
-          var hexString = '#' + color._color.red.toString(16) +
-            color._color.green.toString(16) +
-            color._color.blue.toString(16);
+          var hexString = color.toHex();
 
           var colorOption = document.createElement('div');
           colorOption.classList.add('blogcreate__color-option-item');
