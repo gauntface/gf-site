@@ -6,9 +6,9 @@
   <a class="subtle-footer__social-link-item" href="https://plus.google.com/+MattGaunt">
     <img src="/images/components/footer/footer-gplus.svg" alt="Google+ Profile" />
   </a>
-  <a class="subtle-footer__social-link-item">
+  <!--<a class="subtle-footer__social-link-item">
     <img src="/images/components/footer/footer-youtube.svg" alt="Youtube Logo" />
-  </a>
+  </a>-->
   <div class="subtle-footer__spacer"></div>
   <a class="subtle-footer__social-link-item subtle-footer__social-link-item--rss" href="/feed">
     <img src="/images/components/footer/footer-rss.svg" alt="RSS Feed" />

@@ -10,6 +10,10 @@
   background-color: $youtube-block-bg-color;
   color: $youtube-block-font-color;
   text-align: center;
+
+  & a {
+    text-decoration: none;
+  }
 }
 
 .youtube-play-icon {

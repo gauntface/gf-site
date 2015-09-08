@@ -115,6 +115,7 @@ class Blog extends Base_Controller {
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
 
     log_message('error', $leftSectionCSS);
+    log_message('error', 'COLOR ->>>>>>>>>>>>>>>>>>>>>>>>>> '.$postModel->getMainImgBgColor());
 
     // This will handle responsive image template when needed
     //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);

@@ -44,7 +44,7 @@ class Home extends Base_Controller {
 
     $bottomTitleModel = new TitleModel();
     $bottomTitleModel->setTitle('Smashing Book 5');
-    $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now!</p><p><a href="#">Get the print or ebook HERE</a></p>');
+    $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now!</p><p><a href="http://www.smashingmagazine.com/2015/03/real-life-responsive-web-design-smashing-book-5/">Get the print or ebook HERE</a></p>');
     $bottomTitleModel->setSmallTopText('News');
     $bottomTitleModel->setSmallBackgroundImage('/imageproducer/static/smashing-mag/smashing-mag.png');
     $bottomTitleModel->makePadded(true);
