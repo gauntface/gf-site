@@ -18,10 +18,14 @@
 }
 
 .geshi_highlight {
+  width: 0;
+  flex: 1;
+
   font-family: $code-font-family;
   @include typography-font-size($font-size-code);
 
   padding: $base-line-height;
+  box-sizing: border-box;
 
   overflow-x: auto;
   white-space: nowrap;
