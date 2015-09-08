@@ -10,7 +10,7 @@
     <img src="/images/components/footer/footer-youtube.svg" alt="Youtube Logo" />
   </a>
   <div class="subtle-footer__spacer"></div>
-  <a class="subtle-footer__social-link-item subtle-footer__social-link-item--rss" href="/blog/feed">
+  <a class="subtle-footer__social-link-item subtle-footer__social-link-item--rss" href="/feed">
     <img src="/images/components/footer/footer-rss.svg" alt="RSS Feed" />
   </a>
   </div>
