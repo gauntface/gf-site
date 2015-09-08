@@ -25,7 +25,6 @@ gulp.task('copy-ci-third-party', function() {
 });
 
 gulp.task('copy-ci-uploads', function() {
-  console.log(GLOBAL.config.src.codeigniter + '/uploads/**/*');
   return gulp.src([
       GLOBAL.config.src.codeigniter + '/uploads/**/*'
     ])
