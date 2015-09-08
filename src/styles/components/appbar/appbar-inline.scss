@@ -65,6 +65,7 @@
     display: inline-block;
     position: relative;
 
+    // We use auto here because IE10 doesn't support initial
     min-width: auto;
     min-width: initial;
 
