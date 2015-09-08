@@ -49,9 +49,6 @@ RUN apt-get -y install nodejs nginx php5 php5-fpm build-essential
 # Gulp                          Build process
 RUN npm install -g gulp
 
-# Install depencies of Material Palette
-RUN cd src/scripts/third_party/material-palette && npm install
-
 #
 # Set up NGINX
 #
@@ -84,6 +81,9 @@ RUN chmod g+s /usr/share/nginx/html
 RUN mkdir -p /home/gauntface
 COPY . /home/gauntface
 WORKDIR /home/gauntface
+
+# Install depencies of Material Palette
+RUN cd ./src/scripts/third_party/material-palette && npm install
 
 #
 # Set up the Server / Docker

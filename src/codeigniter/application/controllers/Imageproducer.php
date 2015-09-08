@@ -94,6 +94,7 @@ class ImageProducer extends Base_Controller {
       $copyUrl = 'https://storage.googleapis.com/'.
         $this->config->item('storage-bucketname', 'confidential').
         '/'.$originalObjectPath;
+      log_message('error', 'Copy URL = '.$copyUrl);
       copy($copyUrl, $localOriginalFilepath);
     }
 
