@@ -14,9 +14,20 @@ export default class BaseController {
       this.addDOMContentLoadedCallback(() => this.onDOMContentLoaded());
     }
 
-    window.addEventListener('load', () => {
-      this.asyncLoadCSS();
-    });
+    // Code to handle Async Load of CSS
+    var requestAnimationFrame = window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame;
+    if (requestAnimationFrame) {
+      requestAnimationFrame(() => {
+        this.asyncLoadCSS();
+      });
+    } else {
+      window.addEventListener('load', () => {
+        this.asyncLoadCSS();
+      });
+    }
   }
 
   asyncLoadCSS() {
