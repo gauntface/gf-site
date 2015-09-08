@@ -59,6 +59,7 @@
     display: inline-block;
     position: relative;
 
+    min-width: auto;
     min-width: initial;
 
     text-align: center;
@@ -90,7 +91,7 @@
   .subappbar__title {
     display: inline-block;
 
-    width: auto;
+    min-width: auto;
     min-width: initial;
   }
 
