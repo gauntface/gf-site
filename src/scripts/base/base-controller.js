@@ -7,13 +7,16 @@ var LoadCSS = require('./../third_party/loadCSS/loadCSS.js');
 export default class BaseController {
   constructor() {
     addAnalytics();
-    this.asyncLoadCSS();
 
     window.GauntFace = window.GauntFace || {};
 
     if (this.onDOMContentLoaded) {
       this.addDOMContentLoadedCallback(() => this.onDOMContentLoaded());
     }
+
+    window.addEventListener('load', () => {
+      this.asyncLoadCSS();
+    });
   }
 
   asyncLoadCSS() {
