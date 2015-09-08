@@ -2,7 +2,7 @@
   $remoteStylesheets = $page->getRemoteStylesheets();
   if(isset($remoteStylesheets)) {
     ?>
-    <script type="text/javascript">
+    <script type="text/javascript" async>
       window.GauntFace = window.GauntFace || {};
       window.GauntFace._remoteStylesheets = [
         <?php
