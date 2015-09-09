@@ -12,7 +12,12 @@ class ImageProducer extends Base_Controller {
   protected $CLOUD_STORAGE_URL = 'https://storage.googleapis.com/gauntface-site-uploads/';
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
+  public function __construct() {
+        parent::__construct(0);
+  }
+
   public function index() {
+
     log_message('error', 'ImageProducer: Index()');
     $pathinfo = pathinfo($this->uri->uri_string());
     $numOfSegments = $this->uri->total_segments();
