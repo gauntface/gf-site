@@ -26,7 +26,6 @@ class Home extends Base_Controller {
     $this->load->model('TwitterKeys');
 
     $pageData = new PageModel();
-    $pageData->setTitle('Welcome');
     $pageData->setRemoteStylesheets(['styles/home-remote.css']);
     $pageData->setInlineStylesheets(['styles/home-inline.css']);
 
