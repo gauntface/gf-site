@@ -23,7 +23,8 @@ RUN apt-get update
 # php5-curl                     Used by twitter oauth
 # php5-mysql                    DB
 # php-apc                       APC Cache
-RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql php-apc
+# php5-imagick                  Needed for image resizing
+RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql php-apc php5-imagick
 
 
 #
