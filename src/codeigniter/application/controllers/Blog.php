@@ -5,6 +5,8 @@ require_once APPPATH.'controllers/Base_controller.php';
 
 class Blog extends Base_Controller {
 
+  public static $NUM_OF_RESULTS_PER_PAGE = 20;
+
   public function index($page = 0) {
     if($page < 0) {
       return $this->show_404();
@@ -18,9 +20,8 @@ class Blog extends Base_Controller {
 
     $postsModel = new PostsModel();
 
-    $numberOfResults = 20;
-    $offset = $page * $numberOfResults;
-    $posts = $postsModel->getPublishedPosts($startIndex = $offset, $numberOfResults);
+    $offset = $page * self::$NUM_OF_RESULTS_PER_PAGE;
+    $posts = $postsModel->getPublishedPosts($startIndex = $offset, self::$NUM_OF_RESULTS_PER_PAGE);
 
     $pageData = new PageModel();
     $pageData->setTitle('Blog');
@@ -88,6 +89,10 @@ class Blog extends Base_Controller {
     if ($postId == null) {
       return $this->show_404();
     }
+
+    // This is a view post by ID.
+    // We want no cache of this
+    $this->output->cache(0);
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);

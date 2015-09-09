@@ -122,6 +122,12 @@ class PostsModel extends CI_Model {
       return $this->getPosts($startIndex, $numberOfResults, $sort_field, 'published');
   }
 
+  public function getPublishedPostCount() {
+    $sql = "SELECT COUNT(*) AS post_count FROM posts_table WHERE post_status = 'published'";
+    $query = $this->db->query($sql);
+    return $query->result()[0]->post_count;
+  }
+
   private function getPosts($startIndex, $numberOfResults, $sort_field, $postStatus = null) {
     $this->load->model('blog/SinglePostModel');
 

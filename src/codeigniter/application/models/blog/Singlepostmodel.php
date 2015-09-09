@@ -120,6 +120,10 @@ class SinglePostModel extends CI_Model {
   public function getPublicURL() {
     $this->load->helper('url');
 
+    if ($this->getPublishTime() == null) {
+      return null;
+    }
+
     return base_url().'blog/'.
       date("Y", $this->getPublishTime()).'/'.
       date("m", $this->getPublishTime()).'/'.
