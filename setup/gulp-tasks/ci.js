@@ -72,12 +72,14 @@ gulp.task('ci-deploy-files', function(cb) {
 
 gulp.task('set-ci-file-permissions', function(cb) {
   // TODO This needs fixing to a more secure permission
+  mkdirp(GLOBAL.config.build.root + '/cache/');
   mkdirp(GLOBAL.config.build.root + '/uploads/');
   mkdirp(GLOBAL.config.build.root + '/generated/');
   mkdirp(GLOBAL.config.build.root + '/sessions/');
+  fs.chmodSync(GLOBAL.config.build.root + '/cache/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/uploads/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/generated/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/sessions/', '0700');
+  fs.chmodSync(GLOBAL.config.build.root + '/sessions/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/application/logs/', '777');
   cb();
 });
