@@ -13,6 +13,7 @@ class ImageProducer extends Base_Controller {
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
   public function index() {
+    log_message('error', 'ImageProducer: Index()');
     $pathinfo = pathinfo($this->uri->uri_string());
     $numOfSegments = $this->uri->total_segments();
 
@@ -28,6 +29,9 @@ class ImageProducer extends Base_Controller {
     $patternFound = preg_match($pattern, $pathinfo["filename"], $matches);
 
     if($patternFound == 0) {
+      log_message('error', 'ImageProducer: File Pattern wasn\'t right');
+      log_message('error', 'ImageProducer: $pathinfo["filename"] = ' . $pathinfo["filename"]);
+      log_message('error', 'ImageProducer: $imageDirectory = ' . $imageDirectory);
       // The regular expression didn't work, it must be a path to the original image required
       $this->load->model('CloudStorageModel');
 
@@ -42,10 +46,12 @@ class ImageProducer extends Base_Controller {
       return;
     }
 
+    log_message('error', 'ImageProducer: File Pattern was found');
     $this->serveUpAppropriateImage($pathinfo, $matches, $imageDirectory);
   }
 
   private function serveUpAppropriateImage($pathinfo, $matches, $imageDirectory) {
+    log_message('error', 'ImageProducer: serveUpAppropriateImage()');
     $this->load->model('CloudStorageModel');
 
     // Round sizes up to 50 and set density to max of 4
