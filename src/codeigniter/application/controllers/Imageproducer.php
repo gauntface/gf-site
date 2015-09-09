@@ -13,7 +13,7 @@ class ImageProducer extends Base_Controller {
   protected $URL_CONTROLLER_NAME = 'imageproducer/';
 
   public function __construct() {
-        parent::__construct(0);
+    parent::__construct(0);
   }
 
   public function index() {

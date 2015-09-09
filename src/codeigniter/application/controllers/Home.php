@@ -7,6 +7,11 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 class Home extends Base_Controller {
 
+  public function __construct() {
+    // Cache for 60 minutes
+    parent::__construct(60);
+  }
+
   public function index()
   {
     if(isset($_SERVER['CI_ENV'])) {
