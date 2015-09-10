@@ -15,7 +15,8 @@
     "src/styles/partials/base-core.scss",
     "src/styles/partials/base-code.scss",
     "src/styles/partials/base-iframe.scss",
-    "src/styles/partials/geshi-code.scss"
+    "src/styles/partials/geshi-code.scss",
+    "src/styles/pages/blog-post/_blog-post-inline.scss"
   ],
   "extrasRemote": [
 

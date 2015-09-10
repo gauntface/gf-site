@@ -3,6 +3,20 @@
 .split-section--half-container {
   display: flex;
 
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.split-section--half-container > * {
+  width: 100%;
+}
+
+@media (min-width: $break-small) {
+  .split-section--half-container {
+    flex-direction: row;
+  }
+
+  .split-section--half-container > * {
+    width: 0;
+    flex: 1;
+  }
 }

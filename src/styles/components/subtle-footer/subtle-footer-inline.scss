@@ -45,7 +45,7 @@
 @media (min-width: $break-xsmall) {
   .subtle-footer {
     height: auto;
-    padding: ($base-line-height) 0;
+    margin: ($base-line-height) 0;
   }
 
   .subtle-footer__social-link-item {
@@ -81,6 +81,6 @@
 
 @media (min-width: $break-small) {
   .subtle-footer {
-    padding: ($base-line-height * 2) 0;
+    margin: ($base-line-height * 2) 0;
   }
 }

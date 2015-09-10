@@ -2,7 +2,7 @@
 @import "../../variables/dimens";
 
 .twitter-block {
-  padding: $base-line-height ($base-line-height * 0.5);
+  padding: $base-line-height ($base-line-height * 0.5) ($base-line-height * 2) ($base-line-height * 0.5);
 
   background-color: $twitter-block-bg-color;
   color: $twitter-block-font-color;
