@@ -11,99 +11,66 @@
 ?>
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-        <title><?php echo($page->getTitle()); ?></title>
-        <meta name="description" content="<?php echo($page->getDescription()); ?>">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?php echo($page->getTitle()); ?></title>
+    <meta name="description" content="<?php echo($page->getDescription()); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='theme-color' content='<?php echo($page->getThemeColor()); ?>'>
 
-        <!-- Schema.org data-->
-        <?php if(isset($itemPropName)) {?>
-        <meta itemprop="name" content="<?php echo($itemPropName); ?>">
-        <meta property="og:title" content="<?php echo($itemPropName); ?>">
-        <meta property="og:url" content="<?php echo(current_url()); ?>">
-        <meta property="og:type" content="article">
-        <?php } ?>
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/rss'); ?>">
+    <link rel="alternate" type="application/atom+xml" title="Atom Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/atom'); ?>">
 
-        <?php if(isset($itemPropDescription)) {?>
-          <meta itemprop="description" content="<?php echo($itemPropDescription); ?>">
-        <meta property="og:description" content="<?php echo($itemPropDescription); ?>">
-        <?php } ?>
+    <!-- Canonical -->
+    <link rel="canonical" href="<?php echo(current_url()); ?>" />
 
-        <?php if(isset($itemPropImg)) {?>
-        <meta itemprop="image" content="<?php echo($itemPropImg); ?>">
-        <meta property="og:image" content="<?php echo($itemPropImg); ?>">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="gauntface">
-        <?php } ?>
+    <!-- Manifest File -->
+    <link rel="manifest" href="manifest.json">
 
-        <link rel="canonical" href="<?php echo(current_url()); ?>" />
+    <?php if(isset($noindex) && $noindex) {?>
+    <meta name="robots" content="noindex">
+    <?php } ?>
 
-        <?php if(isset($noindex) && $noindex) {?>
-        <meta name="robots" content="noindex">
-        <?php } ?>
+    <!-- Schema.org data-->
+    <?php include('schema_header.php'); ?>
 
-        <!-- RSS Feed -->
-        <link rel="alternate" type="application/rss+xml" title="RSS Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/rss'); ?>">
-        <link rel="alternate" type="application/atom+xml" title="Atom Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/atom'); ?>">
+    <!-- IE Specific Tags -->
+    <?php include('microsoft_header.php'); ?>
 
-        <!-- IE Specific Tags -->
-        <meta name="msapplication-tap-highlight" content="no"/>
-        <meta name="msapplication-TileColor" content="<?php echo($page->getThemeColor()); ?>">
-        <meta name="msapplication-TileImage" content="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-wp-144.png')); ?>">
+    <!-- Apple Specific Tags -->
+    <?php include('apple_header.php'); ?>
 
-        <!-- Apple Specific Tags -->
-        <link rel="apple-touch-icon" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-57.png')); ?>">
-        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-76.png')); ?>">
-        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-120.png')); ?>">
-        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-152.png')); ?>">
-        <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
+    <!-- Generic Fav Icons -->
+    <?php include('generic_header.php'); ?>
 
-        <meta name='theme-color' content='<?php echo($page->getThemeColor()); ?>'>
+    <!-- Prefetch -->
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://storage.googleapis.com/">
 
-        <!-- Generic Fav Icons -->
-        <link rel="shortcut icon" sizes="32x32" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-32.png')); ?>">
-        <link rel="shortcut icon" sizes="48x48" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-48.png')); ?>">
-        <link rel="shortcut icon" sizes="72x72" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-72.png')); ?>">
-        <link rel="shortcut icon" sizes="96x96" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-96.png')); ?>">
-        <link rel="shortcut icon" sizes="144x144" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-144.png')); ?>">
-        <link rel="shortcut icon" sizes="192x192" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-192.png')); ?>">
+    <?php
+    $inlineStylesheets = $page->getInlineStylesheets();
+    $inlineRawCSS = $page->getInlineRawCSS();
+    if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
+      echo('<style>');
+    }
 
-        <!-- Generic but used by Opera Coast for Splash Screen -->
-        <link rel="shortcut icon" sizes="228x228" href="<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-228.png')); ?>">
+    if (isset($inlineStylesheets)) {
+      foreach($inlineStylesheets as $singleStylesheet) {
+        echo(read_file($singleStylesheet));
+      }
+    }
 
-        <?php
-            $inlineStylesheets = $page->getInlineStylesheets();
-            $inlineRawCSS = $page->getInlineRawCSS();
-            if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
-              echo('<style>');
-            }
+    if(isset($inlineRawCSS)) {
+      foreach($inlineRawCSS as $rawCSS) {
+        echo($rawCSS);
+      }
+    }
 
-            if (isset($inlineStylesheets)) {
-              foreach($inlineStylesheets as $singleStylesheet) {
-                echo(read_file($singleStylesheet));
-              }
-            }
-
-            if(isset($inlineRawCSS)) {
-              foreach($inlineRawCSS as $rawCSS) {
-                echo($rawCSS);
-              }
-            }
-
-            if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
-              echo('</style>');
-            }
-          ?>
-
-        <!-- Manifest File -->
-        <link rel="manifest" href="manifest.json">
-
-        <!-- Prefetch -->
-        <link rel="dns-prefetch" href="http://localhost">
-        <link rel="dns-prefetch" href="http://www.google-analytics.com">
-        <link rel="dns-prefetch" href="https://storage.googleapis.com/">
-
-    </head>
-    <body <?php if($page->getBodyClass() != null) {echo('class="'.$page->getBodyClass().'"');} ?>>
+    if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
+      echo('</style>');
+    }
+    ?>
+  </head>
+  <body <?php if($page->getBodyClass() != null) {echo('class="'.$page->getBodyClass().'"');} ?>>

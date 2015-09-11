@@ -21,7 +21,7 @@ class PageModel extends CI_Model {
     // Call the Model constructor
     parent::__construct();
 
-    $this->_themeColor = '#000000';
+    $this->_themeColor = '#bbbbbb';
     $this->_remoteScripts = ['scripts/standard-page.es6.js'];
   }
 
@@ -59,7 +59,7 @@ class PageModel extends CI_Model {
 
   // Expiry time is 24 hours
   public function getExpiryTimeInSeconds() {
-    return (60 * 60 * 24);
+    return (24 * 60 * 60);
   }
 
   public function getExpiryDate() {

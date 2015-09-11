@@ -5,6 +5,8 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
+
+  // This is a default image for the view
   background-image: url("/imageproducer/static/about/matt_200x288x1.png");
 }
 
@@ -27,6 +29,7 @@ $smallHeight: strip-units($top-img-small-height);
 
 @media (min-width: $break-medium) {
   .content-split__left-section {
+    // This is a default image for the view at this viewport
     background-image: url("/imageproducer/static/about/matt_0x300x1.png");
   }
   @include responsive-image-height-based(
