@@ -11,6 +11,6 @@
 
 $maxHeight: strip-units($top-img-small-height);
 
-@include responsive-image-width-based('/imageproducer/static/home-header/header', 'jpg', '.gf-header',
+@include responsive-image-width-based('/static/image/static/home-header/header', 'jpg', '.gf-header',
   (200,       300,        400,        500,        600,        700,        800),
   ('300x#{$maxHeight}', '400x#{$maxHeight}',  '500x#{$maxHeight}',  '600x#{$maxHeight}',  '700x#{$maxHeight}', '800x#{$maxHeight}',   '900x#{$maxHeight}'), (1, 2, 3, 4));

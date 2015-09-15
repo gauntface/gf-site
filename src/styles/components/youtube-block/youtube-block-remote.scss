@@ -9,6 +9,6 @@
   background-position: center;
 }
 
-@include responsive-image-width-based('/imageproducer/static/youtube-block/matt-addy-ttt', 'png', '.youtube-block',
+@include responsive-image-width-based('/static/image/static/youtube-block/matt-addy-ttt', 'png', '.youtube-block',
   (200,       300,        400,        500,        600,        700,        800),
   ('300x0', '400x0',  '500x0',  '600x0',  '700x0', '800x0',   '900x0'), (1, 2, 3, 4));

@@ -9,9 +9,6 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Stora
 
 class ImageProducer extends Base_Controller {
 
-  protected $CLOUD_STORAGE_URL = 'https://storage.googleapis.com/gauntface-site-uploads/';
-  protected $URL_CONTROLLER_NAME = 'imageproducer/';
-
   public function __construct() {
     parent::__construct(0);
   }
@@ -23,7 +20,7 @@ class ImageProducer extends Base_Controller {
     $numOfSegments = $this->uri->total_segments();
 
     $imageDirectory = '';
-    for($i = 2; $i < $numOfSegments; $i++) {
+    for($i = 3; $i < $numOfSegments; $i++) {
       $imageDirectory .= $this->uri->segment($i);
       if($i + 1 < $numOfSegments) {
         $imageDirectory .= '/';
@@ -42,6 +39,7 @@ class ImageProducer extends Base_Controller {
 
       $objectPath = $imageDirectory.'/'.$pathinfo["filename"].'.'.$pathinfo["extension"];
       // original image not found, show 404
+      log_message('error', 'Object Path: '.$objectPath);
       if ($this->CloudStorageModel->doesImageExist($objectPath) == false) {
         return $this->show_404();
       }
@@ -107,6 +105,8 @@ class ImageProducer extends Base_Controller {
         '/'.$originalObjectPath;
       log_message('error', 'Copy URL = '.$copyUrl);
       copy($copyUrl, $localOriginalFilepath);
+    } else {
+      log_message('error', 'File exists: '.$this->CloudStorageModel->GENERATED_IMG_DIR.$originalObjectPath);
     }
 
 
@@ -130,6 +130,10 @@ class ImageProducer extends Base_Controller {
       log_message('error', 'Unable to find the resized image.');
       $this->show_404();
       return;
+    }
+
+    if(file_exists($resizedFilepath)) {
+      $this->stripMetaData($resizedFilepath);
     }
 
     $this->CloudStorageModel->saveImage($generatedObjectPath, $localResizedFilepath);
@@ -373,7 +377,7 @@ return $im;
     $image->writeImage($resizedFilepath);
   }
 
-  /**private function stripMetaData($imgFile) {
+  private function stripMetaData($imgFile) {
     if (!extension_loaded('imagick')) {
       log_message('error', 'imagick not installed');
       return;
@@ -386,7 +390,7 @@ return $im;
     log_message('error', 'loading img: '.$imgFile);
     $image->stripImage();
     $image->writeImage($imgFile);
-  }**/
+  }
 
   private function serveImage($imagePath) {
     log_message('error', 'Serving image: '.$imagePath);
