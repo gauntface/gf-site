@@ -24,7 +24,7 @@
     <link rel="alternate" type="application/atom+xml" title="Atom Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/atom'); ?>">
 
     <!-- Canonical -->
-    <link rel="canonical" href="<?php echo(current_url()); ?>" />
+    <link rel="canonical" href="<?php echo("https://gauntface.com/".uri_string()); ?>" />
 
     <!-- Manifest File -->
     <link rel="manifest" href="manifest.json">
