@@ -46,6 +46,10 @@ RUN apt-get update
 # build-essential               Needed for phantomjs - used by uncss
 RUN apt-get -y install nodejs nginx php5 php5-fpm build-essential
 
+# Prevent PHP version being shared via headersg
+grep expose_php /etc/php5/fpm  -R
+    /etc/php5/fpm/php.ini:expose_php = Off
+    /etc/php5/fpm/pool.d/www.conf:php_flag[expose_php] = off
 
 # Gulp                          Build process
 RUN npm install -g gulp
