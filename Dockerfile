@@ -47,9 +47,7 @@ RUN apt-get update
 RUN apt-get -y install nodejs nginx php5 php5-fpm build-essential
 
 # Prevent PHP version being shared via headersg
-grep expose_php /etc/php5/fpm  -R
-    /etc/php5/fpm/php.ini:expose_php = Off
-    /etc/php5/fpm/pool.d/www.conf:php_flag[expose_php] = off
+RUN sed -i -e "s/expose_php = On/expose_php = Off/g" /etc/php.ini
 
 # Gulp                          Build process
 RUN npm install -g gulp
