@@ -38,8 +38,6 @@
         ?>
       ];
 
-      // If the variables are added after the remote script is loaded,
-      // Call an event to load the styles
       if (window.GauntFace.events &&
         window.GauntFace.events.onRemoteStylesheetsAvailable) {
         window.GauntFace.events.onRemoteStylesheetsAvailable();
