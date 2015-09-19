@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var replace = require('gulp-replace');
 var del = require('del');
 var mkdirp = require('mkdirp');
 var runSequence = require('run-sequence');
@@ -53,9 +54,11 @@ gulp.task('ci-deploy-models', function() {
 });
 
 gulp.task('ci-deploy-views', function() {
+  var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
   return gulp.src([
       GLOBAL.config.deploy.codeigniter.views + '/**/*'
     ])
+    .pipe(replace(/@GF_COMMIT_HASH@/g, version))
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
 });
 

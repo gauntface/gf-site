@@ -36,6 +36,7 @@ GLOBAL.config = {
 
 // Include Gulp & tools we'll use
 var gulp = require('gulp');
+var bump = require('gulp-bump');
 var runSequence = require('run-sequence');
 
 // Load custom tasks from the `tasks` directory
@@ -43,11 +44,18 @@ require('require-dir')('setup/gulp-tasks');
 
 var commonBuildTasks = ['copy', 'copy-fonts', 'build-ci'];
 
+gulp.task('bump', function() {
+  return gulp.src('./package.json')
+    .pipe(bump({type: 'patch'}))
+    .pipe(gulp.dest('./'));
+});
+
 gulp.task('build-dev', [], function(cb) {
   commonBuildTasks.push('styles:dev');
   commonBuildTasks.push('images:dev');
   commonBuildTasks.push('scripts:dev');
   runSequence(
+    'bump',
     commonBuildTasks,
     cb);
 });
