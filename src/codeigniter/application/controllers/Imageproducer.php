@@ -177,6 +177,7 @@ class ImageProducer extends Base_Controller {
     $newImageRatio;
 
     if($newWidth == 0 || $newHeight == 0) {
+      // If one variable is 0, maintain the aspect ratio
       $newImageRatio = $origImgRatio;
 
       if($newWidth == 0) {
@@ -185,28 +186,35 @@ class ImageProducer extends Base_Controller {
         $newHeight = $newWidth / $newImageRatio;
       }
     } else {
+      // Calculate new ratio based on provided width and height
       $newImageRatio = $newWidth / $newHeight;
     }
 
     if($newWidth > $origImgWidth || $newHeight > $origImgHeight) {
+      // Image is too small, should maintain the desired image ratio
+      // and thats it
+
+      // TODO: If newImageRatio == oldImageRatio it means, the ratio isn't
+      // cared about - so return the origin image.
+
       if($newWidth > $origImgWidth) {
         $newWidth = $origImgWidth;
-        $newHeight = intval($newWidth / $newImageRatio);
+        $newHeight = $newWidth / $newImageRatio;
       }
 
       if($newHeight > $origImgHeight) {
         $newHeight = $origImgHeight;
-        $newWidth = intval($newHeight * $newImageRatio);
+        $newWidth = $newHeight * $newImageRatio;
       }
     }
 
 
     $cropImageWidth = $origImgWidth;
-    $cropImageHeight = intval($origImgWidth / $newImageRatio);
+    $cropImageHeight = $origImgWidth / $newImageRatio;
     if($newImageRatio < $origImgRatio) {
       // We have use the width ratio.
       $cropImageHeight = $origImgHeight;
-      $cropImageWidth = intval($origImgHeight * $newImageRatio);
+      $cropImageWidth = $origImgHeight * $newImageRatio;
     }
 
     // center the crop
@@ -222,43 +230,39 @@ class ImageProducer extends Base_Controller {
 
     $originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
     $originalImage->writeImage($resizedFilepath);
+    $originalImage->clear();
+    $originalImage->destroy();
+
     $croppedImage = new Imagick($resizedFilepath);
     log_message('error', 'Cropped Filesize: ' . $croppedImage->getImageLength());
 
-    log_message('error', '$cropImageWidth: ' . $cropImageWidth);
-    log_message('error', '$cropImageHeight: ' . $cropImageHeight);
+    $newWidth = intval($newWidth);
+    $newHeight = intval($newHeight);
 
-    log_message('error', '$newWidth: ' . $newWidth);
-    log_message('error', '$newHeight: ' . $newHeight);
-
-    log_message('error', gettype($cropImageWidth));
-    log_message('error', gettype($newWidth));
+    $cropImageWidth = intval($cropImageWidth);
+    $cropImageHeight = intval($cropImageHeight);
 
     // Always ensure you add the stripImage method to the final operation
     if ($newWidth != $cropImageWidth || $newHeight != $cropImageHeight) {
-      log_message('error', 'Resizing');
-      log_message('error', '1.) '.($newWidth != $cropImageWidth));
-      log_message('error', '2.) '.($newHeight != $cropImageHeight));
-      $croppedImage->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
+      // resizeImage seems to create extra data that makes the file size bigger
+      // than the cropped image
+      $croppedImage->thumbnailImage($newWidth, $newHeight);
       $croppedImage->writeImage($resizedFilepath);
+      $croppedImage->clear();
+      $croppedImage->destroy();
     }
 
-    // JPEG Quality 1-100 (1 worse, 100 best quality)
-
-    // PNG Quality 0-10:
-    // (0 - no filter)
-    // (1 - sub)
-    // (2 - up)
-    // (3 - average)
-    // (4 - paerth)
+    $resizedImage = new Imagick($resizedFilepath);
+    log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
+    $resizedImage->stripImage();
+    $resizedImage->writeImage($resizedFilepath);
+    $resizedImage->clear();
+    $resizedImage->destroy();
 
     $finalImage = new Imagick($resizedFilepath);
     log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
-    $finalImage->stripImage();
-    $finalImage->writeImage($resizedFilepath);
-
-    $finalImage = new Imagick($resizedFilepath);
-    log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
+    $finalImage->clear();
+    $finalImage->destroy();
   }
 
   private function serveImage($imagePath) {
