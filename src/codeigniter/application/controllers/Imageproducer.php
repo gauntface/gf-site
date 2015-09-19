@@ -149,6 +149,9 @@ class ImageProducer extends Base_Controller {
     if (!extension_loaded('imagick')) {
       log_message('error', 'imagick not installed');
       return;
+    } else {
+      $v = Imagick::getVersion();
+      log_message('error', 'imagick installed version: '.$v['versionString']);
     }
 
     if($width == 0 && $height == 0) {
