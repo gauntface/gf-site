@@ -7,6 +7,11 @@ export default class BaseController {
     addAnalytics();
 
     window.GauntFace = window.GauntFace || {};
+    window.GauntFace.events = window.GauntFace.events || {};
+    window.GauntFace.events.onRemoteStylesheetsAvailable =
+      window.GauntFace.events.onRemoteStylesheetsAvailable || (() => {
+        this.asyncLoadCSS();
+      });
 
     if (this.onDOMContentLoaded) {
       this.addDOMContentLoadedCallback(() => this.onDOMContentLoaded());
@@ -18,7 +23,6 @@ export default class BaseController {
   asyncLoadCSS() {
     if (!window.GauntFace || !window.GauntFace._remoteStylesheets) {
       // No stylesheets to load
-      console.log('No CSS to load');
       return;
     }
 
@@ -40,6 +44,8 @@ export default class BaseController {
         elementToInsertLinkBefore.parentNode.insertBefore(linkElement,
           elementToInsertLinkBefore);
       }
+      
+      delete window.GauntFace.events.onRemoteStylesheetsAvailable;
     };
 
     if (raf) {
