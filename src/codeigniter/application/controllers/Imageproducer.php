@@ -100,13 +100,9 @@ class ImageProducer extends Base_Controller {
     $localOriginalFilepath = $this->CloudStorageModel->GENERATED_IMG_DIR.$originalObjectPath;
     if (!file_exists($localOriginalFilepath)) {
       // File doesn't exist locally so need to attempt a download of it
-      $copyUrl = 'https://storage.googleapis.com/'.
-        $this->config->item('storage-bucketname', 'confidential').
-        '/'.$originalObjectPath;
+      $copyUrl = $this->CloudStorageModel->getCloudStorageUrl($originalObjectPath);
       log_message('error', 'Copy URL = '.$copyUrl);
       copy($copyUrl, $localOriginalFilepath);
-    } else {
-      log_message('error', 'File exists: '.$this->CloudStorageModel->GENERATED_IMG_DIR.$originalObjectPath);
     }
 
 
@@ -116,6 +112,10 @@ class ImageProducer extends Base_Controller {
       $this->show_404();
       return;
     }
+
+    log_message('error', '');
+    log_message('error', '');
+    log_message('error', '=================================================');
 
     // Original exists, so resize it and serve it
     $localResizedFilepath = $generatedObjectPath;
@@ -132,172 +132,15 @@ class ImageProducer extends Base_Controller {
       return;
     }
 
-    if(file_exists($resizedFilepath)) {
-      $this->stripMetaData($resizedFilepath);
-    }
+    log_message('error', '=================================================');
+    log_message('error', '');
+    log_message('error', '');
 
     $this->CloudStorageModel->saveImage($generatedObjectPath, $localResizedFilepath);
 
     $this->load->helper('url');
     redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
   }
-
-  private function serveUpAppropriateImageOld($pathinfo, $matches, $imageDirectory) {
-
-    // Round sizes up to 50 and set density to max of 4
-    $width = $this->sanitiseSize($matches["width"]);
-    $height = $this->sanitiseSize($matches["height"]);
-    $density = $this->sanitiseDensity($matches["density"]);
-
-    // Ensure the path exists to add images to
-    $directoryToGenerateImages = $this->CloudStorageModel->GENERATED_IMG_DIR.'/'.$imageDirectory.'/'.$matches["origfilename"];
-    if(!file_exists($directoryToGenerateImages)) {
-      $old = umask(0);
-      mkdir($directoryToGenerateImages, 0777, true);
-      umask($old);
-    }
-
-    // Do we support WebP?
-    $position = strpos($_SERVER['HTTP_ACCEPT'], 'image/webp');
-    $webpsupport = FALSE;
-    if($position !== FALSE && $position >= 0) {
-      $webpsupport = TRUE;
-    }
-
-    $this->attemptToServeNormal($pathinfo, $matches, $width, $height, $density);
-  }
-
-  private function attemptToServeNormal($pathinfo, $matches, $width, $height, $density) {
-    // Adjust path to look at the generated content
-    // See if we've resized the image already
-    $resizedFilepath =
-      str_replace(
-        $this->URL_CONTROLLER_NAME,
-        $this->CloudStorageModel->GENERATED_IMG_DIR,
-        $pathinfo["dirname"]
-      )."/".
-      $matches["origfilename"]."/".
-      $matches["origfilename"].
-      "_".$width."x".$height."x".$density.
-      ".".$pathinfo["extension"];
-
-    log_message('error', 'Looking for: '.$resizedFilepath);
-
-    if (file_exists($resizedFilepath)) {
-      log_message('error', 'Resized Image File Found: '.$resizedFilepath);
-      $this->serveImage($resizedFilepath);
-      return;
-    }
-
-    // Resized version doesn't exist, check we have the original
-    $originalFilepath = $pathinfo["dirname"]."/".$matches["origfilename"].".".$pathinfo["extension"];
-    if (!file_exists($originalFilepath)) {
-      log_message('error', 'Original File Not Found: '.$originalFilepath);
-      show_404($originalFilepath);
-      return;
-    }
-
-    // Original exists, so resize it and serve it
-    $this->resizeImage(
-    $width,
-    $height,
-    $density,
-    $originalFilepath,
-    $resizedFilepath);
-
-    if(file_exists($resizedFilepath)) {
-      $this->stripMetaData($resizedFilepath);
-    }
-
-    // check if the resulting image exists, else show the original
-    if (file_exists($resizedFilepath)) {
-      $finalFilePath = $resizedFilepath;
-    } else {
-      $finalFilePath = $originalFilepath;
-    }
-
-    $this->serveImage($finalFilePath);
-  }
-
-/**function resizeAndConvertImageWebP(
-$width,
-$height,
-$density,
-$originalFilepath,
-$resizedFilepath) {
-$newWidth = $width * $density;
-$newHeight = $height * $density;
-
-$image = new Imagick($originalFilepath);
-
-$origImageDimens = $image->getImageGeometry();
-$origImgWidth = $origImageDimens['width'];
-$origImgHeight = $origImageDimens['height'];
-
-if($newWidth == 0) {
-$ratioOfHeight = $newHeight / $origImgHeight;
-$newWidth = $origImgWidth * $ratioOfHeight;
-}
-
-if($newHeight == 0) {
-$ratioOfWidth = $newWidth / $origImgWidth;
-$newHeight = $origImgHeight * $ratioOfWidth;
-}
-
-$widthRatios = $origImgWidth / $newWidth;
-$heightRatios = $origImgHeight / $newHeight;
-
-if($widthRatios <= $heightRatios) {
-$cropWidth = $origImgWidth;
-$cropHeight = $newWidth * $widthRatios;
-} else {
-$cropWidth = $newHeight * $heightRatios;
-$cropHeight = $origImgHeight;
-}
-
-$cropX = ($origImgWidth - $cropWidth) / 2;
-$cropY = ($origImgHeight - $cropHeight) / 2;
-
-$image->setImageFormat('webp');
-$image->setImageAlphaChannel(imagick::ALPHACHANNEL_ACTIVATE);
-$image->setBackgroundColor(new ImagickPixel('transparent'));
-$image->stripImage();
-$image->cropImage($cropWidth, $cropHeight, $cropX, $cropY);
-$image->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
-$image->writeImage($resizedFilepath);
-}**/
-
-/**function imageCreateFromAny($filepath) {
-$type = exif_imagetype($filepath);
-$allowedTypes = array(
-1,  // gif
-2,  // jpg
-//3,  // png
-6   // bmp
-);
-if (!in_array($type, $allowedTypes)) {
-return false;
-}
-switch ($type) {
-case 1 :
-log_message('error', 'Image is gif');
-$im = imageCreateFromGif($filepath);
-break;
-case 2 :
-log_message('error', 'Image is jpeg');
-$im = imageCreateFromJpeg($filepath);
-break;
-case 3 :
-log_message('error', 'Image is png');
-$im = imageCreateFromPng($filepath);
-break;
-case 6 :
-log_message('error', 'Image is bmp');
-$im = imageCreateFromBmp($filepath);
-break;
-}
-return $im;
-}**/
 
   private function resizeImage(
    $width, $height, $density, $originalFilepath, $resizedFilepath) {
@@ -313,9 +156,10 @@ return $im;
       return;
     }
 
-    $image = new Imagick($originalFilepath);
+    $originalImage = new Imagick($originalFilepath);
+    log_message('error', 'Orig Filesize: ' . $originalImage->getImageLength());
 
-    $origImageDimens = $image->getImageGeometry();
+    $origImageDimens = $originalImage->getImageGeometry();
     $origImgWidth = $origImageDimens['width'];
     $origImgHeight = $origImageDimens['height'];
     $origImgRatio = $origImgWidth / $origImgHeight;
@@ -362,34 +206,27 @@ return $im;
     $cropY = ($origImgHeight - $cropImageHeight) / 2;
 
     if(false) {
-      $image->setImageFormat('webp');
+      $originalImage->setImageFormat('webp');
 
-      $image->setImageAlphaChannel(imagick::ALPHACHANNEL_ACTIVATE);
-      $image->setBackgroundColor(new ImagickPixel('transparent'));
+      $originalImage->setImageAlphaChannel(imagick::ALPHACHANNEL_ACTIVATE);
+      $originalImage->setBackgroundColor(new ImagickPixel('transparent'));
     }
 
-    $image->stripImage();
-    $image->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
+    $originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
+    $originalImage->writeImage($resizedFilepath);
 
-    // TODO Only resize down - atm we resize up too despite there
-    // not being enough image
-    $image->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
-    $image->writeImage($resizedFilepath);
-  }
+    $croppedImage = new Imagick($resizedFilepath);
+    log_message('error', 'Cropped Filesize: ' . $croppedImage->getImageLength());
 
-  private function stripMetaData($imgFile) {
-    if (!extension_loaded('imagick')) {
-      log_message('error', 'imagick not installed');
-      return;
-    } else {
-      $v = Imagick::getVersion();
-      log_message('error', 'imagick installed version: '.$v['versionString']);
+    // Always ensure you add the stripImage method to the final operation
+    $croppedImage->stripImage();
+    $croppedImage->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
+    $croppedImage->writeImage($resizedFilepath);
+
+    if (ENVIRONMENT == 'development') {
+      $finalImage = new Imagick($resizedFilepath);
+      log_message('error', 'Final Resized Filesize: ' . $finalImage->getImageLength());
     }
-
-    $image = new Imagick($imgFile);
-    log_message('error', 'loading img: '.$imgFile);
-    $image->stripImage();
-    $image->writeImage($imgFile);
   }
 
   private function serveImage($imagePath) {

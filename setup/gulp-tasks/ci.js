@@ -76,11 +76,12 @@ gulp.task('set-ci-file-permissions', function(cb) {
   mkdirp(GLOBAL.config.build.root + '/uploads/');
   mkdirp(GLOBAL.config.build.root + '/generated/');
   mkdirp(GLOBAL.config.build.root + '/sessions/');
+  mkdirp(GLOBAL.config.build.root + '/logs/');
   fs.chmodSync(GLOBAL.config.build.root + '/uploads/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/generated/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/sessions/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/application/cache/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/application/logs/', '777');
+  fs.chmodSync(GLOBAL.config.build.root + '/logs/', '777');
   cb();
 });
 
@@ -97,7 +98,8 @@ gulp.task('set-ci-file-permissions', function(cb) {
 gulp.task('ci:clean', del.bind(null, [
   GLOBAL.config.build.root + '/application/**/*',
   GLOBAL.config.build.root + '/system/**/*',
-  GLOBAL.config.build.root + '/*.php'
+  GLOBAL.config.build.root + '/*.php',
+  GLOBAL.config.build.root + '/generated/**/*',
   ], {dot: true}));
 
 // Perform all the tasks to build the CI files
