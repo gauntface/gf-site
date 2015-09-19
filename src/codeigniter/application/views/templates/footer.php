@@ -20,7 +20,7 @@
       <?php
       foreach($parsedStylesheets as $stylesheetUrl) {
         ?>
-      <link rel="stylesheet" href="<?php echo($stylesheetUrl); ?>" media="all">
+      <link rel="stylesheet" property="stylesheet" href="<?php echo($stylesheetUrl); ?>" media="all">
         <?php
       }
       ?>
