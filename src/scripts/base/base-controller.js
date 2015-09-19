@@ -2,8 +2,6 @@
 
 import { addAnalytics } from '../analytics';
 
-var LoadCSS = require('./../third_party/loadCSS/loadCSS.js');
-
 export default class BaseController {
   constructor() {
     addAnalytics();
@@ -14,19 +12,40 @@ export default class BaseController {
       this.addDOMContentLoadedCallback(() => this.onDOMContentLoaded());
     }
 
-    // Code to handle Async Load of CSS
-    window.addEventListener('load', () => {
-      this.asyncLoadCSS();
-    });
+    this.asyncLoadCSS();
   }
 
   asyncLoadCSS() {
     if (!window.GauntFace || !window.GauntFace._remoteStylesheets) {
+      // No stylesheets to load
+      console.log('No CSS to load');
       return;
     }
 
-    for (var i = 0; i < window.GauntFace._remoteStylesheets.length; i++) {
-      LoadCSS.loadCSS(window.GauntFace._remoteStylesheets[i]);
+    // <3 to Paul Irish - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+    var raf = window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.msRequestAnimationFrame;
+
+    var loadCSS = () => {
+      var elementToInsertLinkBefore =
+        document.getElementsByTagName('script')[0];
+      for (var i = 0; i < window.GauntFace._remoteStylesheets.length; i++) {
+        var linkElement = document.createElement('link');
+        linkElement.rel = 'stylesheet';
+        linkElement.media = 'all';
+        linkElement.href = window.GauntFace._remoteStylesheets[i];
+
+        elementToInsertLinkBefore.parentNode.insertBefore(linkElement,
+          elementToInsertLinkBefore);
+      }
+    };
+
+    if (raf) {
+      raf(loadCSS);
+    } else {
+      window.addEventListener('load', loadCSS);
     }
   }
 
