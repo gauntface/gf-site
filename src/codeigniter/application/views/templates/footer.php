@@ -9,7 +9,7 @@
       if(strpos($singleFile, "http") === 0) {
         $stylesheetUrl = $singleFile;
       } else {
-        $stylesheetUrl = '/' . $singleFile;
+        $stylesheetUrl = addRevisionToFilePath('/' . $singleFile);
       }
 
       array_push($parsedStylesheets, $stylesheetUrl);

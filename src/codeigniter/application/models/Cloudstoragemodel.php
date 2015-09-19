@@ -70,6 +70,7 @@ class CloudStorageModel extends CI_Model {
     $obj->setName($objectPath);
     $obj->setAcl(array($acl));
     $obj->setContentType(mime_content_type($localFilepath));
+    $obj->setCacheControl('max-age='.(31 * 24 * 60 * 60));
 
     $storageService = $this->getGoogleClient();
     $storageService->objects->insert(
