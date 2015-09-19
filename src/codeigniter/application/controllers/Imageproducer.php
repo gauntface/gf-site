@@ -76,10 +76,12 @@ class ImageProducer extends Base_Controller {
     log_message('error', '$originalObjectPath = '.$originalObjectPath);
     log_message('error', '$generatedObjectPath = '.$generatedObjectPath);
 
-    if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
-      $this->load->helper('url');
-      redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
-      return;
+    if (ENVIRONMENT != 'development') {
+      if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
+        $this->load->helper('url');
+        redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
+        return;
+      }
     }
 
     // Get the original image
@@ -159,8 +161,11 @@ class ImageProducer extends Base_Controller {
       return;
     }
 
+    log_message('error', '$originalFilepath: ' . $originalFilepath);
     $originalImage = new Imagick($originalFilepath);
     log_message('error', 'Orig Filesize: ' . $originalImage->getImageLength());
+    log_message('error', 'Orig format: ' . $originalImage->getImageFormat());
+
 
     $origImageDimens = $originalImage->getImageGeometry();
     $origImgWidth = $origImageDimens['width'];
@@ -186,22 +191,22 @@ class ImageProducer extends Base_Controller {
     if($newWidth > $origImgWidth || $newHeight > $origImgHeight) {
       if($newWidth > $origImgWidth) {
         $newWidth = $origImgWidth;
-        $newHeight = $newWidth / $newImageRatio;
+        $newHeight = intval($newWidth / $newImageRatio);
       }
 
       if($newHeight > $origImgHeight) {
         $newHeight = $origImgHeight;
-        $newWidth = $newHeight * $newImageRatio;
+        $newWidth = intval($newHeight * $newImageRatio);
       }
     }
 
 
     $cropImageWidth = $origImgWidth;
-    $cropImageHeight = $origImgWidth / $newImageRatio;
+    $cropImageHeight = intval($origImgWidth / $newImageRatio);
     if($newImageRatio < $origImgRatio) {
       // We have use the width ratio.
       $cropImageHeight = $origImgHeight;
-      $cropImageWidth = $origImgHeight * $newImageRatio;
+      $cropImageWidth = intval($origImgHeight * $newImageRatio);
     }
 
     // center the crop
@@ -217,19 +222,43 @@ class ImageProducer extends Base_Controller {
 
     $originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
     $originalImage->writeImage($resizedFilepath);
-
     $croppedImage = new Imagick($resizedFilepath);
     log_message('error', 'Cropped Filesize: ' . $croppedImage->getImageLength());
 
-    // Always ensure you add the stripImage method to the final operation
-    $croppedImage->stripImage();
-    $croppedImage->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
-    $croppedImage->writeImage($resizedFilepath);
+    log_message('error', '$cropImageWidth: ' . $cropImageWidth);
+    log_message('error', '$cropImageHeight: ' . $cropImageHeight);
 
-    if (ENVIRONMENT == 'development') {
-      $finalImage = new Imagick($resizedFilepath);
-      log_message('error', 'Final Resized Filesize: ' . $finalImage->getImageLength());
+    log_message('error', '$newWidth: ' . $newWidth);
+    log_message('error', '$newHeight: ' . $newHeight);
+
+    log_message('error', gettype($cropImageWidth));
+    log_message('error', gettype($newWidth));
+
+    // Always ensure you add the stripImage method to the final operation
+    if ($newWidth != $cropImageWidth || $newHeight != $cropImageHeight) {
+      log_message('error', 'Resizing');
+      log_message('error', '1.) '.($newWidth != $cropImageWidth));
+      log_message('error', '2.) '.($newHeight != $cropImageHeight));
+      $croppedImage->resizeImage($newWidth, $newHeight, imagick::FILTER_LANCZOS, 0.9);
+      $croppedImage->writeImage($resizedFilepath);
     }
+
+    // JPEG Quality 1-100 (1 worse, 100 best quality)
+
+    // PNG Quality 0-10:
+    // (0 - no filter)
+    // (1 - sub)
+    // (2 - up)
+    // (3 - average)
+    // (4 - paerth)
+
+    $finalImage = new Imagick($resizedFilepath);
+    log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
+    $finalImage->stripImage();
+    $finalImage->writeImage($resizedFilepath);
+
+    $finalImage = new Imagick($resizedFilepath);
+    log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
   }
 
   private function serveImage($imagePath) {
