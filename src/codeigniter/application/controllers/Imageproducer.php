@@ -248,19 +248,18 @@ class ImageProducer extends Base_Controller {
       // resizeImage seems to create extra data that makes the file size bigger
       // than the cropped image
       $croppedImage->stripImage();
-      $croppedImage->setImageCompressionQuality(1);
       $croppedImage->thumbnailImage($newWidth, $newHeight);
       $croppedImage->writeImage($resizedFilepath);
       $croppedImage->clear();
       $croppedImage->destroy();
     }
 
-    //$resizedImage = new Imagick($resizedFilepath);
-    //log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
-    //$resizedImage->stripImage();
-    //$resizedImage->writeImage($resizedFilepath);
-    //$resizedImage->clear();
-    //$resizedImage->destroy();
+    $resizedImage = new Imagick($resizedFilepath);
+    log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
+    $resizedImage->stripImage();
+    $resizedImage->writeImage($resizedFilepath);
+    $resizedImage->clear();
+    $resizedImage->destroy();
 
     $finalImage = new Imagick($resizedFilepath);
     log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
