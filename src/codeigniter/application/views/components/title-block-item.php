@@ -69,7 +69,7 @@ if ($title->getSmallBackgroundImage()) {
 
 <?php if ($title->getLinkURL()) {
   ?>
-  <a class="title-block-item__link-wrapper" href="<?php echo $title->getLinkURL(); ?>">
+  <a class="title-block-item__link-wrapper" href="<?php echo(htmlspecialchars($title->getLinkURL())); ?>">
   <?php
 }?>
 <section class="title-block-item<?php echo ' '.$additionalStyles ?>">

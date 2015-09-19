@@ -9,7 +9,7 @@
     $rssfeed .= '<description>I\'m Matt Gaunt a Senior Developer Advocate @ Google. I generally work on the open web these days, but used to be a full time mobile software engineer.</description>'."\r\n";
     $rssfeed .= '<language>en-uk</language>'."\r\n";
     $rssfeed .= '<copyright>Copyright (C) '.date("Y").' gauntface.com</copyright>'."\r\n";
-    $rssfeed .= '<atom:link href="'.current_url().'" rel="self" type="application/rss+xml" />'."\r\n";
+    $rssfeed .= '<atom:link href="'.htmlspecialchars(current_url()).'" rel="self" type="application/rss+xml" />'."\r\n";
     for($i = 0; $i < count($posts); $i++) {
         $post = $posts[$i];
         $rssfeed .= '<item>'."\r\n";

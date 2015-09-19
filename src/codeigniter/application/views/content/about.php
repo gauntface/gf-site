@@ -20,7 +20,7 @@ to be a full time mobile software engineer.</p>
       Blog
     </div>
     <div class="about__fact-list-content">
-      <p>Check out my blog, the latest was titled "<a href="#">Gulp &amp; Sass</a>"</p>
+      <p>Check out my blog, the latest was titled "<a href="<?php echo(htmlspecialchars($latestPost->getPublicURL())); ?>"><?php echo($latestPost->getTitle()); ?></a>"</p>
     </div>
   </li>
   <li class="about__fact-list-item">
@@ -28,8 +28,8 @@ to be a full time mobile software engineer.</p>
       Shout
     </div>
     <div class="about__fact-list-content">
-      <p>I'm on <a href="#">Twitter</a>, <a href="#">G+</a> and you can
-      always <a href="#">drop me an email</a>. <a href="#">Twitter</a> is
+      <p>I'm on <a href="<?php echo(htmlspecialchars('#')); ?>">Twitter</a>, <a href="<?php echo(htmlspecialchars('#')); ?>">G+</a> and you can
+      always <a href="<?php echo(htmlspecialchars('#')); ?>">drop me an email</a>. <a href="<?php echo(htmlspecialchars('#')); ?>">Twitter</a> is
       probably the best way to get in touch.</p>
     </div>
   </li>
