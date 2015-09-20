@@ -45,6 +45,7 @@ class ImageProducer extends Base_Controller {
       }
 
       $this->load->helper('url');
+      $this->setCacheControlHeaders();
       redirect($this->CloudStorageModel->getCloudStorageUrl($objectPath), 'localhost', 301);
       return;
     }
@@ -79,6 +80,7 @@ class ImageProducer extends Base_Controller {
     if (ENVIRONMENT != 'development') {
       if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
         $this->load->helper('url');
+        $this->setCacheControlHeaders();
         redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'localhost', 301);
         return;
       }
@@ -143,6 +145,7 @@ class ImageProducer extends Base_Controller {
     unlink($localResizedFilepath);
 
     $this->load->helper('url');
+    $this->setCacheControlHeaders();
     redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'localhost', 301);
   }
 
@@ -300,6 +303,15 @@ class ImageProducer extends Base_Controller {
     }
 
     log_message('error', 'Final Filesize: ' . $finalFileSize);
+  }
+
+  private function setCacheControlHeaders() {
+    $expiresSeconds = (30 * 24 * 60 * 60);
+    $expiresTime = time() + $expiresSeconds;
+
+    header("Cache-Control: public, must-revalidate, proxy-revalidate");
+    header("Cache-Control: max-age=".$expiresSeconds, false);
+    header('Expires: ' . gmdate('D, d M Y H:i:s', $expiresTime) . ' GMT');
   }
 
   private function serveImage($imagePath) {
