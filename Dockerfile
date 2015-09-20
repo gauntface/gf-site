@@ -24,7 +24,8 @@ RUN apt-get update
 # php5-mysql                    DB
 # php-apc                       APC Cache
 # php5-imagick                  Needed for image resizing
-RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql php-apc php5-imagick
+# pngcrush                      PNGCrush is used to optimise png images
+RUN apt-get -y install software-properties-common curl git nano php5-curl php5-mysql php-apc php5-imagick pngcrush
 
 
 #

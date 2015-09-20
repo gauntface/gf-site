@@ -163,6 +163,7 @@ class ImageProducer extends Base_Controller {
 
     log_message('error', '$originalFilepath: ' . $originalFilepath);
     $originalImage = new Imagick($originalFilepath);
+    $originImageFormat = $originalImage->getImageFormat();
     log_message('error', 'Orig Filesize: ' . $originalImage->getImageLength());
     log_message('error', 'Orig format: ' . $originalImage->getImageFormat());
 
@@ -228,14 +229,11 @@ class ImageProducer extends Base_Controller {
       $originalImage->setBackgroundColor(new ImagickPixel('transparent'));
     }
 
-    $originalImage->stripImage();
-    $originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
-    $originalImage->writeImage($resizedFilepath);
-    $originalImage->clear();
-    $originalImage->destroy();
-
-    $croppedImage = new Imagick($resizedFilepath);
-    log_message('error', 'Cropped Filesize: ' . $croppedImage->getImageLength());
+    //$originalImage->stripImage();
+    //$originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
+    //$originalImage->writeImage($resizedFilepath);
+    //$originalImage->clear();
+    //$originalImage->destroy();
 
     $newWidth = intval($newWidth);
     $newHeight = intval($newHeight);
@@ -243,23 +241,47 @@ class ImageProducer extends Base_Controller {
     $cropImageWidth = intval($cropImageWidth);
     $cropImageHeight = intval($cropImageHeight);
 
-    // Always ensure you add the stripImage method to the final operation
-    if ($newWidth != $cropImageWidth || $newHeight != $cropImageHeight) {
-      // resizeImage seems to create extra data that makes the file size bigger
-      // than the cropped image
-      $croppedImage->stripImage();
-      $croppedImage->thumbnailImage($newWidth, $newHeight);
-      $croppedImage->writeImage($resizedFilepath);
-      $croppedImage->clear();
-      $croppedImage->destroy();
+    $originalImage->cropImage($cropImageWidth, $cropImageHeight, $cropX, $cropY);
+    $originalImage->thumbnailImage($newWidth, $newHeight);
+    $originalImage->stripImage();
+    $originalImage->writeImage($resizedFilepath);
+    $originalImage->clear();
+    $originalImage->destroy();
+
+    $performFinalStrip = true;
+    if(strtolower($originImageFormat) == 'png') {
+      $crushedFilepath = $resizedFilepath.'-crushed';
+      $pngCrushCmd = sprintf('pngcrush -fix -brute "%s" "%s" 2>&1', $resizedFilepath, $crushedFilepath);
+      log_message('error', 'Attempting to run: '.$pngCrushCmd);
+      exec($pngCrushCmd, $pngCrushOutput, $exitCode);
+      if ($exitCode !== 0) {
+        log_message('error', '!!!!!!!!!!!!!!!!!!!!!!!!'.APPPATH);
+        log_message('error', '!!!!!!!!!!!!!!!!!!!!!!!!');
+        log_message('error', 'There was a problem running pngcrush: ');
+        for($i = 0; $i < sizeof($pngCrushOutput); $i++) {
+          log_message('error', '    '.$pngCrushOutput[$i]);
+        }
+        log_message('error', '!!!!!!!!!!!!!!!!!!!!!!!!');
+      } else {
+        log_message('error', 'PNGCrush successful');
+        if(file_exists($crushedFilepath)) {
+          log_message('error', 'Rename');
+          unlink($resizedFilepath);
+          rename($crushedFilepath, $resizedFilepath);
+
+          $performFinalStrip = false;
+        }
+      }
     }
 
-    $resizedImage = new Imagick($resizedFilepath);
-    log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
-    $resizedImage->stripImage();
-    $resizedImage->writeImage($resizedFilepath);
-    $resizedImage->clear();
-    $resizedImage->destroy();
+    if($performFinalStrip) {
+      $resizedImage = new Imagick($resizedFilepath);
+      log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
+      $resizedImage->stripImage();
+      $resizedImage->writeImage($resizedFilepath);
+      $resizedImage->clear();
+      $resizedImage->destroy();
+    }
 
     $finalImage = new Imagick($resizedFilepath);
     log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
