@@ -140,6 +140,8 @@ class ImageProducer extends Base_Controller {
 
     $this->CloudStorageModel->saveImage($generatedObjectPath, $localResizedFilepath);
 
+    unlink($localResizedFilepath);
+
     $this->load->helper('url');
     redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 301);
   }
@@ -248,10 +250,9 @@ class ImageProducer extends Base_Controller {
     $originalImage->clear();
     $originalImage->destroy();
 
-    $performFinalStrip = true;
     if(strtolower($originImageFormat) == 'png') {
       $crushedFilepath = $resizedFilepath.'-crushed';
-      $pngCrushCmd = sprintf('pngcrush -fix -brute "%s" "%s" 2>&1', $resizedFilepath, $crushedFilepath);
+      $pngCrushCmd = sprintf('pngcrush -brute "%s" "%s" 2>&1', $resizedFilepath, $crushedFilepath);
       log_message('error', 'Attempting to run: '.$pngCrushCmd);
       exec($pngCrushCmd, $pngCrushOutput, $exitCode);
       if ($exitCode !== 0) {
@@ -268,25 +269,37 @@ class ImageProducer extends Base_Controller {
           log_message('error', 'Rename');
           unlink($resizedFilepath);
           rename($crushedFilepath, $resizedFilepath);
-
-          $performFinalStrip = false;
         }
       }
     }
 
-    if($performFinalStrip) {
-      $resizedImage = new Imagick($resizedFilepath);
-      log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
-      $resizedImage->stripImage();
-      $resizedImage->writeImage($resizedFilepath);
-      $resizedImage->clear();
-      $resizedImage->destroy();
+    $finalStripVersionPath = $resizedFilepath.'-stripped';
+    $resizedImage = new Imagick($resizedFilepath);
+    $resizedFileLength = $resizedImage->getImageLength();
+    log_message('error', 'Resized and Cropped Filesize: ' . $resizedImage->getImageLength());
+    $resizedImage->stripImage();
+    $resizedImage->writeImage($finalStripVersionPath);
+    $resizedImage->clear();
+    $resizedImage->destroy();
+
+    $finalStrippedImage = new Imagick($finalStripVersionPath);
+    $finalStrippedFileLength = $finalStrippedImage->getImageLength();
+    log_message('error', 'Stripped Filesize: ' . $finalStrippedFileLength);
+    $finalStrippedImage->clear();
+    $finalStrippedImage->destroy();
+
+    $finalFileSize = -1;
+    if ($resizedFileLength < $finalStrippedFileLength) {
+      unlink($finalStripVersionPath);
+      $finalFileSize = $resizedFileLength;
+    } else {
+      unlink($resizedFilepath);
+      rename($finalStripVersionPath, $resizedFilepath);
+
+      $finalFileSize = $finalStrippedFileLength;
     }
 
-    $finalImage = new Imagick($resizedFilepath);
-    log_message('error', 'Final Filesize: ' . $finalImage->getImageLength());
-    $finalImage->clear();
-    $finalImage->destroy();
+    log_message('error', 'Final Filesize: ' . $finalFileSize);
   }
 
   private function serveImage($imagePath) {
