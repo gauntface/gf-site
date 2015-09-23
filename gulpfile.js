@@ -24,13 +24,15 @@ GLOBAL.config = {
     components: 'src/styles/pages',
     fonts: 'src/fonts',
     scripts: 'src/scripts',
+    static: 'src/static'
   },
   build: {
     root: 'build',
     images: 'build/images',
     styles: 'build/styles',
     fonts: 'build/fonts',
-    scripts: 'build/scripts'
+    scripts: 'build/scripts',
+    static: 'build/static'
   }
 };
 
@@ -42,7 +44,7 @@ var runSequence = require('run-sequence');
 // Load custom tasks from the `tasks` directory
 require('require-dir')('setup/gulp-tasks');
 
-var commonBuildTasks = ['copy', 'copy-fonts', 'build-ci'];
+var commonBuildTasks = ['copy', 'copy-fonts', 'build-ci', 'static'];
 
 gulp.task('bump', function() {
   return gulp.src('./package.json')
