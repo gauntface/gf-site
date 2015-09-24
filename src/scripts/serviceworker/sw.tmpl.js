@@ -52,21 +52,20 @@ self.addEventListener('activate', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-  console.log('Handling fetch event for', event.request.url);
-
   event.respondWith(
     caches.match(event.request)
       .then(function(response) {
         if (response) {
-          console.log('Found response in cache:', response);
+          console.log('Cache HIT: ', event.request.url);
 
           // Start Cache Update
           fetch(event.request)
             .then(function(freshResponse) {
-              console.warn('Updating cache ', freshResponse);
               if (!freshResponse || freshResponse.status !== 200) {
                 return;
               }
+
+              console.log('Cache UPDATE: ', event.request.url);
 
               caches.open(CURRENT_CACHES.assetCache)
                 .then(function(cache) {
@@ -80,19 +79,9 @@ self.addEventListener('fetch', function(event) {
           return response;
         }
 
-        console.log('No response found in cache. About to fetch from ' +
-          'network...');
+        console.log('Cache MISS: ', event.request.url);
 
-        return fetch(event.request)
-          .then(function(response) {
-            console.log('Response from network is:', response);
-
-            return response;
-          })
-          .catch(function(error) {
-            console.error('Fetching failed:', error);
-            throw error;
-          });
+        return fetch(event.request);
       })
   );
 });

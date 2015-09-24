@@ -15,15 +15,27 @@ class ServiceWorker extends Base_Controller {
     $this->load->helper('file');
     $this->load->helper('revision');
 
-    $cachableAssets = [];
+    // These should be dynamically generated
+    $cachableAssets = [
+      'styles/about-remote.css',
+      'styles/blog-index-remote.css',
+      'styles/blog-post-remote.css',
+      'styles/contact-remote.css',
+      'styles/home-remote.css',
+
+      // Scripts
+      'scripts/styleguide/styleguide-frame-controller.es6.js',
+      'scripts/styleguide/styleguide-messenger-controller.es6.js',
+      'scripts/standard-page.es6.js'
+    ];
 
     $jsonData = '';
     for($i = 0; $i < count($cachableAssets); $i++) {
-      $jsonData .= '"'.$cachableAssets[$i].'"';
+      $jsonData .= '"'.addRevisionToFilePath($cachableAssets[$i]).'"';
       if($i+1 < count($cachableAssets)) {
         $jsonData .= ',';
+        $jsonData .= "\r\n";
       }
-      $jsonData .= "\r\n";
     }
     $jsonData .= '';
 
