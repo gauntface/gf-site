@@ -85,9 +85,6 @@ RUN mkdir -p /home/gauntface
 COPY . /home/gauntface
 WORKDIR /home/gauntface
 
-RUN git submodule init
-RUN git submodule update
-
 # Install depencies of Material Palette
 RUN cd ./src/scripts/third_party/material-palette && npm install
 

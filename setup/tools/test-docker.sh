@@ -15,13 +15,13 @@ docker rmi $(docker images -q)
 # docker rmi gauntface/gf-deploy
 
 echo "    Building public site."
-docker build -t gauntface/gf-site .
+docker build -no-cache -t gauntface/gf-site .
 
 echo "    Building deployment version of site."
-docker build -t gauntface/gf-deploy ./deploy
+docker build -no-cache -t gauntface/gf-deploy ./deploy
 
 echo "    Building test version of site."
-docker build -f "deploy/Dockerfile-test" -t gauntface/gf-test ./deploy
+docker build -no-cache -f "deploy/Dockerfile-test" -t gauntface/gf-test ./deploy
 
 echo "    Running private site."
 docker run --name gf-test --net="host" -t -p 8000:80 gauntface/gf-test
