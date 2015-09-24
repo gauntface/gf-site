@@ -12,13 +12,8 @@ class Home extends Base_Controller {
     parent::__construct(60);
   }
 
-  public function index()
+  public function index($arg)
   {
-    if(isset($_SERVER['CI_ENV'])) {
-      log_message('error', "_SERVER['CI_ENV'] = " . $_SERVER['CI_ENV']);
-    }
-    log_message('error', "ENVIRONMENT = " . ENVIRONMENT);
-
     $this->load->model('PageModel');
     $this->load->model('AppBarModel');
     $this->load->model('TitleModel');

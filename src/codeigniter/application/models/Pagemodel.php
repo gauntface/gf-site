@@ -21,7 +21,7 @@ class PageModel extends CI_Model {
     // Call the Model constructor
     parent::__construct();
 
-    $this->_themeColor = '#bbbbbb';
+    $this->_themeColor = '#1E1621';
     $this->_remoteScripts = ['scripts/standard-page.es6.js'];
   }
 
