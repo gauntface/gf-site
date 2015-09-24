@@ -69,12 +69,12 @@ if ($title->getSmallBackgroundImage()) {
 
 <?php if ($title->getLinkURL()) {
   ?>
-  <a class="title-block-item__link-wrapper" href="<?php echo $title->getLinkURL(); ?>">
+  <a class="title-block-item__link-wrapper" href="<?php echo(htmlspecialchars($title->getLinkURL())); ?>">
   <?php
 }?>
 <section class="title-block-item<?php echo ' '.$additionalStyles ?>">
   <?php if ($title->getTime()) {?>
-    <time date="<?php echo date("Y.m.d", $title->getTime()); ?>" class="title-block-item__toptext"><?php echo date("Y.m.d", $title->getTime()); ?></time>
+    <time datetime="<?php echo date("Y-m-d", $title->getTime()); ?>" class="title-block-item__toptext"><?php echo date("Y.m.d", $title->getTime()); ?></time>
   <?php } else if ($title->getSmallTopText()){ ?>
     <p class="title-block-item__toptext"><?php echo $title->getSmallTopText() ?></p>
   <?php } ?>

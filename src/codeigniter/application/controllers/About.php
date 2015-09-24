@@ -11,6 +11,15 @@ class About extends Base_Controller {
     $this->load->model('ContentGridModel');
     $this->load->model('AppBarModel');
     $this->load->model('TitleModel');
+    $this->load->model('blog/PostsModel');
+
+    $postsModel = new PostsModel();
+    $posts = $postsModel->getPublishedPosts($startIndex = 0, 1);
+
+    $firstPostTitleModel = null;
+    if(count($posts) > 0) {
+      $data['latestPost'] = $posts[0];
+    }
 
     $pageData = new PageModel();
     $pageData->setTitle('About');

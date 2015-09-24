@@ -42,7 +42,7 @@ if (!isset($subappbar)) {
         $className .= ' is-selected';
       }
       ?>
-      <a href="<?php echo $appItem['link'] ?>" class="<?php echo $className ?>"><?php echo $appItem['title'] ?></a>
+      <a href="<?php echo(htmlspecialchars($appItem['link'])); ?>" class="<?php echo $className ?>"><?php echo $appItem['title'] ?></a>
       <?php
     }
   ?>

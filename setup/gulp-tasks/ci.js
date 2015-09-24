@@ -1,6 +1,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var replace = require('gulp-replace');
 var del = require('del');
 var mkdirp = require('mkdirp');
 var runSequence = require('run-sequence');
@@ -53,9 +54,11 @@ gulp.task('ci-deploy-models', function() {
 });
 
 gulp.task('ci-deploy-views', function() {
+  var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
   return gulp.src([
       GLOBAL.config.deploy.codeigniter.views + '/**/*'
     ])
+    .pipe(replace(/@GF_COMMIT_HASH@/g, version))
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
 });
 
@@ -76,11 +79,12 @@ gulp.task('set-ci-file-permissions', function(cb) {
   mkdirp(GLOBAL.config.build.root + '/uploads/');
   mkdirp(GLOBAL.config.build.root + '/generated/');
   mkdirp(GLOBAL.config.build.root + '/sessions/');
+  mkdirp(GLOBAL.config.build.root + '/logs/');
   fs.chmodSync(GLOBAL.config.build.root + '/uploads/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/generated/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/sessions/', '777');
   fs.chmodSync(GLOBAL.config.build.root + '/application/cache/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/application/logs/', '777');
+  fs.chmodSync(GLOBAL.config.build.root + '/logs/', '777');
   cb();
 });
 
@@ -97,7 +101,8 @@ gulp.task('set-ci-file-permissions', function(cb) {
 gulp.task('ci:clean', del.bind(null, [
   GLOBAL.config.build.root + '/application/**/*',
   GLOBAL.config.build.root + '/system/**/*',
-  GLOBAL.config.build.root + '/*.php'
+  GLOBAL.config.build.root + '/*.php',
+  GLOBAL.config.build.root + '/generated/**/*',
   ], {dot: true}));
 
 // Perform all the tasks to build the CI files
