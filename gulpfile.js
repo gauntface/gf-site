@@ -41,7 +41,7 @@ var runSequence = require('run-sequence');
 // Load custom tasks from the `tasks` directory
 require('require-dir')('setup/gulp-tasks');
 
-var commonBuildTasks = ['copy', 'copy-fonts', 'build-ci'];
+var commonBuildTasks = ['root', 'copy', 'copy-fonts', 'build-ci'];
 
 gulp.task('build-dev', [], function(cb) {
   commonBuildTasks.push('styles:dev');

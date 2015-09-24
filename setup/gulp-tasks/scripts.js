@@ -82,9 +82,17 @@ gulp.task('scripts-src:dev', function(cb) {
   cb();
 });
 
+gulp.task('scripts:sw', function() {
+  return gulp.src([
+      GLOBAL.config.src.scripts + '/serviceworker/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/'));
+});
+
 gulp.task('scripts:dev', ['scripts:clean'], function(cb) {
   runSequence(
     [
+      'scripts:sw',
       'scripts-src:dev',
       'scripts-deploy:dev',
     ],
@@ -94,6 +102,7 @@ gulp.task('scripts:dev', ['scripts:clean'], function(cb) {
 gulp.task('scripts:prod', ['scripts:clean'], function(cb) {
   runSequence(
     [
+      'scripts:sw',
       'scripts-src:prod',
       'scripts-deploy:prod',
     ],

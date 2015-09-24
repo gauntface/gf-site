@@ -27,7 +27,7 @@
     <link rel="canonical" href="<?php echo("https://gauntface.com/".uri_string()); ?>" />
 
     <!-- Manifest File -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
 
     <?php if(isset($noindex) && $noindex) {?>
     <meta name="robots" content="noindex">

@@ -15,5 +15,10 @@
   "unused"        : "vars",
   "strict"        : true,
   "esnext"        : true,
-  "globalstrict"  : true
+  "globalstrict"  : true,
+  "globals"       : {
+    "caches"            : true,
+    "importScripts"     : true,
+    "self"              : true
+  }
 }

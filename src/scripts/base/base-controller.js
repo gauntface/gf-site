@@ -6,8 +6,6 @@ var LoadCSS = require('./../third_party/loadCSS/loadCSS.js');
 
 export default class BaseController {
   constructor() {
-    addAnalytics();
-
     window.GauntFace = window.GauntFace || {};
 
     if (this.onDOMContentLoaded) {
@@ -18,6 +16,9 @@ export default class BaseController {
     window.addEventListener('load', () => {
       this.asyncLoadCSS();
     });
+
+    addAnalytics();
+    this.registerServiceWorker();
   }
 
   asyncLoadCSS() {
@@ -35,5 +36,22 @@ export default class BaseController {
     if (document.readyState !== 'loading') {
       cb();
     }
+  }
+
+  registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) {
+      return;
+    }
+
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(registration) {
+        // Registration was successful
+        console.log('ServiceWorker registration successful with scope: ',
+          registration.scope);
+      })
+      .catch(function(err) {
+        // registration failed
+        console.log('ServiceWorker registration failed: ', err);
+      });
   }
 }
