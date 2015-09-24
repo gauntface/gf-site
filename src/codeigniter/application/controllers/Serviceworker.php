@@ -17,13 +17,16 @@ class ServiceWorker extends Base_Controller {
 
     // These should be dynamically generated
     $cachableAssets = [
+      '/',
+      '/contact',
+      '/about',
+
       'styles/about-remote.css',
       'styles/blog-index-remote.css',
       'styles/blog-post-remote.css',
       'styles/contact-remote.css',
       'styles/home-remote.css',
 
-      // Scripts
       'scripts/styleguide/styleguide-frame-controller.es6.js',
       'scripts/styleguide/styleguide-messenger-controller.es6.js',
       'scripts/standard-page.es6.js'
