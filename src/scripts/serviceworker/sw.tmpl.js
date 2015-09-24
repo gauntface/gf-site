@@ -4,9 +4,9 @@
 
 importScripts('serviceworker-cache-polyfill.js');
 
-var CACHE_VERSION = 1;
 var CURRENT_CACHES = {
-  assetCache: 'gf-asset-cache-v' + CACHE_VERSION
+  assetCache: 'gf-asset-cache-v1',
+  fontCache: 'gf-font-cache-v1'
 };
 
 self.addEventListener('install', function(event) {
@@ -51,6 +51,21 @@ self.addEventListener('activate', function(event) {
   );
 });
 
+function saveToCache(request, response) {
+  var urlString = request.url;
+  var pathname = urlString.substring(request.referrer.length);
+
+  var cacheName = CURRENT_CACHES.assetCache;
+  if (pathname.indexOf('fonts/') === 0) {
+    cacheName = CURRENT_CACHES.fontCache;
+  }
+
+  caches.open(cacheName)
+    .then(function(cache) {
+      cache.put(request, response);
+    });
+}
+
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     caches.match(event.request)
@@ -65,12 +80,7 @@ self.addEventListener('fetch', function(event) {
                 return;
               }
 
-              console.log('Cache UPDATE: ', event.request.url);
-
-              caches.open(CURRENT_CACHES.assetCache)
-                .then(function(cache) {
-                  cache.put(event.request, freshResponse);
-                });
+              saveToCache(event.request, freshResponse);
             })
             .catch(function(err) {
               console.warn('Unable to update cache.', err);
@@ -81,7 +91,23 @@ self.addEventListener('fetch', function(event) {
 
         console.log('Cache MISS: ', event.request.url);
 
-        return fetch(event.request);
+        return fetch(event.request)
+          .then(function(response) {
+            // Fonts are big - cache them if we clean
+            if (!response || response.status !== 200) {
+              return response;
+            }
+
+            var urlString = event.request.url;
+            var pathname = urlString.substring(event.request.referrer.length);
+            if (pathname.indexOf('fonts/') === 0) {
+              // Font
+              var cacheResponse = response.clone();
+              saveToCache(event.request, cacheResponse);
+            }
+
+            return response;
+          });
       })
   );
 });
