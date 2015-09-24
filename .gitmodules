@@ -1,3 +1,1 @@
-[submodule "src/static"]
-	path = src/static
-	url = git@github.com:gauntface/gf-site-static.git
+
