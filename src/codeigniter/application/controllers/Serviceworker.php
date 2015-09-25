@@ -6,8 +6,8 @@ require_once APPPATH.'controllers/Base_controller.php';
 class ServiceWorker extends Base_Controller {
 
   public function __construct() {
-    // Cache for 1 day
-    parent::__construct(24 * 60);
+    // Cache for 10 minutes - Cloud flare will cache for 30mins
+    parent::__construct(10);
   }
 
   public function index()
