@@ -20,6 +20,10 @@ deconstruct the building blocks / components I intend to use.</p>
 
 <p><a href="/styleguide/view/partials/geshi-code">GeSHi Code Example</a></p>
 
+<h2>Toggle</h2>
+
+<p><a href="/styleguide/view/components/toggle">Toggle</a></p>
+
 <h2>App Bar</h2>
 
 <p><a href="/styleguide/view/components/appbar">App Bar</a></p>

@@ -3,16 +3,22 @@
 // H/T https://github.com/EllisLab/CodeIgniter/wiki/Compress-HTML-output
 function compress()
 {
-    ini_set("pcre.recursion_limit", "16777");
-    $CI =& get_instance();
+  ini_set("pcre.recursion_limit", "16777");
+  $CI =& get_instance();
 
-    // Don't touch service worker for now
-    $buffer = $CI->output->get_output();
-    if(strpos($buffer, '<!doctype html>') === FALSE) {
-      $CI->output->set_output($CI->output->get_output());
-      $CI->output->_display();
-      return;
-    }
+  $buffer = $CI->output->get_output();
+  if (ENVIRONMENT == 'development') {
+    $CI->output->set_output($CI->output->get_output());
+    $CI->output->_display();
+    return;
+  }
+
+  // Don't touch service worker for now
+  if(strpos($buffer, '<!doctype html>') === FALSE) {
+    $CI->output->set_output($CI->output->get_output());
+    $CI->output->_display();
+    return;
+  }
 
     $re = '%# Collapse whitespace everywhere but in blacklisted elements.
         (?>             # Match all whitespans other than single space.

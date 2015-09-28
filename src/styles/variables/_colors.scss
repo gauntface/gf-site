@@ -1,8 +1,4 @@
-/**
- *
- * Base
- *
- */
+// Base Colors
 $highlight-color: #000000 !default;
 $secondary-bg-color: #bbbbbb !default;
 
@@ -26,11 +22,7 @@ $link-text-color: inherit; //$highlight-color !default;
 $iframe-border-color: $highlight-color !default;
 $iframe-bg-color: #fefefe !default;
 
-/**
- *
- * Typography
- *
- */
+// Typography
 $title-color: 			#333333 !default;
 $font-color: 			#333333 !default;
 $light-text-color: #FFFFFF !default;
@@ -40,6 +32,10 @@ $copyright-font-color: 	rgba(50, 50, 50, 0.4) !default;
 
 $dark-grey-color: #2B262E !default;
 $light-grey-color: #BFBEC0 !default;
+
+$toggle-on-color: rgba(255, 255, 255, 0.7);
+$toggle-off-color: rgba(0, 0, 0, 0.7);
+$toggle-disabled-color: rgba(95, 95, 95, 0.7);
 
 $page-bg-color: #EDEDEB;
 $contact-page-bg-color: #1A1420;
@@ -61,11 +57,7 @@ $subtle-footer-icon-color: #464646 !default;
 
 $full-overlay-color: rgba(0, 0, 0, 0.75) !default;
 
-/*****
- *
- * GeSHi Code Examples
- *
- *****/
+// Geshi Code
 $code-bg-color: #DFDFDD !default;
 $code-text-color: rgb(115, 115, 115) !default;
 
@@ -78,18 +70,12 @@ $variableColor: #da2e75 !default;
 $numberColor: #009999 !default;
 $stringColor: #297ea9 !default;
 
-/**
- * Footer
- */
+// Footer
 $footer-bg-color: $dark-grey-color !default;
 
-/**
- * Dividers
- */
+// Dividers
 $divider-color: black !default;
 $divider-color-light: white !default;
 
-/**
- * About Page
- */
+// About
 $about-matt-bg-color: #606363;

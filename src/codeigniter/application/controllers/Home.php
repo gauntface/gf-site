@@ -12,7 +12,7 @@ class Home extends Base_Controller {
     parent::__construct(60);
   }
 
-  public function index($arg)
+  public function index()
   {
     $this->load->model('PageModel');
     $this->load->model('AppBarModel');

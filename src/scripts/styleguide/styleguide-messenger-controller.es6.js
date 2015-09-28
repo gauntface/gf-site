@@ -2,10 +2,13 @@
 
 import BaseController from '../base/base-controller';
 import Debug from '../debug';
+import Toggle from '../components/toggle';
 
 class StyleguideMessageContainer extends BaseController {
   constructor() {
     super();
+
+    this.upgradeViews();
   }
 
   onDOMContentLoaded() {
@@ -27,6 +30,25 @@ class StyleguideMessageContainer extends BaseController {
       pathSections[pathSections.length - 1];
 
     window.top.postMessage(value, '*');
+  }
+
+  upgradeViews() {
+    var upgradeElements = [
+      {
+        class: '.toggle',
+        cb: (element) => {
+          new Toggle(element);
+        }
+      }
+    ];
+
+    for (var i = 0; i < upgradeElements.length; i++) {
+      var upgradeInfo = upgradeElements[i];
+      var elements = document.querySelectorAll(upgradeInfo.class);
+      for (var j = 0; j < elements.length; j++) {
+        upgradeInfo.cb(elements[j]);
+      }
+    }
   }
 }
 

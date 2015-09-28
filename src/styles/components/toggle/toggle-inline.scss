@@ -1,0 +1,52 @@
+@import '../../variables/colors';
+@import '../../variables/dimens';
+@import '../../variables/font-families';
+
+$toggle-border-width: 2px;
+
+.toggle {
+  display: inline-block;
+
+  line-height: $base-line-height - ($toggle-border-width * 2);
+  padding: $base-line-height / 2;
+
+  background: transparent;
+
+  border-style: solid;
+  border-width: $toggle-border-width;
+  border-color: $toggle-off-color;
+
+  color: $toggle-off-color;
+
+  cursor: pointer;
+
+  font-family: $title-font-family;
+
+  transition : border 800ms;
+}
+
+.toggle:before {
+  content: 'Off';
+
+  display: inline-block;
+  // We want on and off to have the same width
+  width: $base-line-height * 1.5;
+  text-align: center;
+
+  transition : all 800ms;
+}
+
+.toggle.is-checked {
+  border-color: $toggle-on-color;
+  color: $toggle-on-color;
+}
+
+.toggle.is-checked:before {
+  content: 'On';
+}
+
+.toggle.is-disabled {
+  border-color: $toggle-disabled-color;
+  color: $toggle-disabled-color;
+  cursor: default;
+}

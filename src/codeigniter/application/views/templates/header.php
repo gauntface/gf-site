@@ -53,23 +53,29 @@
     $inlineStylesheets = $page->getInlineStylesheets();
     $inlineRawCSS = $page->getInlineRawCSS();
     if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
-      echo('<style>');
+
     }
 
     if (isset($inlineStylesheets)) {
       foreach($inlineStylesheets as $singleStylesheet) {
+        echo('<!-- '.$singleStylesheet.' -->');
+        echo("\r\n");
+        echo('<style>');
         echo(read_file($singleStylesheet));
+        echo('</style>');
       }
     }
 
     if(isset($inlineRawCSS)) {
       foreach($inlineRawCSS as $rawCSS) {
+        echo('<style>');
         echo($rawCSS);
+        echo('</style>');
       }
     }
 
     if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
-      echo('</style>');
+
     }
     ?>
   </head>
