@@ -42,9 +42,9 @@ var bump = require('gulp-bump');
 var runSequence = require('run-sequence');
 
 // Load custom tasks from the `tasks` directory
-require('require-dir')('setup/gulp-tasks');
+require('require-dir')('gulp-tasks');
 
-var commonBuildTasks = ['root', 'copy', 'copy-fonts', 'build-ci', 'static'];
+var commonBuildTasks = ['copy', 'fonts', 'codeigniter', 'static'];
 
 gulp.task('bump', function() {
   return gulp.src('./package.json')
@@ -52,7 +52,7 @@ gulp.task('bump', function() {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('build-dev', [], function(cb) {
+gulp.task('build:dev', [], function(cb) {
   commonBuildTasks.push('styles:dev');
   commonBuildTasks.push('images:dev');
   commonBuildTasks.push('scripts:dev');
@@ -63,18 +63,18 @@ gulp.task('build-dev', [], function(cb) {
 });
 
 gulp.task('build', [], function(cb) {
+  commonBuildTasks.push('styles:prod');
   commonBuildTasks.push('images:prod');
   commonBuildTasks.push('scripts:prod');
   runSequence(
     commonBuildTasks,
-    'styles:prod',
     cb);
 });
 
 // Build production files, the default task
 gulp.task('default', [], function(cb) {
   runSequence(
-    ['build-dev'],
-    'start-watching',
+    ['build:dev'],
+    'watch',
     cb);
 });

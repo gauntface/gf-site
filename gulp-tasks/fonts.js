@@ -9,7 +9,7 @@ gulp.task('fonts:clean', del.bind(null, [
     GLOBAL.config.build.fonts + '/**/*'
   ], {dot: true}));
 
-gulp.task('copy-included-fonts', ['fonts:clean'], function() {
+gulp.task('fonts:copy', ['fonts:clean'], function() {
   return gulp.src([
     GLOBAL.config.src.fonts + '/**/*'
     ])
@@ -17,7 +17,7 @@ gulp.task('copy-included-fonts', ['fonts:clean'], function() {
     .pipe(plugins.size({title: 'copy-included-fonts'}));
 });
 
-gulp.task('copy-deploy-fonts', ['fonts:clean'], function() {
+gulp.task('fonts:deploy', ['fonts:clean'], function() {
   return gulp.src([
     GLOBAL.config.deploy.fonts + '/**/*'
     ])
@@ -25,9 +25,9 @@ gulp.task('copy-deploy-fonts', ['fonts:clean'], function() {
     .pipe(plugins.size({title: 'copy-deploy-fonts'}));
 });
 
-gulp.task('copy-fonts', ['fonts:clean'], function(cb) {
+gulp.task('fonts', ['fonts:clean'], function(cb) {
   runSequence([
-    'copy-deploy-fonts',
-    'copy-included-fonts'
+    'fonts:deploy',
+    'fonts:copy'
   ], cb);
 });

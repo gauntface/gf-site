@@ -21,6 +21,10 @@ export default class Toggle {
     };
 
     element.addEventListener('click', (event) => {
+      if (this.isDisabled()) {
+        return;
+      }
+
       if (this.getClickHandler()) {
         return this.getClickHandler()(event);
       }
@@ -43,6 +47,10 @@ export default class Toggle {
     } else {
       this.getElement().classList.remove('is-checked');
     }
+  }
+
+  isDisabled() {
+    return this.getElement().classList.contains('is-disabled');
   }
 
   setDisabled(isDisabled) {

@@ -39,6 +39,8 @@ class Styleguide extends Base_Controller {
             'styles/components/'.$id.'/'.$id.'-inline.css',
             'styles/styleguide-index-inline.css'
           ]);
+
+          // TODO: Check if the remote stylesheet actually exists
           $pageData->setRemoteStylesheets(['styles/components/'.$id.'/'.$id.'-remote.css']);
           break;
         case 'partials':

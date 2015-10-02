@@ -3,7 +3,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
 
-gulp.task('start-watching', function() {
+gulp.task('watch', function() {
   browserSync.init({
     proxy: 'localhost',
     logPrefix: 'GF',

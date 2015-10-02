@@ -8,7 +8,7 @@ var runSequence = require('run-sequence');
 var fs = require('fs');
 
 // Copy over the CI files
-gulp.task('copy-ci', function() {
+gulp.task('codeigniter:copy', function() {
   return gulp.src([
       GLOBAL.config.src.codeigniter + '/**/*.{php,html}',
       '!' + GLOBAL.config.src.codeigniter +
@@ -73,7 +73,7 @@ gulp.task('ci-deploy-files', function(cb) {
   cb);
 });
 
-gulp.task('set-ci-file-permissions', function(cb) {
+gulp.task('codeigniter:file-permissions', function(cb) {
   // TODO This needs fixing to a more secure permission
   mkdirp(GLOBAL.config.build.root + '/application/cache/');
   mkdirp(GLOBAL.config.build.root + '/uploads/');
@@ -88,17 +88,8 @@ gulp.task('set-ci-file-permissions', function(cb) {
   cb();
 });
 
-// Copy over media into the correct path
-//gulp.task('copy-ci-images', function() {
-//  return gulp.src([
-//    GLOBAL.config.src.images + '/**/*.{jpg,jpeg,png}'
-//  ], {
-//    dot: true
-//  }).pipe(gulp.dest(GLOBAL.config.build.images));
-//});
-
 // Clean output directory
-gulp.task('ci:clean', del.bind(null, [
+gulp.task('codeigniter:clean', del.bind(null, [
   GLOBAL.config.build.root + '/application/**/*',
   GLOBAL.config.build.root + '/system/**/*',
   GLOBAL.config.build.root + '/*.php',
@@ -106,14 +97,14 @@ gulp.task('ci:clean', del.bind(null, [
   ], {dot: true}));
 
 // Perform all the tasks to build the CI files
-gulp.task('build-ci', ['ci:clean'], function(cb) {
+gulp.task('codeigniter', ['codeigniter:clean'], function(cb) {
   runSequence(
     [
-      'copy-ci',
+      'codeigniter:copy',
       'copy-ci-third-party',
       'copy-ci-uploads',
       'ci-deploy-files'
     ],
-    'set-ci-file-permissions',
+    'codeigniter:file-permissions',
   cb);
 });
