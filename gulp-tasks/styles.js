@@ -21,90 +21,57 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
+function compileSassStream(stream) {
+  return stream
+    // Sourcemap if not prod
+    .pipe(streamify(plugins.if(!GLOBAL.Gulp.prod, plugins.sourcemaps.init())))
+    .pipe(
+      streamify(
+        plugins.sass().on('error', plugins.sass.logError)
+      )
+    )
+    // Autoprefix
+    .pipe(streamify(plugins.autoprefixer(AUTOPREFIXER_BROWSERS)))
+    // Minify if prod
+    .pipe(streamify(plugins.if(GLOBAL.Gulp.prod, plugins.csso())))
+    // Write sourcemap if not prod
+    .pipe(streamify(plugins.if(!GLOBAL.Gulp.prod, plugins.sourcemaps.write())))
+    // write to styles
+    .pipe(gulp.dest(GLOBAL.config.build.styles));
+}
+
+function compileSassStreamArray(index, streams, cb) {
+  if (index >= streams.length) {
+    return cb();
+  }
+
+  // Compile and continue to next stream
+  compileSassStream(streams[index].stream)
+    .on('finish', function() {
+      compileSassStreamArray(index + 1, streams, cb);
+    });
+}
+
+gulp.task('styles:pages-gen', function(cb) {
+  var streams = components.generateComponentSass(GLOBAL.config.src.components);
+  compileSassStreamArray(0, streams, cb);
+});
+
+gulp.task('styles:sass', function() {
+  // TODO: We only want to disable source maps here for templates/
+  // Styleguide can and should have source maps.
+  return compileSassStream(gulp.src('src/styles/**/*.scss'));
+});
+
 // Clean output directory
 gulp.task('styles:clean', del.bind(null, [
     GLOBAL.config.build.styles + '/**/*'
   ], {dot: true}));
 
-gulp.task('compile-sass', function() {
-  // TODO: We only want to disable source maps here for templates/
-  // Styleguide can and should have source maps.
-  var genSourceMaps = false;
-  gulp.src('src/styles/**/*.scss')
-    .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.init()))
-    .pipe(plugins.sass()
-      .on('error', plugins.sass.logError))
-    .pipe(plugins.autoprefixer(AUTOPREFIXER_BROWSERS))
-    .pipe(plugins.if(genSourceMaps, plugins.sourcemaps.write()))
-    .pipe(gulp.dest(GLOBAL.config.build.styles));
+gulp.task('styles', ['styles:clean'], function() {
+  runSequence(
+    [
+      'styles:pages-gen',
+      'styles:sass'
+    ]);
 });
-
-function compileSassAutoprefix(genSourceMaps, stream) {
-  return stream
-    .pipe(streamify(plugins.if(genSourceMaps, plugins.sourcemaps.init())))
-    .pipe(
-      streamify(
-        plugins.sass()
-          .on('error', plugins.sass.logError)
-      )
-    )
-    .pipe(streamify(plugins.autoprefixer(AUTOPREFIXER_BROWSERS)));
-}
-
-function handleEachStream(index, streams, cb) {
-  if (index >= streams.length) {
-    return cb();
-  }
-
-  var sassStream = compileSassAutoprefix(false, streams[index].stream);
-
-  var finalStream = sassStream;
-  if (streams[index].urlsToTest && streams[index].urlsToTest.length > 0) {
-    // Disabled for travis and docker
-    //finalStream = sassStream.pipe(streamify(plugins.uncss({
-    //    html: streams[index].urlsToTest
-    //  })));
-  }
-
-  finalStream.pipe(streamify(plugins.if('*.css', plugins.csso())))
-    .pipe(gulp.dest(GLOBAL.config.build.styles))
-    .on('finish', function() {
-      handleEachStream(index + 1, streams, cb);
-    });
-}
-
-gulp.task('generate-page-css:prod', function(cb) {
-  var streams = components.generateComponentSass(GLOBAL.config.src.components);
-  handleEachStream(0, streams, cb);
-});
-
-gulp.task('generate-page-css:dev', function() {
-  var streams = components.generateComponentSass(GLOBAL.config.src.components);
-
-  var mergedStreams = merge();
-  for (var i = 0; i < streams.length; i++) {
-    mergedStreams.add(
-      compileSassAutoprefix(true, streams[i].stream)
-        .pipe(streamify(plugins.sourcemaps.write()))
-        .pipe(gulp.dest(GLOBAL.config.build.styles))
-    );
-  }
-});
-
-gulp.task('styles:dev', ['styles:clean'],
-  function() {
-    runSequence(
-      [
-        'generate-page-css:dev',
-        'compile-sass'
-      ]);
-  });
-
-gulp.task('styles:prod', ['styles:clean'],
-  function() {
-    runSequence(
-      [
-        'generate-page-css:prod',
-        'compile-sass'
-      ]);
-  });

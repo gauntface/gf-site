@@ -95,12 +95,16 @@ self.addEventListener('fetch', function(event) {
           .then(function(response) {
             // Fonts are big - cache them if we clean
             if (!response || response.status !== 200) {
+              console.log(event.request.url + ': ' + response.status);
               return response;
             }
 
             var urlString = event.request.url;
             var pathname = urlString.substring(event.request.referrer.length);
-            if (pathname.indexOf('fonts/') === 0) {
+            console.log(pathname);
+            if (
+              pathname.indexOf('fonts/') === 0 ||
+              pathname.indexOf('images/') === 0) {
               // Font
               var cacheResponse = response.clone();
               saveToCache(event.request, cacheResponse);

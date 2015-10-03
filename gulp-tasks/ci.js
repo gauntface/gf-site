@@ -7,6 +7,47 @@ var mkdirp = require('mkdirp');
 var runSequence = require('run-sequence');
 var fs = require('fs');
 
+gulp.task('codeigniter:deploy:configs', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.configs + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/config/'));
+});
+
+gulp.task('codeigniter:deploy:controllers', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.controllers + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/controllers/'));
+});
+
+gulp.task('codeigniter:deploy:models', function() {
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.models + '/**/*'
+    ])
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/models/'));
+});
+
+gulp.task('codeigniter:deploy:views', function() {
+  var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
+  return gulp.src([
+      GLOBAL.config.deploy.codeigniter.views + '/**/*'
+    ])
+    .pipe(replace(/@GF_COMMIT_HASH@/g, version))
+    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
+});
+
+gulp.task('codeigniter:deploy', function(cb) {
+  runSequence(
+    [
+      'codeigniter:deploy:configs',
+      'codeigniter:deploy:controllers',
+      'codeigniter:deploy:models',
+      'codeigniter:deploy:views'
+    ],
+  cb);
+});
+
 // Copy over the CI files
 gulp.task('codeigniter:copy', function() {
   return gulp.src([
@@ -17,60 +58,12 @@ gulp.task('codeigniter:copy', function() {
     .pipe(gulp.dest(GLOBAL.config.build.root));
 });
 
-// Copy over all CI third_party files
-gulp.task('copy-ci-third-party', function() {
+// Copy over ALL CI third_party files
+gulp.task('codeigniter:third-party', function() {
   return gulp.src([
       GLOBAL.config.src.codeigniter + '/application/third_party/**/*'
     ])
     .pipe(gulp.dest(GLOBAL.config.build.root + '/application/third_party'));
-});
-
-gulp.task('copy-ci-uploads', function() {
-  return gulp.src([
-      GLOBAL.config.src.codeigniter + '/uploads/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/uploads/'));
-});
-
-gulp.task('ci-deploy-configs', function() {
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.configs + '/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/config/'));
-});
-
-gulp.task('ci-deploy-controllers', function() {
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.controllers + '/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/controllers/'));
-});
-
-gulp.task('ci-deploy-models', function() {
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.models + '/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/models/'));
-});
-
-gulp.task('ci-deploy-views', function() {
-  var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.views + '/**/*'
-    ])
-    .pipe(replace(/@GF_COMMIT_HASH@/g, version))
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
-});
-
-gulp.task('ci-deploy-files', function(cb) {
-  runSequence(
-    [
-      'ci-deploy-configs',
-      'ci-deploy-controllers',
-      'ci-deploy-models',
-      'ci-deploy-views'
-    ],
-  cb);
 });
 
 gulp.task('codeigniter:file-permissions', function(cb) {
@@ -101,9 +94,8 @@ gulp.task('codeigniter', ['codeigniter:clean'], function(cb) {
   runSequence(
     [
       'codeigniter:copy',
-      'copy-ci-third-party',
-      'copy-ci-uploads',
-      'ci-deploy-files'
+      'codeigniter:third-party',
+      'codeigniter:deploy'
     ],
     'codeigniter:file-permissions',
   cb);

@@ -9,18 +9,11 @@ gulp.task('images:clean', del.bind(null, [
     GLOBAL.config.build.images + '/**/*'
   ], {dot: true}));
 
-gulp.task('images:dev', ['images:clean'], function() {
+gulp.task('images', ['images:clean'], function() {
   return gulp.src(GLOBAL.config.src.images + '/**/*')
-    .pipe(gulp.dest(GLOBAL.config.build.images))
-    .pipe(plugins.size({title: 'images'}));
-});
-
-gulp.task('images:prod', ['images:clean'], function() {
-  return gulp.src(GLOBAL.config.src.images + '/**/*')
-    .pipe(plugins.imagemin({
+    .pipe(plugins.if(GLOBAL.Gulp.prod, plugins.imagemin({
       progressive: true,
       interlaced: true
-    }))
-    .pipe(gulp.dest(GLOBAL.config.build.images))
-    .pipe(plugins.size({title: 'images'}));
+    })))
+    .pipe(gulp.dest(GLOBAL.config.build.images));
 });

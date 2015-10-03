@@ -1,6 +1,6 @@
 {
   "name": "gauntface",
-  "version": "0.2.37",
+  "version": "0.2.64",
   "description": "It's only the best bloomin' website in the world.",
   "private": true,
   "dependencies": {
@@ -34,6 +34,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.7.12"
+    "browser-sync": "^2.7.12",
+    "psi": "^1.0.6"
   }
 }

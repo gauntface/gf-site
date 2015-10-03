@@ -38,43 +38,52 @@ GLOBAL.config = {
 
 // Include Gulp & tools we'll use
 var gulp = require('gulp');
-var bump = require('gulp-bump');
 var runSequence = require('run-sequence');
 
-// Load custom tasks from the `tasks` directory
-require('require-dir')('gulp-tasks');
+GLOBAL.Gulp = GLOBAL.Gulp || {
+  prod: false,
+  watch: false
+};
 
-var commonBuildTasks = ['copy', 'fonts', 'codeigniter', 'static'];
-
-gulp.task('bump', function() {
-  return gulp.src('./package.json')
-    .pipe(bump({type: 'patch'}))
-    .pipe(gulp.dest('./'));
-});
+var commonBuildTasks = [
+  'copy',
+  'fonts',
+  'codeigniter',
+  'static',
+  'styles',
+  'images',
+  'scripts'
+];
 
 gulp.task('build:dev', [], function(cb) {
-  commonBuildTasks.push('styles:dev');
-  commonBuildTasks.push('images:dev');
-  commonBuildTasks.push('scripts:dev');
+  GLOBAL.Gulp.prod = false;
+
+  // Load custom tasks from the `tasks` directory
+  require('require-dir')('gulp-tasks');
+
   runSequence(
-    'bump',
     commonBuildTasks,
+    'bump',
+    'watch',
     cb);
 });
 
 gulp.task('build', [], function(cb) {
-  commonBuildTasks.push('styles:prod');
-  commonBuildTasks.push('images:prod');
-  commonBuildTasks.push('scripts:prod');
+  GLOBAL.Gulp.prod = true;
+
+  // Load custom tasks from the `tasks` directory
+  require('require-dir')('gulp-tasks');
+
   runSequence(
     commonBuildTasks,
+    'watch',
     cb);
 });
 
 // Build production files, the default task
 gulp.task('default', [], function(cb) {
+  GLOBAL.Gulp.watch = true;
   runSequence(
     ['build:dev'],
-    'watch',
     cb);
 });

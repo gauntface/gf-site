@@ -46,7 +46,7 @@ class ImageProducer extends Base_Controller {
 
       $this->load->helper('url');
       $this->setCacheControlHeaders();
-      redirect($this->CloudStorageModel->getCloudStorageUrl($objectPath), 'localhost', 301);
+      redirect($this->CloudStorageModel->getCloudStorageUrl($objectPath), 'location', 301);
       return;
     }
 
@@ -81,7 +81,7 @@ class ImageProducer extends Base_Controller {
       if ($this->CloudStorageModel->doesImageExist($generatedObjectPath) != false) {
         $this->load->helper('url');
         $this->setCacheControlHeaders();
-        redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'localhost', 301);
+        redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'location', 301);
         return;
       }
     }
@@ -145,8 +145,14 @@ class ImageProducer extends Base_Controller {
     unlink($localResizedFilepath);
 
     $this->load->helper('url');
-    $this->setCacheControlHeaders();
-    redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'localhost', 301);
+    //$this->setCacheControlHeaders();
+    log_message('error', 'Redirecting => '.$this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath));
+    try {
+      redirect($this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath), 'location', 301);
+    } catch (Exception $exception) {
+
+    }
+    log_message('error', 'Redirected => '.$this->CloudStorageModel->getCloudStorageUrl($generatedObjectPath));
   }
 
   private function resizeImage(

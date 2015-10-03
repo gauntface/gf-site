@@ -13,11 +13,7 @@ var browserify = require('browserify');
 var babelify = require('babelify');
 var source = require('vinyl-source-stream');
 
-gulp.task('scripts:clean', del.bind(null, [
-    GLOBAL.config.build.scripts + '/**/*.{js}'
-  ], {dot: true}));
-
-function compileES6Classes(browserifyFileEntries, minimise) {
+function compileES6Classes(browserifyFileEntries) {
   browserifyFileEntries.forEach(function(fileEntry) {
     var browserifyBundle = browserify({
         entries: [fileEntry.srcPath]
@@ -30,7 +26,7 @@ function compileES6Classes(browserifyFileEntries, minimise) {
       .pipe(source(fileEntry.outputFilename));
 
     var finalStream = bundleStream;
-    if (minimise) {
+    if (GLOBAL.Gulp.prod) {
       finalStream = bundleStream.pipe(streamify(plugins.uglify()));
     }
 
@@ -41,7 +37,7 @@ function compileES6Classes(browserifyFileEntries, minimise) {
   });
 }
 
-function handleES6Scripts(srcPath, minimise) {
+function handleES6Scripts(srcPath) {
   var es6Filepaths = glob.sync(srcPath + '/**/*.es6.js');
 
   var browserifyFileEntries = [];
@@ -59,26 +55,16 @@ function handleES6Scripts(srcPath, minimise) {
     });
   });
 
-  compileES6Classes(browserifyFileEntries, minimise);
+  compileES6Classes(browserifyFileEntries);
 }
 
-gulp.task('scripts-deploy:prod', function(cb) {
-  handleES6Scripts(GLOBAL.config.deploy.scripts, true);
+gulp.task('scripts:deploy', function(cb) {
+  handleES6Scripts(GLOBAL.config.deploy.scripts);
   cb();
 });
 
-gulp.task('scripts-src:prod', function(cb) {
-  handleES6Scripts(GLOBAL.config.src.scripts, true);
-  cb();
-});
-
-gulp.task('scripts-deploy:dev', function(cb) {
-  handleES6Scripts(GLOBAL.config.deploy.scripts, false);
-  cb();
-});
-
-gulp.task('scripts-src:dev', function(cb) {
-  handleES6Scripts(GLOBAL.config.src.scripts, false);
+gulp.task('scripts:src', function(cb) {
+  handleES6Scripts(GLOBAL.config.src.scripts);
   cb();
 });
 
@@ -89,22 +75,16 @@ gulp.task('scripts:sw', function() {
     .pipe(gulp.dest(GLOBAL.config.build.root + '/'));
 });
 
-gulp.task('scripts:dev', ['scripts:clean'], function(cb) {
-  runSequence(
-    [
-      'scripts:sw',
-      'scripts-src:dev',
-      'scripts-deploy:dev',
-    ],
-  cb);
-});
+gulp.task('scripts:clean', del.bind(null, [
+    GLOBAL.config.build.scripts + '/**/*.{js}'
+  ], {dot: true}));
 
-gulp.task('scripts:prod', ['scripts:clean'], function(cb) {
+gulp.task('scripts', ['scripts:clean'], function(cb) {
   runSequence(
     [
       'scripts:sw',
-      'scripts-src:prod',
-      'scripts-deploy:prod',
+      'scripts:src',
+      'scripts:deploy',
     ],
   cb);
 });

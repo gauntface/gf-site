@@ -4,6 +4,10 @@ var gulp = require('gulp');
 var browserSync = require('browser-sync');
 
 gulp.task('watch', function() {
+  if (!GLOBAL.Gulp.watch) {
+    return;
+  }
+
   browserSync.init({
     proxy: 'localhost',
     logPrefix: 'GF',
@@ -14,7 +18,7 @@ gulp.task('watch', function() {
 
   // Codeigniter
   gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
-    ['build-ci'], browserSync.reload);
+    ['codeigniter'], browserSync.reload);
   gulp.watch([GLOBAL.config.deploy.codeigniter.root + '/**/*'],
     ['ci-deploy-files'], browserSync.reload);
 
@@ -26,15 +30,15 @@ gulp.task('watch', function() {
 
   // Sass / CSS
   gulp.watch([GLOBAL.config.src.styles.root + '/**/*'],
-    ['styles:dev'], browserSync.reload);
+    ['styles'], browserSync.reload);
 
   // Scripts
   gulp.watch([GLOBAL.config.src.scripts + '/**/*'],
-    ['scripts:dev'], browserSync.reload);
+    ['scripts'], browserSync.reload);
   gulp.watch([GLOBAL.config.deploy.scripts + '/**/*'],
-    ['scripts:dev'], browserSync.reload);
+    ['scripts'], browserSync.reload);
 
   // Images
   gulp.watch([GLOBAL.config.src.images + '/**/*'],
-    ['images:dev'], browserSync.reload);
+    ['images'], browserSync.reload);
 });
