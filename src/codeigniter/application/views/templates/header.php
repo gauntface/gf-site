@@ -50,18 +50,13 @@
     <link rel="dns-prefetch" href="https://storage.googleapis.com/">
 
     <?php
-    $inlineStylesheets = $page->getInlineStylesheets();
+    $inlineStylesheetContents = $page->getInlineStylesheetContents();
     $inlineRawCSS = $page->getInlineRawCSS();
-    if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
 
-    }
-
-    if (isset($inlineStylesheets)) {
-      foreach($inlineStylesheets as $singleStylesheet) {
-        echo('<!-- '.$singleStylesheet.' -->');
-        echo("\r\n");
+    if (isset($inlineStylesheetContents)) {
+      foreach($inlineStylesheetContents as $singleStylesheetContent) {
         echo('<style>');
-        echo(read_file($singleStylesheet));
+        echo($singleStylesheetContent);
         echo('</style>');
       }
     }
@@ -72,10 +67,6 @@
         echo($rawCSS);
         echo('</style>');
       }
-    }
-
-    if(isset($inlineStylesheets) || isset($inlineRawCSS)) {
-
     }
     ?>
   </head>

@@ -1,5 +1,12 @@
 <?php
 
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+require_once APPPATH.'third_party/google-api-php-client/src/Google/autoload.php';
+require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
+require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Storage.php';
+
+
 class CloudStorageModel extends CI_Model {
 
   public $GENERATED_IMG_DIR = 'generated/';
@@ -7,6 +14,8 @@ class CloudStorageModel extends CI_Model {
   function __construct() {
     // Call the Model constructor
     parent::__construct();
+
+    $this->load->driver('cache', array('adapter' => 'apc'));
   }
 
   private function getGoogleClient() {
@@ -40,7 +49,6 @@ class CloudStorageModel extends CI_Model {
   }
 
   public function doesImageExist($objectPath) {
-    $this->load->driver('cache', array('adapter' => 'apc'));
     if ($this->cache->get($objectPath)) {
       return true;
     }
