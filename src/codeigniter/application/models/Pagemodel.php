@@ -75,22 +75,6 @@ class PageModel extends CI_Model {
     return $this->_inlineStylesheets;
   }
 
-  public function getInlineStylesheetContents() {
-    $rawStyles = [];
-    for($i = 0; $i < count($this->_inlineStylesheets); $i++){
-      array_push($rawStyles, $this->getStylesheetContent($this->_inlineStylesheets[$i]));
-    }
-    return $rawStyles;
-  }
-
-  private function getStylesheetContent($stylesheetFilename) {
-    $this->load->helper('styles_image_swap');
-    $this->load->helper('file');
-
-    $content = read_file($stylesheetFilename);
-    return swapStylesheetImages($content);
-  }
-
   public function setRemoteStylesheets($remoteStylesheet) {
     $this->_remoteStylesheets = $remoteStylesheet;
   }
