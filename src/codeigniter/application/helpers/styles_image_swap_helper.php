@@ -7,7 +7,7 @@ function swapStylesheetImages($content) {
   $CI->load->model('CloudStorageModel');
   $CI->load->model('ImageModel');
 
-  $matchesCount = preg_match_all("/background-image:[\s]?url\(\"(\/static\/image\/(.*))\"\);/", $content, $output_array);
+  $matchesCount = preg_match_all("/background-image:[\s]?url\(\"(\/static\/image\/([^\"]*))\"\)/", $content, $output_array);
   if ($matchesCount != 0) {
     // The regular expression didn't work, it must be a path to the original image required
     for ($i = 0; $i < $matchesCount; $i++) {
