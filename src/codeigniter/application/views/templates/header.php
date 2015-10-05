@@ -47,8 +47,7 @@
     <?php include('generic_header.php'); ?>
 
     <!-- Prefetch -->
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <link rel="dns-prefetch" href="https://storage.googleapis.com/">
+    <link rel="dns-prefetch" href="https://storage.googleapis.com">
 
     <?php
     $inlineStylesheets = $page->getInlineStylesheets();
