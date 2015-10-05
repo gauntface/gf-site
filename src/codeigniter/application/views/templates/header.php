@@ -1,6 +1,7 @@
 <?php
 
   $this->load->helper('file');
+  $this->load->helper('styles_image_swap');
   $this->load->helper('revision');
   $this->load->helper('url');
 
@@ -50,13 +51,13 @@
     <link rel="dns-prefetch" href="https://storage.googleapis.com/">
 
     <?php
-    $inlineStylesheetContents = $page->getInlineStylesheetContents();
+    $inlineStylesheets = $page->getInlineStylesheets();
     $inlineRawCSS = $page->getInlineRawCSS();
 
-    if (isset($inlineStylesheetContents)) {
-      foreach($inlineStylesheetContents as $singleStylesheetContent) {
+    if (isset($inlineStylesheets)) {
+      foreach($inlineStylesheets as $singleStylesheet) {
         echo('<style>');
-        echo($singleStylesheetContent);
+        echo(swapStylesheetImages(read_file($singleStylesheet)));
         echo('</style>');
       }
     }
@@ -64,7 +65,7 @@
     if(isset($inlineRawCSS)) {
       foreach($inlineRawCSS as $rawCSS) {
         echo('<style>');
-        echo($rawCSS);
+        echo(swapStylesheetImages($rawCSS));
         echo('</style>');
       }
     }

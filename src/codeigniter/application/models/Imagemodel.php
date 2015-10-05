@@ -19,20 +19,10 @@ class ImageModel extends CI_Model {
       return;
     }
 
-    log_message('error', 'Hello World: ' . $requestUrl);
-
     $pathinfo = pathinfo($requestUrl);
     $this->_fileExtension = $pathinfo["extension"];
     $this->_filename = $pathinfo["filename"];
     $this->_imageDirectory = $pathinfo['dirname'].'/';
-
-    /**$numOfSegments = $this->uri->total_segments();
-    for($i = 3; $i < $numOfSegments; $i++) {
-      $this->_imageDirectory .= $this->uri->segment($i);
-      if($i + 1 < $numOfSegments) {
-        $this->_imageDirectory .= '/';
-      }
-    }**/
 
     $pattern = '/(?P<origfilename>.+)_(?P<width>\d+)x(?P<height>\d+)x(?P<density>\d+)/';
     $patternFound = preg_match($pattern, $pathinfo["filename"], $matches);
@@ -65,7 +55,6 @@ class ImageModel extends CI_Model {
   }
 
   function getOriginalStoragePath() {
-    log_message('error', 'ImageDirectory: '.$this->_imageDirectory);
     return $this->_imageDirectory.$this->_filename.'.'.$this->_fileExtension;
   }
 

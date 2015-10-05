@@ -84,28 +84,11 @@ class PageModel extends CI_Model {
   }
 
   private function getStylesheetContent($stylesheetFilename) {
-    $this->load->model('CloudStorageModel');
-    $this->load->model('ImageModel');
+    $this->load->helper('styles_image_swap');
+    $this->load->helper('file');
 
     $content = read_file($stylesheetFilename);
-    $matchesCount = preg_match_all("/background-image:[\s]?url\(\"(\/static\/image\/(.*))\"\);/", $content, $output_array);
-    if ($matchesCount == 0) {
-      return $content;
-    }
-
-    // The regular expression didn't work, it must be a path to the original image required
-    for ($i = 0; $i < $matchesCount; $i++) {
-      $imgPath = $output_array[2][$i];
-      $imageObject = new ImageModel($imgPath);
-      if ($this->CloudStorageModel->doesImageExist($imageObject->getCloudStoragePath()) == false) {
-        continue;
-      }
-
-      $cloudStorageUrl = $this->CloudStorageModel->getCloudStorageUrl($imageObject->getCloudStoragePath());
-      $content = str_replace($output_array[1][$i], $cloudStorageUrl, $content);
-    }
-
-    return $content;
+    return swapStylesheetImages($content);
   }
 
   public function setRemoteStylesheets($remoteStylesheet) {
