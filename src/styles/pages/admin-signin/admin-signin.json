@@ -11,7 +11,8 @@
   ],
   "extrasInline": [
     "src/styles/partials/base-core.scss",
-    "src/styles/partials/base-buttons.scss"
+    "src/styles/partials/base-buttons.scss",
+    "src/styles/pages/admin-signin/_admin-signin-inline.scss"
   ],
   "extrasRemote": [
 

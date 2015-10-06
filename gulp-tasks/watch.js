@@ -20,7 +20,7 @@ gulp.task('watch', function() {
   gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
     ['codeigniter'], browserSync.reload);
   gulp.watch([GLOBAL.config.deploy.codeigniter.root + '/**/*'],
-    ['ci-deploy-files'], browserSync.reload);
+    ['codeigniter:deploy'], browserSync.reload);
 
   // Fonts
   gulp.watch([GLOBAL.config.deploy.fonts + '/**/*'],

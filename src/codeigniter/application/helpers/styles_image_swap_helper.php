@@ -3,6 +3,10 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 function swapStylesheetImages($content) {
+  if (ENVIRONMENT == 'development') {
+    return $content;
+  }
+  
   $CI =& get_instance();
   $CI->load->model('CloudStorageModel');
   $CI->load->model('ImageModel');
