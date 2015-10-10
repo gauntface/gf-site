@@ -146,7 +146,7 @@ class BlogEditorController extends BaseController {
   }
 
   onPostIDUpdated(postId) {
-    var newUrl = '/crumpets/blog/edit/' + postId;
+    var newUrl = '/breakfast/blog/edit/' + postId;
     var stateObj = {};
 
     // Replace the state so we don't keep the create URL on the back stack
