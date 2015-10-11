@@ -87,6 +87,7 @@ class Blog extends Base_Controller {
     $this->load->model('blog/PostsModel');
 
     if ($postId == null) {
+      log_message('error', 'No post ID provided for blog/view');
       return $this->show_404();
     }
 
@@ -100,6 +101,7 @@ class Blog extends Base_Controller {
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
+    log_message('error', 'Rendering '.$postId);
     $this->render($postModel, $pageData);
   }
 
