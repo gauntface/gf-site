@@ -4,6 +4,7 @@
   ],
   "name": "admin-signin",
   "components": [
+    "loading",
     "debug"
   ],
   "layouts": [
