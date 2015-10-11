@@ -93,13 +93,17 @@ class Blog extends Base_Controller {
     // This is a view post by ID.
     // We want no cache of this
     $this->output->cache(0);
+    $this->load->model('PageModel');
+
+    $pageData = new PageModel();
+    $pageData->setExpiryTimeInSeconds(0);
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
-    $this->render($postModel);
+    $this->render($postModel, $pageData);
   }
 
-  private function render($postModel) {
+  private function render($postModel, $pageData = null) {
     $this->load->helper('file');
 
     $this->load->model('PageModel');
@@ -115,6 +119,10 @@ class Blog extends Base_Controller {
       return $this->show_404();
     }
 
+    if ($pageData == null) {
+      $pageData = new PageModel();
+    }
+
     $leftSectionCSS = read_file('styles/templates/inline-split-section.css');
     $leftSectionCSS = str_replace('\'{{left-section-bg-color}}\'', $postModel->getMainImgBgColor(), $leftSectionCSS);
 
@@ -126,7 +134,6 @@ class Blog extends Base_Controller {
     // This will handle responsive image template when needed
     //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
 
-    $pageData = new PageModel();
     $pageData->setTitle($postModel->getTitle());
     $pageData->setRemoteStylesheets(['styles/blog-post-remote.css']);
     $pageData->setInlineStylesheets(['styles/blog-post-inline.css']);

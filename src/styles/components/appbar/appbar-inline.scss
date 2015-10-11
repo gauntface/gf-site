@@ -84,7 +84,7 @@
   .appbar {
     justify-content: flex-start;
 
-    padding: 0 (2 * $base-line-height);
+    padding: 0 $page-h-padding;
   }
 
   .appbar__link {

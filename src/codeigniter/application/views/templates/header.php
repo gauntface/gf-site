@@ -5,10 +5,16 @@
   $this->load->helper('revision');
   $this->load->helper('url');
 
-  header("Cache-Control: public, must-revalidate, proxy-revalidate");
-  header("Cache-Control: max-age=".$page->getExpiryTimeInSeconds(), false);
-  header('Expires: ' . $page->getExpiryDate() . ' GMT');
-  header("Pragma: public");
+  if ($page->getExpiryTimeInSeconds() > 0) {
+    header("Cache-Control: public, must-revalidate, proxy-revalidate");
+    header("Cache-Control: max-age=".$page->getExpiryTimeInSeconds(), false);
+    header('Expires: ' . $page->getExpiryDate() . ' GMT');
+    header("Pragma: public");
+  } else {
+    header("Cache-Control: no-cache, no-store, must-revalidate");
+    header('Expires: 0');
+    header("Pragma: no-cache");
+  }
 ?>
 <!doctype html>
 <html>

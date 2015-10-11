@@ -16,11 +16,13 @@ class PageModel extends CI_Model {
   private $_remoteStylesheets;
   private $_inlineScripts;
   private $_remoteScripts;
+  private $_expiryTimeInSeconds;
 
   function __construct() {
     // Call the Model constructor
     parent::__construct();
 
+    $this->_expiryTimeInSeconds = (24 * 60 * 60);
     $this->_themeColor = '#1E1621';
     $this->_remoteScripts = ['scripts/standard-page.es6.js'];
   }
@@ -57,9 +59,12 @@ class PageModel extends CI_Model {
     $this->_bodyClass = $bodyClass;
   }
 
-  // Expiry time is 24 hours
+  public function setExpiryTimeInSeconds($seconds) {
+    $this->_expiryTimeInSeconds = $seconds;
+  }
+
   public function getExpiryTimeInSeconds() {
-    return (24 * 60 * 60);
+    return $this->_expiryTimeInSeconds;
   }
 
   public function getExpiryDate() {

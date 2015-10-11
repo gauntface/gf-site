@@ -3,3 +3,8 @@
 .gf-header {
   max-height: $base-line-height * 10;
 }
+
+main {
+  padding-left: $page-h-padding;
+  padding-right: $page-h-padding;
+}
