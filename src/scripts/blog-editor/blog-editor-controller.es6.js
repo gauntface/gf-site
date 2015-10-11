@@ -138,7 +138,8 @@ class BlogEditorController extends BaseController {
         }
 
         this.previewIframe.src = window.location.protocol + '//' +
-          window.location.host + '/blog/view/' + this.blogModel.postId;
+          window.location.host + '/breakfast/blog/view/' +
+          this.blogModel.postId;
       }.bind(this))
       .catch(function(err) {
         console.log('blog-editor: Need to handle failure of save attempt', err);
