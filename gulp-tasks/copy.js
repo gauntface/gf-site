@@ -12,7 +12,7 @@ gulp.task('copy:deploy-assets', [], function() {
 
 gulp.task('copy:root', function() {
   return gulp.src([
-      GLOBAL.config.src.root + '/*.json'
+      GLOBAL.config.src.root + '/*.{json,txt}'
     ])
     .pipe(gulp.dest(GLOBAL.config.build.root + '/'));
 });
