@@ -11,13 +11,15 @@ class TitleModel extends CI_Model {
   private $_smallBackgroundImage;
   private $_useLightDivider;
   private $_isPadded;
+  private $_isTransparent;
   private $_linkHref;
 
   function __construct() {
     // Call the Model constructor
     parent::__construct();
 
-    $_useLightDivider = false;
+    $this->_useLightDivider = false;
+    $this->_isTransparent = true;
   }
 
   public function setTitle($title) {
@@ -82,6 +84,16 @@ class TitleModel extends CI_Model {
 
   public function isPadded() {
     return $this->_isPadded;
+  }
+
+  public function setIsTransparent($transparent) {
+    log_message('error', 'setIsTransparent(): '.($transparent ? 'TRUE' : 'FALSE'));
+    $this->_isTransparent = $transparent;
+  }
+
+  public function isTransparent() {
+    log_message('error', 'isTransparent(): '.($this->_isTransparent ? 'TRUE' : 'FALSE'));
+    return $this->_isTransparent;
   }
 
   public function setLinkURL($url) {

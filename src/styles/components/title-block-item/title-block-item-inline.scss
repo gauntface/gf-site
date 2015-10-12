@@ -28,6 +28,10 @@
   padding-bottom: $base-line-height;
 }
 
+.title-block-item.is-not-transparent {
+  background-color: $secondary-bg-color;
+}
+
 .title-block__content {
   padding-top: $base-line-height * 0.5;
   padding-bottom: $base-line-height * 0.5;

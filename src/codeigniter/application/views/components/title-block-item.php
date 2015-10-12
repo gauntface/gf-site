@@ -21,6 +21,10 @@ if ($title->isPadded()) {
   $additionalStyles .= ' is-padded';
 }
 
+if (!$title->isTransparent()) {
+  $additionalStyles .= ' is-not-transparent';
+}
+
 if ($title->getFullbleedBackgroundImage()) {
   $additionalStyles .= ' is-light-text';
 
@@ -35,11 +39,9 @@ if ($title->getFullbleedBackgroundImage()) {
   ) {
     $titleBlockFullbleedBGCSS = str_replace('{{img-url}}', $fullBleedImgPathinfo['dirname'].'/'.$fullBleedImgPathinfo['filename'], $titleBlockFullbleedBGCSS);
     $titleBlockFullbleedBGCSS = str_replace('{{img-extension}}', $fullBleedImgPathinfo['extension'], $titleBlockFullbleedBGCSS);
+    $titleBlockFullbleedBGCSS = str_replace('\'{{bg-color}}\'', $title->getFullbleedBackgroundColor(), $titleBlockFullbleedBGCSS);
     ?>
     <style>
-    .<?php echo $title->getClassName(); ?> {
-      background-color: <?php echo $title->getFullbleedBackgroundColor(); ?>
-    }
     <?php echo $titleBlockFullbleedBGCSS; ?>
     </style>
     <?php

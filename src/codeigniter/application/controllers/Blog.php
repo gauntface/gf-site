@@ -52,6 +52,7 @@ class Blog extends Base_Controller {
       $titleModel->setFullbleedBackgroundImage($posts[0]->getMainImg());
       $titleModel->setFullbleedBackgroundColor($posts[0]->getMainImgBgColor());
       $titleModel->makePadded(true);
+      $titleModel->setIsTransparent(false);
       $titleModel->setUseLightDivider(true);
       $titleModel->setLinkURL($posts[0]->getPublicURL());
 
@@ -129,9 +130,6 @@ class Blog extends Base_Controller {
     $leftSectionCSS = str_replace('\'{{left-section-bg-color}}\'', $postModel->getMainImgBgColor(), $leftSectionCSS);
 
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
-
-    log_message('error', $leftSectionCSS);
-    log_message('error', 'COLOR ->>>>>>>>>>>>>>>>>>>>>>>>>> '.$postModel->getMainImgBgColor());
 
     // This will handle responsive image template when needed
     //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
