@@ -81,6 +81,10 @@ gulp.task('codeigniter:file-permissions', function(cb) {
   cb();
 });
 
+gulp.task('codeigniter:clean:logs', del.bind(null, [
+  GLOBAL.config.build.root + '/logs/**/*',
+], {dot: true}));
+
 // Clean output directory
 gulp.task('codeigniter:clean', del.bind(null, [
   GLOBAL.config.build.root + '/application/**/*',

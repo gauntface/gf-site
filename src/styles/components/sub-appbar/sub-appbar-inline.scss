@@ -78,7 +78,7 @@
 
 @media (min-width: $break-small) {
   .subappbar {
-    padding: 0 (2 * $base-line-height);
+    padding: 0 $page-h-padding;
 
     align-items: center;
   }

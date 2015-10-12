@@ -49,6 +49,7 @@ var commonBuildTasks = [
   'copy',
   'fonts',
   'codeigniter',
+  'codeigniter:clean:logs',
   'static',
   'styles',
   'images',

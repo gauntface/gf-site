@@ -138,7 +138,8 @@ class BlogEditorController extends BaseController {
         }
 
         this.previewIframe.src = window.location.protocol + '//' +
-          window.location.host + '/blog/view/' + this.blogModel.postId;
+          window.location.host + '/breakfast/blog/view/' +
+          this.blogModel.postId;
       }.bind(this))
       .catch(function(err) {
         console.log('blog-editor: Need to handle failure of save attempt', err);
@@ -146,7 +147,7 @@ class BlogEditorController extends BaseController {
   }
 
   onPostIDUpdated(postId) {
-    var newUrl = '/crumpets/blog/edit/' + postId;
+    var newUrl = '/breakfast/blog/edit/' + postId;
     var stateObj = {};
 
     // Replace the state so we don't keep the create URL on the back stack
