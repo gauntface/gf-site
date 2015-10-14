@@ -106,4 +106,12 @@ class PageModel extends CI_Model {
     }
     return array();
   }
+
+  public function getOutputType() {
+    $responseType = $this->input->get('response_type', TRUE);
+    if ($responseType) {
+      return strtolower($responseType);
+    }
+    return 'html';
+  }
 }

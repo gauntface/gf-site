@@ -81,6 +81,15 @@ class Md extends Michelf\Markdown {
     $url = $this->encodeAttribute($url);
     $pathInfo = pathinfo($url);
 
+    $CI =& get_instance();
+    $responseType = $CI->input->get('response_type', TRUE);
+    if ($responseType) {
+      $responseType =  strtolower($responseType);
+      if ($responseType == 'amp') {
+        return $this->hashPart('');
+      }
+    }
+
     $result = "<span class=\"blog-img-center\">";
 
     if(strtolower($pathInfo["extension"]) == 'gif' || strpos($url, 'http') === 0) {

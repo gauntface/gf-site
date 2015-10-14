@@ -102,7 +102,6 @@ class Blog extends Base_Controller {
 
     $postsModel = new PostsModel();
     $postModel = $postsModel->getPostById($postId);
-    log_message('error', 'Rendering '.$postId);
     $this->render($postModel, $pageData);
   }
 

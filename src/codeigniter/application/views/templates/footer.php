@@ -16,6 +16,7 @@
     }
 
     ?>
+    <?php if ($page->getOutputType() != 'amp') { ?>
     <noscript>
       <?php
       foreach($parsedStylesheets as $stylesheetUrl) {
@@ -25,7 +26,6 @@
       }
       ?>
     </noscript>
-
     <script type="text/javascript" async>
       window.GauntFace = window.GauntFace || {};
       window.GauntFace._remoteStylesheets = [
@@ -43,23 +43,26 @@
         window.GauntFace.events.onRemoteStylesheetsAvailable();
       }
     </script>
+    <?php } ?>
     <?php
   }
 ?>
 <?php
-$scripts = $page->getRemoteScripts();
-foreach($scripts as $script) {
-  $scriptUrl;
+if ($page->getOutputType() != 'amp') {
+  $scripts = $page->getRemoteScripts();
+  foreach($scripts as $script) {
+    $scriptUrl;
 
-  // If the script starts with HTTP, chances are it's a third party scripts
-  if(strpos($script, "http") === 0) {
-    $scriptUrl = $script;
-  } else {
-    $scriptUrl = '/'.addRevisionToFilePath($script);
+    // If the script starts with HTTP, chances are it's a third party scripts
+    if(strpos($script, "http") === 0) {
+      $scriptUrl = $script;
+    } else {
+      $scriptUrl = '/'.addRevisionToFilePath($script);
+    }
+    ?>
+    <script src="<?php echo($scriptUrl) ?>" type="text/javascript" async></script>
+    <?php
   }
-  ?>
-  <script src="<?php echo($scriptUrl) ?>" type="text/javascript" async></script>
-  <?php
 }
 ?>
   </body>

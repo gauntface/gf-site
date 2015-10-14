@@ -1,3 +1,4 @@
+<?php if ($page->getOutputType() != 'amp') { ?>
 <footer class="subtle-footer">
   <div class="subtle-footer__content-container">
   <a class="subtle-footer__social-link-item" href="https://twitter.com/gauntface">
@@ -15,3 +16,4 @@
   </a>
   </div>
 </footer>
+<?php } ?>
