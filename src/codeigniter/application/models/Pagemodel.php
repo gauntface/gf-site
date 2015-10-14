@@ -108,7 +108,7 @@ class PageModel extends CI_Model {
   }
 
   public function getOutputType() {
-    $responseType = $this->input->get('response_type', TRUE);
+    $responseType = $this->input->get('output_type', TRUE);
     if ($responseType) {
       return strtolower($responseType);
     }

@@ -74,27 +74,16 @@ class Md extends Michelf\Markdown {
     $url            = $matches[3] == '' ? $matches[4] : $matches[3];
     $title          =& $matches[7];
 
-    log_message('error', '_doImages_inline_callback');
-
     // Parsed Results
     $alt_text = $this->encodeAttribute($alt_text);
     $url = $this->encodeAttribute($url);
     $pathInfo = pathinfo($url);
 
-    $CI =& get_instance();
-    $responseType = $CI->input->get('response_type', TRUE);
-    if ($responseType) {
-      $responseType =  strtolower($responseType);
-      if ($responseType == 'amp') {
-        return $this->hashPart('');
-      }
-    }
-
     $result = "<span class=\"blog-img-center\">";
 
     if(strtolower($pathInfo["extension"]) == 'gif' || strpos($url, 'http') === 0) {
       // Do Nothing to gifs
-      $result .= $this->getImageString($url, $pathInfo, $alt_text, null, null, null);
+      $result .= $this->getImageString($url, $pathInfo, $alt_text, null, null, null, null, null);
       $result .= "</span>";
       return $this->hashPart($result);
     }
@@ -102,42 +91,57 @@ class Md extends Michelf\Markdown {
     $height = 0;
     $minWidth = 300;
     $maxWidth = 0;
-    $widthInterval = 50;
+    $widthInterval = 100;
     $densities = array(1, 2, 3, 4);
 
     if($title) {
+      // The 4 is for the largest density
       $maxWidth = intval($title);
+    }
+
+    if($maxWidth > 480) {
+      // Since the content has a max width of 480
+      $maxWidth = 480;
     }
 
     if($maxWidth <= 0) {
       // Nothing for us to do
-      $result .= $this->getImageString($url, $pathInfo, $alt_text, null, null, null);
+      $result .= $this->getImageString($url, $pathInfo, $alt_text, null, null, null, null, null);
       $result .= "</span>";
       return $this->hashPart($result);
     }
 
-    $pictureString = $this->getPictureString($url, $pathInfo, $alt_text, $maxWidth, $minWidth, $height, $widthInterval, $densities);
+    $imgString = $this->getImageString($url, $pathInfo, $alt_text, $maxWidth, $minWidth, $height, $widthInterval, $densities);
+    //$pictureString = $this->getPictureString($url, $pathInfo, $alt_text, $maxWidth, $minWidth, $height, $widthInterval, $densities);
 
-    $result .= $pictureString."</span>";
+    $result .= $imgString."</span>";
     return $this->hashPart($result);
   }
 
-  function getImageString($url, $pathInfo, $altText, $maxWidth, $height, $densities) {
+  function getImageString($url, $pathInfo, $altText, $maxWidth, $minWidth, $height, $widthInterval, $densities) {
     $imgString = "<img ";
     if(isset($maxWidth) && $maxWidth > 0) {
-      $imgString .= "src=\"".$pathInfo["dirname"]."/".$pathInfo["filename"]."_".$maxWidth."x".$height."x1.".$pathInfo["extension"]."\" ";
-      $imgString .= "srcset=\"";
-      for ($i = 1; $i < count($densities); $i++) {
+      $imgString .= 'src="'.$pathInfo["dirname"].'/'.$pathInfo["filename"].'_'.$maxWidth.'x'.$height.'x1.'.$pathInfo["extension"].'" ';
+      $imgString .= 'srcset="';
+      $maxWidthWithDensity = $maxWidth * max($densities);
+      for ($i = $minWidth; $i <= $maxWidthWithDensity; $i += $widthInterval) {
+        $currentWidth = $i;
+
         $imgString .= $pathInfo["dirname"]."/".$pathInfo["filename"]."_".
-          $maxWidth."x".$height."x".$densities[$i].
-          ".".$pathInfo["extension"]. " ".$densities[$i]."x";
-        if($i+1 < count($densities)) {
+          $currentWidth."x".$height."x1".
+          ".".$pathInfo["extension"]. " ".$currentWidth."w";
+
+        $currentWidth += $widthInterval;
+        if($currentWidth <= $maxWidthWithDensity) {
           $imgString .= ", ";
         }
       }
-      $imgString .= "\"";
+
+      $imgString .= '" ';
+
+      $imgString .= 'sizes="(min-width: 480px) 432px, calc(100vw - 48px)"';
     } else {
-      $imgString .= "src=\"$url\" ";
+      $imgString .= 'src="'.$url.'" ';
     }
 
     $imgString .= "alt=\"$altText\"";
@@ -145,7 +149,7 @@ class Md extends Michelf\Markdown {
     return $imgString;
   }
 
-  function getPictureString($url, $pathInfo, $altText, $maxWidth, $minWidth, $height, $widthInterval, $densities) {
+  /**function getPictureString($url, $pathInfo, $altText, $maxWidth, $minWidth, $height, $widthInterval, $densities) {
     $imgString = $this->getImageString($url, $pathInfo, $altText, $maxWidth, $height, $densities);
 
     $pictureString = "<picture>";
@@ -173,6 +177,6 @@ class Md extends Michelf\Markdown {
     $pictureString .= $imgString;
     $pictureString .= "</picture>";
     return $pictureString;
-  }
+  }**/
 
 }
