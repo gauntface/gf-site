@@ -56,6 +56,8 @@ class Blog extends Base_Controller {
       $titleModel->setUseLightDivider(true);
       $titleModel->setLinkURL($posts[0]->getPublicURL());
 
+      $pageData->setThemeColor($posts[0]->getMainImgBgColor());
+
       array_push($data['postTitles'] , $titleModel);
 
       for ($i = 1; $i < count($posts); $i++) {
@@ -130,15 +132,14 @@ class Blog extends Base_Controller {
 
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
 
-    // This will handle responsive image template when needed
-    //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
-
     $pageData->setTitle($postModel->getTitle());
     $pageData->setRemoteStylesheets(['styles/blog-post-remote.css']);
     $pageData->setInlineStylesheets(['styles/blog-post-inline.css']);
     $pageData->setInlineRawCSS([
       $leftSectionCSS
     ]);
+
+    $pageData->setThemeColor($postModel->getMainImgBgColor());
 
     $contentGridModel = array();
     $contentGridModel['postModel'] = $postModel;

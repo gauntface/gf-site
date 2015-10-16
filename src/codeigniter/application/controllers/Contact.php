@@ -15,6 +15,7 @@ class Contact extends Base_Controller {
     $pageData->setTitle('Contact');
     $pageData->setRemoteStylesheets(['styles/contact-remote.css']);
     $pageData->setInlineStylesheets(['styles/contact-inline.css']);
+    $pageData->setThemeColor('#1A1420');
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('contact');

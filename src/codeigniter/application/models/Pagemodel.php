@@ -31,6 +31,12 @@ class PageModel extends CI_Model {
     return $this->_themeColor;
   }
 
+  public function setThemeColor($newColor) {
+    if ($newColor) {
+      $this->_themeColor = $newColor;
+    }
+  }
+
   public function getTitle() {
     if(isset($this->_title) && strlen($this->_title) > 0) {
       return $this->_title . ' - ' . $this->DEFAULT_TITLE;

@@ -25,6 +25,7 @@ class About extends Base_Controller {
     $pageData->setTitle('About');
     $pageData->setRemoteStylesheets(['styles/about-remote.css']);
     $pageData->setInlineStylesheets(['styles/about-inline.css']);
+    $pageData->setThemeColor('#606363');
 
     $contentData = new ContentGridModel();
     $contentData->setRightContentView('content/about');

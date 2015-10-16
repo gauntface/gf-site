@@ -64,6 +64,9 @@
     <meta name="robots" content="noindex">
     <?php } ?>
 
+    <!-- Generic Fav Icons -->
+    <?php include('generic_header.php'); ?>
+
     <!-- Schema.org data-->
     <?php include('schema_header.php'); ?>
 
@@ -73,8 +76,8 @@
     <!-- Apple Specific Tags -->
     <?php include('apple_header.php'); ?>
 
-    <!-- Generic Fav Icons -->
-    <?php include('generic_header.php'); ?>
+    <!-- Opera Coast -->
+    <?php include('opera_header.php'); ?>
 
     <?php
     if ($page->getOutputType() != 'amp') {
