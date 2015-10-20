@@ -109,7 +109,7 @@ class StyleguideViewerController extends BaseController {
         viewName;
     } else {
       this.backBtn.disabled = true;
-      iframeUrl = window.location.origin + '/styleguide/view/';
+      iframeUrl = window.location.origin + '/styleguide/componentlist/';
     }
 
     // Handle get variables here

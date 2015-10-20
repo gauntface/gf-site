@@ -15,8 +15,8 @@ class Home extends Base_Controller {
   public function index()
   {
     $this->load->model('PageModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
     $this->load->model('blog/PostsModel');
     $this->load->model('TwitterKeys');
 

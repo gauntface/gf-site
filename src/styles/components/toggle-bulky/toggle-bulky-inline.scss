@@ -2,22 +2,13 @@
 @import '../../variables/dimens';
 @import '../../variables/font-families';
 
-$toggle-height: ($base-line-height * 1.5);
-$toggle-width: ($base-line-height * 3);
 $toggle-border-width: 2px;
-
-$toggle-inner-section-width: ($toggle-width / 2) + $toggle-border-width;
 
 .toggle {
   display: inline-block;
-  width: $toggle-width;
-  height: $toggle-height;
 
-  position: relative;
-
-  line-height: $toggle-height - ($toggle-border-width * 2);
-
-  box-sizing: border-box;
+  line-height: $base-line-height - ($toggle-border-width * 2);
+  padding: $base-line-height / 2;
 
   background: transparent;
 
@@ -25,7 +16,7 @@ $toggle-inner-section-width: ($toggle-width / 2) + $toggle-border-width;
   border-width: $toggle-border-width;
   border-color: $toggle-off-color;
 
-  color: $toggle-text-color;
+  color: $toggle-off-color;
 
   cursor: pointer;
 
@@ -39,13 +30,7 @@ $toggle-inner-section-width: ($toggle-width / 2) + $toggle-border-width;
 
   display: inline-block;
   // We want on and off to have the same width
-  width: $toggle-inner-section-width;
-
-  position: absolute;
-  left: - $toggle-border-width;
-
-
-  background: $toggle-off-color;
+  width: $base-line-height * 1.5;
   text-align: center;
 
   transition : all 600ms;
@@ -53,16 +38,14 @@ $toggle-inner-section-width: ($toggle-width / 2) + $toggle-border-width;
 
 .toggle.is-checked {
   border-color: $toggle-on-color;
+  color: $toggle-on-color;
 }
 
 .toggle.is-checked:before {
   content: 'On';
-
-  background: $toggle-on-color;
-  left: ($toggle-width / 2) - (2 * $toggle-border-width);
 }
 
 .toggle.is-disabled {
-  opacity: 0.6;
   cursor: default;
+  opacity: 0.6;
 }

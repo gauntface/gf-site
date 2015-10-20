@@ -3,7 +3,7 @@
   "components": [
     "appbar",
     "title-block-item",
-    "subtle-footer",
+    "footer-subtle",
     "geshi-code",
     "debug",
     "dividers"

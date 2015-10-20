@@ -17,17 +17,27 @@
   }
 ?>
 <!doctype html>
-<html lang="en">
+<html amp lang="en">
   <head>
     <meta charset="utf-8">
 
     <title><?php echo($page->getTitle()); ?></title>
     <meta name="description" content="<?php echo($page->getDescription()); ?>">
     <meta name='theme-color' content='<?php echo($page->getThemeColor()); ?>'>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <!-- Manifest File -->
-    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
+    <style>body {opacity: 0}</style><noscript><style>body {opacity: 1}</style></noscript>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "headline": "<?php echo($page->getTitle()); ?>",
+      "image": [
+        "<?php echo(base_url().addRevisionToFilePath('images/favicons/favicon-192.png')); ?>"
+      ]
+    }
+    </script>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
 
     <!-- RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for Gaunt Face | Matt Gaunt" href="<?php echo(base_url().'blog/feed/rss'); ?>">
@@ -56,22 +66,24 @@
     <?php include('header-sections/opera_header.php'); ?>
 
     <?php
-    $inlineStylesheets = $page->getInlineStylesheets();
-    $inlineRawCSS = $page->getInlineRawCSS();
+    if ($page->getOutputType() != 'amp') {
+      $inlineStylesheets = $page->getInlineStylesheets();
+      $inlineRawCSS = $page->getInlineRawCSS();
 
-    if (isset($inlineStylesheets)) {
-      foreach($inlineStylesheets as $singleStylesheet) {
-        echo('<style>');
-        echo(swapStylesheetImages(read_file($singleStylesheet)));
-        echo('</style>');
+      if (isset($inlineStylesheets)) {
+        foreach($inlineStylesheets as $singleStylesheet) {
+          echo('<style>');
+          echo(swapStylesheetImages(read_file($singleStylesheet)));
+          echo('</style>');
+        }
       }
-    }
 
-    if(isset($inlineRawCSS)) {
-      foreach($inlineRawCSS as $rawCSS) {
-        echo('<style>');
-        echo(swapStylesheetImages($rawCSS));
-        echo('</style>');
+      if(isset($inlineRawCSS)) {
+        foreach($inlineRawCSS as $rawCSS) {
+          echo('<style>');
+          echo(swapStylesheetImages($rawCSS));
+          echo('</style>');
+        }
       }
     }
     ?>

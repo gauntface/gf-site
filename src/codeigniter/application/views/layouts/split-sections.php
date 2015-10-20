@@ -18,7 +18,7 @@ $this->load->view('components/appbar');
       $this->load->view($contentgrid->getRightContentView(), $contentgrid->getContentData());
     }
 
-    $this->load->view('components/subtle-footer', $page);
+    $this->load->view('components/footer', $page);
     ?>
   </div>
 </div>

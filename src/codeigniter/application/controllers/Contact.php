@@ -8,8 +8,8 @@ class Contact extends Base_Controller {
   public function index()
   {
     $this->load->model('PageModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
 
     $pageData = new PageModel();
     $pageData->setTitle('Contact');

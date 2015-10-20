@@ -3,6 +3,7 @@ $highlight-color: #000000 !default;
 $secondary-bg-color: #bbbbbb !default;
 
 $title-color-faded: rgba($highlight-color, 0.6) !default;
+$page-bg-color: #EDEDEB;
 
 $input-bg-color: $secondary-bg-color !default;
 $input-focus-bg-color: lighten($secondary-bg-color, 8%) !default;
@@ -35,11 +36,10 @@ $light-grey-color: #BFBEC0 !default;
 
 $loading-color: $title-color;
 
-$toggle-on-color: rgba(255, 255, 255, 0.7);
-$toggle-off-color: rgba(0, 0, 0, 0.7);
-$toggle-disabled-color: rgba(95, 95, 95, 0.7);
+$toggle-on-color: $light-grey-color;
+$toggle-off-color: #8f8d91;
+$toggle-text-color: $page-bg-color;
 
-$page-bg-color: #EDEDEB;
 $contact-page-bg-color: #1A1420;
 $contact-page-text-color: #BAB8BC;
 
@@ -74,6 +74,7 @@ $stringColor: #297ea9 !default;
 
 // Footer
 $footer-bg-color: $dark-grey-color !default;
+$footer-text-color: $light-grey-color !default;
 
 // Dividers
 $divider-color: black !default;

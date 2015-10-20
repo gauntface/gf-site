@@ -26,8 +26,9 @@ class StyleguideMessageContainer extends BaseController {
       return;
     }
 
-    var value = pathSections[pathSections.length - 2] + '/' +
-      pathSections[pathSections.length - 1];
+    // Remove /styleguide/view/
+    pathSections.splice(0, 2);
+    var value = pathSections.join('/');
 
     window.top.postMessage(value, '*');
   }

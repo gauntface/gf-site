@@ -14,8 +14,8 @@ class Blog extends Base_Controller {
 
     $this->load->model('PageModel');
     $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
     $this->load->model('blog/PostsModel');
 
     $postsModel = new PostsModel();
@@ -112,8 +112,8 @@ class Blog extends Base_Controller {
 
     $this->load->model('PageModel');
     $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
 
     if($postModel == null) {
       return $this->show_404();
