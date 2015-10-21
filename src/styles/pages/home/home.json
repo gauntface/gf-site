@@ -11,7 +11,8 @@
     "twitter-block",
     "youtube-block",
     "debug",
-    "dividers"
+    "dividers",
+    "toggle"
   ],
   "layouts": [
     "split-half"

@@ -6,7 +6,8 @@
     "footer-subtle",
     "geshi-code",
     "debug",
-    "dividers"
+    "dividers",
+    "toggle"
   ],
   "layouts": [
     "content-split"

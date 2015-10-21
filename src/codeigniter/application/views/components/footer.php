@@ -12,12 +12,12 @@
       </a>
     </div>
 
-    <!--<div class="footer__spacer"></div>
+    <div class="footer__spacer"></div>
 
     <div class="footer__push-section">
-      <div class="footer__push-description">Enable push notifications</div>
-      <div class="toggle"></div>
-    </div>-->
+      <div class="footer__push-description js-push-notification-message">Enable push notifications</div>
+      <div class="toggle is-disabled js-push-notification-toggle"></div>
+    </div>
   </div>
 </footer>
 
