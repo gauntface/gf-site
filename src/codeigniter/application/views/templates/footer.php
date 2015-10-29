@@ -48,21 +48,19 @@
   }
 ?>
 <?php
-if ($page->getOutputType() != 'amp') {
-  $scripts = $page->getRemoteScripts();
-  foreach($scripts as $script) {
-    $scriptUrl;
+$scripts = $page->getRemoteScripts();
+foreach($scripts as $script) {
+  $scriptUrl;
 
-    // If the script starts with HTTP, chances are it's a third party scripts
-    if(strpos($script, "http") === 0) {
-      $scriptUrl = $script;
-    } else {
-      $scriptUrl = '/'.addRevisionToFilePath($script);
-    }
-    ?>
-    <script src="<?php echo($scriptUrl) ?>" type="text/javascript" async></script>
-    <?php
+  // If the script starts with HTTP, chances are it's a third party scripts
+  if(strpos($script, "http") === 0) {
+    $scriptUrl = $script;
+  } else {
+    $scriptUrl = '/'.addRevisionToFilePath($script);
   }
+  ?>
+  <script src="<?php echo($scriptUrl) ?>" type="text/javascript" async></script>
+  <?php
 }
 ?>
   </body>

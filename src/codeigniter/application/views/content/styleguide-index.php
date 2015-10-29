@@ -38,8 +38,8 @@ deconstruct the building blocks / components I intend to use.</p>
 
 <h2>Footer</h2>
 
-<p><a href="/styleguide/view/components/block-footer">Block Footer</a></p>
-<p><a href="/styleguide/view/components/subtle-footer">Subtle Footer</a></p>
+<p><a href="/styleguide/view/components/footer">Block Footer</a></p>
+<p><a href="/styleguide/view/components/footer/subtle">Subtle Footer</a></p>
 
 <h2>Title Block Item</h2>
 

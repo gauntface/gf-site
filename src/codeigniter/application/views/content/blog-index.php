@@ -16,5 +16,5 @@ for($i = 0; $i < count($postTitles); $i++) {
 </section>
 
 <?php
-$this->load->view('components/block-footer');
+$this->load->view('components/footer');
 $this->load->view('templates/footer', $page);

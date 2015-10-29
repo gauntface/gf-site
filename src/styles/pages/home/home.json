@@ -7,11 +7,12 @@
     "home-header",
     "appbar",
     "title-block-item",
-    "block-footer",
+    "footer",
     "twitter-block",
     "youtube-block",
     "debug",
-    "dividers"
+    "dividers",
+    "toggle"
   ],
   "layouts": [
     "split-half"

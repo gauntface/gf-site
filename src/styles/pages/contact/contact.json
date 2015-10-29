@@ -6,8 +6,9 @@
   "components": [
     "appbar",
     "title-block-item",
-    "block-footer",
-    "debug"
+    "footer",
+    "debug",
+    "toggle"
   ],
   "layouts": [
 

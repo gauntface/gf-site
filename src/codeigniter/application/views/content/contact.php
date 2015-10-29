@@ -17,6 +17,6 @@ $this->load->view('components/title-block-item', array('title' => $title));
 </section>
 
 <?php
-$this->load->view('components/block-footer');
+$this->load->view('components/footer');
 
 $this->load->view('templates/footer', $page);

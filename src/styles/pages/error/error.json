@@ -6,9 +6,10 @@
   "components": [
     "appbar",
     "title-block-item",
-    "subtle-footer",
+    "footer-subtle",
     "debug",
-    "dividers"
+    "dividers",
+    "toggle"
   ],
   "layouts": [
     "content-split"

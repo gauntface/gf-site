@@ -17,6 +17,6 @@ if (isset($blogTitleModel)) {
 
 <?php
 $this->load->view('components/title-block-item', array('title' => $bottomTitleModel));
-$this->load->view('components/block-footer');
+$this->load->view('components/footer');
 
 $this->load->view('templates/footer', $page);

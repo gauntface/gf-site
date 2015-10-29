@@ -9,8 +9,8 @@ class About extends Base_Controller {
   {
     $this->load->model('PageModel');
     $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
     $this->load->model('blog/PostsModel');
 
     $postsModel = new PostsModel();
@@ -25,6 +25,7 @@ class About extends Base_Controller {
     $pageData->setTitle('About');
     $pageData->setRemoteStylesheets(['styles/about-remote.css']);
     $pageData->setInlineStylesheets(['styles/about-inline.css']);
+    $pageData->setThemeColor('#606363');
 
     $contentData = new ContentGridModel();
     $contentData->setRightContentView('content/about');

@@ -8,13 +8,14 @@ class Contact extends Base_Controller {
   public function index()
   {
     $this->load->model('PageModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
 
     $pageData = new PageModel();
     $pageData->setTitle('Contact');
     $pageData->setRemoteStylesheets(['styles/contact-remote.css']);
     $pageData->setInlineStylesheets(['styles/contact-inline.css']);
+    $pageData->setThemeColor('#1A1420');
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('contact');

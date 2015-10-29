@@ -14,8 +14,8 @@ class Blog extends Base_Controller {
 
     $this->load->model('PageModel');
     $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
     $this->load->model('blog/PostsModel');
 
     $postsModel = new PostsModel();
@@ -55,6 +55,8 @@ class Blog extends Base_Controller {
       $titleModel->setIsTransparent(false);
       $titleModel->setUseLightDivider(true);
       $titleModel->setLinkURL($posts[0]->getPublicURL());
+
+      $pageData->setThemeColor($posts[0]->getMainImgBgColor());
 
       array_push($data['postTitles'] , $titleModel);
 
@@ -110,8 +112,8 @@ class Blog extends Base_Controller {
 
     $this->load->model('PageModel');
     $this->load->model('ContentGridModel');
-    $this->load->model('AppBarModel');
-    $this->load->model('TitleModel');
+    $this->load->model('components/AppBarModel');
+    $this->load->model('components/TitleModel');
 
     if($postModel == null) {
       return $this->show_404();
@@ -130,15 +132,14 @@ class Blog extends Base_Controller {
 
     $leftSectionCSS = str_replace('{{left-section-img-url}}', $postModel->getMainImg(), $leftSectionCSS);
 
-    // This will handle responsive image template when needed
-    //$leftSectionCSS = str_replace('{{masthead-bg-template-extension}}', $pathinfo["extension"], $mastheadTemplate);
-
     $pageData->setTitle($postModel->getTitle());
     $pageData->setRemoteStylesheets(['styles/blog-post-remote.css']);
     $pageData->setInlineStylesheets(['styles/blog-post-inline.css']);
     $pageData->setInlineRawCSS([
       $leftSectionCSS
     ]);
+
+    $pageData->setThemeColor($postModel->getMainImgBgColor());
 
     $contentGridModel = array();
     $contentGridModel['postModel'] = $postModel;

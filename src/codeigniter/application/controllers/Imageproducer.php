@@ -66,7 +66,9 @@ class ImageProducer extends Base_Controller {
       umask($old);
     }
 
-    $localOriginalFilepath = $originalObjectPath;
+    // This is the generated object path because thats the directory we mkdir
+    // in the previous step
+    $localOriginalFilepath = $generatedObjectPath;
     if (!file_exists($localOriginalFilepath)) {
       // File doesn't exist locally so need to attempt a download of it
       $copyUrl = $this->CloudStorageModel->getCloudStorageUrl($originalObjectPath);
