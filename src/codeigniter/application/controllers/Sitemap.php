@@ -9,10 +9,10 @@ class Sitemap extends Base_Controller {
     $this->load->model('blog/PostsModel');
 
     $siteArray = [
-      '',
-      'blog',
-      'about',
-      'contact',
+      base_url(),
+      base_url().'blog',
+      base_url().'about',
+      base_url().'contact',
     ];
 
     $postsModel = new PostsModel();
