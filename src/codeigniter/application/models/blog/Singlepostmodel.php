@@ -20,6 +20,12 @@ class SinglePostModel extends CI_Model {
     $this->load->library('md');
 
     if($blogPostQuery) {
+      $objects = get_object_vars($blogPostQuery);
+      log_message('error', '    '.count($objects));
+      foreach ($objects as $value) {
+        log_message('error', 'HHHHEEEEEEEEEEELLLLLLLLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOO '.$value);
+      }
+
       $this->_id = urldecode($blogPostQuery->post_id);
       $this->_title = urldecode($blogPostQuery->post_title);
       $this->_slug = urldecode($blogPostQuery->post_slug);

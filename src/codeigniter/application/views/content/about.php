@@ -15,6 +15,7 @@ to be a full time mobile software engineer.</p>
       </ul>
     </div>
   </li>
+  <?php if (isset($latestPost)) {?>
   <li class="about__fact-list-item small-font-size">
     <div class="about__fact-list-title">
       Blog
@@ -23,6 +24,7 @@ to be a full time mobile software engineer.</p>
       <p>Check out my blog, the latest was titled "<a href="<?php echo(htmlspecialchars($latestPost->getPublicURL())); ?>"><?php echo($latestPost->getTitle()); ?></a>"</p>
     </div>
   </li>
+  <?php } ?>
   <li class="about__fact-list-item">
     <div class="about__fact-list-title small-font-size">
       Shout

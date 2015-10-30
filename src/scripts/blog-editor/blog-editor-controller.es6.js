@@ -21,6 +21,8 @@ class BlogEditorController extends BaseController {
   constructor() {
     super();
 
+    this.isCurrentlySave = false;
+    this.hasPendingUpdate = false;
     this.onWindowPopState = this.onWindowPopState.bind(this);
 
     window.onpopstate = this.onWindowPopState;
@@ -131,10 +133,26 @@ class BlogEditorController extends BaseController {
   }
 
   onIframeUpdateRequired() {
+    console.log('onIframeUpdateRequired: ', this.isCurrentlySave);
+    if (this.isCurrentlySave) {
+      this.hasPendingUpdate = true;
+      return;
+    }
+
+    this.isCurrentlySave = true;
+    
     savePost(this.blogModel)
       .then(function(postId) {
+        this.isCurrentlySave = false;
+
         if (postId) {
           this.blogModel.postId = postId;
+        }
+
+        if (this.hasPendingUpdate) {
+          this.hasPendingUpdate = false;
+          this.onIframeUpdateRequired();
+          return;
         }
 
         this.previewIframe.src = window.location.protocol + '//' +
@@ -143,7 +161,14 @@ class BlogEditorController extends BaseController {
       }.bind(this))
       .catch(function(err) {
         console.log('blog-editor: Need to handle failure of save attempt', err);
-      });
+        this.isCurrentlySave = false;
+
+        if (this.hasPendingUpdate) {
+          this.hasPendingUpdate = false;
+          this.onIframeUpdateRequired();
+          return;
+        }
+      }.bind(this));
   }
 
   onPostIDUpdated(postId) {
