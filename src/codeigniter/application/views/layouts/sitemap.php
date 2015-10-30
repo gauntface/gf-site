@@ -9,7 +9,7 @@ echo('<?xml version="1.0" encoding="UTF-8"?>');
 
   <?php for($i = 0; $i < count($urls); $i++) { ?>
   <url>
-    <loc><?php echo(base_url().$urls[$i]); ?></loc>
+    <loc><?php echo($urls[$i]); ?></loc>
   </url>
   <?php } ?>
 
