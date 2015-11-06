@@ -21,7 +21,7 @@ class BlogEditorController extends BaseController {
   constructor() {
     super();
 
-    this.isCurrentlySave = false;
+    this.isCurrentlySaving = false;
     this.hasPendingUpdate = false;
     this.onWindowPopState = this.onWindowPopState.bind(this);
 
@@ -133,17 +133,16 @@ class BlogEditorController extends BaseController {
   }
 
   onIframeUpdateRequired() {
-    console.log('onIframeUpdateRequired: ', this.isCurrentlySave);
-    if (this.isCurrentlySave) {
+    if (this.isCurrentlySaving) {
       this.hasPendingUpdate = true;
       return;
     }
 
-    this.isCurrentlySave = true;
-    
+    this.isCurrentlySaving = true;
+
     savePost(this.blogModel)
       .then(function(postId) {
-        this.isCurrentlySave = false;
+        this.isCurrentlySaving = false;
 
         if (postId) {
           this.blogModel.postId = postId;
@@ -161,7 +160,7 @@ class BlogEditorController extends BaseController {
       }.bind(this))
       .catch(function(err) {
         console.log('blog-editor: Need to handle failure of save attempt', err);
-        this.isCurrentlySave = false;
+        this.isCurrentlySaving = false;
 
         if (this.hasPendingUpdate) {
           this.hasPendingUpdate = false;
