@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var del = require('del');
 var streamify = require('gulp-streamify');
 var plugins = require('gulp-load-plugins')();
+var minifyCss = require('gulp-minify-css');
 var merge = require('merge-stream');
 var runSequence = require('run-sequence');
 
@@ -33,7 +34,8 @@ function compileSassStream(stream) {
     // Autoprefix
     .pipe(streamify(plugins.autoprefixer(AUTOPREFIXER_BROWSERS)))
     // Minify if prod
-    .pipe(streamify(plugins.if(GLOBAL.Gulp.prod, plugins.csso())))
+    // .pipe(streamify(plugins.if(GLOBAL.Gulp.prod, plugins.csso())))
+    .pipe(streamify(plugins.if(GLOBAL.Gulp.prod, minifyCss())))
     // Write sourcemap if not prod
     .pipe(streamify(plugins.if(!GLOBAL.Gulp.prod, plugins.sourcemaps.write())))
     // write to styles

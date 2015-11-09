@@ -30,7 +30,9 @@ class ServiceWorker extends Base_Controller {
 
       'scripts/styleguide/styleguide-frame-controller.es6.js',
       'scripts/styleguide/styleguide-messenger-controller.es6.js',
-      'scripts/standard-page.es6.js'
+      'scripts/standard-page.es6.js',
+
+      '/images/notifications/icon-512x512.jpg'
     ];
 
     $jsonData = '';

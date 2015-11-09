@@ -7,6 +7,7 @@ class API extends CI_Controller {
 
   public function push($action) {
     $this->load->model('push/SubscriptionsModel');
+    $this->load->model('blog/PostsModel');
 
     $subscriptionsModel = new SubscriptionsModel();
 
@@ -32,6 +33,30 @@ class API extends CI_Controller {
       case 'unsubscribe':
         $success = $subscriptionsModel->deleteSubscription($apiInputData['endpoint']);
         break;
+      case 'getNotificationInfo':
+        $postsModel = new PostsModel();
+
+        $posts = $postsModel->getPublishedPosts(0, 1);
+        if (count($posts) == 0) {
+          $data['json'] = '{
+              "error":{
+                "msg": "No posts to send"
+              }
+            }';
+        } else {
+          $latestPost = $posts[0];
+          $data['json'] = '{
+              "data":{
+                "title": "'.$latestPost->getTitle().'",
+                "message": "'.$latestPost->getExcerptMarkdown().'",
+                "icon": "/images/notifications/icon-512x512.jpg",
+                "pageToCache": "'.$latestPost->getPublicURL().'"
+              }
+            }';
+        }
+
+        $this->load->view('templates/json_response', $data);
+        return;
       default:
         $data['json'] = '{
           "error":{

@@ -1,6 +1,6 @@
 {
   "name": "gauntface",
-  "version": "0.2.105",
+  "version": "0.2.108",
   "description": "It's only the best bloomin' website in the world.",
   "private": true,
   "dependencies": {
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "browser-sync": "^2.7.12",
+    "gulp-minify-css": "^1.2.1",
     "psi": "^1.0.6"
   }
 }
