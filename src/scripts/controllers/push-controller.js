@@ -35,6 +35,7 @@ export default class PushController{
       return false;
     }
 
+    this.pushContainer = document.querySelector('.footer__push-section');
     this.pushToggle = new Toggle(toggleElement);
     this.pushMessageElement = messageElement;
 
@@ -51,8 +52,7 @@ export default class PushController{
       case this.STATE.NOT_SUPPORTED:
         this.pushToggle.setDisabled(true);
         this.pushToggle.setChecked(false);
-        this.pushToggle.getElement().style.opacity = 0;
-        this.pushMessageElement.style.opacity = 0;
+        this.pushContainer.style.display = 'none';
         break;
       case this.STATE.PERMISSION_DENIED:
         this.pushToggle.setDisabled(true);
