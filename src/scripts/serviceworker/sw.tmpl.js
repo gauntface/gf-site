@@ -133,14 +133,10 @@ self.addEventListener('push', function(event) {
         throw Error('Response from API was bad.');
       }
 
-      console.log('Response for notification looks ok.');
-
       // If data return js obj
       return response.json();
     })
     .then(function(responseObj) {
-      console.log('responseObj: ', responseObj);
-
       // Check if there is a page to cache
       if (!responseObj.data) {
         throw new Error('Incorrect response format');
@@ -198,14 +194,8 @@ self.addEventListener('notificationclick', function(event) {
       type: "window"
     })
     .then(function(clientList) {
-
       for (var i = 0; i < clientList.length; i++) {
         var client = clientList[i];
-        console.log(client);
-        console.log(client.url);
-        console.log(desiredUrl);
-        console.log(client.url === desiredUrl);
-        console.log('------------\n');
         if (client.url == desiredUrl && 'focus' in client) {
           return client.focus();
         }

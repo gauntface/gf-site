@@ -57,7 +57,7 @@ var commonBuildTasks = [
 ];
 
 gulp.task('build:dev', [], function(cb) {
-  GLOBAL.Gulp.prod = true;
+  GLOBAL.Gulp.prod = false;
 
   // Load custom tasks from the `tasks` directory
   require('require-dir')('gulp-tasks');
