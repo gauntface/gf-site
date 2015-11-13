@@ -91,3 +91,5 @@ RUN cd ./src/scripts/third_party/material-palette && npm install
 # Set the default command to execute
 # when creating a new container
 ONBUILD CMD service php5-fpm start && nginx -g 'daemon off;'
+
+EXPOSE 80 443
