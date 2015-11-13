@@ -24,5 +24,5 @@ echo "    Building test version of site."
 docker build --no-cache -f "deploy/Dockerfile-test" -t gauntface/gf-test ./deploy
 
 echo "    Running private site."
-docker run --name gf-test --net="host" -t -p 8000:80 gauntface/gf-test
+docker run --name gf-test --net="host" -t -p 8000:8000 gauntface/gf-test
 docker exec -it $(docker ps -a -q -f "name=gf-test") bash

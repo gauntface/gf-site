@@ -5,7 +5,7 @@
 ############################################################
 
 # Set the base image to Ubuntu
-FROM ubuntu:vivid
+FROM ubuntu:wily
 
 # File Author / Maintainer
 MAINTAINER Matt Gaunt
@@ -32,7 +32,7 @@ RUN apt-get -y install software-properties-common curl git nano php5-curl php5-m
 # Add repos
 #
 RUN add-apt-repository ppa:nginx/development
-RUN curl -sL https://deb.nodesource.com/setup_0.12 | bash -
+RUN curl -sL https://deb.nodesource.com/setup_4.x | bash -
 
 
 # Run apt-get update so we can find all packages we need
@@ -87,12 +87,6 @@ WORKDIR /home/gauntface
 
 # Install depencies of Material Palette
 RUN cd ./src/scripts/third_party/material-palette && npm install
-
-#
-# Set up the Server / Docker
-#
-# Expose ports
-EXPOSE 80
 
 # Set the default command to execute
 # when creating a new container

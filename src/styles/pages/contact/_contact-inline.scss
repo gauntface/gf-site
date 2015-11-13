@@ -7,7 +7,7 @@ body {
   color: $contact-page-text-color;
 }
 
-.contact__message-form-container {
+/** .contact__message-form-container {
   display: block;
 
   width: 100%;
@@ -20,6 +20,10 @@ body {
 
   margin: 0 auto;
   box-sizing: border-box;
+} **/
+
+.contact--flex-grow {
+  flex: 1;
 }
 
 .title-block-item {
