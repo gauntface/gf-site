@@ -23,6 +23,44 @@ class Home extends Base_Controller {
     $pageData = new PageModel();
     $pageData->setRemoteStylesheets(['styles/home-remote.css']);
     $pageData->setInlineStylesheets(['styles/home-inline.css']);
+    /**$pageData->setInlineStylesheets([
+      // Extra
+      'styles/partials/base-core.css',
+      'styles/partials/base-utils.css',
+
+      // Components
+      'styles/components/home-header/home-header-inline.css',
+      'styles/components/appbar/appbar-inline.css',
+      'styles/components/title-block-item/title-block-item-inline.css',
+      'styles/components/footer/footer-inline.css',
+      'styles/components/twitter-block/twitter-block-inline.css',
+      'styles/components/youtube-block/youtube-block-inline.css',
+      'styles/components/dividers/dividers-inline.css',
+      'styles/components/toggle/toggle-inline.css',
+
+      // Layout
+      'styles/layouts/split-half/split-half-inline.css',
+
+      // Page specific
+      'styles/pages/home/home-inline.css'
+    ]);
+    $pageData->setRemoteStylesheets([
+      // Components
+      'styles/components/home-header/home-header-remote.css',
+      'styles/components/appbar/appbar-remote.css',
+      'styles/components/title-block-item/title-block-item-remote.css',
+      'styles/components/footer/footer-remote.css',
+      'styles/components/twitter-block/twitter-block-remote.css',
+      'styles/components/youtube-block/youtube-block-remote.css',
+      'styles/components/dividers/dividers-remote.css',
+      'styles/components/toggle/toggle-remote.css',
+
+      // Layout
+      'styles/layouts/split-half/split-half-remote.css',
+
+      // Page specific
+      'styles/pages/home/home-remote.css'
+    ]);**/
 
     $appBarData = new AppBarModel();
     $appBarData->setSelectedItem('home');

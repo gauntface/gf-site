@@ -26,6 +26,8 @@
     <meta name='theme-color' content='<?php echo($page->getThemeColor()); ?>'>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
+    <link href='https://storage.googleapis.com' rel='preconnect' crossorigin>
+
     <!-- Manifest File -->
     <link rel="manifest" href="/manifest.json">
 
@@ -59,21 +61,19 @@
     $inlineStylesheets = $page->getInlineStylesheets();
     $inlineRawCSS = $page->getInlineRawCSS();
 
+    echo('<style type="text/css">');
     if (isset($inlineStylesheets)) {
       foreach($inlineStylesheets as $singleStylesheet) {
-        echo('<style>');
         echo(swapStylesheetImages(read_file($singleStylesheet)));
-        echo('</style>');
       }
     }
 
     if(isset($inlineRawCSS)) {
       foreach($inlineRawCSS as $rawCSS) {
-        echo('<style>');
         echo(swapStylesheetImages($rawCSS));
-        echo('</style>');
       }
     }
+    echo('</style>');
     ?>
   </head>
   <body <?php if($page->getBodyClass() != null) {echo('class="'.$page->getBodyClass().'"');} ?>>

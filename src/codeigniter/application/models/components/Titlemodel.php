@@ -87,12 +87,10 @@ class TitleModel extends CI_Model {
   }
 
   public function setIsTransparent($transparent) {
-    log_message('error', 'setIsTransparent(): '.($transparent ? 'TRUE' : 'FALSE'));
     $this->_isTransparent = $transparent;
   }
 
   public function isTransparent() {
-    log_message('error', 'isTransparent(): '.($this->_isTransparent ? 'TRUE' : 'FALSE'));
     return $this->_isTransparent;
   }
 

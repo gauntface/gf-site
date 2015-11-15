@@ -20,7 +20,7 @@
   "extrasInline": [
     "src/styles/partials/base-core.scss",
     "src/styles/partials/base-utils.scss",
-    "src/styles/pages/home/_home-inline.scss"
+    "src/styles/pages/home/home-inline.scss"
   ],
   "extrasRemote": [
 

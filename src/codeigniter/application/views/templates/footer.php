@@ -3,6 +3,10 @@
   if(isset($remoteStylesheets)) {
     $parsedStylesheets = [];
     foreach($remoteStylesheets as $singleFile) {
+      if (!file_exists($singleFile)) {
+        continue;
+      }
+
       $stylesheetUrl;
 
       // If the script starts with HTTP, chances are it's a third party scripts
@@ -50,6 +54,10 @@
 <?php
 $scripts = $page->getRemoteScripts();
 foreach($scripts as $script) {
+  if (!file_exists($script)) {
+    continue;
+  }
+
   $scriptUrl;
 
   // If the script starts with HTTP, chances are it's a third party scripts
