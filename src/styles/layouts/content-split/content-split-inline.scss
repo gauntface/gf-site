@@ -34,30 +34,35 @@
 
 @media (min-width: $break-medium) {
   .content-split__container {
-    max-height: 100vh;
-    flex-direction: row;
+    display: block;
   }
 
   .content-split__left-section {
-    width: 0;
-    height: auto;
+    position: fixed;
+    left: 0;
+    width: $contentLeftSectionProportion * 1%;
+    height: 100vh;
     max-height: 100vh;
-    flex: $contentLeftSectionProportion;
+
+    // This is a flat out lie to make Chrome not paint on scroll
+    will-change: transform;
   }
 
   .content-split__right-section {
-    display: flex;
+    width: $contentRightSectionProportion * 1%;
+    margin-left: auto;
+    //display: flex;
 
-    width: 0;
-    max-height: 100vh;
-    justify-content: center;
-    flex: $contentRightSectionProportion;
-    flex-direction: column;
+    //width: 0;
+    //max-height: 100vh;
+    //justify-content: center;
+    //flex: $contentRightSectionProportion;
+    //flex-direction: column;
   }
 
   .content-split__right-section-container {
-    max-height: 100%;
+    //max-height: 100%;
 
-    overflow-y: auto;
+    //overflow-y: auto;
   }
 }

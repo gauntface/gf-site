@@ -1,6 +1,7 @@
 @import "../../variables/dimens";
 @import "../../variables/colors";
 @import "../../variables/font-families";
+@import "../../variables/zindex";
 
 .appbar {
   display: flex;
@@ -13,6 +14,7 @@
   overflow-y: auto;
 
   font-family: $title-font-family;
+  z-index: $app-bar-index;
 }
 
 @media (orientation: landscape) {
