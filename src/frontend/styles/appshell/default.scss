@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+@import "../variables/colors";
+@import "../variables/dimens";
+@import "../variables/font-families";
+@import "../mixins/typography";
+
+@import "../variables/adam-font";
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-family: $base-font-family;
+  color: $font-color;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 100%;
+
+  background-color: $page-bg-color;
+  box-sizing: border-box;
+
+  overflow-wrap: break-word;
+
+  transition: background-color .5s ease-in-out;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+  margin-bottom: $base-line-height * 0.5;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $title-font-family;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+h1 {
+    @include typography-font-size($font-size-h1);
+}
+
+h2 {
+    @include typography-font-size($font-size-h2);
+}
+
+h3 {
+    @include typography-font-size($font-size-h3);
+}
+
+h4 {
+    @include typography-font-size($font-size-h4);
+}
+
+h5 {
+    @include typography-font-size($font-size-h5);
+}
+
+h6 {
+    @include typography-font-size($font-size-h6);
+}
+
+p {
+  word-wrap: break-word;
+}
+
+a {
+  color: $link-text-color;
+
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+
+  border:none;
+}
+
+hr {
+  margin: $base-line-height;
+}
+
+.page {
+  transition: opacity .5s ease-in-out;
+}
+
+.page.is-hidden {
+  opacity: 0;
+}
+
+.spinner.page-loading-spinner {
+  opacity: 0;
+  transition: opacity .5s ease-in-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -($spinnerSize / 2);
+  margin-left: -($spinnerSize / 2);
+
+  .spinner-bounce1, .spinner-bounce2 {
+    transition: background .5s ease-in-out;
+  }
+}
+
+@media (min-width: $break-xsmall) {
+  h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: $base-line-height;
+  }
+}

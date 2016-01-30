@@ -1,105 +1,68 @@
 'use strict';
 
-var gulp = require('gulp');
-var replace = require('gulp-replace');
-var del = require('del');
-var mkdirp = require('mkdirp');
-var runSequence = require('run-sequence');
-var fs = require('fs');
+const gulp = require('gulp');
+const replace = require('gulp-replace');
+const git = require('git-rev')
+const del = require('del');
+const mkdirp = require('mkdirp');
+const runSequence = require('run-sequence');
+const fs = require('fs');
 
-gulp.task('codeigniter:deploy:configs', function() {
+gulp.task('codeigniter:private', cb => {
   return gulp.src([
-      GLOBAL.config.deploy.codeigniter.configs + '/**/*'
+      GLOBAL.config.private + '/src/**/*.*'
     ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/config/'));
-});
-
-gulp.task('codeigniter:deploy:controllers', function() {
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.controllers + '/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/controllers/'));
-});
-
-gulp.task('codeigniter:deploy:models', function() {
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.models + '/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/models/'));
-});
-
-gulp.task('codeigniter:deploy:views', function() {
-  var version = JSON.parse(fs.readFileSync('./package.json', 'utf8')).version;
-  return gulp.src([
-      GLOBAL.config.deploy.codeigniter.views + '/**/*'
-    ])
-    .pipe(replace(/@GF_COMMIT_HASH@/g, version))
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/views/'));
-});
-
-gulp.task('codeigniter:deploy', function(cb) {
-  runSequence(
-    [
-      'codeigniter:deploy:configs',
-      'codeigniter:deploy:controllers',
-      'codeigniter:deploy:models',
-      'codeigniter:deploy:views'
-    ],
-  cb);
+    .pipe(gulp.dest(GLOBAL.config.dest));
 });
 
 // Copy over the CI files
-gulp.task('codeigniter:copy', function() {
-  return gulp.src([
-      GLOBAL.config.src.codeigniter + '/**/*.{php,html}',
-      '!' + GLOBAL.config.src.codeigniter +
-        '/application/{third_party,third_party/**}'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root));
+gulp.task('codeigniter:copy', cb => {
+  git.short(function (str) {
+    gulp.src([
+        GLOBAL.config.src + '/server/**/*.{php,html,pem}'
+      ])
+      .pipe(replace(/@GF_COMMIT_HASH@/g, str))
+      .pipe(gulp.dest(GLOBAL.config.dest))
+      .on('end', cb);
+  });
 });
 
-// Copy over ALL CI third_party files
-gulp.task('codeigniter:third-party', function() {
-  return gulp.src([
-      GLOBAL.config.src.codeigniter + '/application/third_party/**/*'
-    ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/application/third_party'));
-});
-
-gulp.task('codeigniter:file-permissions', function(cb) {
+gulp.task('codeigniter:file-permissions', (cb) => {
   // TODO This needs fixing to a more secure permission
-  mkdirp(GLOBAL.config.build.root + '/application/cache/');
-  mkdirp(GLOBAL.config.build.root + '/uploads/');
-  mkdirp(GLOBAL.config.build.root + '/generated/');
-  mkdirp(GLOBAL.config.build.root + '/sessions/');
-  mkdirp(GLOBAL.config.build.root + '/logs/');
-  fs.chmodSync(GLOBAL.config.build.root + '/uploads/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/generated/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/sessions/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/application/cache/', '777');
-  fs.chmodSync(GLOBAL.config.build.root + '/logs/', '777');
+  mkdirp.sync(GLOBAL.config.dest + '/application/cache/');
+  mkdirp.sync(GLOBAL.config.dest + '/application/dbcache/');
+  mkdirp.sync(GLOBAL.config.dest + '/uploads/');
+  mkdirp.sync(GLOBAL.config.dest + '/imageproducer/');
+  mkdirp.sync(GLOBAL.config.dest + '/sessions/');
+  mkdirp.sync(GLOBAL.config.dest + '/logs/');
+  fs.chmodSync(GLOBAL.config.dest + '/application/cache/', '777');
+  fs.chmodSync(GLOBAL.config.dest + '/application/dbcache/', '777');
+  fs.chmodSync(GLOBAL.config.dest + '/uploads/', '777');
+  fs.chmodSync(GLOBAL.config.dest + '/imageproducer/', '777');
+  fs.chmodSync(GLOBAL.config.dest + '/sessions/', '777');
+  fs.chmodSync(GLOBAL.config.dest + '/logs/', '777');
+
   cb();
 });
 
 gulp.task('codeigniter:clean:logs', del.bind(null, [
-  GLOBAL.config.build.root + '/logs/**/*',
+  GLOBAL.config.dest + '/logs/**/*',
 ], {dot: true}));
 
 // Clean output directory
 gulp.task('codeigniter:clean', del.bind(null, [
-  GLOBAL.config.build.root + '/application/**/*',
-  GLOBAL.config.build.root + '/system/**/*',
-  GLOBAL.config.build.root + '/*.php',
-  GLOBAL.config.build.root + '/generated/**/*',
+  GLOBAL.config.dest + '/application/**/*',
+  GLOBAL.config.dest + '/system/**/*',
+  GLOBAL.config.dest + '/*.php',
+  GLOBAL.config.dest + '/generated/**/*',
   ], {dot: true}));
 
 // Perform all the tasks to build the CI files
-gulp.task('codeigniter', ['codeigniter:clean'], function(cb) {
+gulp.task('codeigniter', ['codeigniter:clean'], (cb) => {
   runSequence(
     [
       'codeigniter:copy',
-      'codeigniter:third-party',
-      'codeigniter:deploy'
+      'codeigniter:private'
     ],
     'codeigniter:file-permissions',
   cb);

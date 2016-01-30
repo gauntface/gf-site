@@ -1,12 +1,37 @@
-sudo: false
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+  - '5'
+services:
+- docker
 cache:
   directories:
-    - node_modules
-before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
+  - node_modules
+env:
+  global:
+    - PATH=${HOME}/google-cloud-sdk/bin:$PATH
+    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+before_install:
+- openssl aes-256-cbc -K $encrypted_d68f0083a6dc_key -iv $encrypted_d68f0083a6dc_iv
+  -in travis-encrypt.tar.gz.enc -out travis-encrypt.tar.gz -d
+- tar -xzf travis-encrypt.tar.gz
 install:
-  - npm install -g gulp
-  - npm install
+- curl https://sdk.cloud.google.com | bash;
+- which gcloud
+- gcloud --version
+- gcloud auth activate-service-account --key-file client-secret.json
+- gcloud config set project $CLOUD_PROJECT
+- npm install -g gulp
+- npm install
+before_script:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="prod"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
+- if [[ $BUILDTYPE == "prod" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
+- gulp "$BUILDTYPE"
+- ls -l build
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker push gauntface/gf-site:$BUILDTYPE; fi
 script:
-  - gulp build
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./deployment/create-image-instance.sh; fi

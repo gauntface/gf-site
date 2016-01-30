@@ -1,0 +1,47 @@
+@import "../../variables/colors";
+@import "../../variables/dimens";
+
+.twitter-block {
+  padding: $base-line-height ($base-line-height * 0.5) ($base-line-height * 2) ($base-line-height * 0.5);
+
+  background-color: $twitter-block-bg-color;
+  color: $twitter-block-font-color;
+
+  box-sizing: border-box;
+}
+
+.twitter-block__twitter-logo {
+  display: block;
+
+  width: 24px;
+  height: 24px;
+
+  margin: 0 auto ($base-line-height * 0.5) auto;
+
+  fill: $twitter-block-font-color;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.twitter-block__tweet-info {
+  text-align: center;
+
+  margin-bottom: ($base-line-height * 0.5);
+
+  a, time {
+    display: block;
+
+    text-decoration: none;
+  }
+}
+
+.twitter-block__info-spacer {
+  display: none;
+}
+
+.twitter-block__tweet {
+  text-align: center;
+}

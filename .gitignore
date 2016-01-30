@@ -2,6 +2,8 @@
 build/
 node_modules/
 src/fonts/
+src/private/
 configs/
 deploy/
-src/static/
+client-secret.json
+travis-encrypt.tar.gz
