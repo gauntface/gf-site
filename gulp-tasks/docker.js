@@ -19,7 +19,7 @@ gulp.task('docker:build:prod', ['docker:build:base'], cb => {
     '-t',
     'gauntface/gf-site:prod',
     '-f',
-    GLOBAL.config.src+'/docker/Dockerfile-Staging',
+    GLOBAL.config.src+'/docker/Dockerfile-Prod',
     '.'
   ];
   const dockerProcess = spawn('docker', args, {
