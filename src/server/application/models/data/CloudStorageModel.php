@@ -3,8 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH.'third_party/google-api-php-client/vendor/autoload.php';
-#require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
-#require_once APPPATH.'third_party/google-api-php-client/src/Google/Service/Storage.php';
+# require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
 
 
 class CloudStorageModel extends CI_Model {

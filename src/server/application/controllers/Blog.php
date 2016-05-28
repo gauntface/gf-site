@@ -119,7 +119,7 @@ class Blog extends BaseController {
       show_404();
       return;
     }
-    
+
     if (!$postModel->isPublished() && !$this->isLoggedIn()) {
       show_404();
       return;
@@ -138,6 +138,10 @@ class Blog extends BaseController {
 
     $this->PageModel->setTitle($postModel->getTitle());
     $this->PageModel->setThemeColor($postModel->getMainImgBgColor());
+
+    // This doesn't exist at the moment - may be needed in the future
+    // At the moment extra styles are pulled in via markdown parser
+    // So only styles that are NEEDED are added to the page.
     $this->PageModel->addInlineStylesheet('/styles/pages/blog-article/blog-article-inline.css');
 
     $this->PageModel->addInlineRawCSS(

@@ -22,7 +22,36 @@ class Standardmarkdownparser extends Parsedown {
   protected function inlineImage($Excerpt) {
     $Image = parent::inlineImage($Excerpt);
 
-    # $Image['element']['attributes']['src'] = $this->baseImagePath . $Image['element']['attributes']['src'];
+    $origSrcURL = $Image['element']['attributes']['src'];
+    $pathInfo = pathinfo($origSrcURL);
+    if($pathInfo["extension"] === 'gif' || strpos($origSrcURL, 'http') === 0) {
+      // Either the image is a gif OR its for an external ResourceBundle
+      return $Image;
+    }
+
+    // height of 0 means keep the aspect ratio - only worry about width.
+    $maxDensity = 3;
+    $interval = 100;
+    $minWidth = 100;
+    $maxWidth = 500 * $maxDensity;
+    $height = 0;
+
+    $srcset = array();
+    for ($i = $minWidth; $i <= $maxWidth; $i += $interval) {
+      $imageUrl = $pathInfo["dirname"].'/'.$pathInfo["filename"].'_'.$i.'x'.$height.'x1.'.$pathInfo["extension"];
+      $imageWidth = $i."w";
+      array_push($srcset, $imageUrl." ".$imageWidth);
+    }
+
+    // For small screens it's always 100vw -48px;
+    // When window is big enough, content is capped (432 = 480 - 48);
+    $sizes = array(
+      '(max-width: 480px) calc(100vw - 48px)',
+      '432px'
+    );
+
+    $Image['element']['attributes']['srcset'] = implode(",\n", $srcset);
+    $Image['element']['attributes']['sizes'] = implode(",\n", $sizes);
 
     return $Image;
   }
@@ -40,6 +69,8 @@ class Standardmarkdownparser extends Parsedown {
 
   protected function blockCodeComplete($Block = null) {
     $Block = parent::blockCodeComplete($Block);
+
+    array_push($this->_inlineStyles, "/styles/elements/code.css");
 
     $rawSrc = $Block['element']['text']['text'];
     $firstLine = strtok($rawSrc, "\n");
