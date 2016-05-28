@@ -42,7 +42,7 @@ gulp.task('staging', (cb) => {
 gulp.task('production', (cb) => {
   runSequence(
     commonBuildTasks,
-    'docker:build:prod',
+    'docker:build:production',
     cb);
 });
 
