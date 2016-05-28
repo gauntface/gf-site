@@ -27,11 +27,11 @@ install:
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-- if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="prod"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
-- if [[ $BUILDTYPE == "prod" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
+- if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="production"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
+- if [[ $BUILDTYPE == "production" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
 - gulp "$BUILDTYPE"
 - ls -l build
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker push gauntface/gf-site:$BUILDTYPE; fi
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker push gauntface/gf-site:$BUILDTYPE; fi
 script:
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "prod" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./deployment/create-image-instance.sh; fi
+- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./deployment/create-image-instance.sh; fi
