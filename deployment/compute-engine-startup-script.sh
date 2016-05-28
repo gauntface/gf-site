@@ -65,7 +65,7 @@ sudo gsutil cp -r $GS_BUCKET/certs/$BUILDTYPE/letsencrypt/* /etc/letsencrypt/
 if [ ! -f $LE_CERT_PATH ]; then
   echo "Need to get a new $BUILDTYPE certificate."
   # This should handle renewing old certs as well as updating old ones
-  # sudo /letsencrypt/letsencrypt-auto certonly --config /gauntface/certs/$BUILDTYPE/config.ini
+  sudo /letsencrypt/letsencrypt-auto certonly --config /gauntface/certs/$BUILDTYPE/config.ini
 else
   echo "Already have a $BUILDTYPE certificate"
   # If we have certs - check for updates
