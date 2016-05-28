@@ -1,19 +1,15 @@
 'use strict';
 
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var del = require('del');
+const gulp = require('gulp');
+const imagemin = require('gulp-imagemin');
 
-// Clean output directory
-gulp.task('images:clean', del.bind(null, [
-    GLOBAL.config.build.images + '/**/*'
-  ], {dot: true}));
-
-gulp.task('images', ['images:clean'], function() {
-  return gulp.src(GLOBAL.config.src.images + '/**/*')
-    .pipe(plugins.if(GLOBAL.Gulp.prod, plugins.imagemin({
+gulp.task('images', () => {
+  let imageStream = gulp.src(GLOBAL.config.src + '/frontend/**/*.{png,jpg,jpeg,svg,gif}');
+  if (GLOBAL.config.env === 'prod') {
+    imageStream = imageStream.pipe(imagemin({
       progressive: true,
       interlaced: true
-    })))
-    .pipe(gulp.dest(GLOBAL.config.build.images));
+    }));
+  }
+  return imageStream.pipe(gulp.dest(GLOBAL.config.dest));
 });

@@ -1,0 +1,12 @@
+@import '../../variables/dimens';
+@import '../../mixins/typography';
+
+.admin-blog-item-anchor {
+  display: block;
+  text-decoration: none;
+}
+
+.admin-blog-item {
+  padding: $base-line-height / 2;
+  @include typography-font-size($font-size-h4);
+}

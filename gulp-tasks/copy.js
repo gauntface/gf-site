@@ -1,27 +1,27 @@
 'use strict';
 
-var gulp = require('gulp');
-var runSequence = require('run-sequence');
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
 
-gulp.task('copy:deploy-assets', [], function() {
+gulp.task('copy:deploy-keys', () => {
   return gulp.src([
-      GLOBAL.config.deploy.assets + '/*.*',
+      GLOBAL.config.private + '/keys/**/*'
     ])
-    .pipe(gulp.dest(GLOBAL.config.build.root));
+    .pipe(gulp.dest(GLOBAL.config.dest + '/keys/'));
 });
 
-gulp.task('copy:root', function() {
+gulp.task('copy:root', () => {
   return gulp.src([
-      GLOBAL.config.src.root + '/*.{json,txt,ico}'
+      GLOBAL.config.src + '/frontend/*.{json,txt,ico}'
     ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/'));
+    .pipe(gulp.dest(GLOBAL.config.dest));
 });
 
-gulp.task('copy', [], function(cb) {
+gulp.task('copy', (cb) => {
   runSequence(
     [
       'copy:root',
-      'copy:deploy-assets'
+      'copy:deploy-keys'
     ],
   cb);
 });

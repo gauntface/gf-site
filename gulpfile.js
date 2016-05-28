@@ -1,90 +1,53 @@
 'use strict';
 
 GLOBAL.config = {
-  deploy: {
-    assets: 'deploy/assets',
-    fonts: 'deploy/assets/fonts',
-    scripts: 'deploy/assets/scripts',
-    codeigniter: {
-      root: 'deploy/assets/codeigniter',
-      controllers: 'deploy/assets/codeigniter/controllers',
-      models: 'deploy/assets/codeigniter/models',
-      views: 'deploy/assets/codeigniter/views',
-      configs: 'deploy/assets/codeigniter/configs',
-    }
-  },
-  src: {
-    root: 'src',
-    codeigniter: 'src/codeigniter',
-    images: 'src/images',
-    styles: {
-      root: 'src/styles',
-      sass: 'src/styles/pages'
-    },
-    components: 'src/styles/pages',
-    fonts: 'src/fonts',
-    scripts: 'src/scripts',
-    static: 'src/static'
-  },
-  build: {
-    root: 'build',
-    images: 'build/images',
-    styles: 'build/styles',
-    fonts: 'build/fonts',
-    scripts: 'build/scripts',
-    static: 'build/static'
-  }
+  src: './src',
+  private: './../gf-deploy',
+  dest: './build',
+  env: 'prod',
+  dockerport: 5123
 };
 
-// Include Gulp & tools we'll use
-var gulp = require('gulp');
-var runSequence = require('run-sequence');
+const gulp = require('gulp');
+const runSequence = require('run-sequence');
 
-GLOBAL.Gulp = GLOBAL.Gulp || {
-  prod: false,
-  watch: false
-};
+// Load custom tasks from the `tasks` directory
+require('require-dir')('gulp-tasks');
 
 var commonBuildTasks = [
   'copy',
-  'fonts',
   'codeigniter',
-  'codeigniter:clean:logs',
-  'static',
   'styles',
   'images',
-  'scripts'
+  'scripts',
 ];
 
-gulp.task('build:dev', [], function(cb) {
-  GLOBAL.Gulp.prod = false;
-
-  // Load custom tasks from the `tasks` directory
-  require('require-dir')('gulp-tasks');
-
+gulp.task('dev', (cb) => {
+  GLOBAL.config.env = 'dev';
   runSequence(
     commonBuildTasks,
-    'bump',
+    'docker:start',
     'watch',
     cb);
 });
 
-gulp.task('build', [], function(cb) {
-  GLOBAL.Gulp.prod = true;
-
-  // Load custom tasks from the `tasks` directory
-  require('require-dir')('gulp-tasks');
-
+gulp.task('staging', (cb) => {
+  GLOBAL.config.env = 'dev';
   runSequence(
     commonBuildTasks,
-    'watch',
+    'docker:build:staging',
     cb);
 });
 
-// Build production files, the default task
-gulp.task('default', [], function(cb) {
-  GLOBAL.Gulp.watch = true;
+gulp.task('prod', (cb) => {
   runSequence(
-    ['build:dev'],
+    commonBuildTasks,
+    'docker:build:prod',
+    cb);
+});
+
+gulp.task('default', (cb) => {
+  runSequence(
+    commonBuildTasks,
     cb);
 });

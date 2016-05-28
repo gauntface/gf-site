@@ -1,0 +1,64 @@
+@import '../../variables/dimens';
+@import "../../mixins/responsive-images";
+@import "../../mixins/functions";
+
+.key_art-content__keyart-image {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+
+  // This is a default image for the view
+  background-image: url("/static/image/static/about/matt_200x288x1.png");
+}
+
+$xsmallHeight: strip-units($top-img-xsmall-height);
+$smallHeight: strip-units($top-img-small-height);
+
+@include responsive-image-width-based(
+  '/static/image/static/about/matt',
+  'png',
+  '.key_art-content__keyart-image',
+  (300, 400, 500, 600, 700, 800, 900),
+  (
+    '400x#{$xsmallHeight}',
+    '500x#{$smallHeight}',
+    '600x#{$smallHeight}',
+    '700x#{$smallHeight}',
+    '800x#{$smallHeight}',
+    '900x#{$smallHeight}',
+    '1000x#{$smallHeight}'), (1, 2, 3, 4));
+
+@media (min-width: $break-medium) {
+  .key_art-content__keyart-image {
+    // This is a default image for the view at this viewport
+    background-image: url("/static/image/static/about/matt_0x300x1.png");
+  }
+  @include responsive-image-height-based(
+    '/static/image/static/about/matt',
+    'png',
+    '.key_art-content__keyart-image',
+    (300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500),
+    (
+      '0x400',
+      '0x500',
+      '0x600',
+      '0x700',
+      '0x800',
+      '0x900',
+      '0x1000',
+      '0x1100',
+      '0x1200',
+      '0x1300',
+      '0x1400',
+      '0x1500',
+      '0x1600'), (1, 2, 3, 4));
+}
+
+//Width: < 450
+//Max Height: 288px
+
+//Width 450+
+//Max Height: 480px
+
+//Width 950+
+//Max Height: Viewport

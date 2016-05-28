@@ -1,15 +1,11 @@
 'use strict';
 
-var gulp = require('gulp');
-var browserSync = require('browser-sync');
+const gulp = require('gulp');
+const browserSync = require('browser-sync');
 
-gulp.task('watch', function() {
-  if (!GLOBAL.Gulp.watch) {
-    return;
-  }
-
+gulp.task('watch', () => {
   browserSync.init({
-    proxy: 'localhost',
+    proxy: `localhost:${GLOBAL.config.dockerport}/`,
     logPrefix: 'GF',
     // Prevent browser sync from display in page notifications
     notify: false,
@@ -17,28 +13,27 @@ gulp.task('watch', function() {
   });
 
   // Codeigniter
-  gulp.watch([GLOBAL.config.src.codeigniter + '/**/*'],
+  gulp.watch([GLOBAL.config.src + '/server/**/*'],
     ['codeigniter'], browserSync.reload);
-  gulp.watch([GLOBAL.config.deploy.codeigniter.root + '/**/*'],
-    ['codeigniter:deploy'], browserSync.reload);
-
-  // Fonts
-  gulp.watch([GLOBAL.config.deploy.fonts + '/**/*'],
-    ['copy-deploy-fonts'], browserSync.reload);
-  gulp.watch([GLOBAL.config.src.fonts + '/**/*'],
-    ['copy-included-fonts'], browserSync.reload);
+  gulp.watch([GLOBAL.config.private + '/src/**/*'],
+    ['codeigniter:private'], browserSync.reload);
 
   // Sass / CSS
-  gulp.watch([GLOBAL.config.src.styles.root + '/**/*'],
+  gulp.watch([GLOBAL.config.src + '/frontend/**/*.scss'],
     ['styles'], browserSync.reload);
 
   // Scripts
-  gulp.watch([GLOBAL.config.src.scripts + '/**/*'],
-    ['scripts'], browserSync.reload);
-  gulp.watch([GLOBAL.config.deploy.scripts + '/**/*'],
+  gulp.watch([GLOBAL.config.src + '/frontend/**/*.js'],
     ['scripts'], browserSync.reload);
 
   // Images
-  gulp.watch([GLOBAL.config.src.images + '/**/*'],
+  gulp.watch([GLOBAL.config.src + '/frontend/**/*.{png,jpg,jpeg,svg,gif}'],
     ['images'], browserSync.reload);
+
+  // Docker
+  gulp.watch([
+    GLOBAL.config.src + '/docker/**/*',
+    GLOBAL.config.src + '/nginx/**/*'
+  ],
+    ['docker:start'], browserSync.reload);
 });

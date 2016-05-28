@@ -1,90 +1,86 @@
 'use strict';
 
-var gulp = require('gulp');
-var plugins = require('gulp-load-plugins')();
-var del = require('del');
-var runSequence = require('run-sequence');
-var streamify = require('gulp-streamify');
-var stylish = require('jshint-stylish');
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify');
+const util = require('gulp-util');
+const rollup = require('gulp-rollup');
+const sourcemaps = require('gulp-sourcemaps');
+const runSequence = require('run-sequence');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const path = require('path');
 
-var glob = require('glob');
-var path = require('path');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var source = require('vinyl-source-stream');
-
-function compileES6Classes(browserifyFileEntries) {
-  browserifyFileEntries.forEach(function(fileEntry) {
-    var browserifyBundle = browserify({
-        entries: [fileEntry.srcPath]
-      })
-      .transform(babelify);
-
-    var bundleStream = browserifyBundle.bundle()
-      .on('log', plugins.util.log.bind(plugins.util, 'Browserify Log'))
-      .on('error', plugins.util.log.bind(plugins.util, 'Browserify Error'))
-      .pipe(source(fileEntry.outputFilename));
-
-    var finalStream = bundleStream;
-    if (GLOBAL.Gulp.prod) {
-      finalStream = bundleStream.pipe(streamify(plugins.uglify()));
-    }
-
-    return finalStream
-      .pipe(plugins.jshint())
-      .pipe(plugins.jshint.reporter(stylish))
-      .pipe(gulp.dest(fileEntry.dest));
-  });
-}
-
-function handleES6Scripts(srcPath) {
-  var es6Filepaths = glob.sync(srcPath + '/**/*.es6.js');
-
-  var browserifyFileEntries = [];
-  es6Filepaths.forEach(function(filepath) {
-    var filename = path.basename(filepath);
-    var directoryOfFile = path.dirname(filepath);
-    var relativeDirectory = path.relative(
-      srcPath,
-      directoryOfFile);
-
-    browserifyFileEntries.push({
-      srcPath: filepath,
-      outputFilename: filename,
-      dest: path.join(GLOBAL.config.build.scripts, relativeDirectory)
-    });
-  });
-
-  compileES6Classes(browserifyFileEntries);
-}
-
-gulp.task('scripts:deploy', function(cb) {
-  handleES6Scripts(GLOBAL.config.deploy.scripts);
-  cb();
-});
-
-gulp.task('scripts:src', function(cb) {
-  handleES6Scripts(GLOBAL.config.src.scripts);
-  cb();
-});
-
-gulp.task('scripts:sw', function() {
-  return gulp.src([
-      GLOBAL.config.src.scripts + '/serviceworker/*'
+gulp.task('scripts:src', () => {
+  let stream = gulp.src([
+      '!**/third_party/**/*',
+      '!'+GLOBAL.config.src + '/frontend/**/*.tmpl.js',
+      GLOBAL.config.src + '/frontend/**/*.js'
     ])
-    .pipe(gulp.dest(GLOBAL.config.build.root + '/'));
+    .pipe(sourcemaps.init())
+    .pipe(rollup({
+      plugins: [
+        nodeResolve({ jsnext: true }),
+        commonjs()
+      ]
+    }))
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+    .on('error', util.log);
+
+  if (GLOBAL.config.env === 'prod') {
+    stream = stream.pipe(uglify());
+  }
+
+  return stream.pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(GLOBAL.config.dest));
 });
 
-gulp.task('scripts:clean', del.bind(null, [
-    GLOBAL.config.build.scripts + '/**/*.{js}'
-  ], {dot: true}));
+gulp.task('scripts:tmpl', () => {
+  let stream = gulp.src([
+      '!**/third_party/**/*',
+      GLOBAL.config.src + '/frontend/**/*.tmpl.js'
+    ])
+    .pipe(sourcemaps.init())
+    .pipe(rollup())
+    .pipe(babel({
+      presets: ['es2015']
+    }));
 
-gulp.task('scripts', ['scripts:clean'], function(cb) {
+  return stream.pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(GLOBAL.config.dest));
+});
+
+gulp.task('scripts:third_party', () => {
+  return gulp.src([
+      GLOBAL.config.src + '/frontend/**/third_party/**/*.js',
+    ])
+    .pipe(gulp.dest(GLOBAL.config.dest));
+});
+
+gulp.task('scripts:node_modules', () => {
+  let stream = gulp.src([
+      './node_modules/sw-toolbox/sw-toolbox.js',
+    ]);
+
+    if (GLOBAL.config.env === 'prod') {
+      stream = stream.pipe(uglify());
+    }
+    return stream.pipe(
+      gulp.dest(
+        path.join(GLOBAL.config.dest, 'scripts', 'third_party')
+      )
+    );
+});
+
+gulp.task('scripts', (cb) => {
   runSequence(
     [
-      'scripts:sw',
       'scripts:src',
-      'scripts:deploy',
+      'scripts:tmpl',
+      'scripts:third_party',
+      'scripts:node_modules'
     ],
   cb);
 });

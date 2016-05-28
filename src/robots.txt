@@ -1,4 +1,0 @@
-User-agent: *
-Sitemap: https://gauntface.com/sitemap
-Disallow: /breakfast
-Disallow: /breakfast/
