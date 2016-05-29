@@ -13,6 +13,8 @@ env:
     - PATH=${HOME}/google-cloud-sdk/bin:$PATH
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
+# TIMEZONE options here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+- export TZ=Europe/London
 - openssl aes-256-cbc -K $encrypted_d68f0083a6dc_key -iv $encrypted_d68f0083a6dc_iv
   -in travis-encrypt.tar.gz.enc -out travis-encrypt.tar.gz -d
 - tar -xzf travis-encrypt.tar.gz
