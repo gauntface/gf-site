@@ -13,13 +13,13 @@ const DOCKER_PORT = 5123;
 
 // Can use --no-cache for clean builds
 
-gulp.task('docker:build:prod', ['docker:build:base'], cb => {
+gulp.task('docker:build:production', ['docker:build:base'], cb => {
   const args = [
     'build',
     '-t',
-    'gauntface/gf-site:prod',
+    'gauntface/gf-site:production',
     '-f',
-    GLOBAL.config.src+'/docker/Dockerfile-Staging',
+    GLOBAL.config.src+'/docker/Dockerfile-Production',
     '.'
   ];
   const dockerProcess = spawn('docker', args, {

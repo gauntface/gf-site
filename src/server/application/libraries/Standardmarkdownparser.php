@@ -24,6 +24,11 @@ class Standardmarkdownparser extends Parsedown {
 
     $origSrcURL = $Image['element']['attributes']['src'];
     $pathInfo = pathinfo($origSrcURL);
+
+    if (!array_key_exists('extension', $pathInfo)) {
+      return $Image;
+    }
+
     if($pathInfo["extension"] === 'gif' || strpos($origSrcURL, 'http') === 0) {
       // Either the image is a gif OR its for an external ResourceBundle
       return $Image;
@@ -68,15 +73,15 @@ class Standardmarkdownparser extends Parsedown {
   }
 
   protected function blockCodeComplete($Block = null) {
-    $Block = parent::blockCodeComplete($Block);
-
     array_push($this->_inlineStyles, "/styles/elements/code.css");
 
     $rawSrc = $Block['element']['text']['text'];
     $firstLine = strtok($rawSrc, "\n");
     $language = $this->findLanguage($firstLine);
     if (!$language) {
-      return $Block;
+      // Only use parent method if we want it to handle
+      // pre -> code with html encoding etc.
+      return parent::blockCodeComplete($Block);;
     }
 
     array_push($this->_inlineStyles, "/styles/elements/geshi-code.css");
