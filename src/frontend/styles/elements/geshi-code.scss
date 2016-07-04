@@ -19,8 +19,9 @@
 }
 
 .geshi_highlight {
-  width: 0;
-  flex: 1;
+  // Center the code when we can (i.e. it's small)
+  // width: 0;
+  // flex: 1;
 
   font-family: $code-font-family;
   @include typography-font-size($font-size-code);

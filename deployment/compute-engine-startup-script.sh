@@ -3,7 +3,6 @@
 BUILDTYPE="$(curl  http://metadata/computeMetadata/v1/instance/attributes/BUILDTYPE -H "Metadata-Flavor: Google")"
 ZONE="$(curl  http://metadata/computeMetadata/v1/instance/attributes/ZONE -H "Metadata-Flavor: Google")"
 SQL_PROXY="$(curl  http://metadata/computeMetadata/v1/instance/attributes/SQL_PROXY -H "Metadata-Flavor: Google")"
-CERT_DOMAIN="$(curl  http://metadata/computeMetadata/v1/instance/attributes/CERT_DOMAIN -H "Metadata-Flavor: Google")"
 GS_BUCKET="$(curl  http://metadata/computeMetadata/v1/instance/attributes/GS_BUCKET -H "Metadata-Flavor: Google")"
 SQL_PATH="$(curl  http://metadata/computeMetadata/v1/instance/attributes/SQL_PATH -H "Metadata-Flavor: Google")"
 
@@ -12,7 +11,6 @@ echo '------------------------------------------------'
 echo "BUILDTYPE: $BUILDTYPE"
 echo "ZONE: $ZONE"
 echo "SQL_PROXY: $SQL_PROXY"
-echo "CERT_DOMAIN: $CERT_DOMAIN"
 echo "GS_BUCKET: $GS_BUCKET"
 echo "SQL_PATH: $SQL_PATH"
 echo '------------------------------------------------'
@@ -48,52 +46,15 @@ sudo apt-get -y install docker-engine
 sudo service docker start
 
 echo '------------------------------------------------'
-echo "Starting letsencrypt"
+echo "Getting Certs Script"
 echo '------------------------------------------------'
 echo "\n";
-LE_CERT_PATH="/etc/letsencrypt/live/$CERT_DOMAIN/cert.pem"
+sudo apt-get -y install bc
 
-sudo mkdir -p /letsencrypt
-sudo git clone https://github.com/letsencrypt/letsencrypt /letsencrypt
-
-# Get Existing Certs
-sudo mkdir -p /gauntface/certs/$BUILDTYPE/
-sudo mkdir -p /etc/letsencrypt/
-sudo gsutil cp $GS_BUCKET/certs/$BUILDTYPE/config.ini /gauntface/certs/$BUILDTYPE/
-sudo gsutil cp -r $GS_BUCKET/certs/$BUILDTYPE/letsencrypt/* /etc/letsencrypt/
-
-if [ ! -f $LE_CERT_PATH ]; then
-  echo "Need to get a new $BUILDTYPE certificate."
-  # This should handle renewing old certs as well as updating old ones
-  sudo /letsencrypt/letsencrypt-auto certonly --config /gauntface/certs/$BUILDTYPE/config.ini
-else
-  echo "Already have a $BUILDTYPE certificate"
-  # If we have certs - check for updates
-  get_days_exp() {
-    local d1=$(date -d "`openssl x509 -in $1 -text -noout|grep "Not After"|cut -c 25-`" +%s)
-    local d2=$(date -d "now" +%s)
-    # Return result in global variable
-    DAYS_EXP=$(echo \( $d1 - $d2 \) / 86400 |bc)
-  }
-
-  get_days_exp "$LE_CERT_PATH"
-
-  if [ "$DAYS_EXP" -lt 7 ]; then
-    echo "Your certificate needs updating"
-    sudo /letsencrypt/letsencrypt-auto renew
-  else
-    echo "Certificate for $BUILDTYPE will expire in ${DAYS_EXP} days. "
-  fi
-fi
-
-# Back up any changes
-sudo gsutil cp -r /etc/letsencrypt/* $GS_BUCKET/certs/$BUILDTYPE/letsencrypt/
-
-# Make sure that dhparam is pulled down
-sudo gsutil cp $GS_BUCKET/certs/$BUILDTYPE/dhparam.cert /etc/letsencrypt/
-
-# Little clean up
-sudo rm -rf /gauntface/certs/
+sudo mkdir -p /gauntface/certs/
+sudo gsutil cp $GS_BUCKET/certs/lets-encrypt-update.sh /gauntface/certs/
+chmod +x /gauntface/certs/lets-encrypt-update.sh
+/gauntface/certs/lets-encrypt-update.sh
 
 echo '------------------------------------------------'
 echo "Getting Extras"
@@ -102,6 +63,18 @@ echo "\n";
 
 mkdir -p /gauntface/extras/
 sudo gsutil cp -r $GS_BUCKET/src/* /gauntface/extras/
+
+echo '------------------------------------------------'
+echo "Add Cronjob"
+echo '------------------------------------------------'
+echo "\n";
+#write out current crontab
+crontab -l > mycron
+#echo new cron into cron file
+echo "0 2 * * * /gauntface/certs/lets-encrypt-update.sh" >> mycron
+#install new cron file
+crontab mycron
+rm mycron
 
 echo '------------------------------------------------'
 echo "Create and Start Container"
