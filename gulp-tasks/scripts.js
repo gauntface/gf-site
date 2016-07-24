@@ -14,7 +14,7 @@ const path = require('path');
 gulp.task('scripts:src', () => {
   let stream = gulp.src([
       '!**/third_party/**/*',
-      '!'+GLOBAL.config.src + '/frontend/**/*.tmpl.js',
+      '!' + GLOBAL.config.src + '/frontend/**/*.tmpl.js',
       GLOBAL.config.src + '/frontend/**/*.js'
     ])
     .pipe(sourcemaps.init())
@@ -39,14 +39,14 @@ gulp.task('scripts:src', () => {
 
 gulp.task('scripts:tmpl', () => {
   let stream = gulp.src([
-      '!**/third_party/**/*',
-      GLOBAL.config.src + '/frontend/**/*.tmpl.js'
-    ])
-    .pipe(sourcemaps.init())
-    .pipe(rollup())
-    .pipe(babel({
-      presets: ['es2015']
-    }));
+    '!**/third_party/**/*',
+    GLOBAL.config.src + '/frontend/**/*.tmpl.js'
+  ])
+  .pipe(sourcemaps.init())
+  .pipe(rollup())
+  .pipe(babel({
+    presets: ['es2015']
+  }));
 
   return stream.pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(GLOBAL.config.dest));
@@ -61,17 +61,18 @@ gulp.task('scripts:third_party', () => {
 
 gulp.task('scripts:node_modules', () => {
   let stream = gulp.src([
-      './node_modules/sw-toolbox/sw-toolbox.js',
-    ]);
+    './node_modules/sw-toolbox/sw-toolbox.js',
+  ]);
 
-    if (GLOBAL.config.env === 'prod') {
-      stream = stream.pipe(uglify());
-    }
-    return stream.pipe(
-      gulp.dest(
-        path.join(GLOBAL.config.dest, 'scripts', 'third_party')
-      )
-    );
+  if (GLOBAL.config.env === 'prod') {
+    stream = stream.pipe(uglify());
+  }
+
+  return stream.pipe(
+    gulp.dest(
+      path.join(GLOBAL.config.dest, 'scripts', 'third_party')
+    )
+  );
 });
 
 gulp.task('scripts', (cb) => {

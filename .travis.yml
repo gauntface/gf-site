@@ -5,6 +5,7 @@ node_js:
   - '5'
 services:
 - docker
+- mysql
 cache:
   directories:
   - node_modules
@@ -18,6 +19,14 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_d68f0083a6dc_key -iv $encrypted_d68f0083a6dc_iv
   -in travis-encrypt.tar.gz.enc -out travis-encrypt.tar.gz -d
 - tar -xzf travis-encrypt.tar.gz
+
+# docker and mysql service can't be installed at the same time
+# https://github.com/travis-ci/travis-ci/issues/4870
+- sudo apt-get install -y mysql-server-5.6 mysql-client-5.6 mysql-client-core-5.6
+- mysql -e "CREATE DATABASE IF NOT EXISTS gauntface_site_db_test;" -u root
+- mysql -e "USE gauntface_site_db_test;" -u root
+- mysql -e "CREATE USER 'gf_site_test'@'localhost' IDENTIFIED BY 'test_password';" -u root
+- mysql -e "GRANT ALL PRIVILEGES ON gauntface_site_db_test.* TO 'gf_site_test'@'localhost';" -u root
 install:
 - curl https://sdk.cloud.google.com | bash;
 - which gcloud
@@ -29,6 +38,7 @@ install:
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
+- npm run test
 - if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="production"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
 - if [[ $BUILDTYPE == "production" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
 - gulp "$BUILDTYPE"
