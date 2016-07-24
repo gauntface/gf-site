@@ -20,7 +20,6 @@ const AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
-
 gulp.task('styles:sass', () => {
   var sassStream = gulp.src(GLOBAL.config.src + '/frontend/**/*.scss')
     .pipe(gulpSass().on('error', gulpSass.logError))

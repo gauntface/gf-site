@@ -12,6 +12,7 @@ class SinglePostModel extends CI_Model {
   private $_mainImgBGColor;
   private $_postStatus;
   private $_publishTime;
+  private $_author;
 
   function __construct($blogPostQuery = null) {
     // Call the Model constructor
@@ -33,6 +34,7 @@ class SinglePostModel extends CI_Model {
       $this->_mainImgBGColor = urldecode($blogPostQuery->post_main_img_bg_color);
       $this->_postStatus = urldecode($blogPostQuery->post_status);
       $this->_publishTime = strtotime(urldecode($blogPostQuery->publish_date));
+      $this->_author = urldecode($blogPostQuery->post_author);
     }
   }
 
@@ -118,6 +120,10 @@ class SinglePostModel extends CI_Model {
 
   public function getSlug() {
     return $this->_slug;
+  }
+
+  public function getAuthor() {
+    return $this->_author;
   }
 
   public function getPublicURL() {

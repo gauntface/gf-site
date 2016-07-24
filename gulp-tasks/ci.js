@@ -8,7 +8,7 @@ const mkdirp = require('mkdirp');
 const runSequence = require('run-sequence');
 const fs = require('fs');
 
-gulp.task('codeigniter:private', cb => {
+gulp.task('codeigniter:deploy', cb => {
   return gulp.src([
       GLOBAL.config.private + '/src/**/*.*'
     ])
@@ -35,6 +35,7 @@ gulp.task('codeigniter:file-permissions', (cb) => {
   mkdirp.sync(GLOBAL.config.dest + '/imageproducer/');
   mkdirp.sync(GLOBAL.config.dest + '/sessions/');
   mkdirp.sync(GLOBAL.config.dest + '/logs/');
+
   fs.chmodSync(GLOBAL.config.dest + '/application/cache/', '777');
   fs.chmodSync(GLOBAL.config.dest + '/application/dbcache/', '777');
   fs.chmodSync(GLOBAL.config.dest + '/uploads/', '777');
@@ -62,7 +63,7 @@ gulp.task('codeigniter', ['codeigniter:clean'], (cb) => {
   runSequence(
     [
       'codeigniter:copy',
-      'codeigniter:private'
+      'codeigniter:deploy'
     ],
     'codeigniter:file-permissions',
   cb);

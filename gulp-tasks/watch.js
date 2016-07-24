@@ -1,39 +1,29 @@
 'use strict';
 
 const gulp = require('gulp');
-const browserSync = require('browser-sync');
 
 gulp.task('watch', () => {
-  browserSync.init({
-    proxy: `localhost:${GLOBAL.config.dockerport}/`,
-    logPrefix: 'GF',
-    // Prevent browser sync from display in page notifications
-    notify: false,
-    open: false
-  });
-
   // Codeigniter
   gulp.watch([GLOBAL.config.src + '/server/**/*'],
-    ['codeigniter'], browserSync.reload);
+    ['codeigniter']);
   gulp.watch([GLOBAL.config.private + '/src/**/*'],
-    ['codeigniter:private'], browserSync.reload);
+    ['codeigniter:deploy']);
 
   // Sass / CSS
   gulp.watch([GLOBAL.config.src + '/frontend/**/*.scss'],
-    ['styles'], browserSync.reload);
+    ['styles']);
 
   // Scripts
   gulp.watch([GLOBAL.config.src + '/frontend/**/*.js'],
-    ['scripts'], browserSync.reload);
+    ['scripts']);
 
   // Images
   gulp.watch([GLOBAL.config.src + '/frontend/**/*.{png,jpg,jpeg,svg,gif}'],
-    ['images'], browserSync.reload);
+    ['images']);
 
   // Docker
   gulp.watch([
     GLOBAL.config.src + '/docker/**/*',
     GLOBAL.config.src + '/nginx/**/*'
-  ],
-    ['docker:start'], browserSync.reload);
+  ], ['docker:start']);
 });

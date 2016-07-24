@@ -23,11 +23,19 @@ var commonBuildTasks = [
 ];
 
 gulp.task('dev', (cb) => {
+  GLOBAL.config.env = 'development';
+  runSequence(
+    commonBuildTasks,
+    'docker:start:development',
+    'watch',
+    cb);
+});
+
+gulp.task('test', (cb) => {
   GLOBAL.config.env = 'dev';
   runSequence(
     commonBuildTasks,
-    'docker:start',
-    'watch',
+    'docker:start:test',
     cb);
 });
 
