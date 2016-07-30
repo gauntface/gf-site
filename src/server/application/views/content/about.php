@@ -30,8 +30,8 @@ to be a full time mobile software engineer.</p>
       Shout
     </div>
     <div class="about__fact-list-content">
-      <p>I'm on <a href="<?php echo(htmlspecialchars('#')); ?>">Twitter</a>, <a href="<?php echo(htmlspecialchars('#')); ?>">G+</a> and you can
-      always <a href="<?php echo(htmlspecialchars('#')); ?>">drop me an email</a>. <a href="<?php echo(htmlspecialchars('#')); ?>">Twitter</a> is
+      <p>I'm on <a href="<?php echo(htmlspecialchars('https://twitter.com/gauntface')); ?>">Twitter</a>, <a href="<?php echo(htmlspecialchars('https://plus.google.com/+MattGaunt')); ?>">G+</a> and you can
+      always <a href="<?php echo(htmlspecialchars('/contact')); ?>">drop me an email</a>. <a href="<?php echo(htmlspecialchars('https://twitter.com/gauntface')); ?>">Twitter</a> is
       probably the best way to get in touch.</p>
     </div>
   </li>
