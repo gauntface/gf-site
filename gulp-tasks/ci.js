@@ -7,6 +7,7 @@ const del = require('del');
 const mkdirp = require('mkdirp');
 const runSequence = require('run-sequence');
 const fs = require('fs');
+const execSync = require('child_process').execSync;
 
 gulp.task('codeigniter:deploy', cb => {
   return gulp.src([
@@ -42,6 +43,8 @@ gulp.task('codeigniter:file-permissions', (cb) => {
   fs.chmodSync(global.config.dest + '/imageproducer/', '777');
   fs.chmodSync(global.config.dest + '/sessions/', '777');
   fs.chmodSync(global.config.dest + '/logs/', '777');
+
+  execSync('chmod g+rwxs ' + global.config.dest);
 
   cb();
 });
