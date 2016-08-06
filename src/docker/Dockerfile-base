@@ -22,4 +22,4 @@ ADD src/docker/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
 ADD src/docker/nginx/fastcgi-params.tmpl /etc/nginx/fastcgi-params.tmpl
 ADD src/docker/startup.sh /home/gauntface/docker/startup.sh
 
-CMD /home/gauntface/docker/startup.sh
+CMD ["/home/gauntface/docker/startup.sh"]
