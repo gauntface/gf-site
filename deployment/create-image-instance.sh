@@ -66,7 +66,7 @@ echo "";
 
 gcloud compute instances create $INSTANCE_NAME \
 --boot-disk-auto-delete \
---image ubuntu-15-10 \
+--image ubuntu-16-04 \
 --machine-type g1-small \
 --metadata BUILDTYPE=$BUILDTYPE,ZONE=$ZONE,SQL_PROXY=$SQL_PROXY,CERT_DOMAIN=$CERT_DOMAIN,GS_BUCKET=$GS_BUCKET,SQL_PATH=$SQL_PATH \
 --metadata-from-file startup-script=$DIR/compute-engine-startup-script.sh \
