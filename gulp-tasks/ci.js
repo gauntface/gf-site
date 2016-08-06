@@ -10,7 +10,7 @@ const fs = require('fs');
 
 gulp.task('codeigniter:deploy', cb => {
   return gulp.src([
-      GLOBAL.config.private + '/src/**/*.*'
+      global.config.private + '/src/**/*.*'
     ])
     .pipe(gulp.dest(GLOBAL.config.dest));
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-GLOBAL.config = {
+global.config = {
   src: './src',
   private: './../gf-deploy',
   dest: './build',
@@ -23,7 +23,7 @@ var commonBuildTasks = [
 ];
 
 gulp.task('dev', (cb) => {
-  GLOBAL.config.env = 'development';
+  global.config.env = 'development';
   runSequence(
     commonBuildTasks,
     'docker:start:development',
@@ -32,7 +32,7 @@ gulp.task('dev', (cb) => {
 });
 
 gulp.task('test', (cb) => {
-  GLOBAL.config.env = 'dev';
+  global.config.env = 'dev';
   runSequence(
     commonBuildTasks,
     'docker:start:test',
@@ -40,7 +40,7 @@ gulp.task('test', (cb) => {
 });
 
 gulp.task('staging', (cb) => {
-  GLOBAL.config.env = 'dev';
+  global.config.env = 'dev';
   runSequence(
     commonBuildTasks,
     'docker:build:staging',

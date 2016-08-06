@@ -5,16 +5,16 @@ const runSequence = require('run-sequence');
 
 gulp.task('copy:deploy-keys', () => {
   return gulp.src([
-      GLOBAL.config.private + '/keys/**/*'
+      global.config.private + '/keys/**/*'
     ])
-    .pipe(gulp.dest(GLOBAL.config.dest + '/keys/'));
+    .pipe(gulp.dest(global.config.dest + '/keys/'));
 });
 
 gulp.task('copy:root', () => {
   return gulp.src([
-      GLOBAL.config.src + '/frontend/*.{json,txt,ico}'
+      global.config.src + '/frontend/*.{json,txt,ico}'
     ])
-    .pipe(gulp.dest(GLOBAL.config.dest));
+    .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('copy', (cb) => {

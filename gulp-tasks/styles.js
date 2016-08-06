@@ -21,18 +21,18 @@ const AUTOPREFIXER_BROWSERS = [
 ];
 
 gulp.task('styles:sass', () => {
-  var sassStream = gulp.src(GLOBAL.config.src + '/frontend/**/*.scss')
+  var sassStream = gulp.src(global.config.src + '/frontend/**/*.scss')
     .pipe(gulpSass().on('error', gulpSass.logError))
     .pipe(sourcemaps.init())
     .pipe(autoprefixer(AUTOPREFIXER_BROWSERS));
 
   // We only want to minify for production builds
-  if (GLOBAL.config.env === 'prod') {
+  if (global.config.env === 'prod') {
     sassStream = sassStream.pipe(cssnano());
   }
 
   return sassStream.pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(GLOBAL.config.dest));
+    .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('styles', () => {
