@@ -92,7 +92,7 @@ echo "\n";
 sudo docker stop $DOCKER_ID
 sudo docker rm $DOCKER_ID
 
-sudo docker run -t -i -d \
+sudo docker run -t -i \
 --name $DOCKER_ID \
 -e BUILDTYPE=$BUILDTYPE \
 -p 80:80 \
