@@ -36,7 +36,11 @@ envsubst < /etc/nginx/fastcgi-params.tmpl > /etc/nginx/fastcgi-params.conf;
 ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
 # This may be able to remove this *IF* Docker volumes can be joined
-cp -r /gauntface/extras/. /gauntface/site/
+if [ -d "/gauntface/extras" ]; then
+  cp -r /gauntface/extras/. /gauntface/site/
+else
+  echo "No extras to copy."
+fi
 
 service php5-fpm start;
 
