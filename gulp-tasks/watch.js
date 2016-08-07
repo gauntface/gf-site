@@ -25,5 +25,5 @@ gulp.task('watch', () => {
   gulp.watch([
     global.config.src + '/docker/**/*',
     global.config.src + '/nginx/**/*'
-  ], ['docker:start']);
+  ], ['docker:start:development']);
 });

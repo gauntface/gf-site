@@ -16,6 +16,7 @@ const DOCKER_PORT = 3000;
 function runDockerBuild(buildType, cb) {
   const args = [
     'build',
+    // '--no-cache',
     '-t',
     `gauntface/gf-site:${buildType}`,
     '-f',
