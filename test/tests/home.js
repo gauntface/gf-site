@@ -55,6 +55,14 @@ describe('Home Page', function() {
     return globalDriver.get(global.testUrl)
     .then(() => {
       return globalDriver.executeScript(function() {
+        return document.body.innerHTML;
+      })
+    })
+    .then(html => {
+      console.log(html);
+    })
+    .then(() => {
+      return globalDriver.executeScript(function() {
         const timeElement = document.querySelector('.twitter-block__tweet-info > time');
         const textElement = document.querySelector('.twitter-block__tweet');
 
