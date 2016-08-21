@@ -52,15 +52,13 @@ describe('Home Page', function() {
   it('should be able to get a tweet from twitter', function() {
     this.timeout(60000);
 
+    if (process.env['TRAVIS']) {
+      console.warn('Skipping Twitter check on travis as it requires ' +
+        'non-public information to work.');
+      return;
+    }
+
     return globalDriver.get(global.testUrl)
-    .then(() => {
-      return globalDriver.executeScript(function() {
-        return document.body.innerHTML;
-      })
-    })
-    .then(html => {
-      console.log(html);
-    })
     .then(() => {
       return globalDriver.executeScript(function() {
         const timeElement = document.querySelector('.twitter-block__tweet-info > time');
