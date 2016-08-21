@@ -58,11 +58,31 @@ describe('Home Page', function() {
         const timeElement = document.querySelector('.twitter-block__tweet-info > time');
         const textElement = document.querySelector('.twitter-block__tweet');
 
-        return {
-          text: textElement.textContent,
-          date: timeElement.getAttribute('datetime')
+        const returnValues = {};
+        if (textElement) {
+          returnValues.text = textElement.textContent;
         }
+
+        if (timeElement) {
+          returnValues.date = timeElement.getAttribute('datetime');
+        }
+        return returnValues;
       });
+    })
+    .then(tweetValues => {
+      if (!tweetValues.text) {
+        throw new Error('No tweet text found.');
+      }
+
+      if (!tweetValues.date) {
+        throw new Error('No tweet date found.');
+      }
+
+      tweetValues.text.should.not.equal('Oops looks like there was a problem talking with Twitter.');
+
+      expect(function() {
+        new Date(tweetValues.date);
+      }).to.not.throw();
     });
   });
 
