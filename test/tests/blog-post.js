@@ -25,6 +25,8 @@ describe('Blog Post', function() {
   let testPostId = -1;
 
   beforeEach(function() {
+    this.timeout(4000);
+    
     return dbHelper.open()
     .then(() => {
       return dbHelper.query(

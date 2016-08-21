@@ -11,7 +11,9 @@ class BlankShell extends BaseShell {
 
     $this->addComponent($this->PageContainerLayout);
 
-    $this->addInlineStylesheet('/styles/appshell/default.css');
+    $this->addInlineStylesheet('/styles/appshell/default-inline.css');
     $this->addInlineStylesheet('/styles/appshell/default-utils.css');
+
+    $this->addRemoteStylesheet('/styles/appshell/default-remote.css');
   }
 }

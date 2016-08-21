@@ -16,8 +16,10 @@ class AdminShell extends BaseShell {
     $this->addComponent($this->AppBarComponent);
     $this->addComponent($this->PageContainerLayout);
 
-    $this->addInlineStylesheet('/styles/appshell/default.css');
+    $this->addInlineStylesheet('/styles/appshell/default-inline.css');
     $this->addInlineStylesheet('/styles/appshell/default-utils.css');
     $this->addInlineStylesheet('/styles/appshell/admin.css');
+
+    $this->addRemoteStylesheet('/styles/appshell/default-remote.css');
   }
 }
