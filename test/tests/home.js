@@ -70,6 +70,7 @@ describe('Home Page', function() {
       });
     })
     .then(tweetValues => {
+      console.log(tweetValues);
       if (!tweetValues.text) {
         throw new Error('No tweet text found.');
       }
