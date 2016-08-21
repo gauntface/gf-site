@@ -16,10 +16,11 @@ const DOCKER_PORT = 3000;
 function runDockerBuild(buildType, cb) {
   const args = [
     'build',
+    // '--no-cache',
     '-t',
     `gauntface/gf-site:${buildType}`,
     '-f',
-    GLOBAL.config.src+`/docker/Dockerfile-${buildType}`,
+    global.config.src+`/docker/Dockerfile-${buildType}`,
     '.'
   ];
   const dockerProcess = spawn('docker', args, {
@@ -106,7 +107,7 @@ gulp.task('docker:startStaging', (cb) => {
       '-e',
       'BUILDTYPE=staging',
       '-p',
-      GLOBAL.config.dockerport,
+      global.config.dockerport,
       '-t',
       'gauntface/gf-site:staging'
     ];
@@ -142,9 +143,9 @@ gulp.task('docker:start:development', (cb) => {
       '-e',
       'BUILDTYPE=development',
       '-p',
-      GLOBAL.config.dockerport,
+      global.config.dockerport,
       '-v',
-      path.join(__dirname, '..', GLOBAL.config.dest)+':/gauntface/site',
+      path.join(__dirname, '..', global.config.dest)+':/gauntface/site',
       '-d',
       '-t',
       'gauntface/gf-site:development'
@@ -182,9 +183,9 @@ gulp.task('docker:start:test', (cb) => {
       '-e',
       'BUILDTYPE=test',
       '-p',
-      GLOBAL.config.dockerport,
+      global.config.dockerport,
       '-v',
-      path.join(__dirname, '..', GLOBAL.config.dest)+':/gauntface/site',
+      path.join(__dirname, '..', global.config.dest)+':/gauntface/site',
       '-d',
       '-t',
       'gauntface/gf-site:test'

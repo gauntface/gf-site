@@ -7,3 +7,4 @@ configs/
 deploy/
 client-secret.json
 travis-encrypt.tar.gz
+npm-debug.log

@@ -77,7 +77,7 @@ crontab mycron
 rm mycron
 
 echo '------------------------------------------------'
-echo "Create and Start Container"
+echo "Download Docker Container"
 echo '------------------------------------------------'
 echo "\n";
 DOCKER_ID=gauntface-container
@@ -85,6 +85,10 @@ DOCKER_CONTAINER=gauntface/gf-site
 
 sudo docker pull $DOCKER_CONTAINER:$BUILDTYPE
 
+echo '------------------------------------------------'
+echo "Start Docker Container"
+echo '------------------------------------------------'
+echo "\n";
 sudo docker stop $DOCKER_ID
 sudo docker rm $DOCKER_ID
 

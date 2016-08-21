@@ -18,8 +18,12 @@ if (!isset($model)) {
         if(array_key_exists('isSelected', $appItem) && $appItem['isSelected']) {
           $className .= ' is-selected';
         }
+        $ariaLabel = null;
+        if(array_key_exists('aria-label', $appItem)) {
+          $ariaLabel = $appItem['aria-label'];
+        }
         ?>
-        <a href="<?php echo(htmlspecialchars($appItem['link'])); ?>" data-pageid="<?php echo($appItem['pageid']); ?>" class="<?php echo $className ?>"><?php echo $appItem['title'] ?></a>
+        <a href="<?php echo(htmlspecialchars($appItem['link'])); ?>" data-pageid="<?php echo($appItem['pageid']); ?>" class="<?php echo $className ?>" <?php if($ariaLabel) {?>aria-label="<?php echo $ariaLabel; ?>"<?php } ?>><?php echo $appItem['title'] ?></a>
         <?php
       }
     }

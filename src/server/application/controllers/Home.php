@@ -46,6 +46,7 @@ class Home extends BaseController {
       $firstPostComponent->setSmallBackgroundImage($posts[0]->getGreyScaleImg());
       $firstPostComponent->setTime($posts[0]->getPublishTime());
       $firstPostComponent->setLinkURL($posts[0]->getPublicURL());
+      $firstPostComponent->setClassName($posts[0]->getSlug());
 
       $this->PageModel->addComponent($firstPostComponent);
     }
