@@ -126,6 +126,12 @@ class BaseController extends CI_Controller {
 
   protected function isLoggedIn() {
     $this->load->helper('url');
+
+    if ($_SERVER['CI_ENV'] === 'test' &&
+      base_url() === 'http://localhost:3000/') {
+      return true;
+    }
+
     $this->load->library('session');
     $this->config->load('confidential', TRUE);
 
