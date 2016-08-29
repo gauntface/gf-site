@@ -89,16 +89,11 @@ describe('Home Page', function() {
       expect(function() {
         new Date(tweetValues.date);
       }).to.not.throw();
-        return {
-          text: textElement.textContent,
-          date: timeElement.getAttribute('datetime')
-        }
 
-        if (timeElement) {
-          returnValues.date = timeElement.getAttribute('datetime');
-        }
-        return returnValues;
-      });
+      if (timeElement) {
+        returnValues.date = timeElement.getAttribute('datetime');
+      }
+      return returnValues;
     })
     .then(tweetValues => {
       if (!tweetValues.text) {
