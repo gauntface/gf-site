@@ -33,8 +33,9 @@ class Blog extends BaseController {
 
   public function viewPostById($postId) {
     $this->load->model('data/blog/PostsModel');
-
+    $this->db->cache_off();
     $postModel = $this->PostsModel->getPostById($postId);
+    $this->db->cache_on();
 
     $document = $this->getDocument('blog-article', array('postModel' => $postModel));
     $this->render($document);

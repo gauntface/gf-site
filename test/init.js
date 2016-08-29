@@ -3,6 +3,7 @@
 const dbHelper = require('./helpers/db-helper');
 const glob = require('glob');
 const path = require('path');
+const del = require('del');
 
 describe('Gauntface Test Suite', function() {
 
@@ -31,6 +32,9 @@ describe('Gauntface Test Suite', function() {
     .then(() => {
       return dbHelper.close();
     })
+    .then(() => {
+      return del('../build/application/dbcache/**/');
+    });
   });
 
   global.testUrl = 'http://localhost:3000';
