@@ -96,7 +96,9 @@ describe('Blog API', function() {
       })
       .then(response => {
         return response.text().then(responseText => {
-          console.log(responseText);
+          if (response.status !== 200) {
+            console.log(responseText);
+          }
           response.status.should.equal(200);
         });
       })
