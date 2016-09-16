@@ -14,8 +14,8 @@ const path = require('path');
 gulp.task('scripts:src', () => {
   let stream = gulp.src([
       '!**/third_party/**/*',
-      '!'+GLOBAL.config.src + '/frontend/**/*.tmpl.js',
-      GLOBAL.config.src + '/frontend/**/*.js'
+      '!' + global.config.src + '/frontend/**/*.tmpl.js',
+      global.config.src + '/frontend/**/*.js'
     ])
     .pipe(sourcemaps.init())
     .pipe(rollup({
@@ -29,49 +29,50 @@ gulp.task('scripts:src', () => {
     }))
     .on('error', util.log);
 
-  if (GLOBAL.config.env === 'prod') {
+  if (global.config.env === 'prod') {
     stream = stream.pipe(uglify());
   }
 
   return stream.pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(GLOBAL.config.dest));
+    .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('scripts:tmpl', () => {
   let stream = gulp.src([
-      '!**/third_party/**/*',
-      GLOBAL.config.src + '/frontend/**/*.tmpl.js'
-    ])
-    .pipe(sourcemaps.init())
-    .pipe(rollup())
-    .pipe(babel({
-      presets: ['es2015']
-    }));
+    '!**/third_party/**/*',
+    global.config.src + '/frontend/**/*.tmpl.js'
+  ])
+  .pipe(sourcemaps.init())
+  .pipe(rollup())
+  .pipe(babel({
+    presets: ['es2015']
+  }));
 
   return stream.pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(GLOBAL.config.dest));
+    .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('scripts:third_party', () => {
   return gulp.src([
-      GLOBAL.config.src + '/frontend/**/third_party/**/*.js',
+      global.config.src + '/frontend/**/third_party/**/*.js',
     ])
-    .pipe(gulp.dest(GLOBAL.config.dest));
+    .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('scripts:node_modules', () => {
   let stream = gulp.src([
-      './node_modules/sw-toolbox/sw-toolbox.js',
-    ]);
+    './node_modules/sw-toolbox/sw-toolbox.js',
+  ]);
 
-    if (GLOBAL.config.env === 'prod') {
-      stream = stream.pipe(uglify());
-    }
-    return stream.pipe(
-      gulp.dest(
-        path.join(GLOBAL.config.dest, 'scripts', 'third_party')
-      )
-    );
+  if (global.config.env === 'prod') {
+    stream = stream.pipe(uglify());
+  }
+
+  return stream.pipe(
+    gulp.dest(
+      path.join(global.config.dest, 'scripts', 'third_party')
+    )
+  );
 });
 
 gulp.task('scripts', (cb) => {

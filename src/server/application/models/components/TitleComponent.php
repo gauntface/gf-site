@@ -15,6 +15,7 @@ class TitleComponent extends BaseComponent {
   private $_isPadded;
   private $_isTransparent;
   private $_linkHref;
+  private $_className;
 
   function __construct() {
     // Call the Model constructor
@@ -154,7 +155,15 @@ class TitleComponent extends BaseComponent {
     return $this->_useLightDivider;
   }
 
+  public function setClassName($className) {
+    $this->_className = $className;
+  }
+
   public function getClassName() {
+    if ($this->_className) {
+      return $this->_className;
+    }
+
     return slugify($this->getTitle());
   }
 }

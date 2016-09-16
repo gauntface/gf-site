@@ -3,7 +3,7 @@
 import logger from '../helpers/logger';
 import {loadAnalytics} from '../helpers/analytics';
 import {registerSW} from '../helpers/sw';
-import {asyncCSS} from '../helpers/css';
+import {asyncCSS, asyncFontCSS} from '../helpers/css';
 import PushController from './push-controller';
 import RouteController from './route-controller';
 import AppShellController from './appshell-controller';
@@ -25,6 +25,7 @@ export default class ApplicationController {
     loadAnalytics();
     registerSW();
     asyncCSS();
+    asyncFontCSS();
 
     this._pushController = new PushController();
     this._routeControler = new RouteController();

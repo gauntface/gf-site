@@ -7,8 +7,11 @@ class KeyArtShell extends BaseShell {
   public function __construct() {
     parent::__construct('keyart');
 
-    $this->addInlineStylesheet('/styles/appshell/default.css');
+    $this->addInlineStylesheet('/styles/appshell/default-inline.css');
     $this->addInlineStylesheet('/styles/appshell/default-utils.css');
+
+    $this->addRemoteStylesheet('/styles/appshell/default-remote.css');
+
     $this->addRemoteScript('/scripts/bootstrap.js');
 
     $this->load->model('components/AppBarComponent');

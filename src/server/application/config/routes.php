@@ -56,6 +56,7 @@ $route['sw\.js'] = 'serviceworker/index';
 $route['blog/(:num)'] = "blog/index/$1";
 $route['blog/(:num)/(:num)/(:num)/(:any)'] = "blog/viewPostByDate/$1/$2/$3/$4";
 $route['blog/view/(:num)'] = "blog/viewPostById/$1";
+$route['blog/feed/(.+)'] = "feed/$1";
 
 // Images
 $route['static/image/(.+)'] = 'imageproducer/index';

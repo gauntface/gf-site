@@ -41,3 +41,28 @@ export function asyncCSS() {
 
   startCSSLoad();
 }
+
+export function asyncFontCSS() {
+  var startFontLoad = () => {
+    const className = 'js-async-loaded-fonts';
+    // Check the fonts aren't already loaded
+    if (document.querySelector(`.${className}`)) {
+      return;
+    }
+
+    var linkElement = document.createElement('link');
+    linkElement.classList.add(className);
+    linkElement.rel = 'stylesheet';
+    linkElement.media = 'all';
+    linkElement.class = 'js-async-loaded-fonts';
+    linkElement.href = `/styles/elements/fonts.${Date.now()}.css`;
+
+    document.head.append(linkElement);
+  };
+
+  if (window.requestAnimationFrame) {
+    window.requestAnimationFrame(startFontLoad);
+  } else {
+    window.addEventListener('load', startFontLoad);
+  }
+}

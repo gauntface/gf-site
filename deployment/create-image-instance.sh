@@ -46,7 +46,7 @@ if [ "$SQL_PATH" = '' ]; then
   exit 1;
 fi
 
-INSTANCE_NAME=$INSTANCE_PREFIX-$BUILDTYPE-$(TZ=UK/London date +'%Y-%m-%d-%H-%M')
+INSTANCE_NAME=$INSTANCE_PREFIX-$BUILDTYPE-$(TZ=America/Los_Angeles date +'%Y-%m-%d-%H-%M')
 
 echo '------------------------------------------------'
 echo "Checking Existing GCE Instances"
@@ -66,7 +66,8 @@ echo "";
 
 gcloud compute instances create $INSTANCE_NAME \
 --boot-disk-auto-delete \
---image ubuntu-15-10 \
+--image-family ubuntu-1604-lts \
+--image-project ubuntu-os-cloud \
 --machine-type g1-small \
 --metadata BUILDTYPE=$BUILDTYPE,ZONE=$ZONE,SQL_PROXY=$SQL_PROXY,CERT_DOMAIN=$CERT_DOMAIN,GS_BUCKET=$GS_BUCKET,SQL_PATH=$SQL_PATH \
 --metadata-from-file startup-script=$DIR/compute-engine-startup-script.sh \

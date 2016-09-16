@@ -45,9 +45,7 @@ export default class MetaDataView extends BlogView {
     this.excerptTextArea.addEventListener('input', () => this.onExcerptInputChange());
 
     this.mainImg.addEventListener('load', () => this.updateMainImgColors());
-    if (this.mainImg.src) {
-      this.updateMainImgColors();
-    }
+    this.updateMainImgColors();
   }
 
   onTitleInputChange() {
@@ -72,6 +70,19 @@ export default class MetaDataView extends BlogView {
   }
 
   updateMainImgColors() {
+    // If no src don't try and do anything
+    if (!this.mainImg.src  || this.mainImg.src === window.location.href) {
+      return;
+    }
+
+    // Palette is loaded asynchronously, so may not be loaded
+    if (!window.Palette) {
+      window.setTimeout(() => {
+        this.updateMainImgColors();
+      }, 1000);
+      return;
+    }
+
     Palette
       .generate(this.mainImg)
       .done((palette) => {

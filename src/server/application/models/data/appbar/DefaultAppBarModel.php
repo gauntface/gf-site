@@ -16,7 +16,8 @@ class DefaultAppBarModel extends CI_Model {
       'about' => array(
           'title' => 'About',
           'link' => '/about',
-          'pageid' => 'about-index'
+          'pageid' => 'about-index',
+          'aria-label'=> 'About Matt Gaunt'
       ),
       'blog' => array(
           'title' => 'Blog',
