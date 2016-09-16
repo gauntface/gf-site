@@ -30,15 +30,15 @@ gulp.task('codeigniter:copy', cb => {
 
 gulp.task('codeigniter:file-permissions', (cb) => {
   // TODO This needs fixing to a more secure permission
-  mkdirp.sync(global.config.dest + '/application/cache/');
-  mkdirp.sync(global.config.dest + '/application/dbcache/');
+  // mkdirp.sync(global.config.dest + '/application/cache/');
+  mkdirp.sync(global.config.dest + '/dbcache/');
   mkdirp.sync(global.config.dest + '/uploads/');
   mkdirp.sync(global.config.dest + '/imageproducer/');
   mkdirp.sync(global.config.dest + '/sessions/');
   mkdirp.sync(global.config.dest + '/logs/');
 
-  fs.chmodSync(global.config.dest + '/application/cache/', '777');
-  fs.chmodSync(global.config.dest + '/application/dbcache/', '777');
+  // fs.chmodSync(global.config.dest + '/application/cache/', '777');
+  fs.chmodSync(global.config.dest + '/dbcache/', '777');
   fs.chmodSync(global.config.dest + '/uploads/', '777');
   fs.chmodSync(global.config.dest + '/imageproducer/', '777');
   fs.chmodSync(global.config.dest + '/sessions/', '777');

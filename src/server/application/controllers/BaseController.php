@@ -6,15 +6,6 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
 
 class BaseController extends CI_Controller {
 
-  public function __construct($cacheTime = (365 * 24 * 60)){
-    parent::__construct();
-
-    if($cacheTime > 0 && ENVIRONMENT !== 'development') {
-      // Number of minutes to cache output
-      // $this->output->cache($cacheTime);
-    }
-  }
-
   // This method is used to determine which shell to use
   protected function getAppShellModel($pageId) {
     return 'appshell/HeaderFooterShell';
@@ -122,47 +113,5 @@ class BaseController extends CI_Controller {
     $this->load->view('output-types/json', array(
       'json' => $jsonArray
     ));
-  }
-
-  protected function isLoggedIn() {
-    $this->load->helper('url');
-
-    if ($_SERVER['CI_ENV'] === 'test' &&
-      base_url() === 'http://localhost:3000/') {
-      return true;
-    }
-
-    $this->load->library('session');
-    $this->config->load('confidential', TRUE);
-
-    $rawToken = $this->session->userdata('user_sign_in_token');
-    if(!$rawToken) {
-      return false;
-    }
-
-    $token = json_decode($rawToken);
-    try {
-      $client = new Google_Client();
-      $client->setClientId(
-        $this->config->item('gplus-clientid', 'confidential')
-      );
-      $client->setClientSecret(
-        $this->config->item('gplus-clientsecret', 'confidential')
-      );
-      $attributes = $client->verifyIdToken(
-        $token->id_token,
-        $this->config->item('gplus-clientid', 'confidential')
-      );
-
-      $emailAddress = $attributes["email"];
-      if($emailAddress != $this->config->item('whitelist', 'confidential')) {
-        log_message('error', 'BaseController.php: isLoggedIn() User login attempt - ' + $emailAddress);
-        return false;
-      }
-    } catch (Exception $e) {
-      log_message('error', 'BaseController.php: isLoggedIn() Error Handling Token Check - '.$e->getMessage());
-      return false;
-    }
-    return true;
   }
 }

@@ -62,7 +62,7 @@ describe('Blog API', function() {
       console.warn(' SKIPPPING ON TRAVIS COS PERMISSION WOES.');
       return;
     }
-      
+
     this.timeout(10000);
     return new Promise((resolve, reject) => {
       globalDriver.get(global.testUrl + `/blog/view/${testPostId}`)
@@ -86,7 +86,7 @@ describe('Blog API', function() {
         bgColor.should.equal(`rgb(${parseInt(keyArtRed, 16)}, ${parseInt(keyArtGreen, 16)}, ${parseInt(keyArtBlue, 16)})`);
       })
       .then(() => {
-        return fetch(`${testUrl}/admin/blog/save?cache-bust=${Date.now()}`, {
+        return fetch(`${testUrl}/admin/api/blog/save?cache-bust=${Date.now()}`, {
           method: 'POST',
           body: JSON.stringify({
             postId: testPostId,
@@ -95,7 +95,10 @@ describe('Blog API', function() {
         });
       })
       .then(response => {
-        response.status.should.equal(200);
+        return response.text().then(responseText => {
+          console.log(responseText);
+          response.status.should.equal(200);
+        });
       })
       .then(() => {
         return globalDriver.get(global.testUrl + `/blog/view/${testPostId}`);
@@ -105,7 +108,7 @@ describe('Blog API', function() {
         return globalDriver.wait(selenium.until.titleIs(expectedTitle), 1000);
       })
        .then(() => {
-        return fetch(`${testUrl}/admin/blog/save?cache-bust=${Date.now()}`, {
+        return fetch(`${testUrl}/admin/api/blog/save?cache-bust=${Date.now()}`, {
           method: 'POST',
           body: JSON.stringify({
             postId: testPostId,
