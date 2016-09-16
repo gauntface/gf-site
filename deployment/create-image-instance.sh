@@ -46,7 +46,7 @@ if [ "$SQL_PATH" = '' ]; then
   exit 1;
 fi
 
-INSTANCE_NAME=$INSTANCE_PREFIX-$BUILDTYPE-$(TZ=UK/London date +'%Y-%m-%d-%H-%M')
+INSTANCE_NAME=$INSTANCE_PREFIX-$BUILDTYPE-$(TZ=America/Los_Angeles date +'%Y-%m-%d-%H-%M')
 
 echo '------------------------------------------------'
 echo "Checking Existing GCE Instances"
