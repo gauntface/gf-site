@@ -6,7 +6,7 @@ import {loadCSS} from '../helpers/css';
 
 export default class PageController {
   constructor() {
-    logger('[page-controller.js] Preparing pafe controller');
+    logger('[page-controller.js] Preparing page controller');
   }
 
   manageHideTransition() {

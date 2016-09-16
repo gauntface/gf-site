@@ -89,36 +89,11 @@ describe('Home Page', function() {
       expect(function() {
         new Date(tweetValues.date);
       }).to.not.throw();
-
-      if (timeElement) {
-        returnValues.date = timeElement.getAttribute('datetime');
-      }
-      return returnValues;
-    })
-    .then(tweetValues => {
-      if (!tweetValues.text) {
-        throw new Error('No tweet text found.');
-      }
-
-      if (!tweetValues.date) {
-        throw new Error('No tweet date found.');
-      }
-
-      tweetValues.text.should.not.equal('Oops looks like there was a problem talking with Twitter.');
-
-      expect(function() {
-        new Date(tweetValues.date);
-      }).to.not.throw();
     });
   });
 
   it('should display the first blog post on the home page', function() {
     this.timeout(60000);
-
-    if (process.env['TRAVIS']) {
-      console.warn(' SKIPPPING ON TRAVIS COS PERMISSION WOES.');
-      return;
-    }
 
     return globalDriver.get(global.testUrl)
     .then(() => {

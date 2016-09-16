@@ -9,6 +9,7 @@ class Shell extends BaseController {
     parent::__construct();
   }
 
+
   public function headerfooter() {
     $document = $this->getDocument('headerfooter');
     $this->render($document);

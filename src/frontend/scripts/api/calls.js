@@ -3,7 +3,7 @@
 import logger from '../helpers/logger.js';
 
 export function savePost (blogModel) {
-  return performFetchRequest('/admin/blog/save?cache-bust=' + Date.now(),
+  return performFetchRequest('/admin/api/blog/save?cache-bust=' + Date.now(),
     blogModel.getJSONData())
   .then(result => {
     if (result.data && result.data.postId) {
@@ -19,7 +19,7 @@ export function savePost (blogModel) {
 }
 
 export function deletePost (blogModel) {
-  return performFetchRequest('/admin/blog/delete?cache-bust=' + Date.now(),
+  return performFetchRequest('/admin/api/blog/delete?cache-bust=' + Date.now(),
     blogModel.getJSONData())
   .then(function(result) {
     if (result.error) {
@@ -36,7 +36,7 @@ export function deletePost (blogModel) {
 }
 
 export function publishPost (blogModel) {
-  return performFetchRequest('/admin/blog/publish?cache-bust=' + Date.now(),
+  return performFetchRequest('/admin/api/blog/publish?cache-bust=' + Date.now(),
     blogModel.getJSONData())
   .then(function(result) {
     if (result.error) {
