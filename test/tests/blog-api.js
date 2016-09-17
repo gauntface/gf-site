@@ -58,12 +58,13 @@ describe('Blog API', function() {
 
 
   it('should be able to save the test page several times via the API', function() {
+    this.timeout(10000);
+
     if (process.env['TRAVIS']) {
-      console.warn(' SKIPPPING ON TRAVIS COS PERMISSION WOES.');
+      console.warn(' Skipping on travis because blog API is in the gf-deploy.');
       return;
     }
 
-    this.timeout(10000);
     return new Promise((resolve, reject) => {
       globalDriver.get(global.testUrl + `/blog/view/${testPostId}`)
       .then(() => {

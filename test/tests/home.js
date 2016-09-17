@@ -53,8 +53,8 @@ describe('Home Page', function() {
     this.timeout(60000);
 
     if (process.env['TRAVIS']) {
-      console.warn('Skipping Twitter check on travis as it requires ' +
-        'non-public information to work.');
+      console.warn(' Skipping on travis because Twitter doesn\'t have ' +
+        'API keys.');
       return;
     }
 

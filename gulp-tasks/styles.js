@@ -28,7 +28,9 @@ gulp.task('styles:sass', () => {
 
   // We only want to minify for production builds
   if (global.config.env === 'prod') {
-    sassStream = sassStream.pipe(cssnano());
+    sassStream = sassStream.pipe(cssnano({
+      discardUnused: false
+    }));
   }
 
   return sassStream.pipe(sourcemaps.write('.'))
