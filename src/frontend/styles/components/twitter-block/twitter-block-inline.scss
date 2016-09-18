@@ -44,4 +44,7 @@
 
 .twitter-block__tweet {
   text-align: center;
+  font-size: $base-line-height;
+  line-height: 32px;
+  padding: $base-line-height / 2;
 }

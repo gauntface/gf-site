@@ -125,6 +125,8 @@ class BlogContents extends BaseContents {
     );
 
     $this->TitleComponent->setTitle($postModel->getTitle());
+    $this->TitleComponent->setTime($postModel->getPublishTime());
+    $this->TitleComponent->makePadded(true);
     $this->PageModel->addComponent($this->TitleComponent);
 
     $this->MarkdownComponent->setMarkdown($postModel->getContentMarkdown());

@@ -48,8 +48,9 @@
   padding-bottom: $base-line-height;
 
   text-align: center;
+  text-transform: uppercase;
 
-  @include typography-font-size($tiny-font-size);
+  @include typography-font-size($small-font-size);
 }
 
 .title-block-item__title {
@@ -60,7 +61,9 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  letter-spacing: 0.4rem;
+  letter-spacing: 0.2rem;
+  padding-left: 8px;
+  box-sizing: border-box;
 }
 
 .title-block-item__excerpt {
@@ -76,6 +79,7 @@
 
   .title-block-item__toptext {
     padding-bottom: $base-line-height * 1;
+
   }
 
   .title-block__content {

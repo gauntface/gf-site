@@ -7,7 +7,7 @@
 
   <h1 class="youtube-block__series-title">
     <a href="<?php echo(htmlspecialchars("https://www.youtube.com/watch?v=2eu23_if6Lw&index=10&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL")); ?>">
-      Totally Tooling Tips
+      Totally<br />Tooling Tips
     </a>
   </h1>
 
