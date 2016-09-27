@@ -14,16 +14,29 @@ class Serviceworker extends BaseController {
     $this->load->helper('revision');
 
     // These should be dynamically generated
+    // TODO: Blog needs to be dynamic
+    // TODO: Remote CSS needs to be figured out
     $cachablePaths = [
-      '/',
-      '/about',
-      '/blog',
-      '/contact'
-    ];
-    $cachableAssets = [
-      '/scripts/bootstrap.js'
-    ];
+      '/document?output=json&section=document',
 
+      '/layout/keyart?output=json&section=layout',
+      '/layout/headerfooter?output=json&section=layout',
+
+      '/?output=json&section=content',
+      '/about?output=json&section=content',
+      '/contact?output=json&section=content',
+
+      '/blog?output=json&section=content',
+    ];
+    // Assets that need file revisioning
+    // TODO: Footer assets
+    $cachableAssets = [
+      '/scripts/bootstrap.js',
+      '/images/components/footer/footer-gplus.svg',
+      '/images/components/footer/footer-rss.svg',
+      '/images/components/footer/footer-twitter.svg',
+      '/images/components/footer/footer-youtube.svg'
+    ];
     $jsonData = array();
     for($i = 0; $i < count($cachablePaths); $i++) {
       array_push($jsonData, $cachablePaths[$i]);

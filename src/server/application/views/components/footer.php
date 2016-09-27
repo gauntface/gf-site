@@ -2,13 +2,13 @@
   <div class="footer__container">
     <div class="footer_social-links">
       <a class="footer__social-link-item" href="https://twitter.com/gauntface">
-        <img src="/images/components/footer/footer-twitter.svg" alt="Twitter Profile" />
+        <img src="<?php echo addRevisionToFilePath('/images/components/footer/footer-twitter.svg'); ?>" alt="Twitter Profile" />
       </a>
       <a class="footer__social-link-item" href="https://plus.google.com/+MattGaunt">
-        <img src="/images/components/footer/footer-gplus.svg" alt="Google+ Profile" />
+        <img src="<?php echo addRevisionToFilePath('/images/components/footer/footer-gplus.svg'); ?>" alt="Google+ Profile" />
       </a>
       <a class="footer__social-link-item footer__social-link-item--rss" href="/feed">
-        <img src="/images/components/footer/footer-rss.svg" alt="RSS Feed" />
+        <img src="<?php echo addRevisionToFilePath('/images/components/footer/footer-rss.svg'); ?>" alt="RSS Feed" />
       </a>
     </div>
 

@@ -1,7 +1,8 @@
 <?php
-$appshellScripts = $appshell->getRemoteScripts();
-$pageScripts = $page->getRemoteScripts();
-$scripts = array_merge($appshellScripts, $pageScripts);
+$documentScripts = $document ? $document->getRemoteScripts() : [];
+$appshellScripts = $appshell ? $appshell->getRemoteScripts() : [];
+$pageScripts = $page ? $page->getRemoteScripts() : [];
+$scripts = array_merge($appshellScripts, $pageScripts, $documentScripts);
 foreach($scripts as $script) {
   if (!file_exists('.'.$script)) {
     continue;

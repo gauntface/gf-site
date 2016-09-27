@@ -12,8 +12,6 @@ class HeaderFooterShell extends BaseShell {
 
     $this->addRemoteStylesheet('/styles/appshell/default-remote.css');
 
-    $this->addRemoteScript('/scripts/bootstrap.js');
-
     $this->load->model('components/AppBarComponent');
     $this->load->model('components/FooterComponent');
     $this->load->model('layouts/PageContainerLayout');

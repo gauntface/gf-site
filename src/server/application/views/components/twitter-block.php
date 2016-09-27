@@ -7,7 +7,7 @@ if (!isset($model)) {
 $latestTweet = $model->getLatestTweet();
 ?>
 <section class="twitter-block">
-  <div class="twitter-block__twitter-logo"><img src="/images/components/twitter-block/twitter-block-logo.svg" alt="Twitter Logo" /></div>
+  <div class="twitter-block__twitter-logo"><img src="<?php echo addRevisionToFilePath('/images/components/twitter-block/twitter-block-logo.svg'); ?>" alt="Twitter Logo" /></div>
   <div class="twitter-block__tweet-info small-font-size">
     <a href="https://twitter.com/gauntface">@gauntface</a><?php if(isset($latestTweet)) {?><span class="twitter-block__info-spacer"> . </span><time datetime="<?php echo date("Y-m-d", $latestTweet['time']); ?>"><?php echo date("M d", $latestTweet['time']); ?></time><?php } ?>
   </div>

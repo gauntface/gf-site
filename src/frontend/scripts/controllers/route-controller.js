@@ -231,7 +231,7 @@ export default class RouteController {
   }
 
   getShellAPIResponse(appshellId) {
-    return fetch('/shell/' + appshellId + '?output=partial&section=shell')
+    return fetch('/layout/' + appshellId + '?output=json&section=layout')
     .then(response => {
       if (response.status !== 200) {
         throw new Error('Invalid response status code: ' + response.status);
@@ -242,7 +242,7 @@ export default class RouteController {
   }
 
   getPartialAPIResponse(pathname) {
-    return fetch(pathname+'?output=partial&section=page')
+    return fetch(pathname+'?output=json&section=page')
     .then(response => {
       if (response.status !== 200) {
         throw new Error('Invalid response status code: ' + response.status);

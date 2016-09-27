@@ -7,7 +7,8 @@ export default class AppShellController {
   constructor() {
     const bodyElement = document.querySelector('body');
     if (!bodyElement || !bodyElement.dataset.appshellid) {
-      throw new Error('The body does not have an app shell attribute.');
+      console.error('TODO: Fix lack of appshell attribute');
+      // throw new Error('The body does not have an app shell attribute.');
     }
 
     logger('[appshell-controller.js] Preparing app shell controller');
