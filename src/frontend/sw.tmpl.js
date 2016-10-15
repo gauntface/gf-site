@@ -8,7 +8,7 @@ import Routes from './scripts/models/routes.js';
 
 const routes = new Routes();
 
-const ENABLE_DEBUGGING = true;
+const ENABLE_DEBUGGING = false;
 self.toolbox.options.debug = ENABLE_DEBUGGING && (location.hostname === 'localhost');
 self.toolbox.options.cache = {
   name: 'gauntface-precache'
@@ -21,35 +21,7 @@ if (urlsToPrefetch) {
 }
 
 
-/** const IMAGE_OPTIONS = {
-  cache: {
-    name: 'gauntface-img-cache'
-  }
-};
-const STATIC_ASSET_OPTIONS = {
-  cache: {
-    name: 'gauntface-static-assets-cache'
-  }
-};
-
-toolbox.router.get('/', function(request, values, options) {
-  const parsedUrl = new URL(request.url);
-  if (parsedUrl.search) {
-    console.log('Output: ', parsedUrl.searchParams.get('output'));
-    console.log('Section: ', parsedUrl.searchParams.get('section'));
-    console.log('Request: ', request);
-    console.log('values: ', values);
-    console.log('Optiones: ', options);
-  }
-
-  return toolbox.fastest(request, values, options);
-}, ROUTE_OPTIONS);
-toolbox.router.get('/contact', toolbox.fastest, ROUTE_OPTIONS);
-toolbox.router.get('/about', toolbox.fastest, ROUTE_OPTIONS);
-toolbox.router.get('/blog', toolbox.fastest, ROUTE_OPTIONS);
-toolbox.router.get('/blog/:year/:month/:date/:slug', toolbox.fastest,
-  ROUTE_OPTIONS);
-
+/**
 toolbox.router.get(
   /https:\/\/storage.googleapis.com\/gauntface-site-uploads\/(.*)/,
   toolbox.fastest, IMAGE_OPTIONS);
@@ -59,8 +31,25 @@ toolbox.router.get('/static/image/(.*)', toolbox.fastest, STATIC_ASSET_OPTIONS);
 const manageNavigation = pathname => {
   const layoutId = routes.getLayoutForPath(pathname);
   return (request, values, options) => {
+    // console.log(`RECEIVED <-------------- ${request.url}`);
+
+    // This is not a full page render
+    const requestURL = new URL(request.url);
+    if (requestURL.search && requestURL.search.length > 0) {
+      if (requestURL.search.indexOf('output=remote_css') !== -1) {
+        // It's for remote CSS.
+        return toolbox.cacheFirst(request, values, options);
+      }
+      
+      console.log('');
+      console.log(`Loading ${request.url} with cacheFirst`);
+      console.log('');
+      return toolbox.cacheOnly(request, values, options);
+    }
+
     if (request.mode !== 'navigate') {
-      return fetch(request);
+      console.log(`Not a navigation`);
+      // return fetch(request);
     }
 
     return Promise.all([
