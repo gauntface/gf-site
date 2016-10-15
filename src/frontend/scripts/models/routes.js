@@ -19,12 +19,6 @@ export default class Routes {
       regex: /\/blog\/\d\d\d\d\/\d\d?\/\d\d?\/\w*/,
       layout: 'keyart'
     }];
-
-    this._routeMap = {
-      '/': 'headerfooter',
-      '/about': 'keyart',
-      '/contact': 'headerfooter'
-    };
   }
 
   getLayoutForPath(path) {

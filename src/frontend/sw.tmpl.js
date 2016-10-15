@@ -148,3 +148,5 @@ toolbox.router.get('/contact', manageNavigation('/contact'));
 
 toolbox.router.get(/\/images\/.*/, toolbox.cacheFirst);
 toolbox.router.get(/\/scripts\/.*/, toolbox.cacheFirst);
+
+toolbox.router.default = toolbox.cacheFirst;
