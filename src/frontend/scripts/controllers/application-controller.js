@@ -25,7 +25,7 @@ export default class ApplicationController {
     asyncCSS();
     asyncFontCSS();
 
-    this._pushController = new PushController();
+    // this._pushController = new PushController();
     this._routeControler = new RouteController();
     this._appshellController = new AppShellController();
     this._pageController = new PageController();
@@ -35,6 +35,6 @@ export default class ApplicationController {
   }
 
   get pushController() {
-    return this._pushController;
+    // return this._pushController;
   }
 }

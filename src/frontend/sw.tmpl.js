@@ -4,17 +4,9 @@
 
 importScripts('/scripts/third_party/sw-toolbox.js');
 
-const ROUTE_OPTIONS = {
-  cache: {
-    name: 'gauntface-route-cache'
-  }
-};
+import Routes from './scripts/models/routes.js';
 
-const ASSET_OPTIONS = {
-  cache: {
-    name: 'gauntface-asset-cache'
-  }
-};
+const routes = new Routes();
 
 const ENABLE_DEBUGGING = true;
 self.toolbox.options.debug = ENABLE_DEBUGGING && (location.hostname === 'localhost');
@@ -64,7 +56,8 @@ toolbox.router.get(
 toolbox.router.get('/static/image/(.*)', toolbox.fastest, STATIC_ASSET_OPTIONS);
 **/
 
-const manageNavigation = layoutId => {
+const manageNavigation = pathname => {
+  const layoutId = routes.getLayoutForPath(pathname);
   return (request, values, options) => {
     if (request.mode !== 'navigate') {
       return fetch(request);
@@ -88,20 +81,9 @@ const manageNavigation = layoutId => {
       })
     ])
     .then(results => {
-      console.log('Document: ', results[0]);
-      console.log('Layout: ', results[1]);
-      console.log('Content: ', results[2]);
       const document = results[0].document;
       const layout = results[1].layout;
       const content = results[2].content;
-
-      const inlineCss = [];
-      if (layout.css && layout.css.inline) {
-        inlineCss.push(layout.css.inline);
-      }
-      if (content.css && content.css.inline) {
-        inlineCss.push(content.css.inline);
-      }
 
       // This code swaps empty body for body with layout
       let documentHTML = results[0].document.html;
@@ -125,9 +107,14 @@ const manageNavigation = layoutId => {
       documentHTML = documentHTML.replace(mainSearch[0],
         `<main class="page js-page">${content.html}</main>`);
 
-      if (inlineCss.length > 0) {
+      if (layout.css && layout.css.inline) {
         documentHTML = documentHTML.replace('</head>',
-          `<style>${inlineCss.join(' ')}</style></head>`);
+          `<style class="layout-inline-styles">${layout.css.inline}</style></head>`);
+      }
+
+      if (content.css && content.css.inline) {
+        documentHTML = documentHTML.replace('</head>',
+          `<style class="content-inline-styles">${content.css.inline}</style></head>`);
       }
 
       const titleSearch = titleRegexp.exec(documentHTML);
@@ -155,9 +142,9 @@ const manageNavigation = layoutId => {
   };
 };
 
-toolbox.router.get('/', manageNavigation('headerfooter'), ROUTE_OPTIONS);
-toolbox.router.get('/about', manageNavigation('keyart'), ROUTE_OPTIONS);
-toolbox.router.get('/contact', manageNavigation('headerfooter'), ROUTE_OPTIONS);
+toolbox.router.get('/', manageNavigation('/'));
+toolbox.router.get('/about', manageNavigation('/about'));
+toolbox.router.get('/contact', manageNavigation('/contact'));
 
-toolbox.router.get(/\/images\/.*/, toolbox.cacheFirst, ASSET_OPTIONS);
-toolbox.router.get(/\/scripts\/.*/, toolbox.cacheFirst, ASSET_OPTIONS);
+toolbox.router.get(/\/images\/.*/, toolbox.cacheFirst);
+toolbox.router.get(/\/scripts\/.*/, toolbox.cacheFirst);

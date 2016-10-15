@@ -5,7 +5,7 @@ if ($appshell) {
     $inlineStylesheets = array_unique($appshell->getInlineStylesheets());
     echo("<!--\n".implode("\n", $inlineStylesheets)."\n-->\n");
 
-    echo('<style type="text/css" class="appshell-inline-styles">'.$appshellCSSToInline.'</style>');
+    echo('<style type="text/css" class="layout-inline-styles">'.$appshellCSSToInline.'</style>');
   }
 }
 
@@ -15,7 +15,7 @@ if ($page) {
     $inlineStylesheets = array_unique($page->getInlineStylesheets());
     echo("<!--\n".implode("\n", $inlineStylesheets)."\n-->\n");
 
-    echo('<style type="text/css" class="page-inline-styles">'.$pageCSSToInline.'</style>');
+    echo('<style type="text/css" class="content-inline-styles">'.$pageCSSToInline.'</style>');
   }
 }
 ?>

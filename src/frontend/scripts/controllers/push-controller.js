@@ -123,7 +123,7 @@ export default class PushController {
       return;
     }
 
-    navigator.serviceWorker.register('/scripts/serviceworker/push.js')
+    /** navigator.serviceWorker.register('/scripts/serviceworker/push.js')
     .then(pushRegistration => {
       this._registration = pushRegistration;
       return pushRegistration.pushManager.getSubscription()
@@ -152,7 +152,7 @@ export default class PushController {
         'service worker');
 
       this.setState(this.STATE.FAILED_SW_REGISTRATION);
-    });
+    });**/
   }
 
   subscribeToPush() {
