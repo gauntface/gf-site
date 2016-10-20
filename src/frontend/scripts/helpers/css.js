@@ -57,7 +57,7 @@ export function asyncFontCSS() {
     linkElement.class = 'js-async-loaded-fonts';
     linkElement.href = `/styles/elements/fonts.${Date.now()}.css`;
 
-    document.head.append(linkElement);
+    document.head.appendChild(linkElement);
   };
 
   if (window.requestAnimationFrame) {

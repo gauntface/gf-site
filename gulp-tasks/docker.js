@@ -6,11 +6,37 @@ const path = require('path');
 const runSequence = require('run-sequence');
 
 const DOCKER_INSTANCE_NAME = 'gulp-docker';
+const MYSQL_DOCKER_INSTANCE_NAME = 'gf-mysql';
 const DOCKER_PORT = 3000;
 
 // docker rm $(docker ps -a -q)
 // docker rmi $(docker images -q)
 // Can use --no-cache for clean builds
+
+function runDockerMysqlServer(cb) {
+  const args = [
+    'run',
+    '--name',
+    MYSQL_DOCKER_INSTANCE_NAME,
+    '-e',
+    'MYSQL_ROOT_PASSWORD=password',
+    '-e',
+    'MYSQL_USER=demo-user',
+    '-e',
+    'MYSQL_PASSWORD=password',
+    '-e',
+    'MYSQL_DATABASE=demo-db',
+    '-d',
+    'mysql/mysql-server:latest'
+  ];
+  const dockerProcess = spawn('docker', args, {
+    stdio: 'inherit'
+  });
+
+  dockerProcess.on('exit', () => {
+    cb();
+  });
+}
 
 
 function runDockerBuild(buildType, cb) {
@@ -66,7 +92,21 @@ gulp.task('docker:cli', cb => {
   });
 });
 
-gulp.task('docker:stop', cb => {
+gulp.task('docker:stop:mysql', cb => {
+  const args = [
+    'stop',
+    MYSQL_DOCKER_INSTANCE_NAME
+  ];
+  const dockerProcess = spawn('docker', args, {
+    stdio: 'inherit'
+  });
+
+  dockerProcess.on('exit', () => {
+    cb();
+  });
+});
+
+gulp.task('docker:stop', ['docker:stop:mysql'], cb => {
   const args = [
     'stop',
     DOCKER_INSTANCE_NAME
@@ -83,7 +123,8 @@ gulp.task('docker:stop', cb => {
 gulp.task('docker:remove', ['docker:stop'], (cb) => {
   const args = [
     'rm',
-    DOCKER_INSTANCE_NAME
+    DOCKER_INSTANCE_NAME,
+    MYSQL_DOCKER_INSTANCE_NAME
   ];
   const dockerProcess = spawn('docker', args, {
     stdio: 'inherit'
@@ -100,14 +141,14 @@ gulp.task('docker:startStaging', (cb) => {
       'run',
       '--name',
       DOCKER_INSTANCE_NAME,
-      '--net',
-      'host',
+      '--link',
+      `${MYSQL_DOCKER_INSTANCE_NAME}`,
       '-e',
       'NGINX_PORT='+DOCKER_PORT,
       '-e',
       'BUILDTYPE=staging',
       '-p',
-      global.config.dockerport,
+      `${global.config.dockerport}:${DOCKER_PORT}`,
       '-t',
       'gauntface/gf-site:staging'
     ];
@@ -127,6 +168,7 @@ gulp.task('docker:startStaging', (cb) => {
   runSequence(
     'docker:remove',
     'docker:build:staging',
+    'docker:mysql',
       startDocker);
 });
 
@@ -136,14 +178,14 @@ gulp.task('docker:start:development', (cb) => {
       'run',
       '--name',
       DOCKER_INSTANCE_NAME,
-      '--net',
-      'host',
+      '--link',
+      `${MYSQL_DOCKER_INSTANCE_NAME}`,
       '-e',
       'NGINX_PORT='+DOCKER_PORT,
       '-e',
       'BUILDTYPE=development',
       '-p',
-      global.config.dockerport,
+      `${global.config.dockerport}:${DOCKER_PORT}`,
       '-v',
       path.join(__dirname, '..', global.config.dest)+':/gauntface/site',
       '-d',
@@ -166,6 +208,7 @@ gulp.task('docker:start:development', (cb) => {
 
   runSequence(
     'docker:remove',
+    'docker:mysql',
     'docker:build:development',
     startDocker);
 });
@@ -176,14 +219,14 @@ gulp.task('docker:start:test', (cb) => {
       'run',
       '--name',
       DOCKER_INSTANCE_NAME,
-      '--net',
-      'host',
+      '--link',
+      `${MYSQL_DOCKER_INSTANCE_NAME}`,
       '-e',
       'NGINX_PORT='+DOCKER_PORT,
       '-e',
       'BUILDTYPE=test',
       '-p',
-      global.config.dockerport,
+      `${global.config.dockerport}:${DOCKER_PORT}`,
       '-v',
       path.join(__dirname, '..', global.config.dest)+':/gauntface/site',
       '-d',
@@ -207,5 +250,10 @@ gulp.task('docker:start:test', (cb) => {
   runSequence(
     'docker:remove',
     'docker:build:test',
+    'docker:mysql',
     startDocker);
+});
+
+gulp.task('docker:mysql', (cb) => {
+  runDockerMysqlServer(cb);
 });
