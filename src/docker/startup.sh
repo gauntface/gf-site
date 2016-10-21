@@ -42,6 +42,12 @@ else
   echo "No extras to copy."
 fi
 
+mkdir -p /gauntface/sessions/
+mkdir -p /gauntface/dbcache/
+
+chmod 777 /gauntface/sessions/
+chmod 777 /gauntface/dbcache/
+
 service php7.0-fpm start;
 
 nginx -g 'daemon off;';
