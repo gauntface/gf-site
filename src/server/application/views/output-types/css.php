@@ -14,6 +14,10 @@ function printCSS($group) {
   $cssToInline = array();
   $stylesheets = $group['stylesheets'];
   foreach($stylesheets as $singleStylesheet) {
+    if (!file_exists('.'.$singleStylesheet)) {
+      continue;
+    }
+
     array_push($cssToInline, swapStylesheetImages(read_file('.'.$singleStylesheet)));
   }
   $rawCSS = $group['rawCSS'];
