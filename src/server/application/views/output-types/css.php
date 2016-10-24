@@ -8,6 +8,7 @@ if (
   return;
 }
 
+$this->load->helper('file');
 $this->load->helper('styles_image_swap');
 
 function printCSS($group) {
@@ -17,7 +18,7 @@ function printCSS($group) {
     if (!file_exists('.'.$singleStylesheet)) {
       continue;
     }
-
+    echo $singleStylesheet;
     array_push($cssToInline, swapStylesheetImages(read_file('.'.$singleStylesheet)));
   }
   $rawCSS = $group['rawCSS'];

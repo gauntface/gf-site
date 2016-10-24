@@ -10,8 +10,6 @@ class KeyArtShell extends BaseShell {
     $this->addInlineStylesheet('/styles/appshell/default-inline.css');
     $this->addInlineStylesheet('/styles/appshell/default-utils.css');
 
-    $this->addRemoteStylesheet('/styles/appshell/default-remote.css');
-
     $this->load->model('components/AppBarComponent');
     $this->load->model('components/FooterComponent');
     $this->load->model('layouts/PageContainerLayout');
