@@ -11,12 +11,9 @@ import PageController from './page-controller';
 
 export default class ApplicationController {
     constructor() {
-      document.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener('load', () => {
         this.onReady();
       });
-      if (document.readyState !== 'loading') {
-        this.onReady();
-      }
   }
 
   onReady() {
