@@ -1,0 +1,1 @@
+"use strict";window.GauntFace=window.GauntFace||{},window.GauntFace._fontStylesheet='/**@ GF-FONT-STYLESHEET @**/',window.GauntFace.events&&window.GauntFace.events.onFontStylesheetAvailable&&window.GauntFace.events.onFontStylesheetAvailable();

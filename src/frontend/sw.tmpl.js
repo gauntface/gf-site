@@ -40,7 +40,7 @@ const manageNavigation = pathname => {
         // It's for remote CSS.
         return toolbox.cacheFirst(request, values, options);
       }
-      
+
       console.log('');
       console.log(`Loading ${request.url} with cacheFirst`);
       console.log('');
@@ -137,5 +137,6 @@ toolbox.router.get('/contact', manageNavigation('/contact'));
 
 toolbox.router.get(/\/images\/.*/, toolbox.cacheFirst);
 toolbox.router.get(/\/scripts\/.*/, toolbox.cacheFirst);
+toolbox.router.get(/\/fonts\/.*/, toolbox.cacheFirst);
 
 toolbox.router.default = toolbox.cacheFirst;

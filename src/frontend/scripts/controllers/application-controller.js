@@ -12,7 +12,11 @@ import PageController from './page-controller';
 export default class ApplicationController {
     constructor() {
       window.addEventListener('load', () => {
-        this.onReady();
+        const timeoutFunction = requestIdleCallback || requestAnimationFrame ||
+          function(cb) {
+            setTimeout(cb, 100);
+          };
+        timeoutFunction(() => this.onReady());
       });
   }
 

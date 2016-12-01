@@ -26,11 +26,11 @@ function startCSSLoad() {
     delete window.GauntFace.events.onRemoteStylesheetsAvailable;
   };
 
-  if (window.requestAnimationFrame) {
-    window.requestAnimationFrame(startCSSHelper);
-  } else {
-    window.addEventListener('load', startCSSHelper);
-  }
+  const timeoutFunction = requestIdleCallback || requestAnimationFrame ||
+    function(cb) {
+      setTimeout(cb, 100);
+    };
+  timeoutFunction(startCSSHelper);
 }
 
 export function asyncCSS() {
@@ -42,11 +42,16 @@ export function asyncCSS() {
   startCSSLoad();
 }
 
-export function asyncFontCSS() {
-  var startFontLoad = () => {
+function startFontLoad() {
+  var loadFontCSS = () => {
     const className = 'js-async-loaded-fonts';
     // Check the fonts aren't already loaded
     if (document.querySelector(`.${className}`)) {
+      return;
+    }
+
+    if (!window.GauntFace || !window.GauntFace._fontStylesheet) {
+      logger('[css.js] No font stylesheets to load.');
       return;
     }
 
@@ -55,14 +60,23 @@ export function asyncFontCSS() {
     linkElement.rel = 'stylesheet';
     linkElement.media = 'all';
     linkElement.class = 'js-async-loaded-fonts';
-    linkElement.href = `/styles/elements/fonts.${Date.now()}.css`;
+    linkElement.href = window.GauntFace._fontStylesheet;
 
     document.head.appendChild(linkElement);
   };
 
-  if (window.requestAnimationFrame) {
-    window.requestAnimationFrame(startFontLoad);
-  } else {
-    window.addEventListener('load', startFontLoad);
-  }
+  const timeoutFunction = requestIdleCallback || requestAnimationFrame ||
+    function(cb) {
+      setTimeout(cb, 100);
+    };
+  timeoutFunction(loadFontCSS);
+};
+
+export function asyncFontCSS() {
+  window.GauntFace.events = window.GauntFace.events || {};
+  window.GauntFace.events.onFontStylesheetAvailable =
+    window.GauntFace.events.onFontStylesheetAvailable ||
+    (() => {startFontLoad();});
+
+  startFontLoad();
 }
