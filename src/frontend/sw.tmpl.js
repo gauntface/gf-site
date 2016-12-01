@@ -139,4 +139,4 @@ toolbox.router.get(/\/images\/.*/, toolbox.cacheFirst);
 toolbox.router.get(/\/scripts\/.*/, toolbox.cacheFirst);
 toolbox.router.get(/\/fonts\/.*/, toolbox.cacheFirst);
 
-toolbox.router.default = toolbox.cacheFirst;
+toolbox.router.default = toolbox.networkFirst;

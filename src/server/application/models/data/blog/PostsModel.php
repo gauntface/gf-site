@@ -173,6 +173,8 @@ class PostsModel extends CI_Model {
       urlencode($singlePostModel->getMainImgBgColor()),
     ));
 
+    $this->db->cache_delete_all();
+
     return $this->db->insert_id();
   }
 
@@ -196,7 +198,11 @@ class PostsModel extends CI_Model {
       $singlePostModel->getPostId(),
       ));
 
-    return $this->db->affected_rows() > 0;
+    $updated = $this->db->affected_rows() > 0;
+    if ($updated) {
+      $this->db->cache_delete_all();
+    }
+    return $updated;
   }
 
   public function deletePost($singlePostModel) {
@@ -206,7 +212,11 @@ class PostsModel extends CI_Model {
       $singlePostModel->getPostId()
       ));
 
-    return $this->db->affected_rows() > 0;
+    $deleted = $this->db->affected_rows() > 0;
+    if ($deleted) {
+      $this->db->cache_delete_all();
+    }
+    return $deleted;
   }
 
   public function publishPost($singlePostModel) {
@@ -219,6 +229,10 @@ class PostsModel extends CI_Model {
       $singlePostModel->getPostId()
       ));
 
-    return $this->db->affected_rows() > 0;
+    $published = $this->db->affected_rows() > 0;
+    if ($published) {
+      $this->db->cache_delete_all();
+    }
+    return $published;
   }
 }

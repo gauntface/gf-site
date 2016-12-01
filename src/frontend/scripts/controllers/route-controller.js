@@ -260,6 +260,11 @@ export default class RouteController {
           // NOOP
         }
 
+        if (pathname.indexOf('/admin') === 0) {
+          logger('[router-controller.js] Admin route: ' + pathname);
+          return;
+        }
+
         if (nextLayoutId === null) {
           logger('[router-controller.js] No layout for: ' + pathname);
           return;
