@@ -1,5 +1,0 @@
-@import "../../mixins/responsive-images";
-
-@include responsive-image-width-based('{{img-url}}', '{{img-extension}}', '.title-block-item.class-name',
-  (200,       300,        400,        500,        600,        700,        800),
-  ('100x0', '150x0',  '200x0',  '250x0',  '300x0', '350x0',   '400x0'), (1, 2, 3, 4));

@@ -1,0 +1,25 @@
+FROM ubuntu:16.10
+
+# Need to be able to use add-apt-repository and must run update before
+# it'll work
+RUN apt-get update
+RUN apt-get -y install software-properties-common curl
+
+# Add NGINX Repo
+RUN add-apt-repository ppa:nginx/development
+
+# Add Node Repo
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
+
+# Install Dependencies
+RUN apt-get -y install git nodejs nginx php php-fpm php-mysql php-apcu php-imagick php-curl pngcrush build-essential gettext nano
+
+# Remove the default Nginx configuration file
+#RUN rm /etc/nginx/sites-enabled/default
+
+#ADD src/docker/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+#ADD src/docker/nginx/fastcgi-params.tmpl /etc/nginx/fastcgi-params.tmpl
+
+ADD src/infra/docker/startup.sh /gauntface/docker/startup.sh
+RUN chmod +x /gauntface/docker/startup.sh
+CMD /gauntface/docker/startup.sh

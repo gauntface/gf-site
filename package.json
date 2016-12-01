@@ -1,37 +1,19 @@
 {
   "name": "gauntface-site",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "gulp test && node ./test/helpers/download-browsers.js && mocha ./test/*.js && gulp docker:stop"
+    "docker-build": "docker build -t gauntface/gf-site:base -f src/infra/docker/base .",
+    "docker-run": "npm run docker-cleanup && npm run docker-build && docker run --name gauntface-local-docker -p 3000:3000 -v build:/gauntface/site -d -t gauntface/gf-site:base",
+    "docker-stop": "docker stop gauntface-local-docker",
+    "docker-remove": "docker rm gauntface-local-docker",
+    "docker-cleanup": "npm run docker-remove  --silent",
+    "lint": "eslint '.'",
+    "test": "npm run lint && mocha"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.5.0",
-    "chai": "^3.5.0",
-    "del": "^2.2.0",
-    "feed-read": "0.0.1",
-    "git-rev": "^0.2.1",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-cssnano": "^2.1.1",
-    "gulp-imagemin": "^2.4.0",
-    "gulp-replace": "^0.5.4",
-    "gulp-rollup": "^1.7.0",
-    "gulp-sass": "^2.2.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.3",
-    "gulp-util": "^3.0.7",
-    "mkdirp": "^0.5.1",
-    "mocha": "^2.5.3",
-    "mysql": "^2.11.1",
-    "node-fetch": "^1.5.3",
-    "require-dir": "^0.3.0",
-    "rollup": "^0.26.1",
-    "rollup-plugin-commonjs": "^2.2.1",
-    "rollup-plugin-node-resolve": "^1.4.0",
-    "run-sequence": "^1.1.5",
-    "selenium-assistant": "0.1.0",
-    "sw-toolbox": "^3.1.1"
+    "eslint": "^3.11.1",
+    "eslint-config-google": "^0.7.1",
+    "gulp": "github:gulpjs/gulp#4.0"
   }
 }
