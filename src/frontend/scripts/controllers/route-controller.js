@@ -89,6 +89,9 @@ export default class RouteController {
         );
       }
       return appshellPromise
+        .then(() => {
+          window.GauntFace.application.pushController.onNewUILoaded();
+        })
         .then(() => window.GauntFace.page.addNewElements(apiResponses[0].content.html))
         .then(() => apiResponses)
     })
@@ -115,7 +118,6 @@ export default class RouteController {
     })
     .then(() => {
       this._isTransitioning = false;
-      // window.GauntFace.application.pushController.onNewUILoaded();
     });
   }
 

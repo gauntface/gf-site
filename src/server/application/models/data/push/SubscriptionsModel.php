@@ -44,7 +44,7 @@ class SubscriptionsModel extends CI_Model {
     } else {
       $this->dbforge->add_field($fields);
       $this->dbforge->add_key('subscription_id', TRUE);
-      $this->dbforge->create_table('push_subscriptions_table');
+      $this->dbforge->create_table('push_subscriptions_table', TRUE);
     }
   }
 

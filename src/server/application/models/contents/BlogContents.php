@@ -79,7 +79,6 @@ class BlogContents extends BaseContents {
       $titleComponent = new TitleComponent();
       $titleComponent->setTitle("No Posts Yet");
       $titleComponent->setDescription("<p>Give me a couple of minutes to put something together</p>");
-      $titleComponent->setSmallBackgroundImage("images/pages/blog/coffee.png");
       $titleComponent->makePadded(true);
 
       $this->PageModel->addComponent($titleComponent);
