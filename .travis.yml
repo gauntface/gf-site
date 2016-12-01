@@ -38,7 +38,7 @@ install:
 before_script:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
-- npm run test
+# - npm run test
 - sudo rm -rf ./build
 - if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="production"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
 - if [[ $BUILDTYPE == "production" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
