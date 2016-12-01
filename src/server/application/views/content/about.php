@@ -11,7 +11,7 @@ to be a full time mobile software engineer.</p>
       <ul>
         <li>Graduated from Bristol way back when.</li>
         <li>Love playing the guitar.</li>
-        <li>Enjoying hardware hacking, although I'm hella new to it.</li>
+        <li>Enjoying hardware hacking, still hella new at it.</li>
       </ul>
     </div>
   </li>

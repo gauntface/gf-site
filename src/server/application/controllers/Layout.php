@@ -3,13 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once APPPATH.'controllers/BaseController.php';
 
-class Shell extends BaseController {
-
-  public function __construct() {
-    parent::__construct();
-  }
-
-
+class Layout extends BaseController {
   public function headerfooter() {
     $document = $this->getDocument('headerfooter');
     $this->render($document);
@@ -22,8 +16,6 @@ class Shell extends BaseController {
 
   protected function getAppShellModel($pageId) {
     switch($pageId) {
-    case 'blank':
-      return 'appshell/BlankShell';
     case 'headerfooter':
       return 'appshell/HeaderFooterShell';
     case 'keyart':

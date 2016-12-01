@@ -16,7 +16,7 @@ class HomeContents extends CI_Model {
 
     $page = $this->getIndexPage();
     $page->setId('home-index');
-    
+
     $this->document->setPage($page);
 
     return $this->document;
@@ -56,7 +56,7 @@ class HomeContents extends CI_Model {
 
     $bottomTitleModel = new TitleComponent();
     $bottomTitleModel->setTitle('Smashing Book 5');
-    $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now!</p><p><a href="'.htmlspecialchars('http://www.smashingmagazine.com/2015/03/real-life-responsive-web-design-smashing-book-5').'/">Get the print or ebook HERE</a></p>');
+    $bottomTitleModel->setDescription('<p>I’ve written a chapter in this book about service worker and it’s available now! <a href="'.htmlspecialchars('http://www.smashingmagazine.com/2015/03/real-life-responsive-web-design-smashing-book-5').'/">Get the print or ebook HERE</a></p>');
     $bottomTitleModel->setSmallTopText('News');
     $bottomTitleModel->setSmallBackgroundImage('/static/image/static/smashing-mag/smashing-mag.png');
     $bottomTitleModel->makePadded(true);

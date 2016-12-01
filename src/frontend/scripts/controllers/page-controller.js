@@ -79,14 +79,14 @@ export default class PageController {
   }
 
   swapStyles(newStyles) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       requestAnimationFrame(() => {
         try {
           const newScriptElement = document.createElement('style');
-          newScriptElement.classList.add('page-inline-styles');
+          newScriptElement.classList.add('content-inline-styles');
           newScriptElement.textContent = newStyles;
 
-          const currentPageStyles = document.querySelector('.page-inline-styles');
+          const currentPageStyles = document.querySelector('.content-inline-styles');
           currentPageStyles.parentElement
             .insertBefore(newScriptElement, currentPageStyles.nextSibling);
           currentPageStyles.parentElement.removeChild(currentPageStyles);

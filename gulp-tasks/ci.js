@@ -38,10 +38,10 @@ gulp.task('codeigniter:file-permissions', (cb) => {
   mkdirp.sync(global.config.dest + '/logs/');
 
   // fs.chmodSync(global.config.dest + '/application/cache/', '777');
-  fs.chmodSync(global.config.dest + '/dbcache/', '777');
+  // fs.chmodSync(global.config.dest + '/dbcache/', '777');
   fs.chmodSync(global.config.dest + '/uploads/', '777');
   fs.chmodSync(global.config.dest + '/imageproducer/', '777');
-  fs.chmodSync(global.config.dest + '/sessions/', '777');
+  // fs.chmodSync(global.config.dest + '/sessions/', '777');
   fs.chmodSync(global.config.dest + '/logs/', '777');
 
   execSync('chmod g+rwxs ' + global.config.dest);

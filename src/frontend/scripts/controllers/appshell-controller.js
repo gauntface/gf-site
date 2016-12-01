@@ -2,17 +2,16 @@
 
 import logger from '../helpers/logger';
 import whichTransition from '../helpers/which-transition-event';
+import Routes from '../models/routes';
 
 export default class AppShellController {
   constructor() {
-    const bodyElement = document.querySelector('body');
-    if (!bodyElement || !bodyElement.dataset.appshellid) {
-      throw new Error('The body does not have an app shell attribute.');
-    }
-
     logger('[appshell-controller.js] Preparing app shell controller');
 
-    this._currentId = bodyElement.dataset.appshellid;
+    this.routes_ = new Routes();
+    this._currentId = this.routes_.getLayoutForPath(
+      window.location.pathname
+    );
   }
 
   getCurrentAppShellId() {
@@ -119,10 +118,10 @@ export default class AppShellController {
     return new Promise(resolve => {
       requestAnimationFrame(() => {
         const newScriptElement = document.createElement('style');
-        newScriptElement.classList.add('appshell-inline-styles');
+        newScriptElement.classList.add('layout-inline-styles');
         newScriptElement.textContent = newStyles;
 
-        const currentShellStyles = document.querySelector('.appshell-inline-styles');
+        const currentShellStyles = document.querySelector('.layout-inline-styles');
         currentShellStyles.parentElement
           .insertBefore(newScriptElement, currentShellStyles.nextSibling);
         currentShellStyles.parentElement.removeChild(currentShellStyles);

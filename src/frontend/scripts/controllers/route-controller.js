@@ -2,30 +2,15 @@
 
 import logger from '../helpers/logger';
 import whichTransition from '../helpers/which-transition-event';
+import Routes from '../models/routes';
 
 export default class RouteController {
   constructor() {
     // Intercept all link clicks
-    this._knownRoutes = [{
-      regex: /\//,
-      shellId: 'headerfooter'
-    }, {
-      regex: /\/about/,
-      shellId: 'keyart'
-    }, {
-      regex: /\/contact/,
-      shellId: 'headerfooter'
-    }, {
-      regex: /\/blog/,
-      shellId: 'headerfooter'
-    }, {
-      regex: /\/blog\/\d\d\d\d\/\d\d?\/\d\d?\/\w*/,
-      shellId: 'keyart'
-    }];
-
     this._lastKnownPath = window.location.pathname;
     this._currentTransition = Promise.resolve();
     this._isTransitioning = false;
+    this._routes = new Routes();
 
     this.interceptLinks();
 
@@ -84,27 +69,30 @@ export default class RouteController {
     })
     .then(apiResponses => {
       const promises = [
-        window.GauntFace.page.swapStyles(apiResponses[0].page.css.inline)
+        window.GauntFace.page.swapStyles(apiResponses[0].content.css.inline)
       ];
       if (apiResponses.length > 1) {
         promises.push(
-          window.GauntFace.appshell.swapStyles(apiResponses[1].appshell.css.inline)
+          window.GauntFace.appshell.swapStyles(apiResponses[1].layout.css.inline)
         );
       }
       return Promise.all(promises)
         .then(() => apiResponses);
     })
     .then(apiResponses => {
-      document.title = apiResponses[0].page.title;
+      document.title = apiResponses[0].content.title;
       let appshellPromise = Promise.resolve();
       if(apiResponses.length > 1) {
         appshellPromise = window.GauntFace.appshell.addNewElements(
           appshellId,
-          apiResponses[1].appshell.html
+          apiResponses[1].layout.html
         );
       }
       return appshellPromise
-        .then(() => window.GauntFace.page.addNewElements(apiResponses[0].page.html))
+        .then(() => {
+          window.GauntFace.application.pushController.onNewUILoaded();
+        })
+        .then(() => window.GauntFace.page.addNewElements(apiResponses[0].content.html))
         .then(() => apiResponses)
     })
     .then(apiResponses => {
@@ -114,7 +102,7 @@ export default class RouteController {
     })
     .then(apiResponses => {
       this.interceptLinks();
-      return window.GauntFace.page.loadRemoteStyleets(apiResponses[0].page.css.remote);
+      return window.GauntFace.page.loadRemoteStyleets(apiResponses[0].content.css.remote);
     })
     .catch(err => {
       logger('[route-controller.js] Error loading page', err);
@@ -130,7 +118,6 @@ export default class RouteController {
     })
     .then(() => {
       this._isTransitioning = false;
-      window.GauntFace.application.pushController.onNewUILoaded();
     });
   }
 
@@ -198,10 +185,10 @@ export default class RouteController {
     return new Promise((resolve, reject) => {
       // Add page styles
       const newScriptElement = document.createElement('style');
-      newScriptElement.classList.add('page-inline-styles');
+      newScriptElement.classList.add('content-inline-styles');
       newScriptElement.textContent = pageCSS;
 
-      const currentWindowStyles = document.querySelector('.page-inline-styles');
+      const currentWindowStyles = document.querySelector('.content-inline-styles');
       currentWindowStyles.parentElement
         .insertBefore(newScriptElement, currentWindowStyles.nextSibling);
       currentWindowStyles.parentElement.removeChild(currentWindowStyles);
@@ -231,7 +218,7 @@ export default class RouteController {
   }
 
   getShellAPIResponse(appshellId) {
-    return fetch('/shell/' + appshellId + '?output=partial&section=shell')
+    return fetch('/layout/' + appshellId + '?output=json&section=layout')
     .then(response => {
       if (response.status !== 200) {
         throw new Error('Invalid response status code: ' + response.status);
@@ -242,7 +229,7 @@ export default class RouteController {
   }
 
   getPartialAPIResponse(pathname) {
-    return fetch(pathname+'?output=partial&section=page')
+    return fetch(pathname+'?output=json&section=content')
     .then(response => {
       if (response.status !== 200) {
         throw new Error('Invalid response status code: ' + response.status);
@@ -266,14 +253,22 @@ export default class RouteController {
         }
 
         // Check it's a known route
-        let knownAppShellId = null;
-        this._knownRoutes.forEach(route => {
-          if (route.regex.test(anchorElement.href)) {
-            knownAppShellId = route.shellId;
-            return;
-          }
-        });
-        if (knownAppShellId === null) {
+        let nextLayoutId = null;
+        let pathname = null;
+        try {
+          pathname = new URL(anchorElement.href).pathname;
+          nextLayoutId = this._routes.getLayoutForPath(pathname);
+        } catch (err) {
+          // NOOP
+        }
+
+        if (pathname.indexOf('/admin') === 0) {
+          logger('[router-controller.js] Admin route: ' + pathname);
+          return;
+        }
+
+        if (nextLayoutId === null) {
+          logger('[router-controller.js] No layout for: ' + pathname);
           return;
         }
 
@@ -291,12 +286,12 @@ export default class RouteController {
 
         history.pushState({
           pathname: anchorElement.pathname,
-          appshellId: knownAppShellId
+          appshellId: nextLayoutId
         }, undefined, anchorElement.pathname);
 
         this.loadPage(
           anchorElement.pathname,
-          knownAppShellId
+          nextLayoutId
         );
       });
       anchorElement.dataset.routed = true;

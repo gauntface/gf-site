@@ -1,13 +1,13 @@
 <section class="youtube-block">
   <div class="youtube-play-icon">
     <a href="<?php echo(htmlspecialchars("https://www.youtube.com/watch?v=2eu23_if6Lw&index=10&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL")); ?>">
-      <img src="/images/components/youtube-block/youtube-block-play-icon.svg" alt="Video Play Icon" />
+      <img src="<?php echo addRevisionToFilePath('/images/components/youtube-block/youtube-block-play-icon.svg'); ?>" alt="Video Play Icon" />
     </a>
   </div>
 
   <h1 class="youtube-block__series-title">
     <a href="<?php echo(htmlspecialchars("https://www.youtube.com/watch?v=2eu23_if6Lw&index=10&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL")); ?>">
-      Totally Tooling Tips
+      Totally<br />Tooling Tips
     </a>
   </h1>
 

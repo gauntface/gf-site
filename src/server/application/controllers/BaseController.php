@@ -6,6 +6,13 @@ require_once APPPATH.'third_party/google-api-php-client/src/Google/Client.php';
 
 class BaseController extends CI_Controller {
 
+  public function __construct() {
+    parent::__construct();
+
+    // Used by views
+    $this->load->helper('revision');
+  }
+
   // This method is used to determine which shell to use
   protected function getAppShellModel($pageId) {
     return 'appshell/HeaderFooterShell';
@@ -13,8 +20,8 @@ class BaseController extends CI_Controller {
 
   protected function getDocument($pageId, $pageData = null) {
     $this->load->model('document/StandardDocument', 'document');
-
     $this->load->model($this->getAppShellModel($pageId), 'appshell');
+
     $this->document->setAppShell($this->appshell);
 
     $page = $this->generatePage($pageId, $this->appshell, $pageData);
@@ -27,18 +34,16 @@ class BaseController extends CI_Controller {
   protected function render($document) {
     $output = $this->input->get('output', TRUE);
     if ($output == FALSE) {
-      $this->load->view('documents/standard/standard-document', array(
-        'appshell' => $document->getAppShell(),
-        'page' => $document->getPage()
-      ));
+      $document->loadView();
       return;
     }
+
     switch ($output) {
     case 'remote_css':
       $this->renderRemoteCSS($document);
       break;
-    case 'partial':
-      $this->renderPartial($document);
+    case 'json':
+      $this->renderJSON($document);
       break;
     default:
       show_404();
@@ -83,13 +88,15 @@ class BaseController extends CI_Controller {
     }
   }
 
-  protected function renderPartial($document) {
+  protected function renderJSON($document) {
     $section = $this->input->get('section', TRUE);
     $jsonArray = array();
     switch ($section) {
-      case 'page':
-        $jsonArray['page'] = array(
+      case 'content':
+        $jsonArray['content'] = array(
           'title' => $document->getPage()->getTitle(),
+          'description' => $document->getPage()->getDescription(),
+          'themeColor' => $document->getPage()->getThemeColor(),
           'html' => $document->getPage()->loadView(true),
           'css' => array(
             'inline' => $document->getPage()->getAllStylesAsCSS(),
@@ -97,13 +104,18 @@ class BaseController extends CI_Controller {
           )
         );
         break;
-      case 'shell':
-        $jsonArray['appshell'] = array(
+      case 'layout':
+        $jsonArray['layout'] = array(
           'id' => $document->getAppShell()->getAppShellId(),
           'html' => $document->getAppShell()->loadView(true),
           'css' => array(
             'inline' => $document->getAppShell()->getAllStylesAsCSS()
           )
+        );
+        break;
+      case 'document':
+        $jsonArray['document'] = array(
+          'html' => $document->loadView(true),
         );
         break;
       default:

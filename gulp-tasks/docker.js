@@ -148,7 +148,7 @@ gulp.task('docker:startStaging', (cb) => {
       '-e',
       'BUILDTYPE=staging',
       '-p',
-      `${global.config.dockerport}:${DOCKER_PORT}`,
+      `${DOCKER_PORT}:${DOCKER_PORT}`,
       '-t',
       'gauntface/gf-site:staging'
     ];
@@ -185,7 +185,7 @@ gulp.task('docker:start:development', (cb) => {
       '-e',
       'BUILDTYPE=development',
       '-p',
-      `${global.config.dockerport}:${DOCKER_PORT}`,
+      `${DOCKER_PORT}:${DOCKER_PORT}`,
       '-v',
       path.join(__dirname, '..', global.config.dest)+':/gauntface/site',
       '-d',

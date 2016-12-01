@@ -11,14 +11,13 @@ import PageController from './page-controller';
 
 export default class ApplicationController {
     constructor() {
-      logger('Hello from the application controller');
-
-      document.addEventListener('DOMContentLoaded', () => {
-        this.onReady();
+      window.addEventListener('load', () => {
+        const timeoutFunction = requestIdleCallback || requestAnimationFrame ||
+          function(cb) {
+            setTimeout(cb, 100);
+          };
+        timeoutFunction(() => this.onReady());
       });
-      if (document.readyState !== 'loading') {
-        this.onReady();
-      }
   }
 
   onReady() {
