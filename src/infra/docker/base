@@ -15,10 +15,11 @@ RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 RUN apt-get -y install git nodejs nginx php php-fpm php-mysql php-apcu php-imagick php-curl pngcrush build-essential gettext nano
 
 # Remove the default Nginx configuration file
-#RUN rm /etc/nginx/sites-enabled/default
+RUN rm /etc/nginx/sites-enabled/default
+RUN rm /etc/nginx/sites-available/default
 
-#ADD src/docker/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
-#ADD src/docker/nginx/fastcgi-params.tmpl /etc/nginx/fastcgi-params.tmpl
+ADD src/infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+ADD src/infra/nginx/fastcgi-params.tmpl /etc/nginx/fastcgi-params.tmpl
 
 ADD src/infra/docker/startup.sh /gauntface/docker/startup.sh
 RUN chmod +x /gauntface/docker/startup.sh

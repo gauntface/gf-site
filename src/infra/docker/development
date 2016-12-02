@@ -1,0 +1,3 @@
+FROM gauntface/gf-site:base
+
+ADD src/infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl

@@ -3,3 +3,4 @@ build/
 node_modules/
 travis-encrypt.tar.gz
 npm-debug.log
+src/server/libraries

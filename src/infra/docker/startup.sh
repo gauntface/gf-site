@@ -24,6 +24,21 @@ echo "                  \/__/     \/__/     \/__/        "
 echo ""
 echo ""
 
+if [ "$BUILDTYPE" = '' ]; then
+ echo "    No BUILDTYPE set."
+ exit 1;
+fi
+
+# Replace environment variables in these files.
+envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
+envsubst < /etc/nginx/fastcgi-params.tmpl > /etc/nginx/fastcgi-params.conf;
+
+# Create a symbolic link between sites-available and sites-enabled
+ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
+
+echo ""
+echo ""
+
 service php7.0-fpm start;
 
 nginx -g 'daemon off;';
