@@ -19,6 +19,8 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_d68f0083a6dc_key -iv $encrypted_d68f0083a6dc_iv
     -in travis-encrypt.tar.gz.enc -out travis-encrypt.tar.gz -d
   - tar -xzf travis-encrypt.tar.gz
+  # Change PHP version
+  - phpenv global 7.0
 
 install:
   - composer self-update
