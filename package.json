@@ -5,7 +5,7 @@
   "scripts": {
     "docker-cli": "docker exec -it gauntface-local-docker bash",
     "docker-build": "docker build -t gauntface/gf-site:base -f src/infra/docker/base . && docker build -t gauntface/gf-site:development -f src/infra/docker/development .",
-    "docker-run": "npm run docker-cleanup && npm run docker-build && docker run --name gauntface-local-docker -e BUILDTYPE=development -p 5123:80 -v $(pwd)/build:/gauntface/site -t gauntface/gf-site:development",
+    "docker-run": "npm run docker-cleanup && npm run docker-build && docker run --name gauntface-local-docker -e BUILDTYPE=development -p 5123:80 -v $(pwd)/src:/gauntface/site -t gauntface/gf-site:development",
     "docker-stop": "docker stop gauntface-local-docker || true",
     "docker-remove": "docker rm gauntface-local-docker || true",
     "docker-cleanup": "npm run docker-stop && npm run docker-remove",

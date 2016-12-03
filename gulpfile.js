@@ -9,3 +9,7 @@ global.config = {
 };
 
 const gulp = require('gulp');
+
+require('./gulp-tasks/copy');
+
+gulp.task('default', gulp.parallel(['copy']));
