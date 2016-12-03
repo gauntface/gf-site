@@ -3,12 +3,22 @@
   "version": "3.0.0",
   "license": "Apache-2.0",
   "scripts": {
+    "docker-mysql": "",
     "docker-cli": "docker exec -it gauntface-local-docker bash",
     "docker-build": "docker build -t gauntface/gf-site:base -f src/infra/docker/base . && docker build -t gauntface/gf-site:development -f src/infra/docker/development .",
-    "docker-run": "npm run docker-cleanup && npm run docker-build && docker run --name gauntface-local-docker -e BUILDTYPE=development -p 5123:80 -v $(pwd)/src:/gauntface/site -t gauntface/gf-site:development",
+
+    "docker-run": "npm run docker-cleanup && npm run docker-build && npm run docker-run:mysql && docker run --name gauntface-local-docker --link gauntface-local-mysql -e BUILDTYPE=development -p 5123:80 -v $(pwd)/src:/gauntface/site -t gauntface/gf-site:development",
+    "docker-run:mysql": "npm run docker-cleanup:mysql && docker run --name gauntface-local-mysql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_USER=example-user -e MYSQL_PASSWORD=example-password -e MYSQL_DATABASE=example-db -d mysql/mysql-server:latest",
+    "//": "To access the database in the docker container use \"mysql -u root -p --host=gauntface-local-mysql\"",
+
     "docker-stop": "docker stop gauntface-local-docker || true",
+    "docker-stop:mysql": "docker stop gauntface-local-mysql || true",
+
     "docker-remove": "docker rm gauntface-local-docker || true",
+    "docker-remove:mysql": "docker rm gauntface-local-mysql || true",
+
     "docker-cleanup": "npm run docker-stop && npm run docker-remove",
+    "docker-cleanup:mysql": "npm run docker-stop:mysql && npm run docker-remove:mysql",
     "lint": "eslint '.'",
     "test": "npm run lint && mocha"
   },

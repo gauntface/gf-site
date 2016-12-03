@@ -63,15 +63,17 @@ use lithium\data\Connections;
  * Strict mode can be enabled or disabled, older MySQL versions were
  * by default non-strict.
  */
-Connections::add('default', [
-	'type' => 'database',
-	'adapter' => 'MySql',
-	'host' => 'localhost',
-	'login' => 'root',
- 	'password' => '',
-	'database' => 'my_app',
-	'encoding' => 'UTF-8',
-	'strict' => false
-]);
+Connections::add('default', array(
+  'development' => array(
+  	'type' => 'database',
+  	'adapter' => 'MySql',
+  	'host' => 'gauntface-local-mysql',
+  	'login' => 'example-user',
+   	'password' => 'example-password',
+  	'database' => 'example-db',
+  	'encoding' => 'UTF-8',
+  	'strict' => false
+  )
+));
 
 ?>

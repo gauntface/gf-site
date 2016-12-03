@@ -24,8 +24,6 @@
  * @see lithium\aop\Filters
  */
 
-require __DIR__ . '/bootstrap/environment.php';
-
 /**
  * The libraries file contains the loading instructions for all plugins, frameworks and other class
  * libraries used in the application, including the Lithium core, and the application itself. These
@@ -33,6 +31,12 @@ require __DIR__ . '/bootstrap/environment.php';
  * file also statically loads common classes to improve bootstrap performance.
  */
 require __DIR__ . '/bootstrap/libraries.php';
+
+/**
+ * Custom setting for environment.
+ * This must be called AFTER libraries.php
+ */
+require __DIR__ . '/bootstrap/environment.php';
 
 /**
  * The error configuration allows you to use the filter system along with the advanced matching

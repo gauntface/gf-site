@@ -4,7 +4,6 @@ use lithium\core\Environment;
 
 /**
  * Set up the environment.
- * @var [type]
  */
 Environment::is(function($request){
 	// HTTP_HOST has the port number in localhost, this 'explode' removes it.
@@ -18,3 +17,5 @@ Environment::is(function($request){
   }
   return 'production';
 });
+
+?>
