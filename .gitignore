@@ -4,3 +4,4 @@ node_modules/
 travis-encrypt.tar.gz
 npm-debug.log
 src/server/libraries
+src/server/app/resources/tmp/

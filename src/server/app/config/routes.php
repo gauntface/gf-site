@@ -46,6 +46,7 @@ if ($locales = Environment::get('locales')) {
  * @see app\controllers\PagesController
  */
 Router::connect('/', 'Pages::view');
+Router::connect('/{:controller}.{:type}');
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
@@ -102,5 +103,4 @@ if (!Environment::is('production')) {
  * a top-down fashion.
  */
 Router::connect('/{:controller}/{:action}/{:args}');
-
 ?>
