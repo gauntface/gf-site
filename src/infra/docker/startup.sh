@@ -24,11 +24,6 @@ echo "                  \/__/     \/__/     \/__/        "
 echo ""
 echo ""
 
-if [ "$BUILDTYPE" = '' ]; then
- echo "    No BUILDTYPE set."
- exit 1;
-fi
-
 # Replace environment variables in these files.
 envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
 

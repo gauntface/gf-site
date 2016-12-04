@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 const xml2js = require('xml2js');
+const localConfig = require('../../utils/development.config.js');
 
-const DEV_URL = 'http://localhost:5123';
+const DEV_URL = `http://localhost:${localConfig.port}`;
 
 module.exports = () => {
   return fetch(`${DEV_URL}/sitemap.xml`)
