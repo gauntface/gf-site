@@ -27,4 +27,4 @@ install:
   - composer install -d ./src/server --prefer-source --no-interaction
 
 script:
-  - npm run docker-build
+  - npm run test
