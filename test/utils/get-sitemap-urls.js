@@ -11,6 +11,7 @@ module.exports = () => {
     return response.text();
   })
   .then((responseBody) => {
+    console.log(responseBody);
     return new Promise((resolve, reject) => {
       xml2js.parseString(responseBody, (err, data) => {
         if(err) {
@@ -23,6 +24,7 @@ module.exports = () => {
   })
   .then((parsedSitemap) => {
     if (!parsedSitemap.urlset || !parsedSitemap.urlset.url) {
+      console.log(parsedSitemap);
       throw new Error('Invalid sitemap result from parsing.');
     }
 
