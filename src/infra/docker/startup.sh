@@ -36,8 +36,8 @@ envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-availabl
 ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
 # Create tmp directory for cache directories etc.
-mkdir -p /gauntface/site/resources/tmp/
-chmod -R 777 /gauntface/site/resources/tmp/
+mkdir -p /gauntface/site/server/app/resources/tmp/cache/templates/
+chmod -R 777 /gauntface/site/server/app/resources/tmp/cache/templates/
 
 service php7.0-fpm start;
 

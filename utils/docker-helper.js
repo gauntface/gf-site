@@ -141,6 +141,11 @@ class DockerHelper {
    */
   run(options) {
     this.log('Running containers');
+    let forceDetached = false;
+    if (options) {
+      forceDetached = options.forceDetached === true;
+    }
+
     return this.clean()
     .then(() => this.build())
     .then(() => {
@@ -155,7 +160,7 @@ class DockerHelper {
             containerInfo.tag,
             containerInfo.name,
             containerInfo.run.customArgs,
-            options.forceDetached || containerInfo.run.detached
+            forceDetached || containerInfo.run.detached
           );
         });
       }, Promise.resolve());
@@ -170,7 +175,7 @@ class DockerHelper {
     let matchingContainer = null;
     CONTAINERS.forEach((containerInfo) => {
       if (containerId === containerInfo.id) {
-        matchingContainer = containerId;
+        matchingContainer = containerInfo;
         return;
       }
     });
@@ -179,7 +184,6 @@ class DockerHelper {
       return Promise.reject(new Error(`Unable to find container with ID ` +
         `'${containerId}'.`));
     }
-
     return dockerCLIWrapper.accessContainerCLI(matchingContainer.name);
   }
 }
