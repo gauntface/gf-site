@@ -35,8 +35,9 @@ envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-availabl
 # Create a symbolic link between sites-available and sites-enabled
 ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
-echo ""
-echo ""
+# Create tmp directory for cache directories etc.
+mkdir -p /gauntface/site/resources/tmp/
+chmod -R 777 /gauntface/site/resources/tmp/
 
 service php7.0-fpm start;
 
