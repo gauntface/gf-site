@@ -1,125 +1,186 @@
 const path = require('path');
-const spawn = require('child_process').spawn;
+const chalk = require('chalk');
+const localConfig = require('./development.config.js');
+const dockerCLIWrapper = require('./docker-cli-wrapper');
+
+const MYSQL_CONTAINER = {
+  id: 'mysql',
+  tag: 'mysql/mysql-server:latest',
+  name: 'gauntface-local-mysql',
+  run: {
+    detached: true,
+    customArgs: [
+      '--env', `MYSQL_ROOT_PASSWORD=${localConfig.database.rootPassword}`,
+      '--env', `MYSQL_USER=${localConfig.database.user}`,
+      '--env', `MYSQL_PASSWORD=${localConfig.database.password}`,
+      '--env', `MYSQL_DATABASE=${localConfig.database.dbName}`,
+    ],
+  },
+};
+
+const BASE_CONTAINER = {
+  dockerFile: path.join(__dirname, '../src/infra/docker/base'),
+  tag: 'gauntface/gf-site:base',
+};
+
+const DEVELOPMENT_CONTAINER = {
+  id: 'development',
+  dockerFile: path.join(__dirname, '../src/infra/docker/development'),
+  tag: 'gauntface/gf-site:development',
+  name: 'gauntface-local-docker',
+  run: {
+    detached: false,
+    customArgs: [
+      '--link', MYSQL_CONTAINER.name,
+      '-p', `${localConfig.port}:80`,
+      '--volume', `${path.join(__dirname, '..', 'src')}:/gauntface/site`,
+    ],
+  },
+};
+
+const CONTAINERS = [
+  MYSQL_CONTAINER,
+  BASE_CONTAINER,
+  DEVELOPMENT_CONTAINER,
+];
 
 /**
- * Helper for docker methods.
+ * This class does the orchestrating of docker processes (build, running,
+ * stopping etc.).
+ *
+ * Can be used by tests and gulp.
  */
 class DockerHelper {
+  /* eslint-disable no-console */
   /**
-   * Spawns a process for the docker command.
-   * @param {Array<string>} args The arguments passed into the docker process.
-   * @return {Promise} Resolves when the command ends.
+   * @param {Object} message to print
    */
-  _executeDockerCommand(args) {
-    return new Promise((resolve, reject) => {
-      const dockerProcess = spawn('docker', args, {
-        stdio: 'inherit',
-      });
+  log(message) {
+    console.log(chalk.green('[DockerHelper]:'), message);
+  }
 
-      dockerProcess.on('exit', (code) => {
-        if (code !== 0) {
-          return reject(`Unexpected exit code: ${code}`);
+  /**
+   * @param {Object} message to print
+   */
+  warn(message) {
+    console.log(chalk.yellow('[DockerHelper]:'), message);
+  }
+  /* eslint-enable no-console */
+
+  /**
+   * @return {Promise} Resolves once all docker containers are removed.
+   */
+  remove() {
+    this.log('Removing containers');
+    return CONTAINERS.reduce((promiseChain, containerInfo) => {
+      return promiseChain.then(() => {
+        if (!containerInfo.name) {
+          // No name - nothing to stop.
+          return promiseChain;
         }
 
-        resolve();
+        return dockerCLIWrapper.removeContainer(
+          containerInfo.name
+        );
       });
+    }, Promise.resolve());
+  }
+
+  /**
+   * @return {Promise} Resolves once all docker containers are stopped.
+   */
+  stop() {
+    this.log('Stopping containers');
+    return CONTAINERS.reduce((promiseChain, containerInfo) => {
+      return promiseChain.then(() => {
+        if (!containerInfo.name) {
+          // No name - nothing to stop.
+          return promiseChain;
+        }
+
+        return dockerCLIWrapper.stopContainer(
+          containerInfo.name
+        );
+      });
+    }, Promise.resolve());
+  }
+
+  /**
+   * @return {Promise} Resolves once all docker containers are stopped &
+   * removed.
+   */
+  clean() {
+    this.log('Cleaning containers');
+    return this.stop()
+    .then(() => this.remove());
+  }
+
+  /**
+   * @return {Promise} Resolves once all docker containers are built.
+   */
+  build() {
+    this.log('Building containers');
+    return CONTAINERS.reduce((promiseChain, containerInfo) => {
+      return promiseChain.then(() => {
+        if (!containerInfo.dockerFile) {
+          // No file - nothing to build.
+          return promiseChain;
+        }
+
+        return dockerCLIWrapper.buildContainer(
+          containerInfo.dockerFile,
+          containerInfo.tag
+        );
+      });
+    }, Promise.resolve());
+  }
+
+  /**
+   * @param {Object} options Options for running.
+   * @return {Promise} Resolves once all docker containers are running.
+   */
+  run(options) {
+    this.log('Running containers');
+    return this.clean()
+    .then(() => this.build())
+    .then(() => {
+      return CONTAINERS.reduce((promiseChain, containerInfo) => {
+        return promiseChain.then(() => {
+          if (!containerInfo.name) {
+            // No name - nothing to run.
+            return promiseChain;
+          }
+
+          return dockerCLIWrapper.runContainer(
+            containerInfo.tag,
+            containerInfo.name,
+            containerInfo.run.customArgs,
+            options.forceDetached || containerInfo.run.detached
+          );
+        });
+      }, Promise.resolve());
     });
   }
-  /**
-   * @param {string} dockerfilePath
-   * @param {string} tag The tag for the container.
-   * @return {Promise} Promise resolves once the container has been built.
-   */
-  buildContainer(dockerfilePath, tag) {
-    const args = [
-      'build',
-      '--tag', tag,
-      // Name of the Dockerfile
-      '--file', dockerfilePath,
-      // Want it to be from the root of the project.
-      path.join(__dirname, '..'),
-    ];
-
-    return this._executeDockerCommand(args);
-  }
 
   /**
-   * @param {string} containerTag This the the tag of the build docker
-   * container.
-   * @param {string} containerName This is a custom name you give to this docker
-   * container.
-   * @param {Array<string>} customArgs These are custom args you wish to
-   * pass to the run command (i.e. -p, -v, --link etc).
-   * @param {boolean} detached If set to tru, the detach flag will be added.
-   * @return {Promise} Promise resolves once running has ended.
+   * @param {string} containerId The ID of the container to access.
+   * @return {Promise} Resolves once access to CLI has ended.
    */
-  runContainer(containerTag, containerName, customArgs, detached) {
-    const args = [
-      'run',
-      '--name', containerName,
-    ];
+  accessCLI(containerId) {
+    let matchingContainer = null;
+    CONTAINERS.forEach((containerInfo) => {
+      if (containerId === containerInfo.id) {
+        matchingContainer = containerId;
+        return;
+      }
+    });
 
-    args.concat(customArgs);
-
-    if (detached === true) {
-      args.push('--detach');
+    if (!matchingContainer) {
+      return Promise.reject(new Error(`Unable to find container with ID ` +
+        `'${containerId}'.`));
     }
 
-    args.push(containerTag);
-
-    return this._executeDockerCommand(args);
-  }
-
-  /**
-   * @param {string} containerName Name of container used for accessing CLI.
-   * @return {Promise} That resolves once the CLI is complete.
-   */
-  accessContainerCLI(containerName) {
-    const args = [
-      'exec',
-      '-it', containerName,
-      'bash',
-    ];
-
-    return this._executeDockerCommand(args);
-  }
-
-  /**
-   * @param {string} containerName Name of container to stop.
-   * @return {Promise} That resolves once the CLI is complete.
-   */
-  stopContainer(containerName) {
-    const args = [
-      'stop',
-      containerName,
-    ];
-
-    return this._executeDockerCommand(args)
-    .catch(() => {
-      /* eslint-disable no-console */
-      console.log(`    Docker could not stop '${containerName}'. This is ` +
-        `probably due to the container already being stopped.`);
-      /* eslint-enable no-console */
-    });
-  }
-
-  /**
-   * @param {string} containerName Name of container to remove.
-   * @return {Promise} That resolves once the CLI is complete.
-   */
-  removeContainer(containerName) {
-    const args = [
-      'rm',
-      containerName,
-    ];
-
-    return this._executeDockerCommand(args)
-    .catch(() => {
-      /* eslint-disable no-console */
-      console.log(`    Docker could not remove '${containerName}'. This is ` +
-        `probably due to the container already being removed.`);
-      /* eslint-enable no-console */
-    });
+    return dockerCLIWrapper.accessContainerCLI(matchingContainer.name);
   }
 }
 

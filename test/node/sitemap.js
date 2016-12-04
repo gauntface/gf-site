@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const getSitemapUrls = require('./utils/get-sitemap-urls');
+const getSitemapUrls = require('../utils/get-sitemap-urls');
 
 require('chai').should();
 

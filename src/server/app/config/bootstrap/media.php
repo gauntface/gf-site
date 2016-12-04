@@ -28,6 +28,7 @@ use lithium\util\Collection;
 Collection::formats(Media::class);
 
 Media::type('xml', ['application/xml', 'application/soap+xml', 'text/xml']);
+Media::type('txt', ['text/plain']);
 /**
  * This filter is a convenience method which allows you to automatically route requests for static
  * assets stored within active plugins. For example, given a JavaScript file `bar.js` inside the

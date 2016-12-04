@@ -1,11 +1,8 @@
 const fetch = require('node-fetch');
 const xml2js = require('xml2js');
-const localConfig = require('../../utils/development.config.js');
-
-const DEV_URL = `http://localhost:${localConfig.port}`;
 
 module.exports = () => {
-  return fetch(`${DEV_URL}/sitemap.xml`)
+  return fetch(`${global.__TEST_ENV.url}/sitemap.xml`)
   .then((response) => {
     if (!response.ok) {
       throw new Error(`Response for sitemap invalid. [Status Code: ${response.status}]`);
