@@ -2,6 +2,21 @@ const fetch = require('node-fetch');
 const xml2js = require('xml2js');
 
 module.exports = () => {
+  let responseBody;
+  let parsedSitemap;
+
+  const printDebugLogs = () => {
+    if (responseBody) {
+      console.log('');
+      console.log('---------------- FOR DEBUG PURPOSES ----------------');
+      console.log('');
+      console.log(responseBody);
+      console.log('');
+      console.log('----------------------------------------------------');
+      console.log('');
+    }
+  };
+
   return fetch(`${global.__TEST_ENV.url}/sitemap.xml`)
   .then((response) => {
     if (!response.ok) {
@@ -10,11 +25,12 @@ module.exports = () => {
 
     return response.text();
   })
-  .then((responseBody) => {
-    console.log(responseBody);
+  .then((rBody) => {
+    responseBody = rBody;
     return new Promise((resolve, reject) => {
       xml2js.parseString(responseBody, (err, data) => {
         if(err) {
+          printDebugLogs();
           return reject(err);
         }
 
@@ -22,9 +38,10 @@ module.exports = () => {
       });
     });
   })
-  .then((parsedSitemap) => {
+  .then((pSitemap) => {
+    parsedSitemap = pSitemap;
     if (!parsedSitemap.urlset || !parsedSitemap.urlset.url) {
-      console.log(parsedSitemap);
+      printDebugLogs();
       throw new Error('Invalid sitemap result from parsing.');
     }
 
