@@ -9,7 +9,14 @@ global.config = {
 };
 
 const gulp = require('gulp');
+const fs = require('fs');
+const path = require('path');
 
 require('./gulp-tasks/copy');
+
+const gulpTaskFiles = fs.readdirSync(path.join(__dirname, 'gulp-tasks'));
+gulpTaskFiles.forEach((taskFile) => {
+  require(path.join(__dirname, 'gulp-tasks', taskFile));
+});
 
 gulp.task('default', gulp.parallel(['copy']));
