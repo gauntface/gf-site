@@ -1,0 +1,6 @@
+:root {
+  --grid: 8px;
+
+  --btn-size: calc(var(--grid) * 6);
+  --btn-padding: var(--grid);
+}

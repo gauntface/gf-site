@@ -1,0 +1,90 @@
+@import "../variables/colors.css";
+@import "../variables/dimens.css";
+
+/** TODO: This should be a class name for a layout for styleguide **/
+body {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--styleguide-bg-color);
+}
+
+.styleguide-window {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.styleguide-window__wrapper {
+  display: flex;
+
+  width: 100%;
+
+  flex: 1;
+  flex-direction: column;
+
+  position: relative;
+
+  align-content: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  margin: 0 auto;
+
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+
+  overflow: hidden;
+}
+
+.styleguide-window__iframe {
+  flex: 1;
+
+  width: 100%;
+
+  margin: 0 auto;
+
+  box-sizing: border-box;
+  border: none;
+}
+
+.styleguide-window__iframe::-webkit-scrollbar {
+    display: none;
+}
+
+.styleguide-window__wrapper.is-circle-watch,
+.styleguide-window__wrapper.is-square-watch {
+  width: 160px;
+  height: 160px;
+
+  flex: none;
+}
+
+.styleguide-window__wrapper.is-circle-watch {
+  border-radius: 100%;
+}
+
+.styleguide-window__wrapper.is-square-watch {
+  border-radius: calc(var(--grid) / 2);
+}
+
+.styleguide-window__wrapper.is-phone {
+  width: 320px;
+  height: 568px;
+
+  flex: none;
+
+  border-radius: calc(var(--grid) / 2);
+}
+
+.styleguide-window__wrapper.is-desktop {
+  width: 1280px;
+  height: 800px;
+
+  flex: none;
+}
