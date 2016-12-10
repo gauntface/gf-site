@@ -1,0 +1,26 @@
+.title-block {
+  display: block;
+  text-decoration: none;
+}
+
+.title-block__container{
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.title-block-item__toptext {
+  display: block;
+  width: 100%;
+
+  margin: 0;
+
+  text-align: center;
+  text-transform: uppercase;
+}

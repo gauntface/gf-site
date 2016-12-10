@@ -8,6 +8,10 @@ class StyleguideController extends \lithium\action\Controller {
     return [];
 	}
 
+  public function view($id) {
+    $smallTopText = 'Test Top Text';
+    return compact('id', 'smallTopText');
+  }
 }
 
 ?>
