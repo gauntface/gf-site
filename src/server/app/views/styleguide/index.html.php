@@ -42,6 +42,6 @@
 
 <section class="styleguide-window">
   <div class="styleguide-window__wrapper js-styleguide-window__wrapper">
-    <iframe class="styleguide-window__iframe js-styleguide-window__iframe"></iframe>
+    <iframe class="styleguide-window__iframe js-styleguide-window__iframe" src="/styleguide/list"></iframe>
   </div>
 </section>
