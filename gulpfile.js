@@ -17,4 +17,5 @@ gulpTaskFiles.forEach((taskFile) => {
   require(path.join(__dirname, 'gulp-tasks', taskFile));
 });
 
-gulp.task('default', gulp.parallel(['docker-build']));
+gulp.task('build', gulp.parallel(['docker-build']));
+gulp.task('default', gulp.parallel(['docker-run']));

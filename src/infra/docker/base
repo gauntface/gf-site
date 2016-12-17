@@ -19,6 +19,7 @@ RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
 
 ADD src/infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+ADD src/infra/nginx/environment-vars.tmpl /etc/nginx/environment-vars.tmpl
 
 ADD src/infra/docker/startup.sh /gauntface/docker/startup.sh
 RUN chmod +x /gauntface/docker/startup.sh

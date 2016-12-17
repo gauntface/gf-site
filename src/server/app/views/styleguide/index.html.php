@@ -1,44 +1,56 @@
 <?php
   use lithium\net\http\Media;
 
-  $this->styles('<link rel="stylesheet" type="text/css" href="/styles/layouts/styleguide.css" />');
-  $this->styles('<link rel="stylesheet" type="text/css" href="/styles/components/toolbar.css" />');
+  $this->title($title);
+
+  foreach($styles['inline'] as $styleUrl) {
+      $this->styles('<link rel="stylesheet" type="text/css" href="'.$styleUrl.'" />');
+  }
 
   $webrootPath = Media::webroot(true);
 
   $watchRound = file_get_contents($webrootPath.'/images/styleguide/watch-round.svg');
-  $watchSquare = file_get_contents($webrootPath.'/images/styleguide/watch-round.svg');
+  $watchSquare = file_get_contents($webrootPath.'/images/styleguide/watch-square.svg');
   $phone = file_get_contents($webrootPath.'/images/styleguide/phone.svg');
   $desktop = file_get_contents($webrootPath.'/images/styleguide/desktop.svg');
   $cssToggle = file_get_contents($webrootPath.'/images/styleguide/css-toggle.svg');
   $grid = file_get_contents($webrootPath.'/images/styleguide/grid.svg');
 ?>
 
-<section class="toolbar">
-  <div>
-    <button class="toolbar__btn js-styleguide-viewport-watch-round">
-      <?php echo $watchRound; ?>
-    </button>
-    <button class="toolbar__btn js-styleguide-viewport-watch-square">
-      <?php echo $watchSquare; ?>
-    </button>
-    <button class="toolbar__btn js-styleguide-viewport-phone">
-      <?php echo $phone; ?>
-    </button>
-    <button class="toolbar__btn js-styleguide-viewport-desktop">
-      <?php echo $desktop; ?>
-    </button>
-  </div>
-
-  <div>
-    <button class="toolbar__btn js-styleguide-css-toggle">
-      <?php echo $cssToggle; ?>
-    </button>
-    <button class="toolbar__btn js-styleguide-grid-btn">
-      <?php echo $grid; ?>
-    </button>
-  </div>
-</section>
+<?php
+  echo $this->_view->render(
+    ['element' => 'toolbar'],
+    [
+      'leftButtons' => [
+        [
+          'class' => 'js-styleguide-viewport-watch-round',
+          'contents' => $watchRound
+        ],
+        [
+          'class' => 'js-styleguide-viewport-watch-square',
+          'contents' => $watchSquare
+        ],
+        [
+          'class' => 'js-styleguide-viewport-phone',
+          'contents' => $phone
+        ],
+        [
+          'class' => 'js-styleguide-viewport-desktop',
+          'contents' => $desktop
+        ]
+      ],
+      'rightButtons' => [
+        [
+          'class' => 'js-styleguide-css-toggle',
+          'contents' => $cssToggle
+        ],
+        [
+          'class' => 'js-styleguide-grid-btn',
+          'contents' => $grid
+        ]
+      ]
+    ]
+  ); ?>
 
 <section class="styleguide-window">
   <div class="styleguide-window__wrapper js-styleguide-window__wrapper">

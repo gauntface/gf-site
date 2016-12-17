@@ -11,9 +11,10 @@ gulp.task('docker-build', () => dockerHelper.build());
 
 gulp.task('docker-run', () => dockerHelper.run());
 
-const cliEnabledContainerIDs = ['development'];
-cliEnabledContainerIDs.forEach((containerID) => {
-  gulp.task(`docker-cli:${containerID}`, () => {
-    return dockerHelper.accessCLI(containerID);
+gulp.task(`docker-cli`, () => {
+  const containerID = 'development';
+  return dockerHelper.accessCLI(containerID)
+  .catch(() => {
+    // NOOP for errors.
   });
 });

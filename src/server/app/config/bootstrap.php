@@ -89,4 +89,8 @@ if (PHP_SAPI === 'cli') {
 	require __DIR__ . '/bootstrap/console.php';
 }
 
+/**
+ * In dev, log output to file
+ */
+require __DIR__ . '/bootstrap/logging.php';
 ?>

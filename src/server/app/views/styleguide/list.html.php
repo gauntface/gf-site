@@ -2,9 +2,9 @@
 
 <ul>
 <?php
-foreach ($elements as $element) {
+foreach ($elements as $elementDetails) {
   ?>
-  <li><?php echo $element ?></li>
+  <li><a href="<?php echo $elementDetails['view-url']?>"><?php echo $elementDetails['friendly-name'] ?></a></li>
   <?php
 }
 ?>

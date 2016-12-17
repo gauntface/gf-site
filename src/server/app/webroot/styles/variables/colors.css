@@ -1,3 +1,7 @@
 :root {
-  --styleguide-bg-color: #dddddd;
+  --styleguide-bg-color: #eeeeee;
+  --styleguide-btn-color: rgba(100, 100, 100, 0.8);
+
+  --toolbar-btn-hover-color: rgba(0, 0, 0, 0.1);
+  --toolbar-btn-active-color: rgba(0, 0, 0, 0.3);
 }
