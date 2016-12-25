@@ -102,6 +102,9 @@ class StyleguideController extends \lithium\action\Controller {
           )
         );
         break;
+      case 'home-header':
+        $details['friendly-name'] = 'Home Header';
+        break;
       case 'grid-overlay':
         return null;
       default:
