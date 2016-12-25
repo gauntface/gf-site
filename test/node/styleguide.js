@@ -40,9 +40,10 @@ describe('Test Styleguide Components', function() {
 
       before(function() {
         this.timeout(45 * 1000);
-
+        console.log('Starting download.');
         return seleniumAssistant.downloadLocalBrowser('chrome', 'stable', 24 * 7)
         .then(() => {
+          console.log('Download finished.');
           const args = [
             `--remote-debugging-port=${9222}`,
             '--disable-extensions',
@@ -51,15 +52,13 @@ describe('Test Styleguide Components', function() {
             '--no-first-run',
             `--user-data-dir=${tmpDir}`,
           ];
-          console.log('HARO ---------------------------');
-          console.log(path.join(seleniumAssistant.getBrowserInstallDir(), '/chrome/stable/usr/bin/google-chrome-stable'));
-          console.log('HARO END ---------------------------');
           chromeProcess = spawn(
             path.join(seleniumAssistant.getBrowserInstallDir(), '/chrome/stable/usr/bin/google-chrome-stable'),
             args
           );
         })
         .then(() => {
+          console.log('Chrome spawn started');
           return new Promise((resolve) => {
             setTimeout(resolve, 2000);
           });
