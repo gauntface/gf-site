@@ -1,5 +1,5 @@
-
-@import "../variables/dimens.css";
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
 
 .toolbar {
   display: flex;

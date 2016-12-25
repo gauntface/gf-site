@@ -1,5 +1,5 @@
-@import "../variables/colors.css";
-@import "../variables/dimens.css";
+@import "/styles/variables/colors.css";
+@import "/styles/variables/dimens.css";
 
 /** TODO: This should be a class name for a layout for styleguide **/
 body {

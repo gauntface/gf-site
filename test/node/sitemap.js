@@ -15,7 +15,9 @@ describe('Test Sitemap', function() {
     })
     .then((urlResponses) => {
       urlResponses.forEach((urlResponse) => {
-        urlResponse.ok.should.equal(true);
+        if (!urlResponse.ok) {
+          throw new Error(`Non 'OK' response from '${urlResponse.url}'`);
+        }
       });
     });
   });

@@ -36,12 +36,34 @@ const DEVELOPMENT_CONTAINER = {
       '--volume', `${path.join(__dirname, '..', 'src')}:/gauntface/site`,
     ],
   },
+  dependencies: [
+    MYSQL_CONTAINER,
+  ],
+};
+
+const DEVELOPMENT_PROD_CONTAINER = {
+  id: 'development-prod',
+  dockerFile: path.join(__dirname, '../src/infra/docker/development'),
+  tag: 'gauntface/gf-site:development-prod',
+  name: 'gauntface-local-docker',
+  run: {
+    detached: true,
+    customArgs: [
+      '--link', MYSQL_CONTAINER.name,
+      '-p', `${localConfig.port}:80`,
+      '--volume', `${path.join(__dirname, '..', 'build')}:/gauntface/site`,
+    ],
+  },
+  dependencies: [
+    MYSQL_CONTAINER,
+  ],
 };
 
 const CONTAINERS = [
   MYSQL_CONTAINER,
   BASE_CONTAINER,
   DEVELOPMENT_CONTAINER,
+  DEVELOPMENT_PROD_CONTAINER,
 ];
 
 /**
@@ -136,10 +158,11 @@ class DockerHelper {
   }
 
   /**
+   * @param {string} environment The environment of the container to run.
    * @param {Object} options Options for running.
    * @return {Promise} Resolves once all docker containers are running.
    */
-  run(options) {
+  run(environment, options) {
     this.log('Running containers');
     let forceDetached = false;
     if (options) {
@@ -149,7 +172,11 @@ class DockerHelper {
     return this.clean()
     .then(() => this.build())
     .then(() => {
-      return CONTAINERS.reduce((promiseChain, containerInfo) => {
+      const primaryContainer = CONTAINERS.filter((container) => {
+        return container.id === environment;
+      })[0];
+      const dependencyContainers = primaryContainer.dependencies;
+      return dependencyContainers.reduce((promiseChain, containerInfo) => {
         return promiseChain.then(() => {
           if (!containerInfo.name) {
             // No name - nothing to run.
@@ -163,7 +190,15 @@ class DockerHelper {
             forceDetached || containerInfo.run.detached
           );
         });
-      }, Promise.resolve());
+      }, Promise.resolve())
+      .then(() => {
+        return dockerCLIWrapper.runContainer(
+          primaryContainer.tag,
+          primaryContainer.name,
+          primaryContainer.run.customArgs,
+          primaryContainer.run.detached
+        );
+      });
     });
   }
 

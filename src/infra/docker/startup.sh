@@ -12,7 +12,6 @@ if [ "$BUILDTYPE" = '' ]; then
 fi
 
 CYAN='\033[1;36m'
-WHIT='\033[1;37m'
 NC='\033[0m' # No Color
 
 echo ""
@@ -32,8 +31,6 @@ echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
 echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
 echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
 echo ""
-echo ""
-echo -e "${WHIT}               http://localhost:5123               "
 echo -e "${NC}"
 echo ""
 

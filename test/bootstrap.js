@@ -14,9 +14,7 @@ describe('Test Gauntface Server', function() {
       url: `http://localhost:${localConfig.port}`,
     };
 
-    return dockerHelper.run({
-      forceDetached: true,
-    })
+    return dockerHelper.run('development-prod')
     .then(() => {
       return waitForServerOk(global.__TEST_ENV.serverUrl, 10 * 1000);
     });

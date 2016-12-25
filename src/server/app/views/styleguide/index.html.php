@@ -3,9 +3,8 @@
 
   $this->title($title);
 
-  foreach($styles['inline'] as $styleUrl) {
-      $this->styles('<link rel="stylesheet" type="text/css" href="'.$styleUrl.'" />');
-  }
+  $this->styles('/styles/views/styleguide/styleguide-inline.css');
+  $this->scripts('/scripts/controllers/styleguide-controller.js');
 
   $webrootPath = Media::webroot(true);
 

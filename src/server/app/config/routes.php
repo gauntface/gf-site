@@ -47,6 +47,7 @@ if ($locales = Environment::get('locales')) {
  */
 Router::connect('/', 'Pages::view');
 Router::connect('/{:controller}.{:type}');
+Router::connect('/{:controller}/{:action}.{:type}');
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to

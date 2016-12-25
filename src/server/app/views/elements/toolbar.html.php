@@ -1,3 +1,6 @@
+<?php
+$this->styles('/styles/components/toolbar/toolbar-inline.css');
+?>
 <section class="toolbar">
   <div>
     <?php

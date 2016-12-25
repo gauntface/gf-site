@@ -4,15 +4,21 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint '.'",
-    "test": "npm run lint && mocha"
+    "test": "npm run lint && gulp build && mocha"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "cssnano": "^3.9.1",
     "eslint": "^3.11.1",
     "eslint-config-google": "^0.7.1",
     "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-postcss": "^6.2.0",
+    "lighthouse": "^1.2.2",
     "mocha": "^3.2.0",
     "node-fetch": "^1.6.3",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-import": "^9.0.0",
+    "selenium-assistant": "^5.0.1",
     "xml2js": "^0.4.17"
   }
 }
