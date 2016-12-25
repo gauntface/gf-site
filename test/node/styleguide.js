@@ -51,6 +51,9 @@ describe('Test Styleguide Components', function() {
             '--no-first-run',
             `--user-data-dir=${tmpDir}`,
           ];
+          console.log('HARO ---------------------------');
+          console.log(path.join(seleniumAssistant.getBrowserInstallDir(), '/chrome/stable/usr/bin/google-chrome-stable'));
+          console.log('HARO END ---------------------------');
           chromeProcess = spawn(
             path.join(seleniumAssistant.getBrowserInstallDir(), '/chrome/stable/usr/bin/google-chrome-stable'),
             args
