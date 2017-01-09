@@ -1,12 +1,9 @@
 const fetch = require('node-fetch');
-const lighthouse = require('lighthouse');
-const seleniumAssistant = require('selenium-assistant');
-const path = require('path');
-const spawn = require('child_process').spawn;
-const execSync = require('child_process').execSync;
+const lighthouseWrapper = require('../utils/lighthouse-wrapper');
+const localConfig = require('../../utils/development.config');
 
 const getComponentList = () => {
-  return fetch(`${global.__TEST_ENV.url}/styleguide/list.json`)
+  return fetch(`${localConfig.url}/styleguide/list.json`)
   .then((response) => {
     if (!response.ok) {
       throw new Error('Unable to retrieve list of styleguide components.');
@@ -14,10 +11,6 @@ const getComponentList = () => {
 
     return response.json();
   });
-};
-
-const unixTmpDir = () => {
-  return execSync('mktemp -d -t lighthouse.XXXXXXX').toString().trim();
 };
 
 describe('Test Styleguide Components', function() {
@@ -35,52 +28,16 @@ describe('Test Styleguide Components', function() {
   it('should configure Styleguide Lighthouse tests', function() {
     // Further 'it' unit tests must occur inside a describe.
     describe('Run Each Styleguide Component Through Lighthouse', function() {
-      const tmpDir = unixTmpDir();
-      let chromeProcess;
-
-      before(function() {
-        this.timeout(45 * 1000);
-        console.log('Starting download.');
-        return seleniumAssistant.downloadLocalBrowser('chrome', 'stable', 24 * 7)
-        .then(() => {
-          console.log('Download finished.');
-          const args = [
-            `--remote-debugging-port=${9222}`,
-            '--disable-extensions',
-            '--disable-translate',
-            '--disable-default-apps',
-            '--no-first-run',
-            `--user-data-dir=${tmpDir}`,
-          ];
-          chromeProcess = spawn(
-            path.join(seleniumAssistant.getBrowserInstallDir(), '/chrome/stable/usr/bin/google-chrome-stable'),
-            args
-          );
-        })
-        .then(() => {
-          console.log('Chrome spawn started');
-          return new Promise((resolve) => {
-            setTimeout(resolve, 2000);
-          });
-        });
-      });
-
-      after(function() {
-        return chromeProcess.kill('SIGHUP');
-      });
-
       componentsList.forEach((componentDetails) => {
         // export LIGHTHOUSE_CHROMIUM_PATH=/usr/bin/google-chrome
         it(`should run Styleguide view '${componentDetails.name}' against Lighthouse`, function() {
-          this.timeout(10 * 1000);
+          this.timeout(30 * 1000);
           this.retries(3);
 
-          return lighthouse(`${global.__TEST_ENV.url}${componentDetails.url}`)
+          return lighthouseWrapper.run(`${localConfig.url}${componentDetails.url}`)
           .then((results) => {
             const booleanAudits = [
               'viewport',
-              // TODO: Why does this fail for toolbar?
-              // 'without-javascript',
               'critical-request-chains',
               'image-alt',
               'content-width',
@@ -108,8 +65,10 @@ describe('Test Styleguide Components', function() {
             });
 
             intAudits.forEach((auditKey) => {
-              if (results.audits[auditKey].score !== 100) {
-                throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}`);
+              if (results.audits[auditKey].score === -1) {
+                console.warn(`Lighthouse Error: '${auditKey}' => '${results.audits[auditKey].score}'`);
+              } else if (results.audits[auditKey].score !== 100) {
+                throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}'`);
               }
             });
           });

@@ -18,7 +18,7 @@ module.exports = (serverUrl, timeout) => {
         return;
       }
 
-      fetch(`${global.__TEST_ENV.url}/ok`)
+      fetch(`${serverUrl}/ok`)
       .catch(() => {
         return null;
       })

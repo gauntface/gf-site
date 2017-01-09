@@ -1,5 +1,8 @@
+const PORT = 5123;
+
 module.exports = {
-  port: 5123,
+  url: `http://localhost:${PORT}`,
+  port: PORT,
   database: {
     rootPassword: 'password',
     user: 'example-user',

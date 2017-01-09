@@ -45,7 +45,7 @@ if ($locales = Environment::get('locales')) {
  *
  * @see app\controllers\PagesController
  */
-Router::connect('/', 'Pages::view');
+Router::connect('/', 'Home::index');
 Router::connect('/{:controller}.{:type}');
 Router::connect('/{:controller}/{:action}.{:type}');
 

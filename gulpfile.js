@@ -19,7 +19,6 @@ gulpTaskFiles.forEach((taskFile) => {
 
 gulp.task('build', gulp.series([
   gulp.parallel(['styles', 'php', 'images', 'scripts']),
-  gulp.parallel(['docker-build']),
 ]));
 
 gulp.task('prod', gulp.series([

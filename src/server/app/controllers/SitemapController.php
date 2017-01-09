@@ -6,6 +6,7 @@ class SitemapController extends \lithium\action\Controller {
 
   public function index() {
     $urls = array(
+      '/',
       '/styleguide'
     );
 

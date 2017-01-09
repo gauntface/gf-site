@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const dockerHelper = require('../utils/docker-helper');
 const localConfig = require('../utils/development.config');
+const lighthouseWrapper = require('./utils/lighthouse-wrapper');
 const waitForServerOk = require('./utils/wait-for-server-ok');
 
 describe('Test Gauntface Server', function() {
@@ -10,13 +11,12 @@ describe('Test Gauntface Server', function() {
     // as well as build this project.
     this.timeout(5 * 60 * 1000);
 
-    global.__TEST_ENV = {
-      url: `http://localhost:${localConfig.port}`,
-    };
-
-    return dockerHelper.run('development-prod')
+    return Promise.all([
+      dockerHelper.run('development-prod'),
+      lighthouseWrapper.downloadChrome(),
+    ])
     .then(() => {
-      return waitForServerOk(global.__TEST_ENV.serverUrl, 10 * 1000);
+      return waitForServerOk(localConfig.url, 10 * 1000);
     });
   });
 
