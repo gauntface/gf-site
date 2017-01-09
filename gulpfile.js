@@ -21,4 +21,10 @@ gulp.task('build', gulp.series([
   gulp.parallel(['styles', 'php', 'images', 'scripts']),
   gulp.parallel(['docker-build']),
 ]));
+
+gulp.task('prod', gulp.series([
+  'build',
+  'docker-run:prod',
+]));
+
 gulp.task('default', gulp.parallel(['docker-run']));
