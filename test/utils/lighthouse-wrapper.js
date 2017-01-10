@@ -39,6 +39,18 @@ class LighthouseWrapper {
     .then(() => {
       return lighthouse(url);
     })
+    .catch((err) => {
+      console.error(`Error occured when running '${url}' through lighthouse.`);
+      console.error(err);
+
+      chromeProcess.kill('SIGHUP');
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject(err);
+        }, 2000);
+      });
+    })
     .then((results) => {
       chromeProcess.kill('SIGHUP');
 

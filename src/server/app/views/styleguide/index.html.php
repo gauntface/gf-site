@@ -52,7 +52,14 @@
   ); ?>
 
 <section class="styleguide-window">
+  <noscript>
+    <h1>Oh Dear.</h1>
+    <p>Sadly the styleguide requires JavaScript to toggle overlays
+    and change viewports.</p>
+    <p><strong>BUT</strong> if you don't want JavaScript, you can find the
+    <a href="/styleguide/list">individual components here</a>.</p>
+  </noscript>
   <div class="styleguide-window__wrapper js-styleguide-window__wrapper">
-    <iframe class="styleguide-window__iframe js-styleguide-window__iframe" src="/styleguide/list"></iframe>
+    <iframe class="styleguide-window__iframe js-styleguide-window__iframe" data-src="/styleguide/list"></iframe>
   </div>
 </section>

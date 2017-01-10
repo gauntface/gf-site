@@ -1,7 +1,6 @@
 const fetch = require('node-fetch');
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
-const localConfig = require('../../utils/development.config.js');
 
 require('chai').should();
 
@@ -23,21 +22,31 @@ describe('Test Sitemap', function() {
       });
     });
   });
+});
 
-  it('should be able to pass each page through lighthouse', function() {
-    this.timeout(30 * 1000);
-    this.retries(3);
+describe('Sitemap Pages + Lighthouse', function() {
+  let sitemapUrls = [];
+
+  before(function() {
+    this.timeout(5 * 1000);
 
     return getSitemapUrls()
-    .then((allUrls) => {
-      allUrls.reduce((promiseChain, url) => {
-        return promiseChain.then(() => {
-          return lighthouseWrapper.run(`${localConfig.url}${url}`)
+    .then((urls) => {
+      sitemapUrls = urls;
+    });
+  });
+
+  it('should configure the sitemap lighthouse tests', function() {
+    sitemapUrls.forEach((url) => {
+      describe(`Run '${url}' through lighthouse`, function() {
+        it(`should be able to pass '${url}' through lighthouse`, function() {
+          this.timeout(45 * 1000);
+          this.retries(3);
+
+          return lighthouseWrapper.run(url)
           .then((results) => {
             const booleanAudits = [
               'viewport',
-              // TODO: Why does this fail for toolbar?
-              // 'without-javascript',
               'critical-request-chains',
               'image-alt',
               'content-width',
@@ -66,14 +75,14 @@ describe('Test Sitemap', function() {
 
             intAudits.forEach((auditKey) => {
               if (results.audits[auditKey].score === -1) {
-                console.warn(`Unexpected score for: '${auditKey}' => '${results.audits[auditKey].score}'`);
+                console.warn(`Lighthouse Error: '${auditKey}' => '${results.audits[auditKey].score}'`);
               } else if (results.audits[auditKey].score !== 100) {
                 throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}'`);
               }
             });
           });
         });
-      }, Promise.resolve());
+      });
     });
   });
 });

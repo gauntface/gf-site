@@ -37,14 +37,13 @@ $this->scripts('/scripts/controllers/async-styles-controller.js');
 
 	<script>
 		window.GauntFace = window.GauntFace || {};
-		window.GauntFace._asyncStyles = [
-		<?php
-		echo '\''.implode('\',\'', $REMOTE_STYLES).'\'';
-		?>
-		];
+		window.GauntFace._asyncStyles = [<?php
+		if (count($REMOTE_STYLES) > 0) {
+			echo '\''.implode('\',\'', $REMOTE_STYLES).'\'';
+		}
+		?>];
 	</script>
 	<?php
-		$REMOTE_STYLES = array();
 		$scripts = explode("\n", $this->scripts());
 		foreach ($scripts as $scriptPath) {
 			if ($scriptPath) {
