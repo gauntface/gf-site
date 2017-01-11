@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint '.'",
-    "test": "npm run lint && gulp build && mocha"
+    "test": "npm run lint && gulp build && mocha --delay"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -19,6 +19,7 @@
     "postcss-cssnext": "^2.9.0",
     "postcss-import": "^9.0.0",
     "selenium-assistant": "^5.0.1",
+    "sync-request": "^3.0.1",
     "xml2js": "^0.4.17"
   }
 }
