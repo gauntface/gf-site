@@ -9,7 +9,10 @@ $this->scripts('/scripts/controllers/async-styles-controller.js');
 <head>
 	<?php echo $this->html->charset();?>
 	<title><?php echo $this->title(); ?></title>
+
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<?php if (isset($theme_color)) { ?><meta name="theme-color" content="<?= $theme_color ?>"><?php } ?>
+	<link rel="manifest" href="/manifest.json">
 
 	<?php
 		$REMOTE_STYLES = array();

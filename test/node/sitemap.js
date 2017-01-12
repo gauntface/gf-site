@@ -29,6 +29,35 @@ describe('Sitemap Pages + Lighthouse', function() {
 
         return lighthouseWrapper.run(url)
         .then((results) => {
+          const ignoreAudits = [
+            // It's on Localhost
+            'is-on-https',
+            'redirects-http',
+            'uses-http2',
+
+            // TODO: Add support
+            'service-worker',
+            'works-offline',
+
+            // TODO: Test
+            'without-javascript',
+            'geolocation-on-start',
+            'no-websql',
+            'aria-allowed-attr',
+            'aria-required-attr',
+            'aria-valid-attr-value',
+            'aria-valid-attr',
+            'color-contrast',
+            'label',
+            'tabindex',
+            'appcache-manifest',
+            'uses-passive-event-listeners',
+
+            // TODO: What is this?
+            'user-timings',
+            'screenshots',
+            'notification-on-start',
+          ];
           const booleanAudits = [
             'viewport',
             'critical-request-chains',
@@ -42,6 +71,17 @@ describe('Sitemap Pages + Lighthouse', function() {
             'no-mutation-events',
             'no-old-flexbox',
             'script-blocking-first-paint',
+            'manifest-exists',
+            'manifest-display',
+            'manifest-background-color',
+            'manifest-theme-color',
+            'manifest-icons-min-192',
+            'manifest-icons-min-144',
+            'manifest-short-name',
+            'manifest-name',
+            'manifest-short-name-length',
+            'manifest-start-url',
+            'theme-color-meta',
           ];
 
           const intAudits = [
@@ -50,6 +90,14 @@ describe('Sitemap Pages + Lighthouse', function() {
             'estimated-input-latency',
             'time-to-interactive',
           ];
+
+          Object.keys(results.audits).forEach((auditKey) => {
+            if (booleanAudits.indexOf(auditKey) === -1 &&
+            intAudits.indexOf(auditKey) === -1 &&
+            ignoreAudits.indexOf(auditKey) === -1) {
+              console.log(`Skipping result: ${auditKey}`);
+            }
+          });
 
           booleanAudits.forEach((auditKey) => {
             if (results.audits[auditKey].score !== true) {

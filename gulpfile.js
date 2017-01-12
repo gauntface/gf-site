@@ -18,7 +18,7 @@ gulpTaskFiles.forEach((taskFile) => {
 });
 
 gulp.task('build', gulp.series([
-  gulp.parallel(['styles', 'php', 'images', 'scripts']),
+  gulp.parallel(['styles', 'php', 'images', 'scripts', 'extras']),
 ]));
 
 gulp.task('prod', gulp.series([
