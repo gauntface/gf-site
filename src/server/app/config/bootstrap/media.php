@@ -30,6 +30,7 @@ Collection::formats(Media::class);
 Media::type('json', ['application/json']);
 Media::type('xml', ['application/xml', 'application/soap+xml', 'text/xml']);
 Media::type('txt', ['text/plain']);
+Media::type('js', ['application/javascript', 'text/javascript']);
 
 /**
  * This filter is a convenience method which allows you to automatically route requests for static

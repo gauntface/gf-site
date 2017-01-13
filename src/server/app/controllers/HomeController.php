@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use lithium\analysis\Logger;
 use lithium\net\http\Media;
 use Exception;
 

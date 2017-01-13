@@ -5,3 +5,4 @@ travis-encrypt.tar.gz
 npm-debug.log
 src/server/libraries
 src/server/app/resources/tmp/
+src/server/app/webroot/third_party/

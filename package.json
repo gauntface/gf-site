@@ -21,5 +21,8 @@
     "selenium-assistant": "^5.0.1",
     "sync-request": "^3.0.1",
     "xml2js": "^0.4.17"
+  },
+  "dependencies": {
+    "sw-lib": "0.0.7"
   }
 }

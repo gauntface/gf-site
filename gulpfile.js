@@ -18,7 +18,14 @@ gulpTaskFiles.forEach((taskFile) => {
 });
 
 gulp.task('build', gulp.series([
-  gulp.parallel(['styles', 'php', 'images', 'scripts', 'extras']),
+  'thirdparty',
+  gulp.parallel([
+    'styles',
+    'php',
+    'images',
+    'scripts',
+    'extras',
+  ]),
 ]));
 
 gulp.task('prod', gulp.series([
@@ -26,4 +33,4 @@ gulp.task('prod', gulp.series([
   'docker-run:prod',
 ]));
 
-gulp.task('default', gulp.parallel(['docker-run']));
+gulp.task('default', gulp.parallel(['thirdparty', 'docker-run']));
