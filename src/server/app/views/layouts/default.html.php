@@ -1,5 +1,6 @@
 <?php
 use lithium\net\http\Media;
+use app\utilities\Revision;
 
 $this->styles('/styles/main.css');
 $this->scripts('/scripts/controllers/async-styles-controller.js');
@@ -43,6 +44,10 @@ $this->scripts('/scripts/controllers/service-worker-controller.js');
 		window.GauntFace = window.GauntFace || {};
 		window.GauntFace._asyncStyles = [<?php
 		if (count($REMOTE_STYLES) > 0) {
+			$revisionMap = function($value) {
+				return Revision::addRevision($value);
+			};
+			$REMOTE_STYLES = array_map($revisionMap, $REMOTE_STYLES);
 			echo '\''.implode('\',\'', $REMOTE_STYLES).'\'';
 		}
 		?>];
@@ -52,7 +57,7 @@ $this->scripts('/scripts/controllers/service-worker-controller.js');
 		foreach ($scripts as $scriptPath) {
 			if ($scriptPath) {
 				$jsPath = trim($scriptPath);
-				echo '<script src="'.$jsPath.'" defer></script>';
+				echo '<script src="'.Revision::addRevision($jsPath).'" defer></script>';
 			}
 		}
 	?>

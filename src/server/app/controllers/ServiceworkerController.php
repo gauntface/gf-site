@@ -19,11 +19,21 @@ class ServiceworkerController extends \lithium\action\Controller {
 
     // Configure the revision assets
     $revisionedAssets = array(
+      // Scripts
       Revision::addRevision('/scripts/controllers/async-styles-controller.js'),
       Revision::addRevision('/scripts/controllers/service-worker-controller.js'),
+
+      // Styles
+      Revision::addRevision('/styles/components/home-header/home-header-remote.css')
     );
     $revisionedAssetsString = " = ".json_encode($revisionedAssets);
     $swTemplate = str_replace("; /** @ GF-REVISIONED-ASSETS @ **/", $revisionedAssetsString, $swTemplate);
+
+    $unrevisionedAssets = array(
+      '/'
+    );
+    $unrevisionedAssetsString = " = ".json_encode($unrevisionedAssets);
+    $swTemplate = str_replace("; /** @ GF-UNREVISIONED-ASSETS @ **/", $unrevisionedAssetsString, $swTemplate);
 
     return array(
       'swContent' => $swTemplate
