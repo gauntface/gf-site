@@ -1,8 +1,14 @@
 :root {
+  --dark-bg-color: #2B262E;
+  --light-grey-color: #BFBEC0;
+
   --styleguide-bg-color: #eeeeee;
   --styleguide-btn-color: rgba(100, 100, 100, 0.8);
 
   --toolbar-btn-hover-color: rgba(0, 0, 0, 0.1);
   --toolbar-btn-active-color: rgba(0, 0, 0, 0.3);
   --header-bg-color: #1e1621;
+
+  --footer-bg-color: var(--dark-bg-color);
+  --footer-text-color: var(--light-grey-color);
 }

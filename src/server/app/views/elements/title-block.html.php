@@ -13,7 +13,7 @@
 
   <div class="title-block__content">
     <h1 class="title-block__title"><?= $title ?></h1>
-    <div class="title-block__excerpt"><?= $excerpt ?></div>
+    <div class="title-block__excerpt"><?php echo $excerpt ?></div>
   </div>
 </section>
 

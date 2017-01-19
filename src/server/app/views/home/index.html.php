@@ -3,10 +3,11 @@
 
   $this->title($title);
 
-  echo $this->_view->render(['element' => 'home-header']);
-  echo $this->_view->render(['element' => 'title-block'], array(
-    'smallTopText' => 'Example',
-    'title' => 'Woohoo.',
-    'excerpt' => 'Example description of stuff.'
-  ));
+  foreach ($elements as $elementDetails) {
+    if (!array_key_exists('data', $elementDetails)) {
+      $elementDetails['data'] = array();
+    }
+
+    echo $this->_view->render(['element' => $elementDetails['id']], $elementDetails['data']);
+  }
 ?>

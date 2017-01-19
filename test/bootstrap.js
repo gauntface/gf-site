@@ -8,9 +8,12 @@ const getComponentList = require('./utils/get-styleguide-components');
 const getSitemapUrls = require('./utils/get-sitemap-urls');
 
 after(function() {
-  this.timeout(10 * 1000);
+  this.timeout(60 * 1000);
 
-  return lighthouseWrapper.killChrome();
+  return Promise.all([
+    lighthouseWrapper.killChrome(),
+    dockerHelper.clean(),
+  ]);
 });
 
 const initTestState = () => {

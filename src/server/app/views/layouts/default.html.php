@@ -3,6 +3,7 @@ use lithium\net\http\Media;
 use app\utilities\Revision;
 
 $this->styles('/styles/main.css');
+$this->scripts('/scripts/controllers/async-iframe-controller.js');
 $this->scripts('/scripts/controllers/async-styles-controller.js');
 $this->scripts('/scripts/controllers/service-worker-controller.js');
 ?>

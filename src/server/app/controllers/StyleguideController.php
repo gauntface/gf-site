@@ -10,6 +10,7 @@ class StyleguideController extends \lithium\action\Controller {
   public function index() {
     return array(
       'title' => 'Styleguide',
+      'theme_color' => '#eeeeee',
     );
 	}
 
@@ -42,6 +43,8 @@ class StyleguideController extends \lithium\action\Controller {
     $data = null;
     if (array_key_exists('variations', $componentDetails)) {
       $data = array_values($componentDetails['variations'])[$variationIndex];
+    } else if (array_key_exists('data', $componentDetails)) {
+      $data = $componentDetails['data'];
     }
     return compact('id', 'data');
   }
@@ -103,6 +106,22 @@ class StyleguideController extends \lithium\action\Controller {
         break;
       case 'home-header':
         $details['friendly-name'] = 'Home Header';
+        break;
+      case 'footer':
+        $details['friendly-name'] = 'Footer';
+        break;
+      case 'youtube-twitter':
+        $details['friendly-name'] = 'Youtube + Twitter';
+        $details['data'] = array(
+          'youtube' => array(
+            'episodeTitle' => 'Example Title',
+          ),
+          'twitter' => array(
+            'username' => '@example',
+            'tweetDate' => time(),
+            'tweet' => 'This is simply an example tweet.'
+          )
+        );
         break;
       case 'grid-overlay':
         return null;
