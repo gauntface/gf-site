@@ -110,16 +110,39 @@ class StyleguideController extends \lithium\action\Controller {
       case 'footer':
         $details['friendly-name'] = 'Footer';
         break;
-      case 'youtube-twitter':
-        $details['friendly-name'] = 'Youtube + Twitter';
+      case 'youtube-block':
+        $details['friendly-name'] = 'Youtube Block';
         $details['data'] = array(
-          'youtube' => array(
-            'episodeTitle' => 'Example Title',
+          'episodeTitle' => 'Example Title',
+          'episodeURL' => 'https://youtube.com'
+        );
+        break;
+      case 'twitter-block':
+        $details['friendly-name'] = 'Twitter Block';
+        $details['data'] = array(
+          'username' => '@example',
+          'userURL' => 'https://twitter.com',
+          'tweetDate' => time(),
+          'tweet' => 'This is simply an example tweet.'
+        );
+        break;
+      case 'split-section':
+        $details['friendly-name'] = 'Split Section (Layout)';
+        $details['data'] = array(
+          'left' => array(
+            'id' => 'youtube-block',
+            'data' => array(
+              'episodeTitle' => 'Example Title',
+              'episodeURL' => 'https://youtube.com'
+            )
           ),
-          'twitter' => array(
-            'username' => '@example',
-            'tweetDate' => time(),
-            'tweet' => 'This is simply an example tweet.'
+          'right' => array(
+            'id' => 'twitter-block',
+            'data' => array(
+              'username' => '@example',
+              'tweetDate' => time(),
+              'tweet' => 'This is simply an example tweet.'
+            )
           )
         );
         break;

@@ -24,18 +24,24 @@ class HomeController extends \lithium\action\Controller {
           )
         ),
         array(
-          'id' => 'youtube-twitter',
+          'id' => 'split-section',
           'data' => array(
-            'youtube' => array (
-              'episodeURL' => 'https://www.youtube.com/watch?v=M6VcneC2pI0&index=2&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL',
-              'episodeTitle' => 'Selenium',
-              'playlistURL' => 'https://www.youtube.com/watch?v=QH94CXVv3UE&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL'
+            'left' => array(
+              'id' => 'youtube-block',
+              'data' => array(
+                'episodeURL' => 'https://www.youtube.com/watch?v=M6VcneC2pI0&index=2&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL',
+                'episodeTitle' => 'Selenium',
+                'playlistURL' => 'https://www.youtube.com/watch?v=QH94CXVv3UE&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL'
+              )
             ),
-            'twitter' => array(
-              'username' => '@gauntface',
-              'userURL' => 'https://twitter.com/gauntface',
-              'tweetDate' => time(),
-              'tweet' => '@jp10k I genuinely should just change my twitter name and use this as my tagline. @_developit @preactjs'
+            'right' => array(
+              'id' => 'twitter-block',
+              'data' => array(
+                'username' => '@gauntface',
+                'userURL' => 'https://twitter.com/gauntface',
+                'tweetDate' => time(),
+                'tweet' => '@jp10k I genuinely should just change my twitter name and use this as my tagline. @_developit @preactjs'
+              )
             )
           )
         ),

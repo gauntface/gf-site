@@ -4,4 +4,5 @@
   --primary-font-size: 14;
   --btn-size: calc(var(--grid) * 6);
   --btn-padding: var(--grid);
+  --divider-thickness: 2px;
 }

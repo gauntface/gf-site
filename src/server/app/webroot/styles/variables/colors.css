@@ -11,4 +11,14 @@
 
   --footer-bg-color: var(--dark-bg-color);
   --footer-text-color: var(--light-grey-color);
+
+  --youtube-block-bg-color: #433e47;
+  --youtube-block-font-color: rgba(255, 255, 255, 0.7);
+  --youtube-block-icon-color: var(--youtube-block-font-color);
+
+  --divider-color: rgba(0, 0, 0, 0.3);
+  --divider-color-light: rgba(255, 255, 255, 0.3);
+
+  --twitter-block-bg-color: #1a1420;
+  --twitter-block-font-color: #bab8bc;
 }
