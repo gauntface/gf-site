@@ -18,6 +18,7 @@ gulpTaskFiles.forEach((taskFile) => {
 });
 
 gulp.task('build', gulp.series([
+  'clean',
   'thirdparty',
   gulp.parallel([
     'styles',

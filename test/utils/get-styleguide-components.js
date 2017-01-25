@@ -9,5 +9,8 @@ module.exports = () => {
     }
 
     return response.json();
+  })
+  .catch((err) => {
+    throw new Error('Unable to read in /styleguide/list.json');
   });
 };

@@ -1,3 +1,6 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
 .divider__horizontal {
   display: block;
 
