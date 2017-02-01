@@ -192,10 +192,15 @@ class DockerHelper {
         });
       }, Promise.resolve())
       .then(() => {
+        let customArgs = primaryContainer.run.customArgs || [];
+        if (options && options.customArgs) {
+          customArgs = customArgs.concat(options.customArgs);
+        }
+
         return dockerCLIWrapper.runContainer(
           primaryContainer.tag,
           primaryContainer.name,
-          primaryContainer.run.customArgs,
+          customArgs,
           primaryContainer.run.detached
         );
       });

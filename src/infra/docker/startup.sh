@@ -11,6 +11,26 @@ if [ "$BUILDTYPE" = '' ]; then
  exit 1;
 fi
 
+if [ "$TWITTER_CONSUMER_KEY" = '' ]; then
+ echo "    No TWITTER_CONSUMER_KEY set."
+ exit 1;
+fi
+
+if [ "$TWITTER_CONSUMER_SECRET" = '' ]; then
+ echo "    No TWITTER_CONSUMER_SECRET set."
+ exit 1;
+fi
+
+if [ "$TWITTER_ACCESS_TOKEN" = '' ]; then
+ echo "    No TWITTER_ACCESS_TOKEN set."
+ exit 1;
+fi
+
+if [ "$TWITTER_ACCESS_SECRET" = '' ]; then
+ echo "    No TWITTER_ACCESS_SECRET set."
+ exit 1;
+fi
+
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 

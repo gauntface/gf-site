@@ -2,6 +2,10 @@
 @import "/styles/variables/colors.css";
 
 .youtube-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   width: 100%;
 
   padding: calc(var(--grid) * 3) calc(var(--grid) * 2);

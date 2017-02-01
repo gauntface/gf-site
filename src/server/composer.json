@@ -8,6 +8,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0.0",
-    "unionofrad/lithium": "1.1.0-beta"
+    "unionofrad/lithium": "1.1.0-beta",
+    "abraham/twitteroauth": "^0.7.2"
   }
 }

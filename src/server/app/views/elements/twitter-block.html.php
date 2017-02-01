@@ -14,7 +14,7 @@ $twitterIconSVG = file_get_contents($webrootPath.'/images/twitter-block/twitter-
   </div>
   <div class="twitter-block__tweet-info small-font-size">
     <a href="<?= $userURL ?>"><?= $username ?></a><span class="twitter-block__info-spacer"> . </span><time datetime="<?= date("Y-m-d", $tweetDate); ?>"><?= date("M d", $tweetDate); ?></time>  </div>
-    <p class="twitter-block__tweet"><?= $tweet ?></p>
+    <p class="twitter-block__tweet"><?php echo $tweet ?></p>
 
   <div class="divider__horizontal is-light-version"></div>
 
