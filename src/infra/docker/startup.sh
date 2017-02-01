@@ -11,25 +11,25 @@ if [ "$BUILDTYPE" = '' ]; then
  exit 1;
 fi
 
-if [ "$TWITTER_CONSUMER_KEY" = '' ]; then
- echo "    No TWITTER_CONSUMER_KEY set."
- exit 1;
-fi
+# Replace environment variables in these files.
+envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
 
-if [ "$TWITTER_CONSUMER_SECRET" = '' ]; then
- echo "    No TWITTER_CONSUMER_SECRET set."
- exit 1;
-fi
+touch /etc/nginx/environment-vars.conf;
+[[ ! -z "${BUILDTYPE}" ]] && echo -e "fastcgi_param BUILDTYPE ${BUILDTYPE};\n" >> /etc/nginx/environment-vars.conf;
+[[ ! -z "${TWITTER_CONSUMER_KEY}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
+[[ ! -z "${TWITTER_CONSUMER_SECRET}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
+[[ ! -z "${TWITTER_ACCESS_TOKEN}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
+[[ ! -z "${TWITTER_ACCESS_SECRET}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
 
-if [ "$TWITTER_ACCESS_TOKEN" = '' ]; then
- echo "    No TWITTER_ACCESS_TOKEN set."
- exit 1;
-fi
+# Create a symbolic link between sites-available and sites-enabled
+ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
-if [ "$TWITTER_ACCESS_SECRET" = '' ]; then
- echo "    No TWITTER_ACCESS_SECRET set."
- exit 1;
-fi
+# Create tmp directory for cache directories etc.
+mkdir -p /gauntface/site/server/app/resources/tmp/cache/templates/
+chmod -R 777 /gauntface/site/server/app/resources/tmp/cache/templates/
+
+mkdir -p /gauntface/site/server/app/resources/tmp/logs/
+chmod -R 777 /gauntface/site/server/app/resources/tmp/logs/
 
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
@@ -53,20 +53,6 @@ echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
 echo ""
 echo -e "${NC}"
 echo ""
-
-# Replace environment variables in these files.
-envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
-envsubst < /etc/nginx/environment-vars.tmpl > /etc/nginx/environment-vars.conf;
-
-# Create a symbolic link between sites-available and sites-enabled
-ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
-
-# Create tmp directory for cache directories etc.
-mkdir -p /gauntface/site/server/app/resources/tmp/cache/templates/
-chmod -R 777 /gauntface/site/server/app/resources/tmp/cache/templates/
-
-mkdir -p /gauntface/site/server/app/resources/tmp/logs/
-chmod -R 777 /gauntface/site/server/app/resources/tmp/logs/
 
 service php7.0-fpm start;
 

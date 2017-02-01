@@ -42,6 +42,13 @@ const initTestState = () => {
     global.sitemap = {
       urls,
     };
+  })
+  .catch((err) => {
+    return lighthouseWrapper.killChrome()
+    .then(() => {
+      console.error(err);
+      process.exit(1);
+    });
   });
 };
 

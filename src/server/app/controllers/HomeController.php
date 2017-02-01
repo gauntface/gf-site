@@ -18,6 +18,7 @@ class HomeController extends \lithium\action\Controller {
     } else {
       $twitterMessage = 'Oops looks like there was a problem talking with '.
         'Twitter.';
+      $twitterTime = null;
     }
     return array(
       'title' => 'GauntFace | Matthew Gaunt',
