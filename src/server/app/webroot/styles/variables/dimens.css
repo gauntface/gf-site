@@ -7,4 +7,16 @@
   --btn-size: calc(var(--grid) * 6);
   --btn-padding: var(--grid);
   --divider-thickness: 2px;
+
+  --font-size-h1: 24;
+  --font-size-h2: 22;
+  --font-size-h3: 20;
+  --font-size-h4: 18;
+  --font-size-h5: 16;
+  --font-size-h6: 14;
+  --font-size-code:	12;
+  --small-font-size:	12;
+  --tiny-font-size: 10;
+  --medium-font-size: 36;
+  --large-font-size: 48;
 }

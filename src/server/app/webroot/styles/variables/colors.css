@@ -4,6 +4,7 @@
 
   --font-color: #333333;
   --page-bg-color: #EDEDEB;
+  --link-text-color: inherit;
 
   --styleguide-bg-color: #eeeeee;
   --styleguide-btn-color: rgba(100, 100, 100, 0.8);
