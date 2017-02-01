@@ -2,6 +2,8 @@
   --grid: 8px;
 
   --primary-font-size: 14;
+  --primary-line-height: 20;
+
   --btn-size: calc(var(--grid) * 6);
   --btn-padding: var(--grid);
   --divider-thickness: 2px;

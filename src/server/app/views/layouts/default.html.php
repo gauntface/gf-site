@@ -5,6 +5,7 @@ use app\utilities\Revision;
 $this->styles('/styles/main.css');
 $this->scripts('/scripts/controllers/async-iframe-controller.js');
 $this->scripts('/scripts/controllers/async-styles-controller.js');
+$this->scripts('/scripts/controllers/async-font-controller.js');
 $this->scripts('/scripts/controllers/service-worker-controller.js');
 ?>
 <!doctype html>
@@ -38,7 +39,7 @@ $this->scripts('/scripts/controllers/service-worker-controller.js');
 		// echo $this->html->link('Icon', null, ['type' => 'icon']);
 	?>
 </head>
-<body class="lithified">
+<body>
 	<?php echo $this->content(); ?>
 
 	<script>

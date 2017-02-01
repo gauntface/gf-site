@@ -1,4 +1,6 @@
 @import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+@import "/styles/variables/fonts.css";
 
 html {
   width: 100%;
@@ -14,7 +16,30 @@ body {
   width: 100%;
   min-height: 100%;
 
+  font-family: var(--base-font-family);
   font-size: calc(var(--primary-font-size) * 1px);
+  line-height: calc(var(--primary-line-height) * 1px);
+  color: var(--font-color);
+
+  background-color: var(--page-bg-color);
+  box-sizing: border-box;
+
+  overflow-wrap: break-word;
+
+  transition: background-color .5s ease-in-out;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+  margin-top: 0;
+  margin-bottom: calc(var(--grid) * 2);
+  padding: 0;
+  overflow-wrap: normal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--title-font-family);
+  font-weight: normal;
+  text-transform: uppercase;
 }
 
 button {
