@@ -14,12 +14,22 @@ fi
 # Replace environment variables in these files.
 envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
 
+environmentVariables=(
+  'BUILDTYPE'
+  'TWITTER_CONSUMER_KEY'
+  'TWITTER_CONSUMER_SECRET'
+  'TWITTER_ACCESS_TOKEN'
+  'TWITTER_ACCESS_SECRET'
+);
+
 touch /etc/nginx/environment-vars.conf;
-[[ ! -z "${BUILDTYPE}" ]] && echo -e "fastcgi_param BUILDTYPE ${BUILDTYPE};\n" >> /etc/nginx/environment-vars.conf;
-[[ ! -z "${TWITTER_CONSUMER_KEY}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
-[[ ! -z "${TWITTER_CONSUMER_SECRET}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
-[[ ! -z "${TWITTER_ACCESS_TOKEN}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
-[[ ! -z "${TWITTER_ACCESS_SECRET}" ]] && echo -e "fastcgi_param TWITTER_CONSUMER_KEY ${TWITTER_CONSUMER_KEY};\n" >> /etc/nginx/environment-vars.conf;
+
+for envName in ${environmentVariables[@]}
+do
+  if [[ ! -z "${!envName}" ]]; then
+    echo -e "fastcgi_param ${envName} ${!envName};\n" >> /etc/nginx/environment-vars.conf;
+  fi
+done
 
 # Create a symbolic link between sites-available and sites-enabled
 ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
