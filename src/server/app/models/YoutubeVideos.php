@@ -45,8 +45,9 @@ class YoutubeVideos extends \lithium\data\Model {
       if (!$written) {
         Logger::warning("Latest video cache failed.");
       }
-    } catch(Exception $e) {
-      // Unable to get tweet
+    } catch(\Google_Service_Exception $e) {
+      Logger::error("Unable to retrieve latest youtube video: ". $e->getMessage());
+    } catch (Exception $e) {
       Logger::error("Unable to retrieve latest youtube video: ". $e->getMessage());
     }
 
