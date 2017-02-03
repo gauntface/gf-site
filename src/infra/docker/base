@@ -12,7 +12,8 @@ RUN add-apt-repository ppa:nginx/development
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
 
 # Install Dependencies
-RUN apt-get -y install git nodejs nginx php php-fpm php-mysql php-apcu php-imagick php-curl pngcrush build-essential gettext nano
+RUN apt-get update
+RUN apt-get -y install git nodejs nginx php php-fpm php-mysql php-imagick php-curl php-apcu pngcrush build-essential gettext nano
 
 # Remove the default Nginx configuration file
 RUN rm /etc/nginx/sites-enabled/default

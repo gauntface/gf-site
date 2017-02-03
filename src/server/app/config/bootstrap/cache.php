@@ -39,11 +39,13 @@ $cachePath = Libraries::get(true, 'resources') . '/tmp/cache';
 if (!(($apc = Apc::enabled()) || PHP_SAPI === 'cli') && !is_writable($cachePath)) {
 	return;
 }
+
 Cache::config([
 	'default' => [
-    'adapter' => 'Memcached',
-  	'host' => '127.0.0.1:11211'
-  ],
+		'adapter' => $apc ? 'Apc' : 'File',
+		'strategies' => $apc ? [] : ['Serializer'],
+		'scope' => $apc ? md5(LITHIUM_APP_PATH) : null
+	]
 ]);
 
 /**

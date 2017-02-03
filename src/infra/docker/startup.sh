@@ -41,6 +41,8 @@ chmod -R 777 /gauntface/site/server/app/resources/tmp/cache/templates/
 mkdir -p /gauntface/site/server/app/resources/tmp/logs/
 chmod -R 777 /gauntface/site/server/app/resources/tmp/logs/
 
+service php7.0-fpm start;
+
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
@@ -63,7 +65,5 @@ echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
 echo ""
 echo -e "${NC}"
 echo ""
-
-service php7.0-fpm start;
 
 nginx -g 'daemon off;';
