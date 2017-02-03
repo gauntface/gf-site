@@ -17,7 +17,7 @@ $playIconSVG = file_get_contents($webrootPath.'/images/youtube-block/youtube-blo
   </div>
 
   <h1 class="youtube-block__series-title">
-    <a href="<?= $playlistURL ?>">
+    <a href="<?= $episodeURL ?>">
       Totally<br />Tooling Tips
     </a>
   </h1>

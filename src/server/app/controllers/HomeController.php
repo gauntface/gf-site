@@ -6,11 +6,13 @@ use lithium\net\http\Media;
 use Exception;
 
 use app\models\Tweets;
+use app\models\YoutubeVideos;
 
 class HomeController extends \lithium\action\Controller {
 
   public function index() {
     $latestTweet = Tweets::getLatestTweet();
+    $latestVideo = YoutubeVideos::getLatestVideo();
 
     if(isset($latestTweet)) {
       $twitterMessage = $latestTweet['text'];
@@ -19,6 +21,14 @@ class HomeController extends \lithium\action\Controller {
       $twitterMessage = 'Oops looks like there was a problem talking with '.
         'Twitter.';
       $twitterTime = null;
+    }
+
+    if(isset($latestVideo)) {
+      $ytVideoTitle = $latestVideo['title'];
+      $ytVideoUrl = $latestVideo['url'];
+    } else {
+      $ytVideoTitle = 'Selenium';
+      $ytVideoUrl = 'https://www.youtube.com/watch?v=M6VcneC2pI0&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL';
     }
     return array(
       'title' => 'GauntFace | Matthew Gaunt',
@@ -41,9 +51,8 @@ class HomeController extends \lithium\action\Controller {
             'left' => array(
               'id' => 'youtube-block',
               'data' => array(
-                'episodeURL' => 'https://www.youtube.com/watch?v=M6VcneC2pI0&index=2&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL',
-                'episodeTitle' => 'Selenium',
-                'playlistURL' => 'https://www.youtube.com/watch?v=QH94CXVv3UE&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL'
+                'episodeURL' => $ytVideoUrl,
+                'episodeTitle' => $ytVideoTitle
               )
             ),
             'right' => array(

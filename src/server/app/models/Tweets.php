@@ -44,7 +44,7 @@ class Tweets extends \lithium\data\Model {
         // Cache the latest tweek for 1 hours.
         $written = Cache::write('default', 'latest_tweet', $tweetInfo, 60 * 60);
         if (!$written) {
-          Logger::debug("Latets tweet cache failed.");
+          Logger::warning("Latest tweet cache failed.");
         }
       }
     } catch(Exception $e) {

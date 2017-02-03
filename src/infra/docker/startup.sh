@@ -20,6 +20,7 @@ environmentVariables=(
   'TWITTER_CONSUMER_SECRET'
   'TWITTER_ACCESS_TOKEN'
   'TWITTER_ACCESS_SECRET'
+  'YOUTUBE_API_KEY'
 );
 
 touch /etc/nginx/environment-vars.conf;
