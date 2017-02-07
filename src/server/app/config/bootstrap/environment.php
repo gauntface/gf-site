@@ -2,11 +2,13 @@
 
 use lithium\core\Environment;
 
-$buildType = getenv('BUILDTYPE');
-if ($buildType !== false) {
-	Environment::set($buildType);
-} else {
-	Environment::set('production');
-}
+Environment::is(function($request) {
+	$buildType = getenv('BUILDTYPE');
+	if ($buildType !== false) {
+		return $buildType;
+	}
+
+	return 'production';
+});
 
 ?>
