@@ -1,6 +1,15 @@
 <?php
 use lithium\net\http\Media;
+use lithium\core\Environment;
 use app\utilities\Revision;
+
+function ob_html_compress($buf){
+	return preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'',$buf));
+}
+
+if (Environment::is('production')) {
+	ob_start("ob_html_compress");
+}
 
 $this->styles('/styles/main.css');
 $this->scripts('/scripts/controllers/async-iframe-controller.js');
@@ -65,3 +74,8 @@ $this->scripts('/scripts/controllers/service-worker-controller.js');
 	?>
 </body>
 </html>
+<?php
+if (Environment::is('production')) {
+	ob_end_flush();
+}
+?>
