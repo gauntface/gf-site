@@ -11,7 +11,14 @@ gulp.task('docker-clean', () => dockerHelper.clean());
 
 gulp.task('docker-build', () => dockerHelper.build());
 
-gulp.task('docker-run', () => {
+gulp.task(`docker-cli`, () => {
+  return dockerHelper.accessCLI('development')
+  .catch(() => {
+    // NOOP for errors.
+  });
+});
+
+const runDocker = (buildName) => {
   let customArgs = [];
   try {
     const envBuffer = fs.readFileSync(
@@ -25,16 +32,10 @@ gulp.task('docker-run', () => {
     throw new Error('Unable to read env.json file');
   }
 
-  return dockerHelper.run('development', {
+  return dockerHelper.run(buildName, {
     customArgs,
   });
-});
+};
 
-gulp.task(`docker-cli`, () => {
-  return dockerHelper.accessCLI('development')
-  .catch(() => {
-    // NOOP for errors.
-  });
-});
-
-gulp.task('docker-run:prod', () => dockerHelper.run('development-prod'));
+gulp.task('docker-run:dev', () => runDocker('development'));
+gulp.task('docker-run:prod', () => runDocker('development-prod'));

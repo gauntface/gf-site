@@ -52,6 +52,7 @@ const DEVELOPMENT_PROD_CONTAINER = {
       '--link', MYSQL_CONTAINER.name,
       '-p', `${localConfig.port}:80`,
       '--volume', `${path.join(__dirname, '..', 'build')}:/gauntface/site`,
+      '-e', `BUILDTYPE=production`,
     ],
   },
   dependencies: [

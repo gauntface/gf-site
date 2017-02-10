@@ -35,4 +35,4 @@ gulp.task('prod', gulp.series([
   'docker-run:prod',
 ]));
 
-gulp.task('default', gulp.parallel(['thirdparty', 'docker-run']));
+gulp.task('default', gulp.parallel(['thirdparty', 'docker-run:dev']));
