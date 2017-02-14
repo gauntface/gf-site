@@ -41,16 +41,20 @@ const manageNavigation = pathname => {
         return toolbox.cacheFirst(request, values, options);
       }
 
-      console.log('');
-      console.log(`Loading ${request.url} with cacheFirst`);
-      console.log('');
-      return toolbox.cacheOnly(request, values, options);
+      if (requestURL.search !== '?homescreen=true') {
+        console.log('');
+        console.log(`Loading ${request.url} with cacheOnly`);
+        console.log('');
+        return toolbox.cacheOnly(request, values, options);
+      }
     }
 
     if (request.mode !== 'navigate') {
       console.log(`Not a navigation`);
       // return fetch(request);
     }
+
+    const parsedURL = request.url.replace(requestURL.search, '');
 
     return Promise.all([
       toolbox.cacheOnly(
@@ -64,7 +68,7 @@ const manageNavigation = pathname => {
         return response.json();
       }),
       toolbox.cacheOnly(
-        new Request(request.url+`?output=json&section=content`))
+        new Request(parsedURL+`?output=json&section=content`))
       .then(response => {
         return response.json();
       })
