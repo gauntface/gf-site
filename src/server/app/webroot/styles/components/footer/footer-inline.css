@@ -21,10 +21,6 @@
   transition: opacity .5s ease-in-out;
 }
 
-.footer.is-hidden {
-  opacity: 0;
-}
-
 .footer__container {
   display: flex;
 
@@ -60,11 +56,6 @@
   height: calc(var(--grid) * 3);
 
   margin-right: var(--grid);
-}
-
-.footer__social-link-item > img {
-  width: calc(var(--grid) * 3);
-  height: calc(var(--grid) * 3);
 }
 
 .footer__spacer {

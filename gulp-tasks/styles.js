@@ -10,7 +10,6 @@ const cssnano = require('cssnano');
 const path = require('path');
 
 gulp.task('styles', () => {
-  const browserSupport = ['last 2 versions'];
   const processors = [
     atImport({
       resolve: (id, basedir, importOptions) => {
@@ -20,7 +19,9 @@ gulp.task('styles', () => {
         }
       },
     }),
-    cssnext({browsers: browserSupport, warnForDuplicates: false}),
+    cssnext({
+      warnForDuplicates: false,
+    }),
     cssnano(),
   ];
 

@@ -25,7 +25,7 @@ describe('Sitemap Pages + Lighthouse', function() {
     describe(`Run '${url}' through lighthouse`, function() {
       it(`should be able to pass '${url}' through lighthouse`, function() {
         this.timeout(45 * 1000);
-        this.retries(3);
+        this.retries(2);
 
         return lighthouseWrapper.run(url)
         .then((results) => {
@@ -34,6 +34,13 @@ describe('Sitemap Pages + Lighthouse', function() {
             'is-on-https',
             'redirects-http',
             'uses-http2',
+
+            // Unable to use this due to poor debugging
+            'unused-css-rules',
+
+            // Unable to use - test doesn't have a tool that will generate
+            // images that will pass the test
+            'uses-optimized-images',
 
             // TODO: Add support
             'service-worker',
@@ -82,6 +89,8 @@ describe('Sitemap Pages + Lighthouse', function() {
             'manifest-short-name-length',
             'manifest-start-url',
             'theme-color-meta',
+            'uses-responsive-images',
+            'deprecations',
           ];
 
           const intAudits = [
