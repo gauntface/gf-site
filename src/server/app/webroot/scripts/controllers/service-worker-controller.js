@@ -8,7 +8,7 @@ class ServiceWorkerController {
   }
 }
 
-if (navigator.serviceWorker && false) {
+if (navigator.serviceWorker) {
   window.addEventListener('load', () => {
     const swController = new ServiceWorkerController();
     swController.start();
