@@ -110,7 +110,9 @@ describe('Sitemap Pages + Lighthouse', function() {
 
           booleanAudits.forEach((auditKey) => {
             if (results.audits[auditKey].score !== true) {
-              throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}`);
+              const msg = `Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}`;
+              console.error(msg);
+              throw new Error(msg);
             }
           });
 
@@ -118,7 +120,9 @@ describe('Sitemap Pages + Lighthouse', function() {
             if (results.audits[auditKey].score === -1) {
               console.warn(`Lighthouse Error: '${auditKey}' => '${results.audits[auditKey].score}'`);
             } else if (results.audits[auditKey].score !== 100) {
-              throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}'`);
+              const msg = `Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}`;
+              console.error(msg);
+              throw new Error(msg);
             }
           });
         });

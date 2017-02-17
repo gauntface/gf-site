@@ -36,6 +36,11 @@ if ($locales = Environment::get('locales')) {
 }
 
 /**
+ * Connect the shell id to the shell index
+ */
+Router::connect('/shell/{:shellId}.{:type}', 'Shell::index');
+
+/**
  * ### Basic page routes
  *
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
@@ -48,12 +53,6 @@ if ($locales = Environment::get('locales')) {
 Router::connect('/', 'Home::index');
 Router::connect('/{:controller}.{:type}');
 Router::connect('/{:controller}/{:action}.{:type}');
-
-/**
- * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
- * `PagesController`, rendering `/views/pages/about.html.php` as a static page.
- */
-Router::connect('/pages/{:args}', 'Pages::view');
 
 /**
  * ### Testing routes

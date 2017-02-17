@@ -30,9 +30,11 @@ class HomeController extends \lithium\action\Controller {
       $ytVideoTitle = 'Selenium';
       $ytVideoUrl = 'https://www.youtube.com/watch?v=M6VcneC2pI0&list=PLNYkxOF6rcIB3ci6nwNyLYNU6RDOU3YyL';
     }
-    return array(
+
+    $viewData = array(
       'title' => 'GauntFace | Matthew Gaunt',
       'theme_color' => '#1e1621',
+      'shell' => 'headerfooter',
       'elements' => array(
         array(
           'id' => 'home-header'
@@ -73,12 +75,15 @@ class HomeController extends \lithium\action\Controller {
             'title' => 'Smashing Book 5',
             'excerpt' => 'I’ve written a chapter in this book about service worker and it’s available now! <a href="http://www.smashingmagazine.com/2015/03/real-life-responsive-web-design-smashing-book-5/">Get the print or ebook HERE</a>'
           )
-        ),
-        array(
-          'id' => 'footer'
         )
       )
     );
+    $renderData = array('data' => $viewData);
+    if (array_key_exists('type', $this->request->params) && $this->request->params['type'] === 'json') {
+      $renderData['layout'] = 'template-view';
+    }
+
+    return $this->render($renderData);
 	}
 
   private function getTweetFromTwitter() {

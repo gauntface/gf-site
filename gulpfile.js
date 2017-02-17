@@ -27,7 +27,6 @@ gulp.task('build', gulp.series([
     'scripts',
     'extras',
   ]),
-  'composer',
 ]));
 
 gulp.task('prod', gulp.series([

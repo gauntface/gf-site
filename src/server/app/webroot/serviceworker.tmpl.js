@@ -20,17 +20,26 @@ if (unrevisionedAssets && unrevisionedAssets.length > 0) {
     swlib.warmRuntimeCache(unrevisionedAssets);
 }
 
+console.log(swlib);
+
 swlib.router.registerRoute(/\/styles\/((?:.*\/)+.*\.css)/,
   swlib.cacheFirst());
 
 swlib.router.registerRoute(/\/images\/((?:.*\/)+.*)/,
   swlib.staleWhileRevalidate());
 
-swlib.router.registerRoute('/', {
+/** swlib.router.registerRoute('/', {
   handle: (details) => {
     if (details.event.request.mode !== 'navigate') {
       return;
     }
+
+    // TODO's
+    // 1. How to version control /home.json, document.json, layout/id.json
+    // 2. How to serve up document.json
+    // 3. How to serve up layout.json
+    // 4. How to make reuse of template in window and service worker
+    // 5. How to make use of sw-lib caching strategies?
 
     // const layoutId = 'headerfooter';
     const requiredTemplates = [
@@ -51,4 +60,4 @@ swlib.router.registerRoute('/', {
       });
     });
   },
-});
+});**/

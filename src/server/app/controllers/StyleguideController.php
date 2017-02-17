@@ -61,6 +61,12 @@ class StyleguideController extends \lithium\action\Controller {
     $webrootPath = Media::webroot(true);
 
     switch($noExtension) {
+      case 'document':
+        $details['friendly-name'] = 'Document';
+        break;
+      case 'shells':
+        // TODO: This should be shells/<shell name>
+        return null;
       case 'title-block':
         $details['friendly-name'] = 'Title Block';
         $details['variations'] = array(
