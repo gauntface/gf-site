@@ -1,0 +1,11 @@
+<h1>Hi</h1>
+
+{{#test}}
+<h2>{{ . }}</h2>
+{{/test}}
+
+{{#elements}}
+<h2>{{ id }}</h2>
+<p>{{ data }}</p>
+{{> id }}
+{{/elements}}

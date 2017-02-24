@@ -1,0 +1,14 @@
+{
+  "name": "gf-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "hopin": "1.0.0"
+  }
+}
