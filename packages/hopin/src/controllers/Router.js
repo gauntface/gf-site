@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('mz/fs');
 
+const HopinError = require('../models/HopinError');
 const parseUrl = require('../utils/parse-url');
 const toTitleCase = require('../utils/title-case');
 
@@ -21,7 +22,9 @@ class Router {
         return this._findController('Error')
         .then((matchingController) => {
           if (!matchingController) {
-            return Promise.reject();
+            return Promise.reject(new HopinError('no-controller-found', {
+              url: requestUrl,
+            }));
           }
 
           return matchingController['index']({request, type});
@@ -29,12 +32,23 @@ class Router {
       }
 
       return matchingController[action]({request, type});
+    })
+    .then((controllerResponse) => {
+      return {
+        controllerResponse,
+        responseInfo: {
+          controller,
+          action,
+          type,
+        },
+      };
     });
   }
 
   _findController(controllerName) {
     const expectedController = `${toTitleCase(controllerName)}Controller.js`;
-    const controllerPath = path.join(this._relativePath, expectedController);
+    const controllerPath = path.join(
+      this._relativePath, 'controllers', expectedController);
     return fs.exists(controllerPath)
     .then((exists) => {
       if (!exists) {

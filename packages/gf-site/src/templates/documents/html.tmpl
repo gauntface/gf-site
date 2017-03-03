@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+	<title>{{title}}</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="{{theme_color}}">
+
+	<link rel="manifest" href="/manifest.json">
+
+  {{#styles.inline}}
+    <style>{{{.}}}</style>
+  {{/styles.inline}}
+</head>
+<body>
+  {{{content}}}
+
+	<script>
+		window.GauntFace = window.GauntFace || {};
+		window.GauntFace._asyncStyles = [
+      {{#styles.remote}}
+        {{.}}
+      {{/styles.remote}}
+    ];
+	</script>
+
+  {{#scripts}}
+    <script src="{{.}}" defer></script>
+  {{/scripts}}
+</body>
+</html>

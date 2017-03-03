@@ -47,9 +47,9 @@ describe('Controller Router.route()', function() {
     },
   };
 
-  const exampleControllerPath = path.join(__dirname, 'ExampleController.js');
-  const homeControllerPath = path.join(__dirname, 'HomeController.js');
-  const errorControllerPath = path.join(__dirname, 'ErrorController.js');
+  const exampleControllerPath = path.join(__dirname, 'controllers', 'ExampleController.js');
+  const homeControllerPath = path.join(__dirname, 'controllers', 'HomeController.js');
+  const errorControllerPath = path.join(__dirname, 'controllers', 'ErrorController.js');
   const proxyquireInputs = {};
   proxyquireInputs['mz/fs'] = {
     exists: (filePath) => {
