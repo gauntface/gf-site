@@ -581,10 +581,11 @@ describe('Template Manager', function() {
   });
 
   // Add Static Assets to partials
-  // TODO: Remove the 'views' from being auto added to paths
   // TODO: Support changing the used document type -
   // is document even right word?
-  // TODO: Figure out the file naming.
   // TODO: Move controller tests to a utils/controller-mock-env.js
   // TODO: Move template tests to a utils/templates-mock-env.js
+  // TODO: Add test for static Assets
+  // TODO: Add test for inline styles
+  // TODO: Add test for async styles
 });

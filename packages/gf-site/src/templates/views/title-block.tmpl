@@ -1,1 +1,25 @@
-<h1>TODO: title-block.tmpl</h1>
+---
+styles:
+- /styles/components/title-block/title-block-inline.css
+---
+{{#link}}
+<a class="title-block" href="{{link}}">
+{{/link}}
+<section class="title-block">
+  {{#date}}
+    <!-- <time => date("Y-m-d", $date);-->
+    <!-- Inside tag => date("Y.m.d", $date) -->
+    <time class="title-block__toptext" datetime="{{data.date}}">{{data.date}}</time>
+  {{/date}}
+  {{^date}}
+    <p class="title-block__toptext">{{{data.topText}}}</p>
+  {{/date}}
+
+  <div class="title-block__content">
+    <h1 class="title-block__title">{{{data.title}}}</h1>
+    <div class="title-block__excerpt">{{{data.excerpt}}}</div>
+  </div>
+</section>
+{{#link}}
+</a>
+{{/link}}

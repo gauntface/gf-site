@@ -10,7 +10,7 @@ class HomeController {
         }, {
           templatePath: 'views/title-block.tmpl',
           data: {
-            smallTopText: 'TODO: Date',
+            topText: 'TODO: Date',
             title: 'TODO: Blog Post.',
             excerpt: 'TODO: Blog Excerpt',
           },
