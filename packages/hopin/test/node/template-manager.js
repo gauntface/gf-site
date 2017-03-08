@@ -588,4 +588,5 @@ describe('Template Manager', function() {
   // TODO: Add test for static Assets
   // TODO: Add test for inline styles
   // TODO: Add test for async styles
+  // TODO: Add YAML to document
 });
