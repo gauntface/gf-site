@@ -1,0 +1,123 @@
+@import "/styles/variables/dimens.css";
+
+.title-block {
+  padding: calc(var(--grid) * 6) calc(var(--grid) * 4.5);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.title-block__toptext {
+  display: block;
+  width: 100%;
+
+  text-align: center;
+  text-transform: uppercase;
+
+  font-size: calc((12 / var(--primary-font-size)) * 1rem);
+}
+
+.title-block__content {
+  max-width: 800px;
+  margin: calc(var(--grid) * 3) auto;
+  padding: calc(var(--grid) * 3) 0;
+}
+
+
+.title-block__title, .title-block__excerpt {
+  display: block;
+  width: 100%;
+
+  margin: 0 auto;
+
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.title-block__title {
+  font-size: calc((24 / var(--primary-font-size)) * 1rem);
+  letter-spacing: 0.2rem;
+}
+
+.title-block__title:after {
+  content: '';
+
+  display: block;
+  width: calc(var(--grid) * 6);
+  height: 2px;
+  margin: calc((var(--grid) * 3) - 1px) auto;
+  background-color: rgba(0,0,0,.3);
+}
+
+@media (min-width: 950px) {
+  .title-block {
+    padding: calc(var(--grid) * 12) calc(var(--grid) * 4.5);
+  }
+
+  .title-block__content {
+    margin: calc(var(--grid) * 6) auto;
+    padding: calc(var(--grid) * 6) 0;
+    margin-top: calc(var(--grid) * 9);
+  }
+}
+
+/**
+
+.title-block-item__link-wrapper {
+  display: block;
+  text-decoration: none;
+}
+
+.title-block-item {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.title-block-item__toptext {
+  @include typography-font-size($small-font-size);
+}
+
+
+.title-block-item__excerpt {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+@media (min-width: $break-xsmall) {
+  .title-block-item.is-padded {
+    padding: ($base-line-height * 2) ($base-line-height * 1.5);
+  }
+
+  .title-block-item__toptext {
+    padding-bottom: $base-line-height * 1;
+
+  }
+
+  .title-block__content {
+    padding-top: $base-line-height;
+    padding-bottom: $base-line-height;
+  }
+}
+
+@media (min-width: $break-medium) {
+
+  .title-block-item__title {
+    @include typography-font-size($large-font-size);
+    margin-bottom: $base-line-height * 1.5;
+    letter-spacing: 1.3rem;
+  }
+
+  .title-block__content {
+    padding-top: 2 * $base-line-height;
+    padding-bottom: 2 * $base-line-height;
+  }
+}
+**/

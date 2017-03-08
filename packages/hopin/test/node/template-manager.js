@@ -30,7 +30,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: 'hi',
+      relativePath: 'hi',
     });
     const templatePath = 'example/template/path';
     return templateManager.readTemplate(templatePath)
@@ -53,7 +53,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: 'hi',
+      relativePath: 'hi',
     });
     const templatePath = 'example/template/path';
     return templateManager.readTemplate(templatePath)
@@ -76,7 +76,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: 'hi',
+      relativePath: 'hi',
     });
     const templatePath = 'example/template/path';
     return templateManager.readTemplate(templatePath)
@@ -98,7 +98,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: 'hi',
+      relativePath: 'hi',
     });
     const templatePath = 'example/template/path';
     return templateManager.render(templatePath)
@@ -110,15 +110,15 @@ describe('Template Manager', function() {
   });
 
   it('should be able to render a view that has a partial', function() {
-    const TEMPLATE_PATH = 'tmpl-path';
+    const RELATIVE_PATH = 'rel-path';
     const TemplateManager = proxyquire('../../src/controllers/TemplateManager', {
       'fs-promise': {
         readFile: (fullPath) => {
-          const relPath = path.relative(TEMPLATE_PATH, fullPath);
+          const relPath = path.relative(RELATIVE_PATH, fullPath);
           switch (relPath) {
-            case 'example/partial':
+            case path.join('templates', 'example/partial'):
               return Promise.resolve(new Buffer('Partial.'));
-            case 'example/main':
+            case path.join('templates', 'example/main'):
               return Promise.resolve(new Buffer('---\nstyles:\n - /styles/example.css\nscripts:\n - /scripts/example.js\npartials:\n - example/partial\n---Hello.{{> example/partial}}Goodbye.'));
             default:
               return Promise.reject('Unknown template: ' + fullPath);
@@ -127,7 +127,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: RELATIVE_PATH,
     });
 
     return templateManager.render('example/main', {})
@@ -153,9 +153,9 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1:
+            case path.join('templates', PATH_1):
               return Promise.resolve(new Buffer(PATH_1_CONTENT + '{{content}}'));
-            case PATH_2:
+            case path.join('templates', PATH_2):
               return Promise.resolve(new Buffer(PATH_2_CONTENT));
           }
 
@@ -164,7 +164,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -193,11 +193,11 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1:
+            case path.join('templates', PATH_1):
               return Promise.resolve(new Buffer(PATH_1_CONTENT + '{{content-1}}' + '{{content-0}}'));
-            case PATH_2:
+            case path.join('templates', PATH_2):
               return Promise.resolve(new Buffer(PATH_2_CONTENT));
-            case PATH_3:
+            case path.join('templates', PATH_3):
               return Promise.resolve(new Buffer(PATH_3_CONTENT));
           }
 
@@ -206,7 +206,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -238,11 +238,11 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1:
+            case path.join('templates', PATH_1):
               return Promise.resolve(new Buffer(PATH_1_CONTENT + '{{content}}'));
-            case PATH_2:
+            case path.join('templates', PATH_2):
               return Promise.resolve(new Buffer(PATH_2_CONTENT + '{{content}}'));
-            case PATH_3:
+            case path.join('templates', PATH_3):
               return Promise.resolve(new Buffer(PATH_3_CONTENT));
           }
 
@@ -251,7 +251,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -284,17 +284,17 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1: {
+            case path.join('templates', PATH_1): {
               let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
               content += 'Hello 1.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case PATH_2: {
+            case path.join('templates', PATH_2): {
               let content = `---\nscripts:\n - /scripts/2/example.js\nstyles:\n - /styles/2/example.css\n---`;
               content += 'Hello 2.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case PATH_3: {
+            case path.join('templates', PATH_3): {
               let content = `---\nscripts:\n - /scripts/3/example.js\nstyles:\n - /styles/3/example.css\n---`;
               content += 'Hello 3.';
               return Promise.resolve(new Buffer(content));
@@ -306,7 +306,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -349,17 +349,17 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1: {
+            case path.join('templates', PATH_1): {
               let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
               content += 'Hello 1.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case PATH_2: {
+            case path.join('templates', PATH_2): {
               let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
               content += 'Hello 2.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case PATH_3: {
+            case path.join('templates', PATH_3): {
               let content = `---\nscripts:\n - /scripts/3/example.js\nstyles:\n - /styles/3/example.css\n---`;
               content += 'Hello 3.';
               return Promise.resolve(new Buffer(content));
@@ -371,7 +371,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -412,17 +412,17 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1: {
+            case path.join('templates', PATH_1): {
               let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
               content += 'Hello 1.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case PATH_2: {
+            case path.join('templates', PATH_2): {
               let content = `---\nscripts:\n - /scripts/2/example.js\nstyles:\n - /styles/2/example.css\n---`;
               content += 'Hello 2.';
               return Promise.resolve(new Buffer(content));
             }
-            case PATH_3: {
+            case path.join('templates', PATH_3): {
               let content = `---\nscripts:\n - /scripts/3/example.js\nstyles:\n - /styles/3/example.css\n---`;
               content += 'Hello 3.';
               return Promise.resolve(new Buffer(content));
@@ -434,7 +434,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
 
     return templateManager.render(PATH_1, {
@@ -468,7 +468,7 @@ describe('Template Manager', function() {
     const TemplateManager = require('../../src/controllers/TemplateManager');
     try {
       const templateManager = new TemplateManager({
-        templatePath: '.',
+        relativePath: '.',
       });
       templateManager.renderHTML();
       throw new Error('Injected Error');
@@ -483,7 +483,7 @@ describe('Template Manager', function() {
     const TemplateManager = require('../../src/controllers/TemplateManager');
     try {
       const templateManager = new TemplateManager({
-        templatePath: '.',
+        relativePath: '.',
       });
       templateManager.renderHTML({});
       throw new Error('Injected Error');
@@ -505,17 +505,17 @@ describe('Template Manager', function() {
         readFile: (fullPath) => {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
-            case PATH_1: {
+            case path.join('templates', PATH_1): {
               let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
               content += 'Hello 1.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
-            case SHELL_1: {
+            case path.join('templates', SHELL_1): {
               let content = `---\nscripts:\n - /scripts/2/example.js\nstyles:\n - /styles/2/example.css\n---`;
               content += 'Hello Shell. {{{content}}}';
               return Promise.resolve(new Buffer(content));
             }
-            case DOC_1: {
+            case path.join('templates', DOC_1): {
               let content = '<body>{{{content}}}</body>';
               return Promise.resolve(new Buffer(content));
             }
@@ -526,7 +526,7 @@ describe('Template Manager', function() {
       },
     });
     const templateManager = new TemplateManager({
-      templatePath: TEMPLATE_PATH,
+      relativePath: TEMPLATE_PATH,
     });
     return templateManager.renderHTML({
       shell: SHELL_1,
@@ -540,4 +540,51 @@ describe('Template Manager', function() {
       templateResult.should.equal(`<body>Hello Shell. Hello 1.</body>`);
     });
   });
+
+  it('should be able to load a static file', function() {
+    const RELATIVE_PATH = 'rel-path';
+    const PATH_1 = 'example/path/1';
+    const STATIC_1 = 'static/example/1';
+
+    const TemplateManager = proxyquire('../../src/controllers/TemplateManager', {
+      'fs-promise': {
+        readFile: (fullPath) => {
+          const relPath = path.relative(RELATIVE_PATH, fullPath);
+          switch(relPath) {
+            case path.join('templates', PATH_1): {
+              let content = `{{> ${ STATIC_1 }}}`;
+              return Promise.resolve(new Buffer(content));
+            }
+            case STATIC_1: {
+              let content = `Hello Static.`;
+              return Promise.resolve(new Buffer(content));
+            }
+          }
+
+          return Promise.reject(new Error('Unknown template path: ' + fullPath));
+        },
+      },
+      'glob': (globPattern, cb) => {
+        return cb(null, [path.join(RELATIVE_PATH, STATIC_1)]);
+      },
+    });
+    const templateManager = new TemplateManager({
+      relativePath: RELATIVE_PATH,
+    });
+
+    return templateManager.render(PATH_1)
+    .then((templateResult) => {
+      templateResult.styles.should.deep.equal([]);
+      templateResult.scripts.should.deep.equal([]);
+      templateResult.content.should.equal(`Hello Static.`);
+    });
+  });
+
+  // Add Static Assets to partials
+  // TODO: Remove the 'views' from being auto added to paths
+  // TODO: Support changing the used document type -
+  // is document even right word?
+  // TODO: Figure out the file naming.
+  // TODO: Move controller tests to a utils/controller-mock-env.js
+  // TODO: Move template tests to a utils/templates-mock-env.js
 });

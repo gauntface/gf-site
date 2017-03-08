@@ -1,0 +1,10 @@
+.footer__social-link-item {
+  background-repeat: no-repeat;
+}
+.footer__twitter {
+  background-image: url('/images/footer/footer-twitter.svg');
+}
+
+.footer__rss {
+  background-image: url('/images/footer/footer-rss.svg');
+}

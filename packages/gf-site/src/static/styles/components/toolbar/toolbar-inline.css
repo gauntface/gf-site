@@ -1,0 +1,30 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.toolbar__btn {
+  width: var(--btn-size);
+  height: var(--btn-size);
+
+  border: none;
+  background: none;
+  padding: var(--btn-padding);
+  margin: 0;
+}
+
+.toolbar__btn:hover {
+  background-color: var(--toolbar-btn-hover-color);
+}
+
+.toolbar__btn:active {
+  background-color: var(--toolbar-btn-active-color);
+}
+
+.toolbar__btn svg {
+  fill: var(--styleguide-btn-color);
+}

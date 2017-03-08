@@ -10,13 +10,13 @@ class Hopin {
     this._relativePath = relativePath;
     this._router = new Router({relativePath});
 
-    const templatePath = path.join(relativePath, 'templates');
-    this._templateManager = new TemplateManager({templatePath});
+    this._templateManager = new TemplateManager({relativePath});
 
     this._app = express();
   }
 
   startServer(port) {
+    this._app.use(express.static(path.join(this._relativePath, 'static')));
     this._app.get('*', (request, res) => {
       return this._router.route(request.url, request)
       .then((args) => {

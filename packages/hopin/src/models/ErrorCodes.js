@@ -9,8 +9,8 @@ module.exports = {
   'template-not-found': {
     message: (args) => `Template not found: '${args.templatePath}'`,
   },
-  'no-template-path': {
-    message: `No 'templatePath' defined in TemplateManager constructor.`,
+  'no-relative-path': {
+    message: `No 'relativePath' defined in TemplateManager constructor.`,
   },
   'shell-required': {
     message: `A shell value is a required parameter into renderHTML().`,

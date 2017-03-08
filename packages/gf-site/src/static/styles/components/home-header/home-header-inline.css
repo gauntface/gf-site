@@ -1,0 +1,26 @@
+@import "/styles/variables/colors.css";
+@import "/styles/variables/dimens.css";
+
+.gf-header {
+  display: flex;
+
+  width: 100%;
+
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--header-bg-color);
+
+  padding: calc(var(--grid) * 8) 0;
+}
+
+.gf-header__logo {
+  width: calc(var(--grid) * 12);
+  height: calc(var(--grid) * 12);
+}
+
+@media (min-width: 950px) {
+  .gf-header {
+    padding: calc(var(--grid) * 20) 0;
+  }
+}

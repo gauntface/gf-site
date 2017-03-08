@@ -2,15 +2,20 @@ const path = require('path');
 const fs = require('fs-promise');
 const mustache = require('mustache');
 const yamlFront = require('yaml-front-matter');
+const glob = require('glob');
 
 const HopinError = require('../models/HopinError');
 
 class TemplateManager {
-  constructor({templatePath}) {
-    if (!templatePath) {
-      throw new HopinError('no-template-path');
+  constructor({relativePath}) {
+    if (!relativePath) {
+      throw new HopinError('no-relative-path');
     }
-    this._templatePath = templatePath;
+
+    this._relativePath = relativePath;
+    this._templatePath = path.join(relativePath, 'templates');
+    this._staticPath = path.join(relativePath, 'static');
+
     this._templates = {};
   }
 
@@ -50,9 +55,44 @@ class TemplateManager {
           throw new HopinError('template-not-found', {documentTemplatePath});
         }
 
+        const seperatedStyles = {
+          inline: [],
+          async: [],
+        };
+        shellDetails.styles.forEach((stylesheet) => {
+          const stylesheetPath = path.parse(stylesheet);
+          if (stylesheetPath.name.endsWith('-inline')) {
+            seperatedStyles.inline.push(stylesheet);
+          } else {
+            seperatedStyles.async.push(stylesheet);
+          }
+        });
+
+        return Promise.all(seperatedStyles.inline.map((inlineStyle) => {
+          return fs.readFile(path.join(this._staticPath, inlineStyle))
+          .then((fileBuffer) => {
+            return fileBuffer.toString();
+          });
+        }))
+        .then((inlineStyles) => {
+          return {
+            templateDetails,
+            asyncStyles: seperatedStyles.async,
+            inlineStyles: inlineStyles,
+          };
+        });
+      })
+      .then(({templateDetails, asyncStyles, inlineStyles}) => {
         // TODO: Need to add styles and scripts here.
         return mustache.render(
-          templateDetails.content, {data, content: shellDetails.content});
+          templateDetails.content, {
+            data,
+            content: shellDetails.content,
+            styles: {
+              inline: inlineStyles,
+              async: asyncStyles,
+            },
+          });
       });
     });
   }
@@ -76,6 +116,17 @@ class TemplateManager {
       });
     })
     .then(({subviews, templateDetails, partialDetails}) => {
+      return this._getStaticAssets()
+      .then((staticAssets) => {
+        return {
+          subviews,
+          templateDetails,
+          partialDetails,
+          staticAssets,
+        };
+      });
+    })
+    .then(({subviews, templateDetails, partialDetails, staticAssets}) => {
       let collectedStyles = templateDetails.styles
         .concat(partialDetails.styles);
       let collectedScripts = templateDetails.scripts
@@ -115,8 +166,12 @@ class TemplateManager {
         };
       }
 
+      let allPartials = {};
+      allPartials = Object.assign(allPartials, partialDetails.partialContents);
+      allPartials = Object.assign(allPartials, staticAssets);
+
       const renderedContent = mustache.render(
-        templateDetails.content, renderData, partialDetails.partialContents);
+        templateDetails.content, renderData, allPartials);
 
       // Sets here are used to remove duplicates.
       return {
@@ -167,6 +222,39 @@ class TemplateManager {
       });
 
       return partialsInfo;
+    });
+  }
+
+  _getStaticAssets() {
+    const globPattern = path.join(this._staticPath, '**', '*.*');
+    return new Promise((resolve, reject) => {
+      glob(globPattern, (err, files) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(files);
+      });
+    })
+    .then((files) => {
+      const readPromises = files.map((file) => {
+        return fs.readFile(file)
+        .then((fileBuffer) => {
+          return {
+            name: path.relative(this._relativePath, file),
+            contents: fileBuffer.toString(),
+          };
+        });
+      });
+
+      return Promise.all(readPromises);
+    })
+    .then((fileNameContents) => {
+      const formattedFiles = {};
+      fileNameContents.forEach((fileInfo) => {
+        formattedFiles[fileInfo.name] = fileInfo.contents;
+      });
+      return formattedFiles;
     });
   }
 }
