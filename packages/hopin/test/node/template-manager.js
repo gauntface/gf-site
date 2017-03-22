@@ -506,18 +506,27 @@ describe('Template Manager', function() {
           const relPath = path.relative(TEMPLATE_PATH, fullPath);
           switch(relPath) {
             case path.join('templates', PATH_1): {
-              let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n---`;
+              let content = `---\nscripts:\n - /scripts/1/example.js\nstyles:\n - /styles/1/example.css\n - /styles/1/example-inline.css\n---`;
               content += 'Hello 1.';
               return Promise.resolve(new Buffer(content + '{{content}}'));
             }
             case path.join('templates', SHELL_1): {
-              let content = `---\nscripts:\n - /scripts/2/example.js\nstyles:\n - /styles/2/example.css\n---`;
+              let content = `---\nscripts:\n - /scripts/2/example.js\nstyles:\n - /styles/2/example.css\n - /styles/2/example-inline.css\n---`;
               content += 'Hello Shell. {{{content}}}';
               return Promise.resolve(new Buffer(content));
             }
             case path.join('templates', DOC_1): {
-              let content = '<body>{{{content}}}</body>';
+              let content = `---\nscripts:\n - /scripts/3/example.js\nstyles:\n - /styles/3/example.css\n - /styles/3/example-inline.css\n---{{#styles.inline}}{{{.}}}{{/styles.inline}}{{#styles.async}}{{{.}}}{{/styles.async}}{{#scripts}}{{{.}}}{{/scripts}}{{{content}}}`;
               return Promise.resolve(new Buffer(content));
+            }
+            case 'static/styles/1/example-inline.css': {
+              return Promise.resolve(new Buffer('1/example-inline.css'));
+            }
+            case 'static/styles/2/example-inline.css': {
+              return Promise.resolve(new Buffer('2/example-inline.css'));
+            }
+            case 'static/styles/3/example-inline.css': {
+              return Promise.resolve(new Buffer('3/example-inline.css'));
             }
           }
 
@@ -537,7 +546,7 @@ describe('Template Manager', function() {
       ],
     })
     .then((templateResult) => {
-      templateResult.should.equal(`<body>Hello Shell. Hello 1.</body>`);
+      templateResult.should.equal(`2/example-inline.css1/example-inline.css3/example-inline.css/styles/2/example.css/styles/1/example.css/styles/3/example.css/scripts/3/example.js/scripts/2/example.js/scripts/1/example.jsHello Shell. Hello 1.`);
     });
   });
 
@@ -545,9 +554,17 @@ describe('Template Manager', function() {
     const RELATIVE_PATH = 'rel-path';
     const PATH_1 = 'example/path/1';
     const STATIC_1 = 'static/example/1';
+    const DIRECTORY_PATH = 'static/example/directory.withdot/';
 
     const TemplateManager = proxyquire('../../src/controllers/TemplateManager', {
       'fs-promise': {
+        stat: (filePath) => {
+          return Promise.resolve({
+            isFile: () => {
+              return filePath !== path.join(RELATIVE_PATH, DIRECTORY_PATH);
+            },
+          });
+        },
         readFile: (fullPath) => {
           const relPath = path.relative(RELATIVE_PATH, fullPath);
           switch(relPath) {
@@ -565,7 +582,10 @@ describe('Template Manager', function() {
         },
       },
       'glob': (globPattern, cb) => {
-        return cb(null, [path.join(RELATIVE_PATH, STATIC_1)]);
+        return cb(null, [
+          path.join(RELATIVE_PATH, STATIC_1),
+          path.join(RELATIVE_PATH, DIRECTORY_PATH),
+        ]);
       },
     });
     const templateManager = new TemplateManager({
@@ -580,13 +600,8 @@ describe('Template Manager', function() {
     });
   });
 
-  // Add Static Assets to partials
   // TODO: Support changing the used document type -
   // is document even right word?
   // TODO: Move controller tests to a utils/controller-mock-env.js
-  // TODO: Move template tests to a utils/templates-mock-env.js
-  // TODO: Add test for static Assets
-  // TODO: Add test for inline styles
-  // TODO: Add test for async styles
-  // TODO: Add YAML to document
+  // TODO: Move template tests to a utils/templates-mock-env.js-
 });

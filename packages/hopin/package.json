@@ -13,6 +13,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "glob": "^7.1.1",
+    "node-fetch": "^1.6.3",
     "yaml-front-matter": "^3.4.0"
   }
 }

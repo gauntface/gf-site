@@ -18,6 +18,9 @@ module.exports = (urlInput) => {
       case '.json':
         type = 'json';
         break;
+      case '.js':
+        type = 'js';
+        break;
       default:
         logHelper.warn('Unknown route type: ' + extension);
         break;

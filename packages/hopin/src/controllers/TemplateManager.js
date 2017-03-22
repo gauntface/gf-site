@@ -38,11 +38,6 @@ class TemplateManager {
     if (!data || !data.shell) {
       throw new HopinError('shell-required');
     }
-    // TODO: If the template path starts with document
-    // render content immediately, get the aggregated
-    // styles and scripts, then pass in the document
-    // data as styles: {inline, remote} and script: [],
-    // with content as a string.
     return this.render(
       data.shell,
       data
@@ -67,6 +62,14 @@ class TemplateManager {
             seperatedStyles.async.push(stylesheet);
           }
         });
+        templateDetails.styles.forEach((stylesheet) => {
+          const stylesheetPath = path.parse(stylesheet);
+          if (stylesheetPath.name.endsWith('-inline')) {
+            seperatedStyles.inline.push(stylesheet);
+          } else {
+            seperatedStyles.async.push(stylesheet);
+          }
+        });
 
         return Promise.all(seperatedStyles.inline.map((inlineStyle) => {
           return fs.readFile(path.join(this._staticPath, inlineStyle))
@@ -83,7 +86,7 @@ class TemplateManager {
         });
       })
       .then(({templateDetails, asyncStyles, inlineStyles}) => {
-        // TODO: Need to add styles and scripts here.
+        const allScripts = templateDetails.scripts.concat(shellDetails.scripts);
         return mustache.render(
           templateDetails.content, {
             data,
@@ -92,6 +95,7 @@ class TemplateManager {
               inline: inlineStyles,
               async: asyncStyles,
             },
+            scripts: allScripts,
           });
       });
     });
@@ -232,22 +236,31 @@ class TemplateManager {
         if (err) {
           return reject(err);
         }
-
         resolve(files);
       });
     })
     .then((files) => {
       const readPromises = files.map((file) => {
-        return fs.readFile(file)
-        .then((fileBuffer) => {
-          return {
-            name: path.relative(this._relativePath, file),
-            contents: fileBuffer.toString(),
-          };
+        return fs.stat(file)
+        .then((stats) => {
+          if (!stats.isFile()) {
+            return null;
+          }
+
+          return fs.readFile(file)
+          .then((fileBuffer) => {
+            return {
+              name: path.relative(this._relativePath, file),
+              contents: fileBuffer.toString(),
+            };
+          });
         });
       });
 
       return Promise.all(readPromises);
+    })
+    .then((fileNameContents) => {
+      return fileNameContents.filter((value) => value !== null);
     })
     .then((fileNameContents) => {
       const formattedFiles = {};
