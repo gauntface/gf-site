@@ -1,0 +1,20 @@
+{
+  "short_name": "GauntFace",
+  "name": "GauntFace | Matt Gaunt",
+  "icons": [
+    {
+      "src": "/images/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/icons/icon-512x512_splash-screen.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1621",
+  "theme_color": "#1e1621"
+}
