@@ -33,11 +33,12 @@ class DockerCLIWrapper {
   buildContainer(dockerfilePath, tag) {
     const args = [
       'build',
+      // '--no-cache',
       '--tag', tag,
       // Name of the Dockerfile
       '--file', dockerfilePath,
       // Want it to be from the root of the project.
-      path.join(__dirname, '..'),
+      path.join(__dirname, '..', '..'),
     ];
 
     return this._executeDockerCommand(args);

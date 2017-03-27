@@ -18,14 +18,16 @@ const MYSQL_CONTAINER = {
   },
 };
 
+const INFRA_BASE = path.join(__dirname, '../../infra');
+
 const BASE_CONTAINER = {
-  dockerFile: path.join(__dirname, '../src/infra/docker/base'),
+  dockerFile: path.join(INFRA_BASE, 'docker/base'),
   tag: 'gauntface/gf-site:base',
 };
 
 const DEVELOPMENT_CONTAINER = {
   id: 'development',
-  dockerFile: path.join(__dirname, '../src/infra/docker/development'),
+  dockerFile: path.join(INFRA_BASE, 'docker/development'),
   tag: 'gauntface/gf-site:development',
   name: 'gauntface-local-docker',
   run: {
@@ -33,7 +35,9 @@ const DEVELOPMENT_CONTAINER = {
     customArgs: [
       '--link', MYSQL_CONTAINER.name,
       '-p', `${localConfig.port}:80`,
-      '--volume', `${path.join(__dirname, '..', 'src')}:/gauntface/site`,
+      '--volume', `${path.join(__dirname, '..', '..', 'src')}:/gauntface/site`,
+      '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
+        `/gauntface/site/node_modules`,
     ],
   },
   dependencies: [
@@ -43,7 +47,7 @@ const DEVELOPMENT_CONTAINER = {
 
 const DEVELOPMENT_PROD_CONTAINER = {
   id: 'development-prod',
-  dockerFile: path.join(__dirname, '../src/infra/docker/development'),
+  dockerFile: path.join(INFRA_BASE, 'docker/development'),
   tag: 'gauntface/gf-site:development-prod',
   name: 'gauntface-local-docker',
   run: {
@@ -51,7 +55,10 @@ const DEVELOPMENT_PROD_CONTAINER = {
     customArgs: [
       '--link', MYSQL_CONTAINER.name,
       '-p', `${localConfig.port}:80`,
-      '--volume', `${path.join(__dirname, '..', 'build')}:/gauntface/site`,
+      '--volume', `${path.join(__dirname, '..', '..', 'build')}:` +
+        `/gauntface/site`,
+      '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
+        `/gauntface/site/node_modules`,
       '-e', `BUILDTYPE=production`,
     ],
   },
@@ -150,6 +157,8 @@ class DockerHelper {
           return promiseChain;
         }
 
+        console.log('Building: ', containerInfo);
+
         return dockerCLIWrapper.buildContainer(
           containerInfo.dockerFile,
           containerInfo.tag
@@ -164,7 +173,11 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are running.
    */
   run(environment, options) {
-    this.log('Running containers');
+    this.log(``);
+    this.log(``);
+    this.log(`     Running container: '${environment}'`, options);
+    this.log(``);
+    this.log(``);
     let forceDetached = false;
     if (options) {
       forceDetached = options.forceDetached === true;

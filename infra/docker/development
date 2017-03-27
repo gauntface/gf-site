@@ -1,8 +1,5 @@
 FROM gauntface/gf-site:base
 
-ADD src/infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
-
-RUN sed -i 's/display_errors = .*/display_errors = On/' /etc/php/7.0/fpm/php.ini
-RUN sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/7.0/fpm/php.ini
+ADD infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
 ENV BUILDTYPE 'development'

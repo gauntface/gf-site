@@ -22,7 +22,7 @@ const runDocker = (buildName) => {
   let customArgs = [];
   try {
     const envBuffer = fs.readFileSync(
-      path.join(__dirname, '..', '..', 'gf-deploy-v3', 'env.json')
+      path.join(__dirname, '..', '..', 'gf-deploy-node', 'env.json')
     );
     const envJson = JSON.parse(envBuffer.toString());
     Object.keys(envJson).forEach((key) => {

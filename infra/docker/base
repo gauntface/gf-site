@@ -2,25 +2,30 @@ FROM ubuntu:16.10
 
 # Need to be able to use add-apt-repository and must run update before
 # it'll work
+# gettext - Package is needed to use 'envsubst' command.
 RUN apt-get update
-RUN apt-get -y install software-properties-common curl
+RUN apt-get -y install software-properties-common curl git nano gettext
 
 # Add NGINX Repo
 RUN add-apt-repository ppa:nginx/development
+RUN apt-get update
+RUN apt-get -y install nginx
 
 # Add Node Repo
 RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -
-
-# Install Dependencies
 RUN apt-get update
-RUN apt-get -y install git nodejs nginx php php-fpm php-mysql php-imagick php-curl php-apcu pngcrush build-essential gettext nano
+RUN apt-get -y install nodejs
 
 # Remove the default Nginx configuration file
 RUN rm /etc/nginx/sites-enabled/default
 RUN rm /etc/nginx/sites-available/default
 
-ADD src/infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+# Setup forever
+RUN npm install -g forever
+RUN mkdir -p /gauntface/logs/
 
-ADD src/infra/docker/startup.sh /gauntface/docker/startup.sh
+ADD infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+
+ADD infra/docker/startup.sh /gauntface/docker/startup.sh
 RUN chmod +x /gauntface/docker/startup.sh
 CMD /gauntface/docker/startup.sh
