@@ -12,6 +12,7 @@ class SitemapController {
     });
 
     return {
+      document: 'documents/xml.tmpl',
       shell: 'shells/blank.tmpl',
       views: [{
         templatePath: 'views/sitemap.tmpl',
