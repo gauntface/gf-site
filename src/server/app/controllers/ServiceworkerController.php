@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use lithium\net\http\Media;
+use lithium\template\View;
 use app\utilities\Revision;
+use app\controllers\DocumentController;
 
 class ServiceworkerController extends \lithium\action\Controller {
 
@@ -33,6 +35,7 @@ class ServiceworkerController extends \lithium\action\Controller {
       // Styles
       Revision::addRevision('/styles/components/home-header/home-header-remote.css')
     );
+
     $revisionedAssetsString = $this->formatArrayToJSString($revisionedAssets);
     $swTemplate = str_replace("; /** @ GF-REVISIONED-ASSETS @ **/", $revisionedAssetsString, $swTemplate);
 

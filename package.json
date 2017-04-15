@@ -10,6 +10,7 @@
     "chai": "^3.5.0",
     "cssnano": "^3.9.1",
     "del": "^2.2.2",
+    "diff": "^3.2.0",
     "eslint": "^3.11.1",
     "eslint-config-google": "^0.7.1",
     "gulp": "github:gulpjs/gulp#4.0",

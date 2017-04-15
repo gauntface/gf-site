@@ -62,8 +62,7 @@ class StyleguideController extends \lithium\action\Controller {
 
     switch($noExtension) {
       case 'document':
-        $details['friendly-name'] = 'Document';
-        break;
+        return null;
       case 'shells':
         // TODO: This should be shells/<shell name>
         return null;

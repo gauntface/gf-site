@@ -39,7 +39,7 @@ describe('Test Styleguide Components', function() {
         });
 
         intAudits.forEach((auditKey) => {
-          if (results.audits[auditKey].score === -1) {
+          if (results.audits[auditKey].score === -1 || results.audits[auditKey].score === null) {
             console.warn(`Lighthouse Error: '${auditKey}' => '${results.audits[auditKey].score}'`);
           } else if (results.audits[auditKey].score !== 100) {
             throw new Error(`Invalid score for: '${auditKey}' => '${results.audits[auditKey].score}'`);

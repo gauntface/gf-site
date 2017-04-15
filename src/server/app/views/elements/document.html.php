@@ -9,11 +9,8 @@ $this->scripts('/scripts/controllers/async-styles-controller.js');
 $this->scripts('/scripts/controllers/async-font-controller.js');
 $this->scripts('/scripts/controllers/service-worker-controller.js');
 
-if (!isset($theme_color)) {
-  $theme_color = '#FFFFFF';
-}
-
 $styles = Styles::groupStyles($this->styles());
+
 ?>
 <!doctype html>
 <html>
@@ -23,6 +20,7 @@ $styles = Styles::groupStyles($this->styles());
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="<?= $theme_color ?>">
+
 	<link rel="manifest" href="/manifest.json">
 
 	<?php

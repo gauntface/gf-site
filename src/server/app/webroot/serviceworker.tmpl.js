@@ -5,6 +5,7 @@
 /** @ GF-MODDATE @ **/
 
 /** @ GF-SWLIB-IMPORT @ **/
+importScripts('/scripts/utils/template-builder.js');
 
 const swlib = goog.swlib;
 
@@ -20,15 +21,13 @@ if (unrevisionedAssets && unrevisionedAssets.length > 0) {
     swlib.warmRuntimeCache(unrevisionedAssets);
 }
 
-console.log(swlib);
-
 swlib.router.registerRoute(/\/styles\/((?:.*\/)+.*\.css)/,
   swlib.cacheFirst());
 
 swlib.router.registerRoute(/\/images\/((?:.*\/)+.*)/,
   swlib.staleWhileRevalidate());
 
-/** swlib.router.registerRoute('/', {
+swlib.router.registerRoute('/', {
   handle: (details) => {
     if (details.event.request.mode !== 'navigate') {
       return;
@@ -41,23 +40,34 @@ swlib.router.registerRoute(/\/images\/((?:.*\/)+.*)/,
     // 4. How to make reuse of template in window and service worker
     // 5. How to make use of sw-lib caching strategies?
 
-    // const layoutId = 'headerfooter';
+    const layoutId = 'headerfooter';
     const requiredTemplates = [
-      // `/document?output=json&section=document`,
-      // `/layout/${layoutId}?output=json&section=layout`,
+      `/document.json`,
+      `/shell/${layoutId}.json`,
       `/home.json`,
     ];
     return Promise.all(
       requiredTemplates.map((templateUrl) => {
+        // TODO: Need to get from Caches
         return fetch(templateUrl).then((response) => response.json());
       })
     )
     .then((results) => {
-      return new Response('<html><body>' + results[0].html + '</body></html>', {
+      const documentData = results[0];
+      const shellData = results[1];
+      const contentData = results[2];
+
+      return self.GauntFace.TemplateBuilder.mergeTemplates({
+        documentData, shellData, contentData,
+      });
+    })
+    .then((completeTemplate) => {
+      console.log(completeTemplate);
+      return new Response(completeTemplate, {
         headers: {
           'Content-Type': 'text/html',
         },
       });
     });
   },
-});**/
+});
