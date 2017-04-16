@@ -2,7 +2,7 @@ class SitemapController {
   index() {
     const urls = [
       '/',
-      '/styleguide',
+      // '/styleguide',
     ];
 
     const protocol = 'http://';
