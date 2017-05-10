@@ -19,6 +19,9 @@ class HomeController {
         title: 'GauntFace | Matthew Gaunt',
         theme_color: '#1e1621',
         shell: 'shells/headerfooter.tmpl',
+        styles: [
+          '/styles/unique/smashing-mag-book.css',
+        ],
         views: [
           {
             templatePath: 'views/home-header.tmpl',
@@ -54,6 +57,7 @@ class HomeController {
             data: {
               smallTopText: 'News',
               title: 'Smashing Book 5',
+              className: 'smashing-book-5',
               excerpt: 'I’ve written a chapter in this book about service worker and it’s available now! <a href="http://www.smashingmagazine.com/2015/03/real-life-responsive-web-design-smashing-book-5/">Get the print or ebook HERE</a>',
             },
           },

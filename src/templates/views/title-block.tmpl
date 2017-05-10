@@ -2,18 +2,18 @@
 styles:
 - /styles/components/title-block/title-block-inline.css
 ---
-{{#link}}
+{{#data.link}}
 <a class="title-block" href="{{link}}">
-{{/link}}
-<section class="title-block">
-  {{#date}}
+{{/data.link}}
+<section class="title-block{{#data.className}} {{data.className}}{{/data.className}}">
+  {{#data.date}}
     <!-- <time => date("Y-m-d", $date);-->
     <!-- Inside tag => date("Y.m.d", $date) -->
     <time class="title-block__toptext" datetime="{{data.date}}">{{data.date}}</time>
-  {{/date}}
-  {{^date}}
+  {{/data.date}}
+  {{^data.date}}
     <p class="title-block__toptext">{{{data.topText}}}</p>
-  {{/date}}
+  {{/data.date}}
 
   <div class="title-block__content">
     <h1 class="title-block__title">{{{data.title}}}</h1>

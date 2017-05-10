@@ -27,14 +27,18 @@ scripts:
 	<script>
 		window.GauntFace = window.GauntFace || {};
 		window.GauntFace._asyncStyles = [
-      {{#styles.async}}
+      {{#styles.remote}}
         '{{{.}}}',
-      {{/styles.async}}
+      {{/styles.remote}}
     ];
 	</script>
 
-  {{#scripts}}
-    <script src="{{.}}" defer></script>
-  {{/scripts}}
+  {{#scripts.async}}
+    <script src="{{.}}" async defer></script>
+  {{/scripts.async}}
+
+  {{#scripts.sync}}
+    <script src="{{.}}"></script>
+  {{/scripts.sync}}
 </body>
 </html>
