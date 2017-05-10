@@ -16,12 +16,14 @@ class HomeController {
       const tweetTime = tweet.time ? moment(tweet.time) : null;
 
       return {
-        title: 'GauntFace | Matthew Gaunt',
-        theme_color: '#1e1621',
         shell: 'shells/headerfooter.tmpl',
         styles: [
           '/styles/unique/smashing-mag-book.css',
         ],
+        data: {
+          title: 'GauntFace | Matthew Gaunt',
+          theme_color: '#1e1621',
+        },
         views: [
           {
             templatePath: 'views/home-header.tmpl',

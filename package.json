@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "serve": "nodemon src/index.js",
-    "test": "mocha"
+    "lint": "eslint '.'",
+    "test": "mocha ./test/node/**/*.js"
   },
   "author": "gauntface",
   "license": "Apache-2.0",
