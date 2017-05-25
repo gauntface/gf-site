@@ -17,16 +17,11 @@ class GridOverlayController {
 
   _initMessageListener() {
     window.addEventListener('message', (e) => {
-      switch(e.data.action) {
-        case 'toggle-grid':
-          this.toggleGrid();
-          break;
-        default:
-          /* eslint-disable no-console */
-          console.warn('Unknown action received: ', e.data.action);
-          /* eslint-enable no-console */
-          break;
+      if(e.data.action !== 'toggle-grid') {
+        return;
       }
+
+      this.toggleGrid();
     });
   }
 

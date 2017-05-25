@@ -1,0 +1,26 @@
+@import "/styles/variables/fonts.css";
+@import "/styles/variables/dimens.css";
+
+pre, code {
+  font-family: var(--code-font-family);
+  background-color: var(--code-background-color);
+}
+
+code {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: var(--code-font-size);
+  line-height: var(--code-line-height);
+  padding: 0 calc(var(--grid) / 2);
+}
+
+pre {
+  padding: calc(var(--grid) * 2);
+  margin-top: 0;
+  margin-bottom: var(--pre-margin-bottom);
+  overflow: auto;
+}
+
+pre code {
+  padding: 0;
+}

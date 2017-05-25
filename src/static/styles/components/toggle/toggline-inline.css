@@ -1,0 +1,68 @@
+@import "/styles/variables/colors.css";
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/fonts.css";
+
+:root {
+  --toggle-inner-section-width: calc((var(--toggle-width) / 2) + var(--toggle-border-width));
+}
+
+.toggle {
+  display: inline-block;
+
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+
+  position: relative;
+
+  line-height: calc(var(--toggle-height) - (var(--toggle-border-width) * 2));
+
+  box-sizing: border-box;
+
+  background: transparent;
+
+  border-style: solid;
+  border-width: var(--toggle-border-width);
+  border-color: var(--toggle-off-color);
+
+  color: var(--toggle-text-color);
+
+  cursor: pointer;
+
+  font-family: var(--title-font-family);
+  text-transform: uppercase;
+
+  transition : border 600ms;
+}
+
+.toggle:before {
+  content: 'Off';
+
+  display: inline-block;
+  /** We want on and off to have the same width **/
+  width: var(--toggle-inner-section-width);
+
+  position: absolute;
+  left: calc(-1 * var(--toggle-border-width));
+
+
+  background: var(--toggle-off-color);
+  text-align: center;
+
+  transition: all 600ms;
+}
+
+.toggle.is-checked {
+  border-color: var(--toggle-on-color);
+}
+
+.toggle.is-checked:before {
+  content: 'On';
+
+  background: var(--toggle-on-color);
+  left: calc((var(--toggle-width) / 2) - (2 * var(--toggle-border-width)));
+}
+
+.toggle.is-disabled {
+  opacity: 0.6;
+  cursor: default;
+}

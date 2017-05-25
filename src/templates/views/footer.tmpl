@@ -1,4 +1,6 @@
 ---
+partials:
+- views/toggle.tmpl
 styles:
 - /styles/components/footer/footer-inline.css
 - /styles/components/footer/footer-remote.css
@@ -16,6 +18,7 @@ styles:
 
     <div class="footer__push-section">
       <div class="footer__push-description js-push-notification-message">Enable push notifications</div>
+      {{ > views/toggle.tmpl }}
       <div class="toggle is-disabled js-push-notification-toggle"></div>
     </div>
   </div>

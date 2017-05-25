@@ -5,7 +5,6 @@ scripts:
 - /scripts/controllers/async-iframe-controller.js
 - /scripts/controllers/async-styles-controller.js
 - /scripts/controllers/async-font-controller.js
-- /scripts/controllers/service-worker-controller.js
 ---
 <!doctype html>
 <html>
@@ -27,9 +26,9 @@ scripts:
 	<script>
 		window.GauntFace = window.GauntFace || {};
 		window.GauntFace._asyncStyles = [
-      {{#styles.remote}}
+      {{#styles.async}}
         '{{{.}}}',
-      {{/styles.remote}}
+      {{/styles.async}}
     ];
 	</script>
 

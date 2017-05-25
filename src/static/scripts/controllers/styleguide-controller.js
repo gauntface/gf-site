@@ -2,14 +2,10 @@
 
 class StyleguideController {
   constructor() {
-    this._iframe = document.querySelector('.js-styleguide-window__iframe');
+    this._iframe = document.querySelector('.js-styleguide-iframe');
     this._gridBtn = document.querySelector('.js-styleguide-grid-btn');
     this._cssToggleBtn = document.querySelector('.js-styleguide-css-toggle');
 
-    this._viewportWatchRoundBtn =
-      document.querySelector('.js-styleguide-viewport-watch-round');
-    this._viewportWatchSquareBtn =
-      document.querySelector('.js-styleguide-viewport-watch-square');
     this._viewportPhoneBtn =
       document.querySelector('.js-styleguide-viewport-phone');
     this._viewportDesktopBtn =
@@ -22,11 +18,18 @@ class StyleguideController {
 
   _initButtonClicks() {
     this._gridBtn.addEventListener('click', () => this.toggleGrid());
+    this._cssToggleBtn.addEventListener('click', () => this.toggleAsyncCSS());
   }
 
   toggleGrid() {
     return this._postMessageToIframe({
       action: 'toggle-grid',
+    });
+  }
+
+  toggleAsyncCSS() {
+    return this._postMessageToIframe({
+      action: 'toggle-css',
     });
   }
 

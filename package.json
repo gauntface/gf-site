@@ -4,7 +4,7 @@
   "description": "Personal site of Matt Gaunt",
   "main": "src/index.js",
   "scripts": {
-    "serve": "nodemon src/index.js",
+    "serve": "nodemon src/index.js --watch ./",
     "lint": "eslint '.'",
     "test": "mocha ./test/node/**/*.js"
   },

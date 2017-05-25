@@ -1,9 +1,24 @@
 :root {
+  --primary-highlight-color: #2e4392;
+  --darker-highlight-color: #273180;
+  --lighter-highlight-color: #808080;
+  --strong-highlight-color: #ff7bac;
+
+  --page-bg-color: #f1eeed;
+  --font-color: #323232;
+  --title-font-color: var(--primary-highlight-color);
+
+  --code-background-color: #e3e0df;
+  --iframe-border-color: var(--strong-highlight-color);
+
+  --button-background-color: var(--primary-highlight-color);
+  --button-background-hover-color: var(--darker-highlight-color);
+  --button-background-active-color: var(--lighter-highlight-color);
+  --button-text-color: var(--page-bg-color);
+  /**
   --dark-bg-color: #2B262E;
   --light-grey-color: #BFBEC0;
 
-  --font-color: #333333;
-  --page-bg-color: #EDEDEB;
   --link-text-color: inherit;
 
   --styleguide-bg-color: #eeeeee;
@@ -25,4 +40,9 @@
 
   --twitter-block-bg-color: #1a1420;
   --twitter-block-font-color: #bab8bc;
+
+  --toggle-on-color: var(--light-grey-color);
+  --toggle-off-color: #8f8d91;
+  --toggle-text-color: var(--page-bg-color);
+  **/
 }

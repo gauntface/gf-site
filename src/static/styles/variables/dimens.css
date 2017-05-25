@@ -1,14 +1,55 @@
 :root {
   --grid: 8px;
 
-  --primary-font-size: 14;
-  --primary-line-height: 20;
+  --primary-font-size: calc(var(--grid) * 2);
+  --primary-line-height: 1.5rem;
 
+  --code-font-size: 0.875rem;
+  --code-line-height: var(--primary-line-height);
+
+  --p-margin-bottom: 1rem;
+  --list-margin-bottom: 1rem;
+  --pre-margin-bottom: var(--p-margin-bottom);
+  --blockquote-margin: 2rem;
+
+  --font-size-h1: 2rem;
+  --font-line-height-h1: 2rem;
+  --h1-margin-top: 2rem;
+  --h1-margin-bottom: 1rem;
+
+  --font-size-h2: 1.5rem;
+  --font-line-height-h2: 2rem;
+  --h2-margin-top: 2rem;
+  --h2-margin-bottom: 1rem;
+
+  --font-size-h3: 1.25rem;
+  --font-line-height-h3: 2rem;
+  --h3-margin-top: 2rem;
+  --h3-margin-bottom: 1rem;
+
+  --font-size-h4: 1rem;
+  --font-line-height-h4: 1rem;
+  --h4-margin-top: 1rem;
+  --h4-margin-bottom: 0.5rem;
+
+  --font-size-h5: 0.875rem;
+  --font-line-height-h5: 1rem;
+  --h5-margin-top: 1rem;
+  --h5-margin-bottom: 0.5rem;
+
+  --font-size-h6: 0.75rem;
+  --font-line-height-h6: 1rem;
+  --h6-margin-top: 1rem;
+  --h6-margin-bottom: 0.5rem;
+
+  --button-font-size: 1rem;
+
+  /**
   --btn-size: calc(var(--grid) * 6);
   --btn-padding: var(--grid);
   --divider-thickness: 2px;
 
-  --font-size-h1: 24;
+
   --font-size-h2: 22;
   --font-size-h3: 20;
   --font-size-h4: 18;
@@ -19,4 +60,9 @@
   --tiny-font-size: 10;
   --medium-font-size: 36;
   --large-font-size: 48;
+
+  --toggle-height: calc(var(--grid) * 4);
+  --toggle-height: calc(var(--grid) * 2);
+  --toggle-border-width: 2px;
+  **/
 }

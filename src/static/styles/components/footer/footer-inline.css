@@ -12,13 +12,11 @@
 
   overflow-y: auto;
 
-  .toggle {
-    &:before {
-      color: var(--footer-bg-color);
-    }
-  }
-
   transition: opacity .5s ease-in-out;
+}
+
+.footer .toggle:before {
+  color: var(--footer-bg-color);
 }
 
 .footer__container {
