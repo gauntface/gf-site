@@ -15,7 +15,7 @@ gulp.task('styles', () => {
       resolve: (id, basedir, importOptions) => {
         if (path.isAbsolute(id)) {
           return path.join(__dirname, '..',
-            'src', 'static', id);
+            'src', 'public', id);
         }
       },
     }),

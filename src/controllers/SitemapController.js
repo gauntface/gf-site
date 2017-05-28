@@ -1,12 +1,12 @@
 class SitemapController {
-  index() {
+  index(args) {
     const urls = [
       '/',
-      // '/styleguide',
+      '/styleguide',
     ];
 
     const protocol = 'http://';
-    const host = 'localhost:3000';
+    const host = args.request.get('host');
     const parsedUrls = urls.map((url) => {
       return `${protocol}${host}${url}`;
     });

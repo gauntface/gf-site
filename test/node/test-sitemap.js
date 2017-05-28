@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const siteServer = require('../../src/site-server');
+const siteServer = require('../../build/site-server');
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 
 describe('Test Sitemap', function() {
@@ -9,10 +9,14 @@ describe('Test Sitemap', function() {
 
   before(function() {
     this.timeout(30000);
-    return siteServer.start(3000)
+    return siteServer.start(3001)
     .then(() => {
-      serverUrl = 'http://localhost:3000';
+      serverUrl = 'http://localhost:3001';
     });
+  });
+
+  after(function() {
+    return siteServer.stop();
   });
 
   it('should be able to load the sitemap', function() {

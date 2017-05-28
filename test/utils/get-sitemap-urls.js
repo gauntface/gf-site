@@ -33,7 +33,6 @@ module.exports = (siteUrl) => {
           printDebugLogs();
           return reject(err);
         }
-
         resolve(data);
       });
     });

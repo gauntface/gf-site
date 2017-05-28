@@ -5,19 +5,32 @@
 const path = require('path');
 const gulp = require('gulp');
 
-gulp.task('thirdparty:swlib', () => {
+gulp.task('thirdparty:workbox', () => {
   return gulp.src([
-    './node_modules/sw-lib/build/*.*',
+    './node_modules/workbox-sw/build/importScripts/*.*',
   ])
   .pipe(gulp.dest(
     path.join(
       global.config.src,
-      'static',
+      'public',
       'third_party',
-      'sw-lib'
+      'workbox-sw'
+    )
+  ));
+});
+
+gulp.task('thirdparty:private', () => {
+  return gulp.src([
+    path.join(global.config.private, 'public', '**/*.*'),
+  ])
+  .pipe(gulp.dest(
+    path.join(
+      global.config.src,
+      'public',
+      'third_party'
     )
   ));
 });
 
 gulp.task('thirdparty',
-  gulp.parallel('thirdparty:swlib'));
+  gulp.parallel('thirdparty:workbox', 'thirdparty:private'));

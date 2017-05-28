@@ -1,0 +1,50 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
+.footer__link {
+  width: var(--footer-link-size);
+  height: var(--footer-link-size);
+  margin: 0 var(--grid);
+}
+
+.footer__link:first-child {
+  margin-left: 0;
+}
+
+.footer__link:last-child {
+  margin-right: 0;
+}
+
+.footer__spacer {
+  flex: 1;
+}
+
+.footer__twitter {
+  background-image: url('/images/third_party/twitter.svg');
+}
+
+.footer__github {
+  background-image: url('/images/third_party/github.svg');
+}
+
+.footer__email {
+  background-image: url('/images/icons/email.svg');
+}
+
+.footer__settings {
+  background-image: url('/images/icons/settings.svg');
+}
+
+@media (min-width: 900px) {
+  .footer__link {
+    margin: var(--grid) 0;
+  }
+
+  .footer__link:first-child {
+    margin-top: 0;
+  }
+
+  .footer__link:last-child {
+    margin-bottom: 0;
+  }
+}

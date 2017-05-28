@@ -2,24 +2,19 @@
 partials:
 - views/toggle.tmpl
 styles:
-- /styles/components/footer/footer-inline.css
-- /styles/components/footer/footer-remote.css
+- /public/styles/components/footer/footer-inline.css
+- /styles/components/footer/footer-async.css
 ---
-<footer class="footer js-footer">
-  <div class="footer__container">
-    <div class="footer_social-links">
-      <a class="footer__social-link-item footer__twitter" title="Twitter Profile" href="https://twitter.com/gauntface">
-      </a>
-      <a class="footer__social-link-item footer__rss" title="RSS Feed" href="/feed">
-      </a>
-    </div>
-
+<footer class="footer u-content">
+  <div class="footer-container">
+    <a class="footer__link footer__twitter" title="Twitter Profile" href="https://twitter.com/gauntface">
+    </a>
+    <a class="footer__link footer__github" title="Github Profile" href="https://github.com/gauntface">
+    </a>
+    <a class="footer__link footer__email" title="Email Matt Gaunt" href="mailto:site@gauntface.co.uk">
+    </a>
     <div class="footer__spacer"></div>
-
-    <div class="footer__push-section">
-      <div class="footer__push-description js-push-notification-message">Enable push notifications</div>
-      {{ > views/toggle.tmpl }}
-      <div class="toggle is-disabled js-push-notification-toggle"></div>
-    </div>
+    <a class="footer__link footer__settings" title="Settings" href="/settings">
+    </a>
   </div>
 </footer>

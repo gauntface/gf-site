@@ -8,7 +8,11 @@ class SiteServer {
   }
 
   start(portNumber) {
-    return this._hop.startServer(3000);
+    return this._hop.startServer(portNumber);
+  }
+
+  stop() {
+    return this._hop.stopServer();
   }
 }
 

@@ -5,7 +5,7 @@ const twitterModel = require('../models/twitter-model');
 
 class HomeController {
   index(args) {
-    return Promise.all([
+    /** return Promise.all([
       youtubeModel.getLatestTTTEpisode(),
       twitterModel.getLatestTweet(),
     ])
@@ -65,7 +65,23 @@ class HomeController {
           },
         ],
       };
-    });
+    });**/
+    return {
+      data: {
+        title: 'GauntFace | Matthew Gaunt',
+      },
+      views: [
+        {
+          templatePath: 'views/header.tmpl',
+        },
+        {
+          templatePath: 'views/home.tmpl',
+        },
+        {
+          templatePath: 'views/footer.tmpl',
+        }
+      ]
+    };
   }
 }
 

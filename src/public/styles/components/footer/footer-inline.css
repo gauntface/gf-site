@@ -1,0 +1,39 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
+:root {
+  --footer-padding: calc(var(--grid) * 2);
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: row;
+
+  /* Reserve height for the icons */
+  height: var(--footer-link-size);
+  margin-top: calc(var(--footer-padding) * 2);
+  margin-bottom: var(--footer-padding);
+}
+
+@media (min-width: 900px) {
+  .footer {
+    position: absolute;
+    left: calc((((100vw - var(--max-content-width)) / 2) - var(--footer-link-size)) / 2);
+    bottom: 0;
+
+    width: auto;
+    padding: 0;
+  }
+
+  .footer-container {
+    flex-direction: column;
+    height: auto;
+    margin-top: var(--footer-padding);
+  }
+}
+
+@media (min-width: 1250px) {
+  .footer {
+    left: calc(((100vw - var(--max-content-width)) / 2) - (var(--footer-link-size) / 2) - (var(--header-logo-size) / 2));
+  }
+}

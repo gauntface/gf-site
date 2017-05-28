@@ -15,7 +15,7 @@ global.config = {
 const gulpTaskFiles = fs.readdirSync(path.join(__dirname, 'gulp-tasks'));
 gulpTaskFiles.forEach((taskFile) => {
   const completePath = path.join(__dirname, 'gulp-tasks', taskFile);
-  if (fs.lstatSync(completePath).isFile()) {
+  if (fs.lstatSync(completePath).isFile() && taskFile.indexOf('.') !== 0) {
     require(completePath);
   }
 });

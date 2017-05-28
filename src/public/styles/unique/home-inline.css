@@ -1,0 +1,20 @@
+@import "/styles/variables/dimens.css";
+
+.home__content > *:last-child {
+  margin-bottom: 0;
+}
+.home__section {
+  margin: calc(var(--grid) * 6) 0;
+}
+
+.home__section h5 {
+  margin: 0 0 calc(var(--grid) * 2) 0;
+}
+
+.home__section h2 {
+  margin: 0;
+}
+
+.home__section-entry {
+  margin-bottom: calc(var(--grid) * 4);
+}
