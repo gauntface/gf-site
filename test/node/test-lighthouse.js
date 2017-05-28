@@ -9,10 +9,26 @@ const desiredPort = 9061;
 
 // For some URLs errors are to be expected and ignored
 const lighthouseRuleIgnores = {
-  '/styleguide/display/html/': [
-    'total-byte-weight',
-    'offscreen-images',
-    'uses-responsive-images',
+  '/styleguide/display/documents/html/': [
+    'without-javascript',
+  ],
+  '/styleguide/display/shells/blank/': [
+    'without-javascript',
+  ],
+  '/styleguide/display/shells/headerfooter/': [
+    'bypass',
+  ],
+  '/styleguide/display/views/footer/': [
+    'bypass',
+    'without-javascript',
+    'first-meaningful-paint',
+    'speed-index-metric',
+  ],
+  '/styleguide/display/views/header/': [
+    'bypass',
+  ],
+  '/styleguide/display/views/grid-overlay/': [
+    'without-javascript',
   ],
 };
 
@@ -55,23 +71,23 @@ function testFailing(audit, testedUrl) {
     const optimalValue = lighthouseAuditOptimalCorrection[audit.name];
     if (optimalValue) {
       if (audit.rawValue <= optimalValue) {
-        console.log(`Correcting the '${audit.name} value. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} but the score was ${audit.score}`);
+        // console.log(`Correcting the '${audit.name} value. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} but the score was ${audit.score}`);
         return false;
       }
     }
 
     if (audit.name === 'first-meaningful-paint' && audit.rawValue <= 1600) {
-      console.log(`Correcting the first-meaningful-paint. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} but the score was ${audit.score}`);
+      // console.log(`Correcting the first-meaningful-paint. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} but the score was ${audit.score}`);
+      return false;
+    }
+
+    if (lighthouseSoftenScores.indexOf(audit.name) !== -1 && audit.score >= 95) {
+      // console.log(`Softening the '${audit.name}' value. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} and the score was ${audit.score}`);
       return false;
     }
 
     if (audit.optimalValue) {
       console.log(`Failed audit '${audit.name}'. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} but the score was ${audit.score}`);
-    }
-
-    if (lighthouseSoftenScores.indexOf(audit.name) !== -1 && audit.score >= 95) {
-      console.log(`Softening the '${audit.name}' value. Value was ${audit.rawValue}, the optimal value is ${audit.optimalValue} and the score was ${audit.score}`);
-      return false;
     }
 
     const url = URL.parse(testedUrl);
@@ -80,10 +96,6 @@ function testFailing(audit, testedUrl) {
       if (ignoreList.indexOf(audit.name) !== -1) {
         return false;
       }
-    }
-
-    if (audit.name === 'first-interactive') {
-      console.log('first-interactive: ', audit);
     }
 
     return {
@@ -188,7 +200,7 @@ function getComponents(serverUrl) {
   })
   .then((response) => {
     return response.map((entry) => {
-      return serverUrl + entry.url;
+      return serverUrl + '/styleguide/display/' + entry + '/';
     });
   });
 }

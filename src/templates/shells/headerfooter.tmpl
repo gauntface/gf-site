@@ -1,9 +1,11 @@
 ---
 partials:
+- views/header.tmpl
 - views/footer.tmpl
 ---
-<main>
-  {{{content}}}
-</main>
+
+{{> views/header.tmpl }}
+
+{{{content}}}
 
 {{> views/footer.tmpl }}
