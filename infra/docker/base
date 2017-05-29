@@ -1,4 +1,4 @@
-FROM ubuntu:16.10
+FROM ubuntu:17.04
 
 # Need to be able to use add-apt-repository and must run update before
 # it'll work
