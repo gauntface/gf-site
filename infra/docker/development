@@ -2,4 +2,7 @@ FROM gauntface/gf-site:base
 
 ADD infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
+# Setup nodemon
+RUN npm install -g nodemon
+
 ENV BUILDTYPE 'development'

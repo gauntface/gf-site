@@ -10,6 +10,7 @@ const MYSQL_CONTAINER = {
   run: {
     detached: true,
     customArgs: [
+      `-p`, `3306:3306`,
       '--env', `MYSQL_ROOT_PASSWORD=${localConfig.database.rootPassword}`,
       '--env', `MYSQL_USER=${localConfig.database.user}`,
       '--env', `MYSQL_PASSWORD=${localConfig.database.password}`,
@@ -45,9 +46,9 @@ const DEVELOPMENT_CONTAINER = {
   ],
 };
 
-const DEVELOPMENT_PROD_CONTAINER = {
-  id: 'development-prod',
-  dockerFile: path.join(INFRA_BASE, 'docker/development'),
+const PROD_CONTAINER = {
+  id: 'prod',
+  dockerFile: path.join(INFRA_BASE, 'docker/prod'),
   tag: 'gauntface/gf-site:development-prod',
   name: 'gauntface-local-docker',
   run: {
@@ -71,7 +72,7 @@ const CONTAINERS = [
   MYSQL_CONTAINER,
   BASE_CONTAINER,
   DEVELOPMENT_CONTAINER,
-  DEVELOPMENT_PROD_CONTAINER,
+  PROD_CONTAINER,
 ];
 
 /**
@@ -189,7 +190,7 @@ class DockerHelper {
       const primaryContainer = CONTAINERS.filter((container) => {
         return container.id === environment;
       })[0];
-      const dependencyContainers = primaryContainer.dependencies;
+      const dependencyContainers = primaryContainer.dependencies || [];
       return dependencyContainers.reduce((promiseChain, containerInfo) => {
         return promiseChain.then(() => {
           if (!containerInfo.name) {

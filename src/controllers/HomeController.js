@@ -1,7 +1,4 @@
-const moment = require('moment');
-
-const youtubeModel = require('../models/youtube-model');
-const twitterModel = require('../models/twitter-model');
+const blogModel = require('../models/blog-model');
 
 class HomeController {
   index(args) {
@@ -66,6 +63,15 @@ class HomeController {
         ],
       };
     });**/
+
+    blogModel.getPublishedPosts()
+    .then(() => {
+      console.log('Got posts');
+    })
+    .catch((err) => {
+      console.log('Failed to get posts:', err);
+    });
+
     return {
       data: {
         title: 'GauntFace | Matthew Gaunt',

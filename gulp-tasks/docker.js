@@ -37,5 +37,6 @@ const runDocker = (buildName) => {
   });
 };
 
+gulp.task('docker-run:mysql', () => runDocker('mysql'));
 gulp.task('docker-run:dev', () => runDocker('development'));
-gulp.task('docker-run:prod', () => runDocker('development-prod'));
+gulp.task('docker-run:prod', () => runDocker('prod'));

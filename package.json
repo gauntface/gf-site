@@ -18,6 +18,7 @@
     "googleapis": "^18.0.0",
     "hopin": "0.0.16",
     "moment": "^2.18.1",
+    "mysql": "^2.13.0",
     "twitter": "^1.7.0",
     "workbox-sw": "^1.0.0"
   },

@@ -1,0 +1,5 @@
+FROM gauntface/gf-site:base
+
+ADD infra/nginx/gauntface-prod.conf /etc/nginx/sites-available/gauntface.tmpl
+
+ENV BUILDTYPE 'prod'
