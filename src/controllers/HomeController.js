@@ -64,30 +64,32 @@ class HomeController {
       };
     });**/
 
-    blogModel.getPublishedPosts()
-    .then(() => {
-      console.log('Got posts');
-    })
+    return blogModel.getPublishedPosts(3)
     .catch((err) => {
-      console.log('Failed to get posts:', err);
+      console.error('HomeController.index(): Failed to get blog posts:', err);
+      return [];
+    })
+    .then((blogPosts) => {
+      return {
+        data: {
+          title: 'GauntFace | Matthew Gaunt',
+        },
+        views: [
+          {
+            templatePath: 'views/header.tmpl',
+          },
+          {
+            templatePath: 'views/home.tmpl',
+            data: {
+              blogPosts,
+            }
+          },
+          {
+            templatePath: 'views/footer.tmpl',
+          }
+        ]
+      };
     });
-
-    return {
-      data: {
-        title: 'GauntFace | Matthew Gaunt',
-      },
-      views: [
-        {
-          templatePath: 'views/header.tmpl',
-        },
-        {
-          templatePath: 'views/home.tmpl',
-        },
-        {
-          templatePath: 'views/footer.tmpl',
-        }
-      ]
-    };
   }
 }
 

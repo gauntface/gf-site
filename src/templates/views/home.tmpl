@@ -7,21 +7,18 @@ styles:
 
   <p>Welcome to the ramblings of yet another person on the internet.</p>
 
+  {{#data.blogPosts.length}}
   <section class="home__section">
     <h5>Latest Blog Posts</h5>
 
+    {{#data.blogPosts}}
     <div class="home__section-entry">
-      <h2>Example Blog Post</h2>
-      <p>This is just a piece of example text.</p>
-      <p>Who knows what the actual content would turn out like. Probably a lot
-      of garbage.</p>
+      <h2>{{title}}</h2>
+      <p>{{excerptMarkdown}}</p>
     </div>
-
-    <div class="home__section-entry">
-      <h2>Hello World Post</h2>
-      <p>Can't have demo text without hello world.</p>
-    </div>
+    {{/data.blogPosts}}
   </section>
+  {{/data.blogPosts.length}}
 
   <section class="home__section">
     <h5>Latest Videos</h5>

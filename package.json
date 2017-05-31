@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "gulp",
-    "serve": "nodemon src/index.js --watch ./",
+    "serve": "gulp docker-clean && gulp docker-run:mysql && nodemon src/index.js --watch ./",
     "serve:prod": "npm run build && nodemon build/index.js",
     "lint": "eslint '.'",
     "test": "npm run build && mocha ./test/node/**/*.js ./test/integration/**/*.js --delay"
@@ -17,6 +17,7 @@
     "express": "^4.15.2",
     "googleapis": "^18.0.0",
     "hopin": "0.0.16",
+    "marked": "^0.3.6",
     "moment": "^2.18.1",
     "mysql": "^2.13.0",
     "twitter": "^1.7.0",
