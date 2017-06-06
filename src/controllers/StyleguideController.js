@@ -4,14 +4,15 @@ const path = require('path');
 class StyleguideController {
   index(args) {
     return {
-      shell: 'shells/styleguide.tmpl',
-      styles: [
-
+      templatePath: 'templates/documents/html.tmpl',
+      views: [
+        {
+          templatePath: 'templates/shells/styleguide.tmpl',
+        },
       ],
       data: {
         title: 'GauntFace | Matthew Gaunt - Styleguide',
       },
-      views: [],
     };
   }
 
@@ -40,7 +41,7 @@ class StyleguideController {
 
       if(args.type === 'json') {
         return {
-          document: 'documents/json.tmpl',
+          templatePath: 'templates/documents/json.tmpl',
           data: {
             json: JSON.stringify(listItems),
           },
@@ -54,15 +55,16 @@ class StyleguideController {
         data: {
           title: 'GauntFace | Matthew Gaunt - Styleguide Views',
         },
+        templatePath: 'templates/documents/html.tmpl',
         views: [
           {
-            templatePath: 'views/styleguide/list.tmpl',
+            templatePath: 'templates/views/styleguide/list.tmpl',
             data: {
               listItems,
             },
           },
           {
-            templatePath: `views/grid-overlay.tmpl`,
+            templatePath: `templates/views/grid-overlay.tmpl`,
           },
         ],
       };
@@ -72,6 +74,7 @@ class StyleguideController {
   display(args) {
     const templatePath = args.urlSegments.join('/');
     const renderResult = {
+      templatePath: 'templates/documents/html.tmpl',
       scripts: [
         '/scripts/utils/toggle-async-css.js',
       ],
@@ -82,13 +85,13 @@ class StyleguideController {
 
     const views = [];
     if (templatePath.indexOf('documents') === 0) {
-      renderResult.document = templatePath+'.tmpl';
+      renderResult.templatePath = 'templates/'+templatePath+'.tmpl';
     } else {
       views.push({
-        templatePath: `${templatePath}.tmpl`,
+        templatePath: `templates/${templatePath}.tmpl`,
       });
       views.push({
-        templatePath: `views/grid-overlay.tmpl`,
+        templatePath: `templates/views/grid-overlay.tmpl`,
       });
     }
     renderResult.views = views;

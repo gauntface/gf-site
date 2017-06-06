@@ -6,8 +6,8 @@ const TABLE_NAME = 'posts_table';
 class BlogModel {
   addPost(post) {
     return dbController.executeQuery(`INSERT INTO posts_table (
-        publishDate,
         draftDate,
+        publishDate,
         title,
         excerptMarkdown,
         bodyMarkdown,

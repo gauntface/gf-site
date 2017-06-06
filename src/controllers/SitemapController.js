@@ -12,14 +12,18 @@ class SitemapController {
     });
 
     return {
-      document: 'documents/xml.tmpl',
-      shell: 'shells/blank.tmpl',
-      views: [{
-        templatePath: 'views/sitemap.tmpl',
-        data: {
-          urls: parsedUrls,
+      templatePath: 'templates/documents/xml.tmpl',
+      views: [
+        {
+          templatePath: 'templates/shells/blank.tmpl',
+          views: [{
+            templatePath: 'templates/views/sitemap.tmpl',
+            data: {
+              urls: parsedUrls,
+            },
+          }],
         },
-      }],
+      ],
     };
   }
 }
