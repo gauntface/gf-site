@@ -1,10 +1,12 @@
 ---
 styles:
-- /public/styles/main-inline.css
+  inline:
+    - ../../public/styles/main-inline.css
 scripts:
-- /scripts/controllers/async-iframe-controller.js
-- /scripts/controllers/async-styles-controller.js
-- /scripts/controllers/async-font-controller.js
+  async:
+    - /scripts/controllers/async-iframe-controller.js
+    - /scripts/controllers/async-styles-controller.js
+    - /scripts/controllers/async-font-controller.js
 ---
 <!doctype html>
 <html lang="en">
@@ -35,9 +37,5 @@ scripts:
   {{#scripts.async}}
     <script src="{{.}}" async defer></script>
   {{/scripts.async}}
-
-  {{#scripts.sync}}
-    <script src="{{.}}"></script>
-  {{/scripts.sync}}
 </body>
 </html>

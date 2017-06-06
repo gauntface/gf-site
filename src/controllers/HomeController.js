@@ -74,20 +74,20 @@ class HomeController {
         data: {
           title: 'GauntFace | Matthew Gaunt',
         },
+        templatePath: 'templates/documents/html.tmpl',
         views: [
           {
-            templatePath: 'views/header.tmpl',
+            templatePath: 'templates/shells/headerfooter.tmpl',
+            views: [
+              {
+                templatePath: 'templates/views/home.tmpl',
+                data: {
+                  blogPosts,
+                },
+              },
+            ],
           },
-          {
-            templatePath: 'views/home.tmpl',
-            data: {
-              blogPosts,
-            }
-          },
-          {
-            templatePath: 'views/footer.tmpl',
-          }
-        ]
+        ],
       };
     });
   }
