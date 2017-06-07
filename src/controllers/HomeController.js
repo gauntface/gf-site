@@ -1,4 +1,5 @@
 const blogModel = require('../models/blog-model');
+const parseMarkdown = require('../utils/parse-markdown');
 
 class HomeController {
   index(args) {
@@ -68,6 +69,19 @@ class HomeController {
     .catch((err) => {
       console.error('HomeController.index(): Failed to get blog posts:', err);
       return [];
+    })
+    .then((blogPosts) => {
+      return Promise.all(
+        blogPosts.map((blogPost) => {
+          return parseMarkdown(blogPost.excerptMarkdown)
+          .then((parsedMarkdown) => {
+            return {
+              title: blogPost.title,
+              excerptHTML: parsedMarkdown.html,
+            };
+          });
+        })
+      );
     })
     .then((blogPosts) => {
       return {

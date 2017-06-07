@@ -28,8 +28,8 @@ class BlogModel {
       )`, [
         post.publishDate,
         post.title,
-        post.excerpt,
-        post.markdown,
+        post.excerptMarkdown,
+        post.bodyMarkdown,
         post.mainImage,
         post.mainImageBgColor,
         post.slug,

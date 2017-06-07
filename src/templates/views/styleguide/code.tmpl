@@ -4,9 +4,6 @@ styles:
     - ../../../public/styles/html-elements/code-inline.css
   async:
     - /styles/html-elements/code-async.css
-scripts:
-  async:
-    - /third_party/prismjs/prism.js
 ---
 <h1>Code Examples</h1>
 
@@ -22,30 +19,7 @@ scripts:
 
 <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.</p>
 
-<pre><code>const workboxSW = new WorkboxSW();
-workboxSW.precache([
-  {
-    url: '/',
-    revision: '613e6c7332dd83e848a8b00c403827ed'
-  },
-  {
-    url: '/styles/main.css',
-    revision: '59a325f32baad11bd47a8c515ec44ae5'
-  }
-]);
-
-// Register runtime routes like so.
-workboxSW.router.registerRoute(
-  '/example/', workboxSW.staleWhileRevalidate());
-workboxSW.router.registerRoute(
-  /\/images\/(.*\/)?.*\.(png|jpg|jpeg|gif)/,
-  workboxSW.strategies.cacheFirst());
-workboxSW.router.registerRoute(
-  '/styles/:filename', workboxSW.strategies.cacheFirst());
-
-// For the Lolz
-workboxSW.Matt.Is.Totes.The.Best.LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll0000000000000000000000000000ZZZZZZZZZZZZZZZLLLLLLLLLLLLLLLZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ();
-</code></pre>
+{{{data.no-lang}}}
 
 <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.</p>
 
@@ -53,42 +27,10 @@ workboxSW.Matt.Is.Totes.The.Best.LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOlllllllllllllllll
 
 <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.</p>
 
-<pre><code class="language-js">const workboxSW = new WorkboxSW();
-workboxSW.precache([
-  {
-    url: '/',
-    revision: '613e6c7332dd83e848a8b00c403827ed'
-  },
-  {
-    url: '/styles/main.css',
-    revision: '59a325f32baad11bd47a8c515ec44ae5'
-  }
-]);
-
-// Register runtime routes like so.
-workboxSW.router.registerRoute(
-  '/example/', workboxSW.staleWhileRevalidate());
-workboxSW.router.registerRoute(
-  /\/images\/(.*\/)?.*\.(png|jpg|jpeg|gif)/,
-  workboxSW.strategies.cacheFirst());
-workboxSW.router.registerRoute(
-  '/styles/:filename', workboxSW.strategies.cacheFirst());
-
-// For the Lolz
-workboxSW.Matt.Is.Totes.The.Best.LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll0000000000000000000000000000ZZZZZZZZZZZZZZZLLLLLLLLLLLLLLLZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ();
-
-// Number Example
-const helloNumber = 1;
-</code></pre>
+{{{data.js-lang}}}
 
 <p>Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.</p>
 
 <h2>Pre + Code [HTML]</h2>
 
-<pre><code class="language-html">&lt;html&gt;
-&lt;body&gt;
-  &lt;p class="example-selector"&gt;
-    Hello World.
-  &lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
+{{{data.html-lang}}}

@@ -222,7 +222,6 @@ siteServer.start(desiredPort)
 })
 .then((allUrls) => {
   registerTests(allUrls);
-  run();
 })
 .catch((err) => {
   console.error(err);

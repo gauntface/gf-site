@@ -2,9 +2,10 @@ const fetch = require('node-fetch');
 const moment = require('moment');
 const expect = require('chai').expect;
 
+const parseMarkdown = require('../../build/utils/parse-markdown');
 const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 const blogModel = require('../../build/models/blog-model.js');
-const PostModel = require('../../build/models/single-post-model.js');
+const SinglePostModel = require('../../build/models/single-post-model.js');
 const siteServer = require('../../build/site-server');
 
 describe('Test Home Page + Blog Posts', () => {
@@ -30,27 +31,30 @@ describe('Test Home Page + Blog Posts', () => {
 
   it('should display only published posts, max 3', function() {
     const postModels = [
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 1. Published',
-        excerpt: `Hello World 1
+        excerptMarkdown: `Hello World 1
 
 New Paragraph.`,
         publishDate: moment().subtract(30, 'days').toDate(),
         draftDate: moment().subtract(30, 'days').toDate(),
         status: 'published',
       }),
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 2. Draft',
-        excerpt: `Hello World 2`,
+        excerptMarkdown: `Hello World 2`,
         draftDate: new Date(),
       }),
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 3. Published',
-        excerpt: `Hello World 3
+        excerptMarkdown: `Hello World 3
 
 New Paragraph.
 
-    Code Block
+\`\`\`javascript
+// Just a comment
+console.log('Oh Hai');
+\`\`\`
 
 Testing Paragraph.
 
@@ -61,14 +65,14 @@ Testing Paragraph.
         draftDate: moment().subtract(25, 'days').toDate(),
         status: 'published',
       }),
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 4. Draft',
-        excerpt: `Hello World 4`,
+        excerptMarkdown: `Hello World 4`,
         draftDate: new Date(),
       }),
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 5. Published',
-        excerpt: `Hello World 5
+        excerptMarkdown: `Hello World 5
 
 New Paragraph. New Paragraph. \`Example Code Snippet\`
 
@@ -78,9 +82,9 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         draftDate: moment().subtract(20, 'days').toDate(),
         status: 'published',
       }),
-      new PostModel({
+      new SinglePostModel({
         title: 'Example Title 6. Published',
-        excerpt: `Hello World 6.`,
+        excerptMarkdown: `Hello World 6.`,
         publishDate: moment().subtract(15, 'days').toDate(),
         draftDate: moment().subtract(15, 'days').toDate(),
         status: 'published',
@@ -97,25 +101,49 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       throw err;
     })
     .then(() => {
-      return fetch(`${serverUrl}`)
+      return fetch(`${serverUrl}`);
     })
     .then((response) => {
-      if(!response.ok) {
-        throw new Error('Unable to get home screen.');
-      }
+      return response.text()
+      .then((textResponse) => {
+        if(!response.ok) {
+          throw new Error('Unable to get home screen: ' + textResponse);
+        }
 
-      return response.text();
+        return textResponse;
+      });
     })
     .then((response) => {
+      return Promise.all(postModels.map((postModel) => {
+        return parseMarkdown(postModel.excerptMarkdown);
+      }))
+      .then((excerptHTMLs) => {
+        return {
+          response,
+          excerptHTMLs,
+        };
+      });
+    })
+    .then(({response, excerptHTMLs}) => {
       expect(response.indexOf('Latest Blog Posts')).to.not.equal(-1);
-      expect(response.indexOf(postModels[0].title)).to.equal(-1);
-      expect(response.indexOf(postModels[1].title)).to.equal(-1);
-      expect(response.indexOf(postModels[2].title)).to.not.equal(-1);
-      expect(response.indexOf(postModels[3].title)).to.equal(-1);
-      expect(response.indexOf(postModels[4].title)).to.not.equal(-1);
-      expect(response.indexOf(postModels[5].title)).to.not.equal(-1);
 
-      // TODO Parse Excerpt as Markdown.
+      expect(response.indexOf(postModels[0].title)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[0].html)).to.equal(-1);
+
+      expect(response.indexOf(postModels[1].title)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[1].html)).to.equal(-1);
+
+      expect(response.indexOf(postModels[2].title)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[2].html)).to.not.equal(-1);
+
+      expect(response.indexOf(postModels[3].title)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[3].html)).to.equal(-1);
+
+      expect(response.indexOf(postModels[4].title)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[4].html)).to.not.equal(-1);
+
+      expect(response.indexOf(postModels[5].title)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[5].html)).to.not.equal(-1);
     });
   });
 });
