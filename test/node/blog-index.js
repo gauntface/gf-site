@@ -14,7 +14,7 @@ describe('Test Blog Index Page', () => {
   let serverUrl;
 
   before(function() {
-    this.timeout(120 * 1000);
+    this.timeout(5 * 60 * 1000);
 
     return Promise.all([
       siteServer.start(desiredPort),
