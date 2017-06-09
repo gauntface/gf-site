@@ -14,7 +14,7 @@ describe('Test Home Page + Blog Posts', () => {
   let serverUrl;
 
   before(function() {
-    this.timeout(60 * 1000);
+    this.timeout(120 * 1000);
 
     return Promise.all([
       siteServer.start(desiredPort),
