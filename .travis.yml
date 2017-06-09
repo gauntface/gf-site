@@ -1,8 +1,14 @@
+sudo: required
+
 language: node_js
 node_js:
   - "8"
 cache:
   directories:
     - "node_modules"
+
 services:
   - docker
+
+before_script:
+  - sudo /etc/init.d/mysql stop
