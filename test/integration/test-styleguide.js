@@ -4,11 +4,11 @@ const siteServer = require('../../build/site-server');
 const timeoutPromise = (time) => {
   return new Promise((resolve) => {
     setTimeout(resolve, time);
-  })
+  });
 };
 
 describe('Test Styleguide Logic', function() {
-  this.timeout(20 * 1000);
+  this.timeout(5 * 60 * 1000);
   this.retries(2);
 
   const desiredPort = 3002;

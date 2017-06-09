@@ -6,9 +6,15 @@ node_js:
 cache:
   directories:
     - "node_modules"
+    - "~/.selenium-assistant"
 
 services:
   - docker
 
 before_script:
+  # Stop local mysql so docker mysql works. TODO: Try moving to docker socket name
   - sudo /etc/init.d/mysql stop
+  # Read more here: https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start || echo \"Unable to start virtual display.\""
+  - sleep 3 # give xvfb some time to start
