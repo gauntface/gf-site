@@ -8,7 +8,7 @@
     "serve": "gulp docker-clean && gulp docker-run:mysql && nodemon src/index.js --watch ./src --watch ./node_modules",
     "serve:prod": "npm run build && nodemon build/index.js",
     "lint": "eslint '.'",
-    "test": "npm run build && mocha ./test/node/home-blog-posts.js"
+    "test": "npm run build && mocha ./test/node/**/*.js ./test/integration/**/*.js"
   },
   "author": "gauntface",
   "license": "Apache-2.0",
