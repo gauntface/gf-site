@@ -3,9 +3,22 @@ const chalk = require('chalk');
 const localConfig = require('./development.config.js');
 const dockerCLIWrapper = require('./docker-cli-wrapper');
 
+const DB_FILES = path.join(__dirname, '../../test/database-files/');
+const MYSQL_DATA_ONLY_CONTAINER = {
+  id: 'mysql-data-only',
+  name: 'gauntface-mysql-data-only',
+  create: {
+    customArgs: [
+      '-v', DB_FILES,
+      'mysql',
+    ],
+  },
+  persist: true,
+};
+
 const MYSQL_CONTAINER = {
   id: 'mysql',
-  tag: 'mysql/mysql-server:latest',
+  tag: 'mysql',
   name: 'gauntface-local-mysql',
   run: {
     detached: true,
@@ -15,8 +28,12 @@ const MYSQL_CONTAINER = {
       '--env', `MYSQL_USER=${localConfig.database.user}`,
       '--env', `MYSQL_PASSWORD=${localConfig.database.password}`,
       '--env', `MYSQL_DATABASE=${localConfig.database.dbName}`,
+      '--volumes-from', MYSQL_DATA_ONLY_CONTAINER.name,
     ],
   },
+  dependencies: [
+    MYSQL_DATA_ONLY_CONTAINER,
+  ],
 };
 
 const INFRA_BASE = path.join(__dirname, '../../infra');
@@ -42,6 +59,7 @@ const DEVELOPMENT_CONTAINER = {
     ],
   },
   dependencies: [
+    MYSQL_DATA_ONLY_CONTAINER,
     MYSQL_CONTAINER,
   ],
 };
@@ -64,11 +82,13 @@ const PROD_CONTAINER = {
     ],
   },
   dependencies: [
+    MYSQL_DATA_ONLY_CONTAINER,
     MYSQL_CONTAINER,
   ],
 };
 
 const CONTAINERS = [
+  MYSQL_DATA_ONLY_CONTAINER,
   MYSQL_CONTAINER,
   BASE_CONTAINER,
   DEVELOPMENT_CONTAINER,
@@ -105,7 +125,7 @@ class DockerHelper {
     this.log('Removing containers');
     return CONTAINERS.reduce((promiseChain, containerInfo) => {
       return promiseChain.then(() => {
-        if (!containerInfo.name) {
+        if (!containerInfo.name || containerInfo.persist === true) {
           // No name - nothing to stop.
           return promiseChain;
         }
@@ -198,12 +218,25 @@ class DockerHelper {
             return promiseChain;
           }
 
-          return dockerCLIWrapper.runContainer(
-            containerInfo.tag,
-            containerInfo.name,
-            containerInfo.run.customArgs,
-            forceDetached || containerInfo.run.detached
-          );
+          if (containerInfo.run) {
+            return dockerCLIWrapper.runContainer(
+              containerInfo.tag,
+              containerInfo.name,
+              containerInfo.run.customArgs,
+              forceDetached || containerInfo.run.detached
+            );
+          } else {
+            return dockerCLIWrapper.createContainer(
+              containerInfo.name,
+              containerInfo.create.customArgs
+            )
+            .catch((err) => {
+              if (containerInfo.persist === true) {
+                return;
+              }
+              throw err;
+            });
+          }
         });
       }, Promise.resolve())
       .then(() => {

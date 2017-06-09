@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 class SinglePostModel {
   constructor(input) {
     this._id = input.id;
@@ -47,6 +49,11 @@ class SinglePostModel {
 
   get status() {
     return this._status || 'draft';
+  }
+
+  getPublishedUrl() {
+    const dateString = moment(this._publishDate).format('YYYY/MM/DD');
+    return `/blog/${dateString}/${this.slug}`;
   }
 }
 

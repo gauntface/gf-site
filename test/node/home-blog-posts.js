@@ -2,11 +2,12 @@ const fetch = require('node-fetch');
 const moment = require('moment');
 const expect = require('chai').expect;
 
-const parseMarkdown = require('../../build/utils/parse-markdown');
 const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
-const blogModel = require('../../build/models/blog-model.js');
-const SinglePostModel = require('../../build/models/single-post-model.js');
-const siteServer = require('../../build/site-server');
+const parseMarkdown = require('../../src/utils/parse-markdown');
+const blogModel = require('../../src/models/blog-model.js');
+const SinglePostModel = require('../../src/models/single-post-model.js');
+const siteServer = require('../../src/site-server');
+const dbHelper = require('../../src/utils/database-helper.js');
 
 describe('Test Home Page + Blog Posts', () => {
   const desiredPort = 3006;
@@ -26,6 +27,16 @@ describe('Test Home Page + Blog Posts', () => {
       return new Promise((resolve) => {
         setTimeout(resolve, 15 * 1000);
       });
+    })
+    .then(() => {
+      return dbHelper.__TEST_ONLY_DROP_TABLES();
+    });
+  });
+
+  after(function() {
+    return siteServer.stop()
+    .then(() => {
+      return dbHelper.disconnect();
     });
   });
 
@@ -33,21 +44,27 @@ describe('Test Home Page + Blog Posts', () => {
     const postModels = [
       new SinglePostModel({
         title: 'Example Title 1. Published',
-        excerptMarkdown: `Hello World 1
+        excerptMarkdown: `Excerpt 1
+
+New Paragraph.`,
+        bodyMarkdown: `Body 1
 
 New Paragraph.`,
         publishDate: moment().subtract(30, 'days').toDate(),
         draftDate: moment().subtract(30, 'days').toDate(),
         status: 'published',
+        slug: 'published-1',
       }),
       new SinglePostModel({
         title: 'Example Title 2. Draft',
-        excerptMarkdown: `Hello World 2`,
+        excerptMarkdown: `Excerpt 2`,
+        bodyMarkdown: `Body 2.`,
         draftDate: new Date(),
+        slug: 'draft-1',
       }),
       new SinglePostModel({
         title: 'Example Title 3. Published',
-        excerptMarkdown: `Hello World 3
+        excerptMarkdown: `Excerpt 3
 
 New Paragraph.
 
@@ -61,18 +78,40 @@ Testing Paragraph.
 - Example List
 - With Two Items
 `,
+        bodyMarkdown: `Body 3
+
+New Paragraph.
+
+\`\`\`javascript
+// Just a comment
+console.log('Oh Hai');
+\`\`\`
+
+Testing Paragraph.
+
+- Example List
+- With Two Items`,
         publishDate: moment().subtract(25, 'days').toDate(),
         draftDate: moment().subtract(25, 'days').toDate(),
         status: 'published',
+        slug: 'published-3',
       }),
       new SinglePostModel({
         title: 'Example Title 4. Draft',
-        excerptMarkdown: `Hello World 4`,
+        excerptMarkdown: `Excerpt 4.`,
+        bodyMarkdown: `Body 4.`,
         draftDate: new Date(),
+        slug: 'draft-4',
       }),
       new SinglePostModel({
         title: 'Example Title 5. Published',
-        excerptMarkdown: `Hello World 5
+        excerptMarkdown: `Excerpt 5
+
+New Paragraph. New Paragraph. \`Example Code Snippet\`
+
+    Code Block
+`,
+        bodyMarkdown: `Body 5
 
 New Paragraph. New Paragraph. \`Example Code Snippet\`
 
@@ -81,13 +120,32 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         publishDate: moment().subtract(20, 'days').toDate(),
         draftDate: moment().subtract(20, 'days').toDate(),
         status: 'published',
+        slug: 'published-5',
       }),
       new SinglePostModel({
         title: 'Example Title 6. Published',
-        excerptMarkdown: `Hello World 6.`,
+        excerptMarkdown: `Excerpt 6.`,
+        bodyMarkdown: `Body 6.`,
         publishDate: moment().subtract(15, 'days').toDate(),
         draftDate: moment().subtract(15, 'days').toDate(),
         status: 'published',
+        slug: 'published-6',
+      }),
+      new SinglePostModel({
+        title: 'Example Title 7. No Slug. Published',
+        excerptMarkdown: `This shouldn't be displayed due to no slug.`,
+        bodyMarkdown: `This shouldn't be displayed due to no slug.`,
+        publishDate: moment().subtract(1, 'days').toDate(),
+        draftDate: moment().subtract(1, 'days').toDate(),
+        status: 'published',
+      }),
+      new SinglePostModel({
+        title: 'Example Title 8. No Body. Published',
+        excerptMarkdown: `This shouldn't be displayed due to no body.`,
+        publishDate: moment().subtract(1, 'days').toDate(),
+        draftDate: moment().subtract(1, 'days').toDate(),
+        status: 'published',
+        slug: 'published-8',
       }),
     ];
 
@@ -144,6 +202,12 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
 
       expect(response.indexOf(postModels[5].title)).to.not.equal(-1);
       expect(response.indexOf(excerptHTMLs[5].html)).to.not.equal(-1);
+
+      expect(response.indexOf(postModels[6].title)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[6].html)).to.equal(-1);
+
+      expect(response.indexOf(postModels[7].title)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[7].html)).to.equal(-1);
     });
   });
 });

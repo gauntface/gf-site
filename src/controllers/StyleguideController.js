@@ -2,6 +2,7 @@ const glob = require('glob');
 const path = require('path');
 
 const highlightCode = require('../utils/highlight-code');
+const parseMarkdown = require('../utils/parse-markdown');
 
 const JS_CODE_SAMPLE = `const workboxSW = new WorkboxSW();
 workboxSW.precache([
@@ -127,18 +128,97 @@ class StyleguideController {
         highlightCode(JS_CODE_SAMPLE, 'js'),
         highlightCode(HTML_CODE_SAMPLE, 'html'),
       ])
-      .then((highlightedCode) => {
+      .then((highlightedCodes) => {
+        highlightedCodes.forEach((singleHighlight) => {
+          if (singleHighlight.styles) {
+            renderResult.styles = singleHighlight.styles;
+          }
+        });
         views.push({
           templatePath: `templates/${templatePath}.tmpl`,
           data: {
-            'no-lang': highlightedCode[0],
-            'js-lang': highlightedCode[1],
-            'html-lang': highlightedCode[2],
+            'no-lang': highlightedCodes[0].html,
+            'js-lang': highlightedCodes[1].html,
+            'html-lang': highlightedCodes[2].html,
           },
         });
         views.push({
           templatePath: `templates/views/grid-overlay.tmpl`,
         });
+      });
+    } else if(templatePath.indexOf('views/styleguide/markdown') === 0) {
+      viewsPromise = parseMarkdown(`
+# Hello World
+## Testing
+Example
+
+- Test 1
+- Test 2
+
+
+1. Test 3
+1. Test 4
+
+
+\`\`\`
+console.log('No Lang');
+\`\`\`
+
+\`\`\`javascript
+console.log('Javascript Lang');
+\`\`\`
+
+\`\`\`madeup
+console.log('Madeup Lang');
+\`\`\`
+
+Let's try \`inner code block\` to see what happens.
+
+> Block Quote Yay`
+      )
+      .then((parsedMarkdown) => {
+        renderResult.styles = parsedMarkdown.styles;
+        views.push({
+          templatePath: 'templates/views/styleguide/markdown.tmpl',
+          data: {
+            markdown: parsedMarkdown.html,
+          },
+        });
+        views.push({
+          templatePath: `templates/views/grid-overlay.tmpl`,
+        });
+      });
+    } else if(templatePath.indexOf('views/blog/post') === 0) {
+      viewsPromise = parseMarkdown(`
+I'm an example blog post.
+
+\`\`\`javascript
+console.log('hello world.');
+\`\`\`
+
+- Example One
+- Example Two
+
+What a nice bunch of lists.
+
+1. Example One
+1. Example Two
+
+So many lists.
+`)
+      .then((parsedMarkdown) => {
+        views.push({
+        templatePath: `templates/${templatePath}.tmpl`,
+        data: {
+          blogPost: {
+            title: 'Hello World.',
+            bodyHTML: parsedMarkdown.html
+          },
+        }
+      });
+      views.push({
+        templatePath: `templates/views/grid-overlay.tmpl`,
+      });
       });
     } else {
       views.push({
@@ -151,7 +231,6 @@ class StyleguideController {
 
     return viewsPromise.then(() => {
       renderResult.views = views;
-
       return renderResult;
     });
   }

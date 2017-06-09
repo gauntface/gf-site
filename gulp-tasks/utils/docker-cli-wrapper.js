@@ -25,6 +25,18 @@ class DockerCLIWrapper {
       });
     });
   }
+
+  createContainer(name, customArgs) {
+    let args = [
+      'create',
+      '--name', name,
+    ];
+
+    args = args.concat(customArgs);
+
+    return this._executeDockerCommand(args);
+  }
+
   /**
    * @param {string} dockerfilePath
    * @param {string} tag The tag for the container.

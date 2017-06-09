@@ -75,6 +75,7 @@ class HomeController {
         blogPosts.map((blogPost) => {
           return parseMarkdown(blogPost.excerptMarkdown)
           .then((parsedMarkdown) => {
+            // TODO: Include any styles from parsedMarkdown.
             return {
               title: blogPost.title,
               excerptHTML: parsedMarkdown.html,

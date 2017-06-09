@@ -1,0 +1,21 @@
+<main class="u-content">
+  {{#data.blogPosts.length}}
+  <ol class="blog__section">
+    {{#data.blogPosts}}
+    <li>
+      <a href="{{publishedUrl}}">
+      <div class="blog-li__wrapper">
+        <h2>{{title}}</h2>
+        {{{excerptHTML}}}
+      </div>
+      </a>
+    </li>
+    {{/data.blogPosts}}
+  </ol>
+  {{/data.blogPosts.length}}
+
+  {{^data.blogPosts.length}}
+  <h2>Oops.</h2>
+  <p>Either the database is having issues or Matt sucks at the codez....probably a little bit of both.</p>
+  {{/data.blogPosts.length}}
+</main>
