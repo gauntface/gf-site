@@ -6,24 +6,18 @@ const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 const parseMarkdown = require('../../src/utils/parse-markdown');
 const blogModel = require('../../src/models/blog-model.js');
 const SinglePostModel = require('../../src/models/single-post-model.js');
-const siteServer = require('../../src/site-server');
 const dbHelper = require('../../src/utils/database-helper.js');
+const testingConfig = require('../../src/config/testing');
 
 describe('Test Blog Index Page', () => {
-  const desiredPort = 3006;
-  let serverUrl;
-
   before(function() {
     this.timeout(5 * 60 * 1000);
 
-    return Promise.all([
-      siteServer.start(desiredPort),
-      dockerHelper.clean()
-      .then(() => dockerHelper.run('mysql')),
-    ])
-    .then(() => {
-      serverUrl = `http://localhost:${desiredPort}`;
+    // This env is set for the local db helper
+    process.env.CONFIG_NAME = 'testing';
 
+    return dockerHelper.run('testing')
+    .then(() => {
       // This is here to wait for the mysql container to be fully up and running
       return new Promise((resolve) => {
         setTimeout(resolve, 15 * 1000);
@@ -35,10 +29,7 @@ describe('Test Blog Index Page', () => {
   });
 
   after(function() {
-    return siteServer.stop()
-    .then(() => {
-      return dbHelper.disconnect();
-    });
+    return dbHelper.disconnect();
   });
 
   it('should display blog posts up to 20 entries', function() {
@@ -179,7 +170,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       throw err;
     })
     .then(() => {
-      return fetch(`${serverUrl}/blog/`);
+      return fetch(`${testingConfig.url}/blog/`);
     })
     .then((response) => {
       return response.text()
