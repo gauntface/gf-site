@@ -1,5 +1,6 @@
 const path = require('path');
 const spawn = require('child_process').spawn;
+const chalk = require('chalk');
 
 /**
  * Helper for docker methods.
@@ -10,15 +11,30 @@ class DockerCLIWrapper {
    * @param {Array<string>} args The arguments passed into the docker process.
    * @return {Promise} Resolves when the command ends.
    */
-  _executeDockerCommand(args) {
+  _executeDockerCommand(args, log) {
+    if (typeof log === 'undefined') {
+      log = false;
+    }
+
     return new Promise((resolve, reject) => {
-      const dockerProcess = spawn('docker', args, {
-        stdio: 'inherit',
+      let errString = '';
+      const dockerProcess = spawn('docker', args);
+
+      dockerProcess.stdout.on('data', (data) => {
+        if (!log) {
+          return;
+        }
+
+        process.stdout.write(data.toString());
+      });
+
+      dockerProcess.stderr.on('data', (data) => {
+        errString += data.toString();
       });
 
       dockerProcess.on('exit', (code) => {
         if (code !== 0) {
-          return reject(`Unexpected exit code: ${code}`);
+          return reject(errString);
         }
 
         resolve();
@@ -80,7 +96,7 @@ class DockerCLIWrapper {
 
     args.push(containerTag);
 
-    return this._executeDockerCommand(args);
+    return this._executeDockerCommand(args, true);
   }
 
   /**
@@ -107,13 +123,7 @@ class DockerCLIWrapper {
       containerName,
     ];
 
-    return this._executeDockerCommand(args)
-    .catch(() => {
-      /* eslint-disable no-console */
-      console.log(`    Docker could not stop '${containerName}'. This is ` +
-        `probably due to the container already being stopped.`);
-      /* eslint-enable no-console */
-    });
+    return this._executeDockerCommand(args);
   }
 
   /**
@@ -126,13 +136,7 @@ class DockerCLIWrapper {
       containerName,
     ];
 
-    return this._executeDockerCommand(args)
-    .catch(() => {
-      /* eslint-disable no-console */
-      console.log(`    Docker could not remove '${containerName}'. This is ` +
-        `probably due to the container already being removed.`);
-      /* eslint-enable no-console */
-    });
+    return this._executeDockerCommand(args);
   }
 }
 

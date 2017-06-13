@@ -53,25 +53,30 @@ class DatabaseHelper {
 
   _getDBDetails() {
     let mysqlOptions;
-    switch(process.env.BUILDTYPE) {
-      case 'development':
+    switch(process.env.CONFIG_NAME) {
+      case 'testing': {
+        const testingConfig = require('../config/testing');
         mysqlOptions = {
-          host: 'gauntface-local-mysql',
-          user: 'example-user',
-          password: 'example-password',
-          database: 'example-db',
+          host: process.env.MYSQL_NAME,
+          user: testingConfig.database.user,
+          password: testingConfig.database.password,
+          database: testingConfig.database.database,
         };
         break;
-      case 'prod':
+      }
+      case 'prod': {
         throw new Error('Need to add mysql options for prod environment');
-      default:
+      }
+      default: {
+        const devConfig = require('../config/development');
         mysqlOptions = {
           host: 'localhost',
-          user: 'example-user',
-          password: 'example-password',
-          database: 'example-db',
+          user: devConfig.database.user,
+          password: devConfig.database.password,
+          database: devConfig.database.database,
         };
         break;
+      }
     }
 
     return mysqlOptions;

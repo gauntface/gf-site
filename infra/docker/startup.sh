@@ -54,7 +54,15 @@ echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
 echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
 echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
 echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
+if [ -z "$DEV_PORT" ]; then
 echo ""
+echo -e "${CYAN}                No DEV_PORT Defined                "
+echo ""
+else
+echo ""
+echo -e "${CYAN}            http://localhost:${DEV_PORT}           "
+echo ""
+fi
 echo -e "${NC}"
 echo ""
 
