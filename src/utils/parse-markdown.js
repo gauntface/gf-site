@@ -13,7 +13,7 @@ module.exports = (markdownString) => {
         inline: [],
         async: [],
         sync: [],
-      }
+      },
     };
     const markedOptions = {
       highlight: function(code, lang, callback) {

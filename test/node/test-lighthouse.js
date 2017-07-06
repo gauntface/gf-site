@@ -1,11 +1,11 @@
 const fetch = require('node-fetch');
 const URL = require('url');
 
-const siteServer = require('../../build/site-server');
+const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
+
+const testingConfig = require('../../src/config/testing');
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
-
-const desiredPort = 9061;
 
 // For some URLs errors are to be expected and ignored
 const lighthouseRuleIgnores = {
@@ -168,10 +168,7 @@ function registerTests(allUrls) {
     after(function() {
       this.timeout(10 * 1000);
 
-      return Promise.all([
-        lighthouseWrapper.killChrome(),
-        siteServer.stop(),
-      ]);
+      return lighthouseWrapper.killChrome();
     });
 
     allUrls.forEach((urlToTest) => {
@@ -205,12 +202,16 @@ function getComponents(serverUrl) {
   });
 }
 
-siteServer.start(desiredPort)
+dockerHelper.run('testing')
 .then(() => {
-  let serverUrl = `http://localhost:${desiredPort}`;
+  return new Promise((resolve) => {
+    setTimeout(resolve, 10 * 1000);
+  });
+})
+.then(() => {
   return Promise.all([
-    getSitemapUrls(serverUrl),
-    getComponents(serverUrl),
+    getSitemapUrls(testingConfig.url),
+    getComponents(testingConfig.url),
   ]);
 })
 .then((results) => {
@@ -222,6 +223,8 @@ siteServer.start(desiredPort)
 })
 .then((allUrls) => {
   registerTests(allUrls);
+
+  run();
 })
 .catch((err) => {
   console.error(err);

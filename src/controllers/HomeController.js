@@ -79,6 +79,7 @@ class HomeController {
             return {
               title: blogPost.title,
               excerptHTML: parsedMarkdown.html,
+              url: blogPost.getPublishedUrl(),
             };
           });
         })
@@ -92,7 +93,7 @@ class HomeController {
         templatePath: 'templates/documents/html.tmpl',
         views: [
           {
-            templatePath: 'templates/shells/headerfooter.tmpl',
+            templatePath: 'templates/shells/header-footer.tmpl',
             views: [
               {
                 templatePath: 'templates/views/home.tmpl',

@@ -12,7 +12,14 @@ gulp.task('docker-clean', () => dockerHelper.clean());
 gulp.task('docker-build', () => dockerHelper.build());
 
 gulp.task(`docker-cli`, () => {
-  return dockerHelper.accessCLI('development')
+  return dockerHelper.accessCLI('SRC')
+  .catch(() => {
+    // NOOP for errors.
+  });
+});
+
+gulp.task(`docker-cli:build`, () => {
+  return dockerHelper.accessCLI('BUILD')
   .catch(() => {
     // NOOP for errors.
   });
@@ -39,4 +46,5 @@ const runDocker = (buildName) => {
 
 gulp.task('docker-run:mysql', () => runDocker('dev-mysql'));
 gulp.task('docker-run:dev', () => runDocker('development'));
+gulp.task('docker-run:testing', () => runDocker('testing'));
 gulp.task('docker-run:prod', () => runDocker('prod'));

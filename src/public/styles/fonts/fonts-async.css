@@ -1,12 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
 
 @font-face {
-  font-family: 'adam.cg_proregular';
-  src: url('/third_party/fonts/adam.cg_pro/adam.cg_pro-webfont.eot');
-  src: url('/third_party/fonts/adam.cg_pro/adam.cg_pro-webfont.eot?#iefix') format('embedded-opentype'),
-       url('/third_party/fonts/adam.cg_pro/adam.cg_pro-webfont.woff2') format('woff2'),
-       url('/third_party/fonts/adam.cg_pro/adam.cg_pro-webfont.woff') format('woff'),
-       url('/third_party/fonts/adam.cg_pro/adam.cg_pro-webfont.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'hallo sans';
+    src: url('/third_party/fonts/hallo-sans/hallo-sans-webfont.woff2') format('woff2'),
+         url('/third_party/fonts/hallo-sans/hallo-sans-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'hallo_sansblack';
+    src: url('/third_party/fonts/hallo-sans/hallo-sans-black-webfont.woff2') format('woff2'),
+         url('/third_party/fonts/hallo-sans/hallo-sans-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'hallo_sanslight';
+    src: url('/third_party/fonts/hallo-sans/hallo-sans-light-webfont.woff2') format('woff2'),
+         url('/third_party/fonts/hallo-sans/hallo-sans-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
 }

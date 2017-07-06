@@ -4,9 +4,27 @@ const path = require('path');
 const logHelper = require('./log-helper');
 
 module.exports = (code, lang) => {
+  const styles = {
+    inline: [
+      path.join(__dirname, '../public/styles/html-elements/code-inline.css'),
+    ],
+  };
+
+  if (!lang) {
+    const lines = code.split('\n');
+    const firstLine = lines.splice(0,1)[0].trim();
+    switch(firstLine) {
+      case 'javascript': {
+        lang = firstLine;
+        code = lines.join('\n');
+      }
+    }
+  }
+
   if (!lang) {
     return Promise.resolve({
       html: code,
+      styles,
     });
   }
 
@@ -15,19 +33,15 @@ module.exports = (code, lang) => {
     logHelper.log('Unsupported highlighting language: ', lang);
     return Promise.resolve({
       html: code,
+      styles,
     });
   }
 
   try {
     const highlightedCode = Prism.highlight(code, prismLang);
-    const styles = {
-      inline: [
-        path.join(__dirname, '../public/styles/html-elements/code-inline.css'),
-      ],
-      async: [
-        '/styles/html-elements/code-async.css',
-      ],
-    };
+    styles.async = [
+      '/styles/html-elements/code-async.css',
+    ];
     return Promise.resolve({
       html: highlightedCode,
       styles,
@@ -36,6 +50,7 @@ module.exports = (code, lang) => {
     logHelper.warn('Unable to highlight code.', err);
     return Promise.resolve({
       html: code,
+      styles,
     });
   }
 };

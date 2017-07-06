@@ -11,14 +11,14 @@ class DockerCLIWrapper {
    * @param {Array<string>} args The arguments passed into the docker process.
    * @return {Promise} Resolves when the command ends.
    */
-  _executeDockerCommand(args, log) {
+  _executeDockerCommand(args, log, options) {
     if (typeof log === 'undefined') {
       log = false;
     }
 
     return new Promise((resolve, reject) => {
       let errString = '';
-      const dockerProcess = spawn('docker', args);
+      const dockerProcess = spawn('docker', args, options);
 
       dockerProcess.stdout.on('data', (data) => {
         if (!log) {
@@ -110,7 +110,9 @@ class DockerCLIWrapper {
       'bash',
     ];
 
-    return this._executeDockerCommand(args);
+    return this._executeDockerCommand(args, true, {
+      stdio: 'inherit',
+    });
   }
 
   /**

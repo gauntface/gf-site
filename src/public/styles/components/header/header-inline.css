@@ -2,89 +2,50 @@
 @import "/styles/variables/colors.css";
 @import "/styles/variables/fonts.css";
 
-:root {
-  --heading-padding: calc(var(--grid) * 4);
-}
-
 .header {
-  background: var(--header-bg-color);
-  position: sticky;
-  top: 0;
-}
-
-.home__logo {
-  display: block;
-  padding: var(--heading-padding);
+  max-width: var(--max-content-width);
+  margin: 0 auto;
 }
 
 .header__container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+}
+
+.home__logo {
+  display: inline-block;
+  padding: var(--content-padding);
+}
+
+.home__logo:focus svg {
+  fill: var(--focus-highlight-color);
+  border-color: var(--focus-highlight-color);
 }
 
 .home__logo svg {
   display: block;
   width: var(--header-logo-size);
   height: var(--header-logo-size);
-  fill: var(--page-bg-color);
-  margin: 0 auto;
+  fill: var(--header-logo-color);
+  border-style: solid;
+  border-color: var(--header-logo-color);
 }
 
 .header__links {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   width: 100%;
-  margin-bottom: calc(var(--grid) * 2);
 }
 
 .header__links a {
-  color: var(--page-bg-color);
   text-decoration: none;
   font-family: var(--title-font-family);
-  font-weight: bold;
-  text-transform: uppercase;
+  font-weight: normal;
+  padding: calc(var(--grid) * 2);
 }
 
-@media (min-width: 550px) {
-  .header__links {
-    justify-content: space-around;
-  }
-}
-
-@media (min-width: 1090px) {
-  .header {
-    height: var(--header-logo-size);
-  }
-
-  .header__container {
-    height: 100%;
-    justify-content: center;
-  }
-
-  .home__logo {
-    position: absolute;
-    padding: 0;
-    left: calc((((100vw - var(--max-content-width)) / 2) - var(--header-logo-size)) / 2);
-  }
-
-  .header__links {
-    justify-content: flex-start;
-    margin-bottom: 0;
-  }
-
-  .header__links a:first-child {
-    margin-left: 0;
-  }
-
-  .header__links a {
-    margin: calc(var(--grid) * 2);
-  }
-}
-
-@media (min-width: 1250px) {
-  .home__logo {
-    left: calc(((100vw - var(--max-content-width)) / 2) - var(--header-logo-size));
-  }
+.header__links a:focus {
+  font-style: normal;
 }

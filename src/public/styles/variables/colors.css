@@ -1,25 +1,25 @@
 :root {
-  --primary-highlight-color: #2e4392;
-  --darker-highlight-color: #273180;
-  --lighter-highlight-color: #808080;
-  --strong-highlight-color: #ff7bac;
+  --focus-highlight-color: #ff6e9f;
 
-  --page-bg-color: #f1eeed;
+  --page-bg-color: white;
   --font-color: #323232;
-  --title-font-color: var(--primary-highlight-color);
+  --title-font-color: #303030;
 
   --code-background-color: #e3e0df;
   --pre-background-color: #303030;
-  --iframe-border-color: var(--strong-highlight-color);
+  --iframe-border-color: var(--font-color);
 
-  --button-background-color: var(--primary-highlight-color);
-  --button-background-hover-color: var(--darker-highlight-color);
-  --button-background-active-color: var(--lighter-highlight-color);
+  --button-background-color: #303030;
+  --button-background-hover-color: #000000;
+  --button-background-active-color: #909090;
   --button-text-color: var(--page-bg-color);
 
-  --link-text-color: var(--darker-highlight-color);
+  --link-text-color: #303030;
 
   --header-bg-color: var(--primary-highlight-color);
+  --header-logo-color: #303030;
+
+  --footer-color: #a0a0a0;
 
   /**
   --dark-bg-color: #2B262E;

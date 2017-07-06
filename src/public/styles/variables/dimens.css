@@ -17,58 +17,39 @@
   --h1-margin-top: 2rem;
   --h1-margin-bottom: 1rem;
 
-  --font-size-h2: 1.5rem;
+  --font-size-h2: 1.7rem;
   --font-line-height-h2: 2rem;
   --h2-margin-top: 2rem;
   --h2-margin-bottom: 1rem;
 
-  --font-size-h3: 1.25rem;
+  --font-size-h3: 1.5rem;
   --font-line-height-h3: 2rem;
   --h3-margin-top: 2rem;
   --h3-margin-bottom: 1rem;
 
-  --font-size-h4: 1rem;
-  --font-line-height-h4: 1rem;
+  --font-size-h4: 1.2rem;
+  --font-line-height-h4: 2rem;
   --h4-margin-top: 1rem;
   --h4-margin-bottom: 0.5rem;
 
-  --font-size-h5: 0.875rem;
+  --font-size-h5: 1rem;
   --font-line-height-h5: 1rem;
   --h5-margin-top: 1rem;
   --h5-margin-bottom: 0.5rem;
 
-  --font-size-h6: 0.75rem;
+  --font-size-h6: 0.875rem;
   --font-line-height-h6: 1rem;
   --h6-margin-top: 1rem;
   --h6-margin-bottom: 0.5rem;
 
   --button-font-size: 1rem;
 
-  --header-logo-size: calc(var(--grid) * 12);
   --content-padding: calc(var(--grid) * 2);
   --footer-link-size: calc(var(--grid) * 4);
+  --footer-license-font-size: calc(var(--grid) * 1.5);
 
   --max-content-width: calc(var(--grid) * 100);
   --header-footer-max-left-offset: calc(var(--grid) * 6);
-  /**
-  --btn-size: calc(var(--grid) * 6);
-  --btn-padding: var(--grid);
-  --divider-thickness: 2px;
 
-
-  --font-size-h2: 22;
-  --font-size-h3: 20;
-  --font-size-h4: 18;
-  --font-size-h5: 16;
-  --font-size-h6: 14;
-  --font-size-code:	12;
-  --small-font-size:	12;
-  --tiny-font-size: 10;
-  --medium-font-size: 36;
-  --large-font-size: 48;
-
-  --toggle-height: calc(var(--grid) * 4);
-  --toggle-height: calc(var(--grid) * 2);
-  --toggle-border-width: 2px;
-  **/
+  --header-logo-size: calc(var(--grid) * 8);
 }

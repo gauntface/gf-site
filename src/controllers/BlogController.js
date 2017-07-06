@@ -1,7 +1,9 @@
+const path = require('path');
+
 const blogModel = require('../models/blog-model');
 const parseMarkdown = require('../utils/parse-markdown');
 
-class HomeController {
+class BlogController {
   index(args) {
     return blogModel.getPublishedPosts(20)
     .catch((err) => {
@@ -30,7 +32,7 @@ class HomeController {
         templatePath: 'templates/documents/html.tmpl',
         views: [
           {
-            templatePath: 'templates/shells/headerfooter.tmpl',
+            templatePath: 'templates/shells/header-footer.tmpl',
             views: [
               {
                 templatePath: 'templates/views/blog/index.tmpl',
@@ -50,6 +52,12 @@ class HomeController {
     const month = args.urlSegments[1];
     const day = args.urlSegments[2];
     const slug = args.urlSegments[3];
+
+    let styles = {
+      raw: [],
+      inline: [],
+    };
+
     return blogModel.getPostFromDetails(
       year, month, day, slug, 'published'
     )
@@ -59,22 +67,30 @@ class HomeController {
           content: 'TODO: Show 404 Page',
         };
       }
+
+      styles.raw.push(`.split-container-left {
+        background-color: ${blogPost.mainImageBgColor};
+      }`);
+
       return parseMarkdown(blogPost.bodyMarkdown)
       .then((parsedMarkdown) => {
+        styles.inline = styles.inline.concat(parsedMarkdown.styles.inline);
         return {
           title: blogPost.title,
           bodyHTML: parsedMarkdown.html,
+          mainImage: blogPost.mainImage,
         };
       });
     })
     .then((blogPost) => {
       return {
+        styles,
         data: {
-          title: `blogModel.title - GauntFace | Matthew Gaunt`,
+          title: `${blogPost.title} - GauntFace | Matthew Gaunt`,
         },
         templatePath: 'templates/documents/html.tmpl',
         views: [{
-            templatePath: 'templates/shells/headerfooter.tmpl',
+            templatePath: 'templates/shells/header-footer.tmpl',
             views: [
               {
                 templatePath: 'templates/views/blog/post.tmpl',
@@ -90,4 +106,4 @@ class HomeController {
   }
 }
 
-module.exports = new HomeController();
+module.exports = new BlogController();

@@ -5,7 +5,7 @@ module.exports = {
   url: `http://localhost:${PORT}`,
   port: PORT,
   database: {
-    rootPassword: 'development-password',
+    rootPassword: 'password',
     user: 'development-user',
     password: 'development-password',
     database: 'development-db',

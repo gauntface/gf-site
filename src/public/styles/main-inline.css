@@ -53,7 +53,7 @@ img {
 h1, h2, h3, h4, h5, h6 {
   color: var(--title-font-color);
   font-family: var(--title-font-family);
-  text-transform: uppercase;
+  font-weight: normal;
   overflow-wrap: normal;
 }
 
@@ -80,6 +80,7 @@ h3 {
 
 h4 {
   font-size: var(--font-size-h4);
+  font-style: italic;
   line-height: var(--font-line-height-h4);
   margin-top: var(--h4-margin-top);
   margin-bottom: var(--h4-margin-bottom);
@@ -87,6 +88,7 @@ h4 {
 
 h5 {
   font-size: var(--font-size-h5);
+  font-style: italic;
   line-height: var(--font-line-height-h5);
   margin-top: var(--h5-margin-top);
   margin-bottom: var(--h5-margin-bottom);
@@ -94,15 +96,26 @@ h5 {
 
 h6 {
   font-size: var(--font-size-h6);
+  font-weight: 700;
   line-height: var(--font-line-height-h6);
   margin-top: var(--h6-margin-top);
   margin-bottom: var(--h6-margin-bottom);
 }
 
 a {
-  color: var(--link-text-color);
+  color: inherit;
 
   text-decoration: underline;
+}
+
+a:focus {
+  color: var(--focus-highlight-color);
+  outline: none;
+  font-style: italic;
+}
+
+a:focus h1, a:focus h2, a:focus h3, a:focus h4, a:focus h5, a:focus h6 {
+  color: var(--focus-highlight-color);
 }
 
 ul, ol {

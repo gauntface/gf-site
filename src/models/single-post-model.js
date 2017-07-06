@@ -40,7 +40,7 @@ class SinglePostModel {
   }
 
   get mainImageBgColor() {
-    return this._mainImgBgColor || null;
+    return this._mainImageBgColor || null;
   }
 
   get slug() {

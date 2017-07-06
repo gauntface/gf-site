@@ -3,16 +3,22 @@ const path = require('path');
 const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
 
 const CONTAINER_NAMES = {
-  MYSQL: 'gauntface-mysql',
-  MYSQL_DATA_ONLY: 'gauntface-mysql-data-only',
+  MYSQL_DEVELOPMENT: 'gauntface-mysql-development',
+  MYSQL_TESTING: 'gauntface-mysql-testing',
+  MYSQL_DATA_DEVELOPMENT: 'gauntface-mysql-data-development',
+  MYSQL_DATA_TESTING: 'gauntface-mysql-data-testing',
   SRC: 'gauntface-src',
   BUILD: 'gauntface-build',
 };
 
-const getMysqlDataOnlyContainer = () => {
+const getMysqlDataOnlyContainer = (config) => {
+  if (!CONTAINER_NAMES[`MYSQL_DATA_${config.name.toUpperCase()}`]) {
+    throw new Error('Can\'t find the Mysql container for config.');
+  }
+
   return {
     id: 'mysql-data-only',
-    name: CONTAINER_NAMES.MYSQL_DATA_ONLY,
+    name: CONTAINER_NAMES[`MYSQL_DATA_${config.name.toUpperCase()}`],
     create: {
       customArgs: [
         'mysql',
@@ -23,11 +29,15 @@ const getMysqlDataOnlyContainer = () => {
 };
 
 const getMysqlContainer = (config) => {
+  if (!CONTAINER_NAMES[`MYSQL_${config.name.toUpperCase()}`]) {
+    throw new Error('Can\'t find the Mysql container for config.');
+  }
+
   const mysqlDataContainer = getMysqlDataOnlyContainer(config);
   return {
     id: 'mysql',
     tag: 'mysql',
-    name: CONTAINER_NAMES.MYSQL,
+    name: CONTAINER_NAMES[`MYSQL_${config.name.toUpperCase()}`],
     run: {
       detached: true,
       customArgs: [
@@ -57,7 +67,7 @@ const getSrcContainer = (config) => {
   const mysqlContainer = getMysqlContainer(config);
 
   return {
-    id: 'development',
+    id: 'src',
     dockerFile: path.join(DOCKER_CONFIG_PATH, 'development'),
     tag: 'gauntface/gf-site:src',
     name: CONTAINER_NAMES.SRC,
@@ -68,10 +78,12 @@ const getSrcContainer = (config) => {
         '-p', `${config.port}:80`,
         '--env', `DEV_PORT=${config.port}`,
         '--env', `CONFIG_NAME=${config.name}`,
-        '--env', `MYSQL_NAME=${CONTAINER_NAMES.MYSQL}`,
+        '--env', `MYSQL_NAME=${mysqlContainer.name}`,
         '--volume', `${path.join(__dirname, '..', '..', 'src')}:/gauntface/site`,
         '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
           `/gauntface/site/node_modules`,
+        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-uploads')}:` +
+          `/gauntface/uploads`,
       ],
     },
     dependencies: [
@@ -85,7 +97,7 @@ const getSrcContainer = (config) => {
 const getBuildContainer = (config) => {
   const mysqlContainer = getMysqlContainer(config);
   return {
-    id: 'prod',
+    id: 'build',
     dockerFile: path.join(DOCKER_CONFIG_PATH, 'prod'),
     tag: 'gauntface/gf-site:build',
     name: CONTAINER_NAMES.BUILD,
@@ -94,12 +106,14 @@ const getBuildContainer = (config) => {
       customArgs: [
         '--link', mysqlContainer.name,
         '-p', `${config.port}:80`,
+        '--env', `CONFIG_NAME=${config.name}`,
+        '--env', `MYSQL_NAME=${mysqlContainer.name}`,
         '--volume', `${path.join(__dirname, '..', '..', 'build')}:` +
           `/gauntface/site`,
         '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
           `/gauntface/site/node_modules`,
-        '--env', `CONFIG_NAME=${config.name}`,
-        '--env', `MYSQL_NAME=${CONTAINER_NAMES.MYSQL}`,
+        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-uploads')}:` +
+          `/gauntface/uploads`,
       ],
     },
     dependencies: [

@@ -57,7 +57,6 @@ class DatabaseHelper {
       case 'testing': {
         const testingConfig = require('../config/testing');
         mysqlOptions = {
-          host: process.env.MYSQL_NAME,
           user: testingConfig.database.user,
           password: testingConfig.database.password,
           database: testingConfig.database.database,
@@ -67,10 +66,18 @@ class DatabaseHelper {
       case 'prod': {
         throw new Error('Need to add mysql options for prod environment');
       }
+      case 'development': {
+        const devConfig = require('../config/development');
+        mysqlOptions = {
+          user: devConfig.database.user,
+          password: devConfig.database.password,
+          database: devConfig.database.database,
+        };
+        break;
+      }
       default: {
         const devConfig = require('../config/development');
         mysqlOptions = {
-          host: 'localhost',
           user: devConfig.database.user,
           password: devConfig.database.password,
           database: devConfig.database.database,
@@ -78,7 +85,7 @@ class DatabaseHelper {
         break;
       }
     }
-
+    mysqlOptions.host = process.env.MYSQL_NAME || 'localhost';
     return mysqlOptions;
   }
 

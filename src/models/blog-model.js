@@ -3,6 +3,10 @@ const SinglePostModel = require('./single-post-model');
 
 const TABLE_NAME = 'posts_table';
 
+const urldecode = function(str) {
+  return decodeURIComponent((str + '').replace(/\+/g, '%20'));
+};
+
 class BlogModel {
   addPost(post) {
     return dbHelper.executeQuery(`INSERT INTO posts_table (
@@ -62,6 +66,11 @@ class BlogModel {
     return dbHelper.executeQuery(sqlQuery, args)
     .then((rawResults) => {
       return rawResults.map((rawResult) => {
+        rawResult.title = urldecode(rawResult.title);
+        rawResult.excerptMarkdown = urldecode(rawResult.excerptMarkdown);
+        rawResult.bodyMarkdown = urldecode(rawResult.bodyMarkdown);
+        rawResult.mainImageBgColor = urldecode(rawResult.mainImageBgColor);
+        rawResult.mainImage = urldecode(rawResult.mainImage);
         return new SinglePostModel(rawResult);
       });
     });

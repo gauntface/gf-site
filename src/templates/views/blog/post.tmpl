@@ -1,5 +1,10 @@
-<main class="u-content">
-  <h1>{{data.blogPost.title}}</h1>
+---
+styles:
+  inline:
+    - ../../../public/styles/unique/blog-post.css
+---
+<img src="{{{data.blogPost.mainImage}}}" class="blog-post__keyart" />
 
-  {{{data.blogPost.bodyHTML}}}
-</main>
+<h1>{{data.blogPost.title}}</h1>
+
+{{{data.blogPost.bodyHTML}}}

@@ -36,10 +36,14 @@ class DockerHelper {
   remove() {
     const keys = Object.keys(dockerConfigFactory.CONTAINER_NAMES);
     return keys.reduce((promiseChain, containerKey) => {
+      // Do not touch the mysql data container.
+      if (containerKey.indexOf('MYSQL_DATA') !== -1) {
+        return promiseChain;
+      }
+
       const containerName = dockerConfigFactory.CONTAINER_NAMES[containerKey];
       return promiseChain.then(() => {
         this.log(`    Removing container: ${containerName}`);
-
         return dockerCLIWrapper.removeContainer(
           containerName
         )
@@ -85,7 +89,7 @@ class DockerHelper {
       return Promise.resolve();
     }
 
-    this.log(`Building container: '${containerInfo.id}`);
+    this.log(`Building container: '${containerInfo.id}'`);
 
     return dockerCLIWrapper.buildContainer(
       containerInfo.dockerFile,
@@ -166,20 +170,13 @@ class DockerHelper {
    * @param {string} containerId The ID of the container to access.
    * @return {Promise} Resolves once access to CLI has ended.
    */
-  accessCLI(containerId) {
-    let matchingContainer = null;
-    CONTAINERS.forEach((containerInfo) => {
-      if (containerId === containerInfo.id) {
-        matchingContainer = containerInfo;
-        return;
-      }
-    });
-
+  accessCLI(containerKey) {
+    let matchingContainer = dockerConfigFactory.CONTAINER_NAMES[containerKey];
     if (!matchingContainer) {
       return Promise.reject(new Error(`Unable to find container with ID ` +
         `'${containerId}'.`));
     }
-    return dockerCLIWrapper.accessContainerCLI(matchingContainer.name);
+    return dockerCLIWrapper.accessContainerCLI(matchingContainer);
   }
 }
 
