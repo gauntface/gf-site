@@ -161,6 +161,7 @@ class DockerHelper {
           }
 
           if (containerInfo.run) {
+            this.log(`Running dependency '${containerInfo.name}'`);
             return dockerCLIWrapper.runContainer(
               containerInfo.tag,
               containerInfo.name,
