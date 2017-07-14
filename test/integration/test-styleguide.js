@@ -22,7 +22,7 @@ describe('Test Styleguide Logic', function() {
     // 5 Minutes to download Chrome stable.
     this.timeout(5 * 60 * 1000);
 
-    return seleniumAssistant.downloadLocalBrowser('chrome', 'stable', 48)
+    return seleniumAssistant.downloadLocalBrowser('chrome', 'stable', 48).catch((err) => {})
     .then(() => {
       return siteServer.start(desiredPort);
     });

@@ -7,8 +7,10 @@ const CONTAINER_NAMES = {
   MYSQL_TESTING: 'gauntface-mysql-testing',
   MYSQL_DATA_DEVELOPMENT: 'gauntface-mysql-data-development',
   MYSQL_DATA_TESTING: 'gauntface-mysql-data-testing',
-  SRC: 'gauntface-src',
-  BUILD: 'gauntface-build',
+  SRC_DEVELOPMENT: 'gauntface-src-development',
+  SRC_TESTING: 'gauntface-src-testing',
+  BUILD_DEVELOPMENT: 'gauntface-build-development',
+  BUILD_TESTING: 'gauntface-build-testing',
 };
 
 const getMysqlDataOnlyContainer = (config) => {
@@ -41,7 +43,7 @@ const getMysqlContainer = (config) => {
     run: {
       detached: true,
       customArgs: [
-        `-p`, `3306:3306`,
+        `-p`, `${config.database.port}:3306`,
         '--env', `MYSQL_ROOT_PASSWORD=${config.database.rootPassword}`,
         '--env', `MYSQL_USER=${config.database.user}`,
         '--env', `MYSQL_PASSWORD=${config.database.password}`,
@@ -70,7 +72,7 @@ const getSrcContainer = (config) => {
     id: 'src',
     dockerFile: path.join(DOCKER_CONFIG_PATH, 'development'),
     tag: 'gauntface/gf-site:src',
-    name: CONTAINER_NAMES.SRC,
+    name: CONTAINER_NAMES[`SRC_${config.name.toUpperCase()}`],
     run: {
       detached: false,
       customArgs: [
@@ -100,7 +102,7 @@ const getBuildContainer = (config) => {
     id: 'build',
     dockerFile: path.join(DOCKER_CONFIG_PATH, 'prod'),
     tag: 'gauntface/gf-site:build',
-    name: CONTAINER_NAMES.BUILD,
+    name: CONTAINER_NAMES[`BUILD_${config.name.toUpperCase()}`],
     run: {
       detached: true,
       customArgs: [

@@ -7,7 +7,7 @@ const path = require('path');
 global.config = {
   src: './src',
   dest: './build',
-  env: 'prod',
+  env: 'dev',
   port: 5123,
   private: './../gf-deploy',
 };
@@ -32,14 +32,18 @@ gulp.task('build', gulp.series([
   ]),
 ]));
 
-gulp.task('prod', gulp.series([
-  'build',
-  'docker-run:prod',
-]));
+gulp.task('prod', () => {
+  global.config.env = 'prod';
+  return gulp.series([
+    'build',
+    'docker-run:prod',
+  ]);
+});
 
-gulp.task('default', gulp.parallel([
-  'thirdparty',
-  'build',
-  // 'docker-run:dev'
-  ])
-);
+gulp.task('default', () => {
+  return gulp.parallel([
+    'thirdparty',
+    'build',
+    // 'docker-run:dev'
+  ]);
+});

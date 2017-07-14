@@ -9,5 +9,6 @@ module.exports = {
     user: 'testing-user',
     password: 'testing-password',
     database: 'testing-db',
+    port: 3308,
   },
 };

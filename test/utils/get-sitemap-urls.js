@@ -20,7 +20,10 @@ module.exports = (siteUrl) => {
   return fetch(`${siteUrl}/sitemap.xml`)
   .then((response) => {
     if (!response.ok) {
-      throw new Error(`Response for sitemap invalid. [Status Code: ${response.status}]`);
+      return response.text()
+      .then((responseText) => {
+        throw new Error(`Response for sitemap invalid. [Status Code: ${response.status}]`);
+      });
     }
 
     return response.text();

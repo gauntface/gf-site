@@ -45,6 +45,12 @@ const lighthouseSoftenScores = [
 ];
 
 function testFailing(audit, testedUrl) {
+  if (audit.score === null) {
+    console.warn(`The audit '${audit.name}' has a score of 'null' and ` +
+      `debugString '${audit.debugString}'`);
+    return false;
+  }
+
   let auditIsFailing = false;
   switch(audit.scoringMode) {
     case 'binary':
@@ -123,6 +129,7 @@ function testUrlThroughLighthouse(lighthouseWrapper, urlToTest) {
       'pwa-page-transitions',
       'pwa-each-page-has-url',
       'uses-request-compression',
+      'uses-webp-images',
 
       // Can't pass
       'html-has-lang',
@@ -180,7 +187,7 @@ function registerTests(allUrls) {
           this.retries(1);
         }
 
-        return testUrlThroughLighthouse(lighthouseWrapper, urlToTest);
+        return testUrlThroughLighthouse(lighthouseWrapper, testingConfig.url + urlToTest);
       });
     });
   });
@@ -197,7 +204,7 @@ function getComponents(serverUrl) {
   })
   .then((response) => {
     return response.map((entry) => {
-      return serverUrl + '/styleguide/display/' + entry + '/';
+      return '/styleguide/display/' + entry + '/';
     });
   });
 }

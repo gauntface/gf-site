@@ -30,6 +30,7 @@
     "cssnano": "^3.10.0",
     "eslint": "^4.1.0",
     "eslint-config-google": "^0.7.1",
+    "execsql": "0.0.3",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-imagemin": "^3.2.0",
     "gulp-postcss": "^6.4.0",

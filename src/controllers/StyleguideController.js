@@ -188,6 +188,26 @@ Let's try \`inner code block\` to see what happens.
           templatePath: `templates/views/grid-overlay.tmpl`,
         });
       });
+    } else if(templatePath.indexOf('views/blog/index') === 0) {
+      views.push({
+        templatePath: `templates/${templatePath}.tmpl`,
+        data: {
+          blogPosts: [
+            {
+              title: 'Title 1',
+              excerptHTML: '<p>Excerpt HTML 1</p>',
+              publishedUrl: '/blog/link',
+            }, {
+              title: 'Title 2',
+              excerptHTML: '<p>Excerpt HTML 2</p>',
+              publishedUrl: '/blog/link',
+            },
+          ],
+        },
+      });
+      views.push({
+        templatePath: `templates/views/grid-overlay.tmpl`,
+      });
     } else if(templatePath.indexOf('views/blog/post') === 0) {
       viewsPromise = parseMarkdown(`
 I'm an example blog post.
@@ -208,17 +228,17 @@ So many lists.
 `)
       .then((parsedMarkdown) => {
         views.push({
-        templatePath: `templates/${templatePath}.tmpl`,
-        data: {
-          blogPost: {
-            title: 'Hello World.',
-            bodyHTML: parsedMarkdown.html
-          },
-        }
-      });
-      views.push({
-        templatePath: `templates/views/grid-overlay.tmpl`,
-      });
+          templatePath: `templates/${templatePath}.tmpl`,
+          data: {
+            blogPost: {
+              title: 'Hello World.',
+              bodyHTML: parsedMarkdown.html
+            },
+          }
+        });
+        views.push({
+          templatePath: `templates/views/grid-overlay.tmpl`,
+        });
       });
     } else {
       views.push({

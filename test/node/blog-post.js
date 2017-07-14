@@ -84,6 +84,9 @@ console.log('it has code too.')
       const titleRegexp = new RegExp(`<title>.*${blogPost.title}.*</title>`);
       expect(titleRegexp.exec(response)).to.exist;
 
+      const mastheadRegexp = new RegExp(`<img.*src="${blogPost.mainImage}".*/>`);
+      expect(mastheadRegexp.exec(response)).to.exist;
+
       expect(response.indexOf(parsedBody.html)).to.not.equal(-1);
     });
   });

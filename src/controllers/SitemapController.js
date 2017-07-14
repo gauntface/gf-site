@@ -1,30 +1,38 @@
+const blogModel = require('../models/blog-model');
+
 class SitemapController {
   index(args) {
     const urls = [
       '/',
       '/styleguide',
+      '/blog',
     ];
 
-    const protocol = 'http://';
-    const host = args.request.get('host');
-    const parsedUrls = urls.map((url) => {
-      return `${protocol}${host}${url}`;
-    });
+    return blogModel.getPublishedPosts()
+    .then((posts) => {
+      posts.forEach((post) => {
+        urls.push(post.getPublishedUrl());
+      });
 
-    return {
-      templatePath: 'templates/documents/xml.tmpl',
-      views: [
-        {
-          templatePath: 'templates/shells/blank.tmpl',
-          views: [{
-            templatePath: 'templates/views/sitemap.tmpl',
-            data: {
-              urls: parsedUrls,
-            },
-          }],
-        },
-      ],
-    };
+      const parsedUrls = urls.map((url) => {
+        return url;
+      });
+
+      return {
+        templatePath: 'templates/documents/xml.tmpl',
+        views: [
+          {
+            templatePath: 'templates/shells/blank.tmpl',
+            views: [{
+              templatePath: 'templates/views/sitemap.tmpl',
+              data: {
+                urls: parsedUrls,
+              },
+            }],
+          },
+        ],
+      };
+    });
   }
 }
 

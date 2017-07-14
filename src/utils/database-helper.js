@@ -56,11 +56,8 @@ class DatabaseHelper {
     switch(process.env.CONFIG_NAME) {
       case 'testing': {
         const testingConfig = require('../config/testing');
-        mysqlOptions = {
-          user: testingConfig.database.user,
-          password: testingConfig.database.password,
-          database: testingConfig.database.database,
-        };
+        mysqlOptions = testingConfig.database;
+        mysqlOptions.multipleStatements = true;
         break;
       }
       case 'prod': {
@@ -68,24 +65,19 @@ class DatabaseHelper {
       }
       case 'development': {
         const devConfig = require('../config/development');
-        mysqlOptions = {
-          user: devConfig.database.user,
-          password: devConfig.database.password,
-          database: devConfig.database.database,
-        };
+        mysqlOptions = devConfig.database;
         break;
       }
       default: {
         const devConfig = require('../config/development');
-        mysqlOptions = {
-          user: devConfig.database.user,
-          password: devConfig.database.password,
-          database: devConfig.database.database,
-        };
+        mysqlOptions = devConfig.database;
         break;
       }
     }
     mysqlOptions.host = process.env.MYSQL_NAME || 'localhost';
+    if (process.env.MYSQL_NAME) {
+      mysqlOptions.port = 3306;
+    }
     return mysqlOptions;
   }
 

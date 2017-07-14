@@ -7,19 +7,25 @@ const imagemin = require('gulp-imagemin');
 
 gulp.task('images:copy', () => {
   return gulp.src([
-    global.config.src + '/**/*.{svg,ico}',
+    global.config.src + '/**/*.{svg,ico,gif}',
     `!${global.config.src}/server/libraries/**/*`,
   ])
   .pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('images:minified', () => {
-  return gulp.src([
+  let stream = gulp.src([
     global.config.src + '/**/*.{jpg,jpeg,png}',
     `!${global.config.src}/server/libraries/**/*`,
-  ])
-  .pipe(imagemin())
-  .pipe(gulp.dest(global.config.dest));
+  ]);
+
+  if (global.config.env === 'prod') {
+    stream = stream.pipe(imagemin({
+      verbose: true,
+    }));
+  }
+
+  return stream.pipe(gulp.dest(global.config.dest));
 });
 
 gulp.task('images', gulp.parallel(

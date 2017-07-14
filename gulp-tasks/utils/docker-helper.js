@@ -33,15 +33,32 @@ class DockerHelper {
   /**
    * @return {Promise} Resolves once all docker containers are removed.
    */
-  remove() {
-    const keys = Object.keys(dockerConfigFactory.CONTAINER_NAMES);
-    return keys.reduce((promiseChain, containerKey) => {
+  remove(factoryId) {
+    let containersToStop = [];
+
+    switch (factoryId) {
+      case 'dev-mysql':
+        containersToStop = [
+          `gauntface-mysql-development`,
+          `gauntface-mysql-data-development`,
+        ];
+        break;
+      default:
+        containersToStop = [
+          `gauntface-mysql-${factoryId}`,
+          `gauntface-mysql-data-${factoryId}`,
+          `gauntface-src-${factoryId}`,
+          `gauntface-build-${factoryId}`,
+        ];
+        break;
+    }
+
+    return containersToStop.reduce((promiseChain, containerName) => {
       // Do not touch the mysql data container.
-      if (containerKey.indexOf('MYSQL_DATA') !== -1) {
+      if (containerName.indexOf('gauntface-mysql-data-') !== -1) {
         return promiseChain;
       }
 
-      const containerName = dockerConfigFactory.CONTAINER_NAMES[containerKey];
       return promiseChain.then(() => {
         this.log(`    Removing container: ${containerName}`);
         return dockerCLIWrapper.removeContainer(
@@ -55,10 +72,27 @@ class DockerHelper {
   /**
    * @return {Promise} Resolves once all docker containers are stopped.
    */
-  stop() {
-    const keys = Object.keys(dockerConfigFactory.CONTAINER_NAMES);
-    return keys.reduce((promiseChain, containerKey) => {
-      const containerName = dockerConfigFactory.CONTAINER_NAMES[containerKey];
+  stop(factoryId) {
+    let containersToStop = [];
+
+    switch (factoryId) {
+      case 'dev-mysql':
+        containersToStop = [
+          `gauntface-mysql-development`,
+          `gauntface-mysql-data-development`,
+        ];
+        break;
+      default:
+        containersToStop = [
+          `gauntface-mysql-${factoryId}`,
+          `gauntface-mysql-data-${factoryId}`,
+          `gauntface-src-${factoryId}`,
+          `gauntface-build-${factoryId}`,
+        ];
+        break;
+    }
+
+    return containersToStop.reduce((promiseChain, containerName) => {
       return promiseChain.then(() => {
         this.log(`    Stopping container: ${containerName}`);
 
@@ -74,10 +108,10 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are stopped &
    * removed.
    */
-  clean() {
+  clean(factoryId) {
     this.log('Cleaning containers');
-    return this.stop()
-    .then(() => this.remove());
+    return this.stop(factoryId)
+    .then(() => this.remove(factoryId));
   }
 
   /**
@@ -115,7 +149,7 @@ class DockerHelper {
 
     const primaryContainer = dockerConfigFactory(factoryId);
 
-    return this.clean()
+    return this.clean(factoryId)
     .then(() => {
       const dependencyContainers = primaryContainer.dependencies || [];
       return dependencyContainers.reduce((promiseChain, containerInfo) => {

@@ -68,10 +68,6 @@ class BlogController {
         };
       }
 
-      styles.raw.push(`.split-container-left {
-        background-color: ${blogPost.mainImageBgColor};
-      }`);
-
       return parseMarkdown(blogPost.bodyMarkdown)
       .then((parsedMarkdown) => {
         styles.inline = styles.inline.concat(parsedMarkdown.styles.inline);
