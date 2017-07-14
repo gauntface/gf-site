@@ -162,24 +162,28 @@ class DockerHelper {
 
           if (containerInfo.run) {
             this.log(`Running dependency '${containerInfo.name}'`);
-            return dockerCLIWrapper.runContainer(
-              containerInfo.tag,
-              containerInfo.name,
-              containerInfo.run.customArgs,
-              forceDetached || containerInfo.run.detached
-            );
+            return promiseChain.then(() => {
+              return dockerCLIWrapper.runContainer(
+                containerInfo.tag,
+                containerInfo.name,
+                containerInfo.run.customArgs,
+                forceDetached || containerInfo.run.detached
+              );
+            });
           } else {
-            return dockerCLIWrapper.createContainer(
-              containerInfo.name,
-              containerInfo.create.customArgs,
-            )
-            .catch((err) => {
-              if (containerInfo.persist === true) {
-                return;
-              }
+            return promiseChain.then(() => {
+              return dockerCLIWrapper.createContainer(
+                containerInfo.name,
+                containerInfo.create.customArgs,
+              )
+              .catch((err) => {
+                if (containerInfo.persist === true) {
+                  return;
+                }
 
-              this.error(err);
-              throw err;
+                this.error(err);
+                throw err;
+              });
             });
           }
         });
