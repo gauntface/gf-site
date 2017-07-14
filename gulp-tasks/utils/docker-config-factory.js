@@ -5,12 +5,15 @@ const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
 const CONTAINER_NAMES = {
   MYSQL_DEVELOPMENT: 'gauntface-mysql-development',
   MYSQL_TESTING: 'gauntface-mysql-testing',
+  MYSQL_PROD: 'gauntface-mysql-prod',
   MYSQL_DATA_DEVELOPMENT: 'gauntface-mysql-data-development',
   MYSQL_DATA_TESTING: 'gauntface-mysql-data-testing',
+  MYSQL_DATA_PROD: 'gauntface-mysql-data-prod',
   SRC_DEVELOPMENT: 'gauntface-src-development',
   SRC_TESTING: 'gauntface-src-testing',
   BUILD_DEVELOPMENT: 'gauntface-build-development',
   BUILD_TESTING: 'gauntface-build-testing',
+  BUILD_PROD: 'gauntface-build-prod',
 };
 
 const getMysqlDataOnlyContainer = (config) => {
@@ -133,16 +136,23 @@ module.exports = (buildType) => {
       const config = require(path.join(CONFIG_PATH, 'development'));
       return getMysqlContainer(config);
     }
+    case 'development': {
+      console.log(`Using development docker config.`);
+      const config = require(path.join(CONFIG_PATH, 'development'));
+      return getSrcContainer(config);
+    }
     case 'testing': {
       console.log(`Using testing docker config.`);
       const config = require(path.join(CONFIG_PATH, 'testing'));
       return getBuildContainer(config);
     }
+    case 'prod': {
+      console.log(`Using prod docker config.`);
+      const config = require(path.join(__dirname, '..', '..', '..', 'gf-deploy', 'src', 'config', 'prod'));
+      return getBuildContainer(config);
+    }
     default: {
-      console.log(`Using development docker config. Build type ` +
-        `received: '${buildType}'.`);
-      const config = require(path.join(CONFIG_PATH, 'development'));
-      return getSrcContainer(config);
+      throw new Error(`Unknown build type received: '${buildType}'.`);
     }
   }
 };

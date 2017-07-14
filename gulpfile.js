@@ -32,18 +32,28 @@ gulp.task('build', gulp.series([
   ]),
 ]));
 
-gulp.task('prod', () => {
-  global.config.env = 'prod';
-  return gulp.series([
+gulp.task('prod', gulp.series([
+  () => {
+    global.config.env = 'prod';
+    return Promise.resolve();
+  },
+  gulp.parallel([
     'build',
     'docker-run:prod',
-  ]);
-});
+  ]),
+]));
 
-gulp.task('default', () => {
-  return gulp.parallel([
-    'thirdparty',
+gulp.task('testing', gulp.series([
+  () => {
+    global.config.env = 'prod';
+    return Promise.resolve();
+  },
+  gulp.parallel([
     'build',
-    // 'docker-run:dev'
-  ]);
-});
+    'docker-run:testing',
+  ]),
+]));
+
+gulp.task('dev', gulp.parallel([
+  'docker-run:dev',
+]));

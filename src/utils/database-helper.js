@@ -61,7 +61,9 @@ class DatabaseHelper {
         break;
       }
       case 'prod': {
-        throw new Error('Need to add mysql options for prod environment');
+        const devConfig = require('../../../gf-deploy/src/config/prod');
+        mysqlOptions = devConfig.database;
+        break;
       }
       case 'development': {
         const devConfig = require('../config/development');
