@@ -14,13 +14,9 @@ gulp.task('images:copy', () => {
 });
 
 gulp.task('images:minified', () => {
-  const imgFiles = glob.sync(`${global.config.src}/public/**/*.+(jpg|jpeg|png)`, {
-    ignore: [
-      `${global.config.src}/public/generated/**/*`,
-    ],
+  const imgFiles = glob.sync(`${global.config.src}/../assets/+(uploads|images)/**/*.+(jpg|jpeg|png)`, {
     absolute: true,
   });
-
   return imgGenerator.optimiseImageFiles(imgFiles);
 });
 

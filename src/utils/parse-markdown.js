@@ -1,6 +1,18 @@
 const marked = require('marked');
+const origRenderer = new marked.Renderer();
+const renderer = new marked.Renderer();
 
 const highlightCode = require('./highlight-code');
+const srcSetGen = require('./src-set-gen');
+
+renderer.image = function(href, title, text) {
+  if (href.indexOf('http') === 0) {
+    // External image, no src-set
+    return origRenderer.image(href, title, text);
+  }
+
+  return srcSetGen(href, text);
+};
 
 module.exports = (markdownString) => {
   if (!markdownString) {
@@ -16,6 +28,7 @@ module.exports = (markdownString) => {
       },
     };
     const markedOptions = {
+      renderer,
       highlight: function(code, lang, callback) {
         return highlightCode(code, lang)
         .then((highlightedCode) => {

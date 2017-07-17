@@ -15,6 +15,7 @@
   "dependencies": {
     "chalk": "^2.0.0",
     "express": "^4.15.2",
+    "fs-extra": "^4.0.0",
     "googleapis": "^20.0.0",
     "hopin": "0.0.20",
     "imagemin": "^5.3.1",
@@ -24,6 +25,7 @@
     "marked": "^0.3.6",
     "moment": "^2.18.1",
     "mysql": "^2.13.0",
+    "sharp": "^0.18.2",
     "twitter": "^1.7.0",
     "workbox-sw": "^1.0.0"
   },

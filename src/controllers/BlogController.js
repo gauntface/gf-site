@@ -2,6 +2,7 @@ const path = require('path');
 
 const blogModel = require('../models/blog-model');
 const parseMarkdown = require('../utils/parse-markdown');
+const srcSetGen = require('../utils/src-set-gen');
 
 class BlogController {
   index(args) {
@@ -67,14 +68,22 @@ class BlogController {
           content: 'TODO: Show 404 Page',
         };
       }
-
-      return parseMarkdown(blogPost.bodyMarkdown)
-      .then((parsedMarkdown) => {
+      return Promise.all([
+        parseMarkdown(blogPost.bodyMarkdown),
+        srcSetGen(
+          blogPost.mainImage,
+          `Key Art for 	"${blogPost.title}" by Matthew Gaunt)`
+        )
+      ])
+      .then((results) => {
+        const parsedMarkdown = results[0];
+        const srcSetImage = results[1];
         styles.inline = styles.inline.concat(parsedMarkdown.styles.inline);
         return {
           title: blogPost.title,
           bodyHTML: parsedMarkdown.html,
           mainImage: blogPost.mainImage,
+          srcSetImage,
         };
       });
     })
@@ -91,6 +100,7 @@ class BlogController {
               {
                 templatePath: 'templates/views/blog/post.tmpl',
                 data: {
+                  srcSetImg: blogPost.srcSetImage,
                   blogPost,
                 },
               },
