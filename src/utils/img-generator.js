@@ -5,9 +5,10 @@ const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-jpegtran');
 const imageminOptipng = require('imagemin-optipng');
 const imageminWebp = require('imagemin-webp');
+const imageminGifsicle = require('imagemin-gifsicle');
 
 class ImageGenerator {
-  generateAllImageVariations(imagePath, outputPath) {
+  _handleJpegPng(imagePath, outputPath) {
     const allFileWidths = [
       400,
       800,
@@ -17,6 +18,7 @@ class ImageGenerator {
       2400,
     ];
 
+    // Get current width of image
     return sharp(imagePath).metadata()
     .then((metadata) => {
       let maxedOut = false;
@@ -72,15 +74,21 @@ class ImageGenerator {
         });
       }, Promise.resolve());
     });
-    // 400, 800, 1200, 1600, 2000, 2400 (800 * 3 = 2400)
+  }
 
-    // 0. Check if files exist.
+  _handleGif(imagePath, outputPath) {
+    return imagemin([imagePath], outputPath, {
+      plugins: [
+        imageminGifsicle(),
+      ],
+    });
+  }
 
-    // 1. Resize Images
-
-    /** const globPath = `${outputPath}/*.{jpg,png}`;
-
-    **/
+  generateAllImageVariations(imagePath, outputPath) {
+    if (path.extname(imagePath) === '.gif') {
+      return this._handleGif(imagePath, outputPath);
+    }
+    return this._handleJpegPng(imagePath, outputPath);
   }
 
   optimiseImageFiles(arrayOfFiles) {
