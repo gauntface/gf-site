@@ -28,7 +28,6 @@
     "mysql": "^2.13.0",
     "sharp": "^0.18.2",
     "twitter": "^1.7.0",
-    "workbox-sw": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
