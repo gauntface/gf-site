@@ -72,8 +72,8 @@ class BlogController {
         parseMarkdown(blogPost.bodyMarkdown),
         srcSetGen(
           blogPost.mainImage,
-          `Key Art for 	"${blogPost.title}" by Matthew Gaunt)`
-        )
+          `Key Art for &#34;${blogPost.title}&#34; by Matthew Gaunt`
+        ),
       ])
       .then((results) => {
         const parsedMarkdown = results[0];

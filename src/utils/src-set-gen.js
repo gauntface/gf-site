@@ -23,16 +23,26 @@ module.exports = (imagePath, text) => {
   })
   .then((availableImages) => {
     let largestSrc = null;
+    let largestWidth = 0;
 
     const nonWebPImages = availableImages.filter((availableImage) => {
       return !(path.extname(availableImage) === '.webp');
     });
 
     const srcSet = nonWebPImages.map((imagePath) => {
-      return `/` + path.relative(
+      const imgUrl = path.relative(
         path.join(__dirname, '..', 'public'),
         imagePath
-      ) + ` ` + path.basename(imagePath, path.extname(imagePath));
+      );
+      const imgWidth = parseInt(
+        path.basename(imagePath, path.extname(imagePath)), 10);
+
+      if (!largestSrc || largestWidth < imgWidth) {
+        largestSrc = imgUrl;
+        largestWidth = imgWidth;
+      }
+
+      return `/${imgUrl} ${imgWidth}w`;
     }).join(', ');
     return `<img src="${largestSrc}" srcset="${srcSet}" alt="${text}">`;
   });
