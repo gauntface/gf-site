@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
-const sharp = require('sharp');
+const gm = require('gm');
 const imagemin = require('imagemin');
 const imageminJpegtran = require('imagemin-jpegtran');
 const imageminOptipng = require('imagemin-optipng');
@@ -19,7 +19,14 @@ class ImageGenerator {
     ];
 
     // Get current width of image
-    return sharp(imagePath).metadata()
+    return new Promise((resolve, reject) => {
+      gm(imagePath).size(function(err, value) {
+        if (err) {
+          return reject(err);
+        }
+        resolve(value);
+      });
+    })
     .then((metadata) => {
       let maxedOut = false;
       const selectedFileWidths = allFileWidths.filter((currentWidth) => {
@@ -48,10 +55,16 @@ class ImageGenerator {
             console.log(`Generating image: ${path.relative(process.cwd(), outputFilepath)}`);
             return fs.ensureDir(outputPath)
             .then(() => {
-              return sharp(imagePath)
-                .withoutEnlargement(true)
-              .resize(fileWidth, null)
-              .toFile(outputFilepath);
+              return new Promise((resolve, reject) => {
+                return gm(imagePath)
+                .resize(fileWidth)
+                .write(outputFilepath, (err) => {
+                  if (err) {
+                    return reject(err);
+                  }
+                  resolve();
+                });
+              });
             })
             .then(() => {
               // Minimise based on image type.
