@@ -37,7 +37,7 @@ class DockerCLIWrapper {
           return reject(errString);
         }
 
-        resolve();
+        setTimeout(resolve, 2000);
       });
     });
   }
