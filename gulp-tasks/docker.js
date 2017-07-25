@@ -63,12 +63,14 @@ gulp.task('docker:stop', () => dockerHelper.stop());
 
 gulp.task('docker:clean', () => dockerHelper.clean());
 
-gulp.task(`docker-cli`, () => {
+gulp.task(`docker:cli`, () => {
   return dockerHelper.accessCLI()
   .catch(() => {
     // NOOP for errors.
   });
 });
+
+gulp.task('docker:build:base', () => dockerHelper.buildBase());
 
 gulp.task('docker:build:dev', () => {
 
@@ -79,3 +81,9 @@ gulp.task('docker:build:testing', () => {
 });
 
 gulp.task('docker:build:prod', () => dockerHelper.buildProd());
+gulp.task('docker:run:prod', gulp.series([
+  'docker:clean',
+  'docker:build:base',
+  'docker:build:prod',
+  () => dockerHelper.runProd(),
+]));

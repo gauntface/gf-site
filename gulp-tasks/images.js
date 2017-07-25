@@ -4,13 +4,16 @@
 
 const gulp = require('gulp');
 const glob = require('glob');
+const path = require('path');
 const imgGenerator = require('../src/utils/img-generator');
 
 gulp.task('images:copy', () => {
   return gulp.src([
     global.config.src + '/public/**/*.{svg,ico,gif}',
   ])
-  .pipe(gulp.dest(global.config.dest));
+  .pipe(gulp.dest(
+    path.join(global.config.dest, 'public')
+  ));
 });
 
 gulp.task('images:minified', () => {

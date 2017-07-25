@@ -3,13 +3,15 @@ const chalk = require('chalk');
 const dockerCLIWrapper = require('./docker-cli-wrapper');
 const dockerConfigFactory = require('./docker-config-factory');
 
-const PRIMARY_TAG = 'gauntface';
+const BASE_TAG = 'gauntface-base'
+const PRIMARY_TAG = 'gauntface-site';
 const DB_EXAMPLE_TAG = 'gauntface-mysql-example';
 const DB_EXAMPLE_DATA_TAG = 'gauntface-mysql-data-example';
 const DB_TEST_TAG = 'gauntface-mysql-test';
 const DB_TEST_DATA_TAG = 'gauntface-mysql-test';
 
 const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
+const BASE_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'base');
 const PROD_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'prod');
 
 /**
@@ -44,6 +46,7 @@ class DockerHelper {
    */
   remove(factoryId) {
     const containersToStop = [
+      BASE_TAG,
       PRIMARY_TAG,
       DB_EXAMPLE_TAG,
       DB_TEST_TAG,
@@ -52,7 +55,7 @@ class DockerHelper {
 
     return containersToStop.reduce((promiseChain, containerName) => {
       return promiseChain.then(() => {
-        this.log(`    Removing container: ${containerName}`);
+        this.log(`        Removing container: ${containerName}`);
         return dockerCLIWrapper.removeContainer(
           containerName
         )
@@ -66,6 +69,7 @@ class DockerHelper {
    */
   stop() {
     const containersToStop = [
+      BASE_TAG,
       PRIMARY_TAG,
       DB_EXAMPLE_TAG,
       DB_EXAMPLE_DATA_TAG,
@@ -75,7 +79,7 @@ class DockerHelper {
 
     return containersToStop.reduce((promiseChain, containerName) => {
       return promiseChain.then(() => {
-        this.log(`    Stopping container: ${containerName}`);
+        this.log(`        Stopping container: ${containerName}`);
 
         return dockerCLIWrapper.stopContainer(
           containerName
@@ -90,7 +94,11 @@ class DockerHelper {
    * removed.
    */
   clean() {
-    this.log('Cleaning containers');
+    this.log(``);
+    this.log(``);
+    this.log('    Cleaning containers');
+    this.log(``);
+    this.log(``);
     return this.stop()
     .then(() => this.remove());
   }
@@ -103,15 +111,49 @@ class DockerHelper {
     return dockerCLIWrapper.accessContainerCLI(PRIMARY_TAG);
   }
 
+  buildBase() {
+    this.log(``);
+    this.log(``);
+    this.log(`    Building base container`);
+    this.log(``);
+    this.log(``);
+
+    return dockerCLIWrapper.buildContainer(
+      BASE_DOCKER_FILE,
+      BASE_TAG
+    );
+  }
+
   /**
    * @return {Promise} Resolves once all docker containers are built.
    */
   buildProd() {
-    this.log(`Building prod container`);
+    this.log(``);
+    this.log(``);
+    this.log(`    Building prod container`);
+    this.log(``);
+    this.log(``);
 
     return dockerCLIWrapper.buildContainer(
       PROD_DOCKER_FILE,
       PRIMARY_TAG
+    );
+  }
+
+  runProd() {
+    this.log(``);
+    this.log(``);
+    this.log(`    Running Prod`);
+    this.log(``);
+    this.log(``);
+
+    return dockerCLIWrapper.runContainer(
+      PRIMARY_TAG,
+      PRIMARY_TAG,
+      [
+        '-p', '3308:80',
+      ],
+      true
     );
   }
 
