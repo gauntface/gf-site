@@ -109,16 +109,16 @@ const getBuildContainer = (config) => {
     run: {
       detached: true,
       customArgs: [
-        '--link', mysqlContainer.name,
-        '-p', `${config.port}:80`,
-        '--env', `CONFIG_NAME=${config.name}`,
-        '--env', `MYSQL_NAME=${mysqlContainer.name}`,
-        '--volume', `${path.join(__dirname, '..', '..', 'build')}:` +
-          `/gauntface/site`,
-        '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
-          `/gauntface/site/node_modules`,
-        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-uploads')}:` +
-          `/gauntface/uploads`,
+        // '--link', mysqlContainer.name,
+        // '-p', `${config.port}:80`,
+        // '--env', `CONFIG_NAME=${config.name}`,
+        // '--env', `MYSQL_NAME=${mysqlContainer.name}`,
+        // '--volume', `${path.join(__dirname, '..', '..', 'build')}:` +
+        //   `/gauntface/site`,
+        // '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
+        //   `/gauntface/site/node_modules`,
+        // '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-uploads')}:` +
+        //   `/gauntface/uploads`,
       ],
     },
     dependencies: [
