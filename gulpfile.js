@@ -32,11 +32,17 @@ gulp.task('build', gulp.series([
   ]),
 ]));
 
-gulp.task('prod', gulp.series([
-  gulp.parallel([
+gulp.task('prod:run', gulp.series([
+  gulp.series([
     'build',
+    'docker:run:prod',
+  ]),
+]));
+
+gulp.task('prod:save', gulp.series([
+  gulp.series([
     'build',
-    // 'docker-run:prod',
+    'docker:save:prod',
   ]),
 ]));
 

@@ -100,23 +100,20 @@ class DockerCLIWrapper {
   }
 
   /**
-   * @param {string} containerTag This the the tag of the build docker
-   * container.
    * @param {string} containerName This is a custom name you give to this docker
    * container.
    * @param {Array<string>} customArgs These are custom args you wish to
    * pass to the run command (i.e. -p, -v, --link etc).
-   * @param {boolean} detached If set to tru, the detach flag will be added.
    * @return {Promise} Promise resolves once running has ended.
    */
-  saveContainer(containerTag, containerName, customArgs, detached) {
+  saveContainer(containerName, customArgs) {
     let args = [
       'save',
     ];
 
     args = args.concat(customArgs);
 
-    args.push(containerTag);
+    args.push(containerName);
 
     return this._executeDockerCommand(args, true);
   }

@@ -9,7 +9,7 @@ const imgGenerator = require('../src/utils/img-generator');
 
 gulp.task('images:copy', () => {
   return gulp.src([
-    global.config.src + '/public/**/*.{svg,ico,gif}',
+    global.config.src + '/public/**/*.{jpg,jpeg,png,webp,svg,ico,gif}',
   ])
   .pipe(gulp.dest(
     path.join(global.config.dest, 'public')
@@ -27,7 +27,7 @@ gulp.task('images:minified', () => {
   });
 });
 
-gulp.task('images', gulp.parallel(
+gulp.task('images', gulp.series([
+  'images:minified',
   'images:copy',
-  'images:minified'
-));
+]));

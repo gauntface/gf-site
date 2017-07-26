@@ -39,6 +39,10 @@ class BlogController {
                 templatePath: 'templates/views/blog/index.tmpl',
                 data: {
                   blogPosts,
+                  noBlogImage: srcSetGen(
+                    'images/error-paw-chow.png',
+                    'No blogs posts are available, but this is a cute cartoon.'
+                  ),
                 },
               },
             ],

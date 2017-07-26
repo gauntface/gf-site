@@ -87,3 +87,9 @@ gulp.task('docker:run:prod', gulp.series([
   'docker:build:prod',
   () => dockerHelper.runProd(),
 ]));
+gulp.task('docker:save:prod', gulp.series([
+  'docker:clean',
+  'docker:build:base',
+  'docker:build:prod',
+  () => dockerHelper.saveProd(),
+]));

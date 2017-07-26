@@ -1,5 +1,6 @@
 const path = require('path');
 const chalk = require('chalk');
+const fs = require('fs-extra');
 const dockerCLIWrapper = require('./docker-cli-wrapper');
 const dockerConfigFactory = require('./docker-config-factory');
 
@@ -13,6 +14,9 @@ const DB_TEST_DATA_TAG = 'gauntface-mysql-test';
 const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
 const BASE_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'base');
 const PROD_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'prod');
+const PROD_PORT = 3008;
+
+const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..', 'gf-deploy', 'docker-build');
 
 /**
  * This class does the orchestrating of docker processes (build, running,
@@ -141,20 +145,42 @@ class DockerHelper {
   }
 
   runProd() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Running Prod`);
-    this.log(``);
-    this.log(``);
-
     return dockerCLIWrapper.runContainer(
       PRIMARY_TAG,
       PRIMARY_TAG,
       [
-        '-p', '3308:80',
+        '-p', `${PROD_PORT}:80`,
       ],
       true
-    );
+    )
+    .then(() => {
+      this.log(``);
+      this.log(``);
+      this.log(`    Running Prod`);
+      this.log(`    http://localhost/${PROD_PORT}`);
+      this.log(``);
+      this.log(``);
+    });
+  }
+
+  saveProd() {
+    return fs.ensureDir(DOCKER_BUILD_PATH)
+    .then(() => {
+      return dockerCLIWrapper.saveContainer(
+        PRIMARY_TAG,
+        [
+          '-o', path.join(DOCKER_BUILD_PATH, `prod.tar`)
+        ]
+      );
+    })
+    .then(() => {
+      this.log(``);
+      this.log(``);
+      this.log(`    Running Prod`);
+      this.log(`    http://localhost/${PROD_PORT}`);
+      this.log(``);
+      this.log(``);
+    });
   }
 
   /**
