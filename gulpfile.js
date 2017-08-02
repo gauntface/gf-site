@@ -32,29 +32,22 @@ gulp.task('build', gulp.series([
   ]),
 ]));
 
-gulp.task('prod:run', gulp.series([
-  gulp.series([
-    'build',
-    'docker:run:prod',
-  ]),
-]));
-
-gulp.task('prod:save', gulp.series([
-  gulp.series([
-    'build',
-    'docker:save:prod',
-  ]),
+gulp.task('dev', gulp.series([
+  'build',
+  'docker:run:dev',
 ]));
 
 gulp.task('testing', gulp.series([
-  gulp.parallel([
-    'build',
-    'build',
-    // 'docker-run:testing',
-  ]),
+  'build',
+  // 'docker-run:testing',
 ]));
 
-gulp.task('dev', gulp.parallel([
+gulp.task('prod', gulp.series([
   'build',
-  // 'docker-run:dev',
+  'docker:run:prod',
+]));
+
+gulp.task('prod:save', gulp.series([
+  'build',
+  'docker:save:prod',
 ]));

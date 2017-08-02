@@ -9,5 +9,5 @@ RUN cd /gauntface/site && npm install
 ADD infra/nginx/gauntface-prod.conf /etc/nginx/sites-available/gauntface.tmpl
 
 # Set the prod environment variable
-ENV BUILDTYPE 'prod'
+ENV BUILDTYPE 'production'
 

@@ -5,8 +5,6 @@
   "main": "src/index.js",
   "scripts": {
     "build": "gulp",
-    "serve": "gulp docker-clean && gulp docker-run:mysql && nodemon src/index.js --watch ./src --watch ./node_modules",
-    "serve:prod": "npm run build && nodemon build/index.js",
     "lint": "eslint '.'",
     "test": "npm run build && mocha ./test/node/**/*.js ./test/integration/**/*.js"
   },

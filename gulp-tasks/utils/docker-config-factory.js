@@ -148,7 +148,7 @@ module.exports = (buildType) => {
     }
     case 'prod': {
       console.log(`Using prod docker config.`);
-      const config = require(path.join(__dirname, '..', '..', '..', 'gf-deploy', 'src', 'config', 'prod'));
+      const config = require(path.join(__dirname, '..', '..', '..', 'gf-deploy', 'src', 'config', 'production'));
       return getBuildContainer(config);
     }
     default: {

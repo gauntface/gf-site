@@ -13,10 +13,15 @@ const DB_TEST_DATA_TAG = 'gauntface-mysql-test';
 
 const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
 const BASE_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'base');
+
+const DEV_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'dev');
+const DEV_PORT = 3006;
+
 const PROD_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'prod');
 const PROD_PORT = 3008;
 
-const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..', 'gf-deploy', 'docker-build');
+const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..',
+  'gf-deploy', 'docker-build');
 
 /**
  * This class does the orchestrating of docker processes (build, running,
@@ -128,6 +133,103 @@ class DockerHelper {
     );
   }
 
+  runDevMysql() {
+    const config = require('../../src/config/development');
+
+    return dockerCLIWrapper.runContainer(
+      'mysql',
+      DB_EXAMPLE_TAG,
+      [
+        // Ensure that the external port matches the expected config
+        `-p`, `${config.database.port}:3306`,
+
+        // Define the MYSQL variables
+        '--env', `MYSQL_ROOT_PASSWORD=${config.database.rootPassword}`,
+        '--env', `MYSQL_USER=${config.database.user}`,
+        '--env', `MYSQL_PASSWORD=${config.database.password}`,
+        '--env', `MYSQL_DATABASE=${config.database.database}`,
+
+        // Initialise the database with sql
+        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports')}:` +
+          `/docker-entrypoint-initdb.d`,
+      ],
+      true
+    );
+  }
+
+  runProdMysql() {
+    const config = require(path.join(__dirname, '..', '..', '..', 'gf-deploy', 'src', 'config', 'production'));
+
+    return dockerCLIWrapper.runContainer(
+      'mysql',
+      DB_EXAMPLE_TAG,
+      [
+        // Ensure that the external port matches the expected config
+        `-p`, `${config.database.port}:3306`,
+
+        // Define the MYSQL variables
+        '--env', `MYSQL_ROOT_PASSWORD=${config.database.rootPassword}`,
+        '--env', `MYSQL_USER=${config.database.user}`,
+        '--env', `MYSQL_PASSWORD=${config.database.password}`,
+        '--env', `MYSQL_DATABASE=${config.database.database}`,
+
+        // Initialise the database with sql
+        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports')}:` +
+          `/docker-entrypoint-initdb.d`,
+      ],
+      true
+    );
+  }
+
+  buildDev() {
+    this.log(``);
+    this.log(``);
+    this.log(`    Building dev container`);
+    this.log(``);
+    this.log(``);
+
+    return dockerCLIWrapper.buildContainer(
+      DEV_DOCKER_FILE,
+      PRIMARY_TAG
+    );
+  }
+
+  runDev() {
+    return dockerCLIWrapper.runContainer(
+      PRIMARY_TAG,
+      PRIMARY_TAG,
+      [
+        '-p', `${DEV_PORT}:80`,
+
+        // This is non-critical, used for the log message.
+        '--env', `DEV_PORT=${DEV_PORT}`,
+
+        // Link the mysql container to this instance
+        '--link', DB_EXAMPLE_TAG,
+
+        // Make Docker see the src index
+        '--volume', `${path.join(__dirname, '..', '..', 'src')}:` +
+          `/gauntface/site`,
+
+        // Make node_modules be in the expected place (they are outside of src)
+        '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
+          `/gauntface/site/node_modules`,
+
+        // Make container aware of MySQL name
+        '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
+      ],
+      false
+    )
+    .then(() => {
+      this.log(``);
+      this.log(``);
+      this.log(`    Running Dev`);
+      this.log(`    http://localhost/${DEV_PORT}`);
+      this.log(``);
+      this.log(``);
+    });
+  }
+
   /**
    * @return {Promise} Resolves once all docker containers are built.
    */
@@ -150,6 +252,12 @@ class DockerHelper {
       PRIMARY_TAG,
       [
         '-p', `${PROD_PORT}:80`,
+
+        // Link the mysql container to this instance
+        '--link', DB_EXAMPLE_TAG,
+
+        // Make container aware of MySQL name
+        '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
       ],
       true
     )
@@ -188,7 +296,7 @@ class DockerHelper {
    * @param {Object} options Options for running.
    * @return {Promise} Resolves once all docker containers are running.
    */
-  run(factoryId, options) {
+  /** run(factoryId, options) {
     this.log(``);
     this.log(``);
     this.log(`     Running Factory ID: '${factoryId}'`, options);
@@ -255,14 +363,14 @@ class DockerHelper {
         );
       });
     });
-  }
+  }**/
 
   /**
    * @param {string} environment The environment of the container to run.
    * @param {Object} options Options for running.
    * @return {Promise} Resolves once all docker containers are running.
    */
-  save(factoryId, options) {
+  /** save(factoryId, options) {
     this.log(``);
     this.log(``);
     this.log(`     Saving Factory ID: '${factoryId}'`, options);
@@ -332,7 +440,7 @@ class DockerHelper {
         );
       });
     });
-  }
+  }**/
 }
 
 module.exports = new DockerHelper();

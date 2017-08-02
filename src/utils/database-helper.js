@@ -53,15 +53,15 @@ class DatabaseHelper {
 
   _getDBDetails() {
     let mysqlOptions;
-    switch(process.env.CONFIG_NAME) {
+    switch(process.env.BUILDTYPE) {
       case 'testing': {
         const testingConfig = require('../config/testing');
         mysqlOptions = testingConfig.database;
         mysqlOptions.multipleStatements = true;
         break;
       }
-      case 'prod': {
-        const devConfig = require('../../../gf-deploy/src/config/prod');
+      case 'production': {
+        const devConfig = require('../config/production');
         mysqlOptions = devConfig.database;
         break;
       }
