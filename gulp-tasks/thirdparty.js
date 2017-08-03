@@ -32,5 +32,20 @@ gulp.task('thirdparty:private', () => {
   ));
 });
 
-gulp.task('thirdparty',
-  gulp.parallel('thirdparty:workbox', 'thirdparty:private'));
+gulp.task('thirdparty:build', () => {
+  return gulp.src([
+    path.join(global.config.src, 'public', 'third_party', '**', '*.*'),
+  ])
+  .pipe(gulp.dest(
+    path.join(
+      global.config.dest,
+      'public',
+      'third_party'
+    )
+  ));
+});
+
+gulp.task('thirdparty', gulp.series([
+  gulp.parallel('thirdparty:workbox', 'thirdparty:private'),
+  'thirdparty:build',
+]));

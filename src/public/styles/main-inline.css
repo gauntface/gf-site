@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -108,14 +109,9 @@ a {
   text-decoration: underline;
 }
 
-a:focus {
+a:focus, a:focus > *, a:active, a:active > * {
   color: var(--focus-highlight-color);
   outline: none;
-  font-style: italic;
-}
-
-a:focus h1, a:focus h2, a:focus h3, a:focus h4, a:focus h5, a:focus h6 {
-  color: var(--focus-highlight-color);
 }
 
 ul, ol {
