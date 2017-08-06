@@ -24,8 +24,8 @@ RUN rm /etc/nginx/sites-available/default
 RUN npm install -g forever
 RUN mkdir -p /gauntface/logs/
 
-ADD infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+COPY infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
 
-ADD infra/docker/startup.sh /gauntface/docker/startup.sh
+COPY infra/docker/startup.sh /gauntface/docker/startup.sh
 RUN chmod +x /gauntface/docker/startup.sh
 CMD /gauntface/docker/startup.sh

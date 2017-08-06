@@ -3,6 +3,7 @@
 const gulp = require('gulp');
 const fs = require('fs');
 const path = require('path');
+const argv = require('minimist')(process.argv.slice(2));
 
 global.config = {
   src: './src',
@@ -10,7 +11,17 @@ global.config = {
   env: 'dev',
   port: 5123,
   private: './../gf-deploy',
+  useDockerCache: true,
+  showDockerLogs: false,
 };
+
+if (argv['docker-cache'] === false) {
+  global.config.useDockerCache = true;
+}
+
+if (argv['docker-logs'] === true) {
+  global.config.showDockerLogs = true;
+}
 
 const gulpTaskFiles = fs.readdirSync(path.join(__dirname, 'gulp-tasks'));
 gulpTaskFiles.forEach((taskFile) => {

@@ -1,6 +1,6 @@
-FROM gauntface/gf-site:base
+FROM gauntface-base
 
-ADD infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
+COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
 # Setup nodemon
 RUN npm install -g nodemon

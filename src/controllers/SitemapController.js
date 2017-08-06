@@ -8,6 +8,8 @@ class SitemapController {
       '/blog',
     ];
 
+    console.log(args);
+
     return blogModel.getPublishedPosts()
     .then((posts) => {
       posts.forEach((post) => {
@@ -15,7 +17,7 @@ class SitemapController {
       });
 
       const parsedUrls = urls.map((url) => {
-        return url;
+        return `${url}`;
       });
 
       return {

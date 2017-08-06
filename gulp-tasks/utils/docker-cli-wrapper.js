@@ -16,6 +16,10 @@ class DockerCLIWrapper {
       log = false;
     }
 
+    if (global.config.showDockerLogs) {
+      log = true;
+    }
+
     return new Promise((resolve, reject) => {
       let errString = '';
       const dockerProcess = spawn('docker', args, options);
@@ -68,6 +72,10 @@ class DockerCLIWrapper {
       // Want it to be from the root of the project.
       path.join(__dirname, '..', '..'),
     ];
+
+    if (global.config.useDockerCache) {
+      args.push('--no-cache');
+    }
 
     return this._executeDockerCommand(args);
   }
