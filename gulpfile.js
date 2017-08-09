@@ -11,12 +11,12 @@ global.config = {
   env: 'dev',
   port: 5123,
   private: './../gf-deploy',
-  useDockerCache: true,
+  noDockerCache: false,
   showDockerLogs: false,
 };
 
 if (argv['docker-cache'] === false) {
-  global.config.useDockerCache = true;
+  global.config.noDockerCache = true;
 }
 
 if (argv['docker-logs'] === true) {

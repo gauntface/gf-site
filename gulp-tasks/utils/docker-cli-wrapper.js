@@ -73,7 +73,7 @@ class DockerCLIWrapper {
       path.join(__dirname, '..', '..'),
     ];
 
-    if (global.config.useDockerCache) {
+    if (global.config.noDockerCache) {
       args.push('--no-cache');
     }
 

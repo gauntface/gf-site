@@ -2,9 +2,6 @@ FROM gauntface-base
 
 COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
-# Setup nodemon
-RUN npm install -g nodemon
-
 # RUN apt-get install mysql-client
 
 ENV BUILDTYPE 'development'

@@ -8,8 +8,6 @@ class SitemapController {
       '/blog',
     ];
 
-    console.log(args);
-
     return blogModel.getPublishedPosts()
     .then((posts) => {
       posts.forEach((post) => {
@@ -17,7 +15,11 @@ class SitemapController {
       });
 
       const parsedUrls = urls.map((url) => {
-        return `${url}`;
+        if (process.env.BUILDTYPE === 'production') {
+          return `https://gauntface.com${url}`;
+        }
+
+        return `http://localhost:${process.env.DEV_PORT}${url}`;
       });
 
       return {

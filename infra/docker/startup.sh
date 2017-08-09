@@ -38,40 +38,39 @@ ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntfa
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
 
-#echo ""
-#echo ""
-#echo -e "${CYAN}    ___       ___       ___       ___       ___    "
-#echo -e "${CYAN}   /\  \     /\  \     /\__\     /\__\     /\  \   "
-#echo -e "${CYAN}  /::\  \   /::\  \   /:/ _/_   /:| _|_    \:\  \  "
-#echo -e "${CYAN} /:/\:\__\ /::\:\__\ /:/_/\__\ /::|/\__\   /::\__\ "
-#echo -e "${CYAN} \:\:\/__/ \/\::/  / \:\/:/  / \/|::/  /  /:/\/__/ "
-#echo -e "${CYAN}  \::/  /    /:/  /   \::/  /    |:/  /   \/__/    "
-#echo -e "${CYAN}   \/__/     \/__/     \/__/     \/__/             "
-#echo -e "${CYAN}         ___       ___       ___       ___         "
-#echo -e "${CYAN}        /\  \     /\  \     /\  \     /\  \        "
-#echo -e "${CYAN}       /::\  \   /::\  \   /::\  \   /::\  \       "
-#echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
-#echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
-#echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
-#echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
-#if [ -z "$DEV_PORT" ]; then
-#echo ""
-#echo -e "${CYAN}                No DEV_PORT Defined                "
-#echo ""
-#else
-#echo ""
-#echo -e "${CYAN}            http://localhost:${DEV_PORT}           "
-#echo ""
-#fi
-#echo -e "${NC}"
-#echo ""
+echo ""
+echo ""
+echo -e "${CYAN}    ___       ___       ___       ___       ___    "
+echo -e "${CYAN}   /\  \     /\  \     /\__\     /\__\     /\  \   "
+echo -e "${CYAN}  /::\  \   /::\  \   /:/ _/_   /:| _|_    \:\  \  "
+echo -e "${CYAN} /:/\:\__\ /::\:\__\ /:/_/\__\ /::|/\__\   /::\__\ "
+echo -e "${CYAN} \:\:\/__/ \/\::/  / \:\/:/  / \/|::/  /  /:/\/__/ "
+echo -e "${CYAN}  \::/  /    /:/  /   \::/  /    |:/  /   \/__/    "
+echo -e "${CYAN}   \/__/     \/__/     \/__/     \/__/             "
+echo -e "${CYAN}         ___       ___       ___       ___         "
+echo -e "${CYAN}        /\  \     /\  \     /\  \     /\  \        "
+echo -e "${CYAN}       /::\  \   /::\  \   /::\  \   /::\  \       "
+echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
+echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
+echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
+echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
+if [ -z "$DEV_PORT" ]; then
+echo ""
+echo -e "${CYAN}                No DEV_PORT Defined                "
+echo ""
+else
+echo ""
+echo -e "${CYAN}            http://localhost:${DEV_PORT}           "
+echo ""
+fi
+echo -e "${NC}"
+echo ""
 
-echo "BUILD TYPE: ${BUILDTYPE}"
-
-#if [ "${BUILDTYPE}" = "production" ]; then
-#forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
-#else
-#npm install -g nodemon
-#nodemon /gauntface/site/index.js
-#fi
-#nginx -g 'daemon off;';
+if [ "${BUILDTYPE}" = "production" ]; then
+forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
+nginx -g 'daemon off;';
+else
+# Legacy watch with nodemoan to make it work with docker.
+nginx -g 'daemon on;';
+forever -w --watchDirectory=/gauntface/site /gauntface/site/index.js
+fi
