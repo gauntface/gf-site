@@ -48,7 +48,7 @@
     "postcss-import": "^10.0.0",
     "prismjs": "^1.6.0",
     "selenium-assistant": "^5.0.4",
-    "sinon": "^2.1.0",
+    "sinon": "^3.0.0",
     "workbox-build": "^1.0.0",
     "workbox-sw": "^1.0.0",
     "xml2js": "^0.4.17"
