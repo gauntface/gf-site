@@ -20,7 +20,6 @@
 
 .home__logo:focus svg {
   fill: var(--focus-highlight-color);
-  border-color: var(--focus-highlight-color);
 }
 
 .home__logo svg {
@@ -28,8 +27,6 @@
   width: var(--header-logo-size);
   height: var(--header-logo-size);
   fill: var(--header-logo-color);
-  border-style: solid;
-  border-color: var(--header-logo-color);
 }
 
 .header__links {
