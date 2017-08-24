@@ -50,7 +50,7 @@
     "selenium-assistant": "^5.0.4",
     "sinon": "^2.1.0",
     "workbox-build": "^1.0.0",
-    "workbox-sw": "^1.0.0",
+    "workbox-sw": "^2.0.0",
     "xml2js": "^0.4.17"
   }
 }
