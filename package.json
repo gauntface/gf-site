@@ -16,7 +16,7 @@
     "express-minify-html": "^0.11.4",
     "fs-extra": "^4.0.0",
     "gm": "^1.23.0",
-    "googleapis": "^20.0.0",
+    "googleapis": "^21.2.0",
     "hopin": "0.1.0",
     "imagemin": "^5.3.1",
     "imagemin-gifsicle": "^5.2.0",
