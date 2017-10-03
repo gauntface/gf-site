@@ -41,7 +41,7 @@
     "gulp-postcss": "^7.0.0",
     "lighthouse": "^2.0.0",
     "minimist": "^1.2.0",
-    "mocha": "^3.4.2",
+    "mocha": "^4.0.0",
     "node-cache": "^4.1.1",
     "node-fetch": "^1.6.3",
     "postcss-cssnext": "^3.0.0",
