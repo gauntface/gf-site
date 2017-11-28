@@ -4,7 +4,7 @@
   "description": "Personal site of Matt Gaunt",
   "main": "src/index.js",
   "scripts": {
-    "build": "gulp",
+    "build": "gulp build",
     "lint": "eslint '.'",
     "test": "npm run build && mocha ./test/node/**/*.js ./test/integration/**/*.js"
   },
