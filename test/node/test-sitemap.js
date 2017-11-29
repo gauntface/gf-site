@@ -20,7 +20,7 @@ describe('Test Sitemap', function() {
     // This env is set for the local db helper
     process.env.CONFIG_NAME = 'testing';
 
-    return dockerHelper.run('testing')
+    return dockerHelper.runTesting()
     .then(() => {
       const localBrowser = seleniumAssistant.getLocalBrowser('chrome', 'stable');
       return localBrowser.getSeleniumDriver();

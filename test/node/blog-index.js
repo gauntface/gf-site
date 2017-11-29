@@ -16,7 +16,7 @@ describe('Test Blog Index Page', () => {
     // This env is set for the local db helper
     process.env.CONFIG_NAME = 'testing';
 
-    return dockerHelper.run('testing')
+    return dockerHelper.runTesting()
     .then(() => {
       // This is here to wait for the mysql container to be fully up and running
       return new Promise((resolve) => {

@@ -6,6 +6,10 @@ const chalk = require('chalk');
  * Helper for docker methods.
  */
 class DockerCLIWrapper {
+  constructor() {
+    global.config = global.config || {};
+  }
+
   /**
    * Spawns a process for the docker command.
    * @param {Array<string>} args The arguments passed into the docker process.

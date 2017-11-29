@@ -37,7 +37,7 @@
     "eslint-config-google": "^0.9.1",
     "execsql": "0.0.3",
     "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-imagemin": "^3.3.0",
+    "gulp-imagemin": "^4.0.0",
     "gulp-postcss": "^7.0.0",
     "lighthouse": "^2.0.0",
     "minimist": "^1.2.0",

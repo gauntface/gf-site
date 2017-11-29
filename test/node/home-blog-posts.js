@@ -16,7 +16,7 @@ describe('Test Home Page + Blog Posts', () => {
     // This env is set for the local db helper
     process.env.CONFIG_NAME = 'testing';
 
-    return dockerHelper.run('testing')
+    return dockerHelper.runTesting()
     .then(() => {
       return new Promise((resolve) => {
         setTimeout(resolve, 15 * 1000);

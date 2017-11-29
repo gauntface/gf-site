@@ -50,7 +50,7 @@ gulp.task('dev', gulp.series([
 
 gulp.task('testing', gulp.series([
   'build',
-  // 'docker-run:testing',
+  'docker:run:testing',
 ]));
 
 gulp.task('prod', gulp.series([
