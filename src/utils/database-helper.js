@@ -52,35 +52,13 @@ class DatabaseHelper {
   }
 
   _getDBDetails() {
-    let mysqlOptions;
-    /** switch(process.env.BUILDTYPE) {
-      case 'testing': {
-        const testingConfig = require('../config/testing');
-        mysqlOptions = testingConfig.database;
-        mysqlOptions.multipleStatements = true;
-        break;
-      }
-      case 'production': {
-        const devConfig = require('../config/production');
-        mysqlOptions = devConfig.database;
-        break;
-      }
-      case 'development': {
-        const devConfig = require('../config/development');
-        mysqlOptions = devConfig.database;
-        break;
-      }
-      default: {
-        const devConfig = require('../config/development');
-        mysqlOptions = devConfig.database;
-        break;
-      }
-    }**/
-    const devConfig = require('../config/development');
-    mysqlOptions = devConfig.database;
-    mysqlOptions.host = process.env.DB_HOST || 'localhost';
-    mysqlOptions.port = process.env.DB_PORT || 3306;
-    console.log('Using options: ', mysqlOptions);
+    const mysqlOptions = {
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+    };
     return mysqlOptions;
   }
 

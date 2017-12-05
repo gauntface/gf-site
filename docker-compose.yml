@@ -25,10 +25,12 @@ services:
         target: /gauntface/site/node_modules
     environment:
       PORT: 3006
-      DB_PORT: 3306
       DB_HOST: mysql_dev
+      DB_PORT: 3306
       DB_USER: development-user
       DB_PASSWORD: development-password
+      DB_NAME: development-db
+
   test:
     depends_on:
       - "base"
@@ -42,10 +44,11 @@ services:
      - "3007:3007"
     environment:
       PORT: 3007
-      DB_PORT: 3306
       DB_HOST: mysql_test
+      DB_PORT: 3306
       DB_USER: testing-user
       DB_PASSWORD: testing-password
+      DB_NAME: testing-db
 
   mysql_dev:
     image: mysql:5.7
