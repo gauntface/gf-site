@@ -3,25 +3,13 @@
 const gulp = require('gulp');
 const fs = require('fs-extra');
 const path = require('path');
-const argv = require('minimist')(process.argv.slice(2));
+const constants = require('./models/constants');
 
 global.config = {
-  src: './src',
-  dest: './build',
-  env: 'dev',
-  port: 5123,
-  private: './../gf-deploy',
-  noDockerCache: false,
-  showDockerLogs: false,
+  src: path.join(__dirname, 'src'),
+  dest: path.join(__dirname, 'build'),
+  private: path.join(__dirname, '..', 'gf-deploy'),
 };
-
-if (argv['docker-cache'] === false) {
-  global.config.noDockerCache = true;
-}
-
-if (argv['docker-logs'] === true) {
-  global.config.showDockerLogs = true;
-}
 
 const gulpTaskFiles = fs.readdirSync(path.join(__dirname, 'gulp-tasks'));
 gulpTaskFiles.forEach((taskFile) => {
@@ -61,16 +49,17 @@ gulp.task('prod', gulp.series([
 gulp.task('prod:save', gulp.series([
   'build',
   'docker:save:prod',
-  () => {
-    const deployPath = path.join(__dirname, '..', 'gf-deploy');
+  async () => {
+    await fs.remove(constants.DOCKER_BUILD_PATH);
+
     return Promise.all([
       fs.copy(
         path.join(__dirname, 'docker-compose.yml'),
-        path.join(deployPath, 'docker-build', 'docker-compose.yml'),
+        path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.yml'),
       ),
       fs.copy(
-        path.join(deployPath, 'docker-compose.yml'),
-        path.join(deployPath, 'docker-build', 'docker-compose.prod.yml'),
+        path.join(__dirname, '..', 'gf-deploy', 'docker-compose.yml'),
+        path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.prod.yml'),
       ),
     ]);
   },
