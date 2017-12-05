@@ -6,11 +6,6 @@ if [ "${BASH_VERSION}" = '' ]; then
  exit 1;
 fi
 
-if [ "${BUILDTYPE}" = '' ]; then
- echo "    No BUILDTYPE set."
- exit 1;
-fi
-
 # Replace environment variables in these files.
 envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
 
@@ -66,11 +61,11 @@ fi
 echo -e "${NC}"
 echo ""
 
-if [ "${BUILDTYPE}" = "production" ]; then
-forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
-nginx -g 'daemon off;';
-else
+# if [ "${BUILDTYPE}" = "production" ]; then
+#forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
+#nginx -g 'daemon off;';
+#else
 # Legacy watch with nodemoan to make it work with docker.
 nginx -g 'daemon on;';
 forever -w --watchDirectory=/gauntface/site /gauntface/site/index.js
-fi
+#fi

@@ -26,6 +26,7 @@
     "marked": "^0.3.6",
     "moment": "^2.18.1",
     "mysql": "^2.13.0",
+    "prismjs": "^1.6.0",
     "twitter": "^1.7.0"
   },
   "devDependencies": {
@@ -46,7 +47,6 @@
     "node-fetch": "^1.6.3",
     "postcss-cssnext": "^3.0.0",
     "postcss-import": "^10.0.0",
-    "prismjs": "^1.6.0",
     "selenium-assistant": "^5.0.4",
     "sinon": "^2.1.0",
     "workbox-build": "^1.0.0",

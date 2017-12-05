@@ -15,9 +15,9 @@ class SitemapController {
       });
 
       const parsedUrls = urls.map((url) => {
-        if (process.env.BUILDTYPE === 'production') {
+        /** if (process.env.BUILDTYPE === 'production') {
           return `https://gauntface.com${url}`;
-        }
+        }**/
 
         return `http://localhost:3006${url}`;
       });

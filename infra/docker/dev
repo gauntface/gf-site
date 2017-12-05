@@ -2,8 +2,4 @@ FROM gauntface-base
 
 COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
-# RUN apt-get install mysql-client
-
-ENV BUILDTYPE 'development'
-
-ENV PORT 3006
+CMD /gauntface/docker/startup.sh

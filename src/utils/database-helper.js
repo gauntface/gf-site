@@ -53,8 +53,7 @@ class DatabaseHelper {
 
   _getDBDetails() {
     let mysqlOptions;
-    console.log('>>>>>>>>>>>>>>> BUILDTYPE: ', process.emit.BUILDTYPE);
-    switch(process.env.BUILDTYPE) {
+    /** switch(process.env.BUILDTYPE) {
       case 'testing': {
         const testingConfig = require('../config/testing');
         mysqlOptions = testingConfig.database;
@@ -76,11 +75,11 @@ class DatabaseHelper {
         mysqlOptions = devConfig.database;
         break;
       }
-    }
-    mysqlOptions.host = process.env.MYSQL_NAME || 'localhost';
-    if (process.env.MYSQL_NAME) {
-      mysqlOptions.port = 3306;
-    }
+    }**/
+    const devConfig = require('../config/development');
+    mysqlOptions = devConfig.database;
+    mysqlOptions.host = process.env.DB_HOST || 'localhost';
+    mysqlOptions.port = process.env.DB_PORT || 3306;
     console.log('Using options: ', mysqlOptions);
     return mysqlOptions;
   }
