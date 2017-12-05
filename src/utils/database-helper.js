@@ -81,6 +81,7 @@ class DatabaseHelper {
     if (process.env.MYSQL_NAME) {
       mysqlOptions.port = 3306;
     }
+    console.log('Using options: ', mysqlOptions);
     return mysqlOptions;
   }
 

@@ -229,12 +229,12 @@ class DockerHelper {
         // '--link', DB_EXAMPLE_TAG,
 
         // Make Docker see the src index
-        '--volume', `${path.join(__dirname, '..', '..', 'src')}:` +
-          `/gauntface/site`,
+        // '--volume', `${path.join(__dirname, '..', '..', 'src')}:` +
+        //   `/gauntface/site`,
 
         // Make node_modules be in the expected place (they are outside of src)
-        '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
-          `/gauntface/site/node_modules`,
+        // '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
+        //  `/gauntface/site/node_modules`,
 
         // Make container aware of MySQL name
         // '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,

@@ -10,6 +10,9 @@ services:
       dockerfile: ./infra/docker/dev
     depends_on:
       - "base"
+      - "mysql_dev"
+    links:
+      - mysql_dev
     ports:
      - "3006:3006"
     volumes:
@@ -19,3 +22,20 @@ services:
       - type: volume
         source: ./node_modules
         target: /gauntface/site/node_modules
+    environment:
+      MYSQL_NAME: mysql_dev
+      DB_HOST: mysql_dev:3306
+      DB_USER: development-user
+      DB_PASSWORD: development-password
+  mysql_dev:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: development-db
+      MYSQL_USER: development-user
+      MYSQL_PASSWORD: development-password
+    volumes:
+      - type: volume
+        source: ../gf-deploy/sql-exports
+        target: /docker-entrypoint-initdb.d
