@@ -1,23 +1,10 @@
 const path = require('path');
-const chalk = require('chalk');
 const fs = require('fs-extra');
+
 const dockerCLIWrapper = require('./docker-cli-wrapper');
 const DockerComposeWrapper = require('./docker-compose-wrapper');
-
-const PROD_IMAGE_NAME = 'gauntface-site';
-
-const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..',
-  'gf-deploy', 'docker-build');
-
-const ALL_SERVICES = [
-  'base',
-  'dev',
-  'mysql_dev',
-  'test',
-  'mysql_test',
-  'prod',
-  'mysql_prod',
-];
+const Logger = require('./logger');
+const constants = require('../models/constants');
 
 /**
  * This class does the orchestrating of docker processes (build, running,
@@ -31,35 +18,16 @@ class DockerHelper {
       './docker-compose.yml',
       '../gf-deploy/docker-compose.yml',
     ]);
+    this._logger = new Logger('🐳 [DockerHelper]:');
   }
-
-  /* eslint-disable no-console */
-  /**
-   * @param {Object} message to print
-   */
-  log(message) {
-    console.log(chalk.green('🐳 [DockerHelper]:'), message);
-  }
-
-  /**
-   * @param {Object} message to print
-   */
-  warn(message) {
-    console.log(chalk.yellow('🐳 [DockerHelper]:'), message);
-  }
-
-  error(message) {
-    console.log(chalk.red('🐳 [DockerHelper]:'), message);
-  }
-  /* eslint-enable no-console */
 
   /**
    * @return {Promise} Resolves once all docker containers are removed.
    */
   remove() {
-    return ALL_SERVICES.reduce((promiseChain, serviceName) => {
+    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
-        this.log(`        Removing service: ${serviceName}`);
+        this._logger.log(`        Removing service: ${serviceName}`);
         return this._dockerCompose.remove(
           serviceName
         )
@@ -72,9 +40,9 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are stopped.
    */
   stop() {
-    return ALL_SERVICES.reduce((promiseChain, serviceName) => {
+    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
-        this.log(`        Stopping service: ${serviceName}`);
+        this._logger.log(`        Stopping service: ${serviceName}`);
 
         return this._dockerCompose.stop(
           serviceName
@@ -89,11 +57,11 @@ class DockerHelper {
    * removed.
    */
   clean() {
-    this.log(``);
-    this.log(``);
-    this.log('    Cleaning containers');
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log('    Cleaning containers');
+    this._logger.log(``);
+    this._logger.log(``);
     return this.stop()
     .then(() => this.remove());
   }
@@ -103,45 +71,45 @@ class DockerHelper {
    * @return {Promise} Resolves once access to CLI has ended.
    */
   accessCLI() {
-    return dockerCLIWrapper.accessContainerCLI(PROD_IMAGE_NAME);
+    return dockerCLIWrapper.accessContainerCLI(constants.PROD_IMAGE_NAME);
   }
 
   async buildBase() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building base container`);
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building base container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
     await this._dockerCompose.build('base');
   }
 
   async buildDev() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building dev container`);
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building dev container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
     await this._dockerCompose.build('dev');
   }
 
   async buildTest() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building test container`);
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building test container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
     await this._dockerCompose.build('test');
   }
 
   async buildProd() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building prod container`);
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building prod container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
     await this._dockerCompose.build('prod');
   }
@@ -159,12 +127,12 @@ class DockerHelper {
   }
 
   saveProd() {
-    return fs.ensureDir(DOCKER_BUILD_PATH)
+    return fs.ensureDir(constants.DOCKER_BUILD_PATH)
     .then(() => {
       return dockerCLIWrapper.saveContainer(
-        PROD_IMAGE_NAME,
+        constants.PROD_IMAGE_NAME,
         [
-          '-o', path.join(DOCKER_BUILD_PATH, `prod.tar`),
+          '-o', path.join(constants.DOCKER_BUILD_PATH, `prod.tar`),
         ]
       );
     });
