@@ -7,7 +7,8 @@ if [ "${BASH_VERSION}" = '' ]; then
 fi
 
 # Replace environment variables in these files.
-envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
+envsubst '${NGINX_PORT}' < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
+envsubst '${NODE_PORT}' < /etc/nginx/gauntface-shared.conf > /etc/nginx/gauntface-shared.conf;
 
 #environmentVariables=(
 #  'BUILDTYPE'
@@ -49,23 +50,26 @@ echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
 echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
 echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
 echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
-if [ -z "$PORT" ]; then
 echo ""
-echo -e "${CYAN}                No 'PORT' value Defined                "
-echo ""
+if [ -z "$NODE_PORT" ]; then
+echo -e "${CYAN}                No 'NODE_PORT' value Defined                "
 else
-echo ""
-echo -e "${CYAN}            http://localhost:${PORT}           "
-echo ""
+echo -e "${CYAN}            [NODE]:  http://localhost:${NODE_PORT}           "
 fi
+if [ -z "$NGINX_PORT" ]; then
+echo -e "${CYAN}                No 'NGINX_PORT' value Defined                "
+else
+echo -e "${CYAN}            [NGINX]: http://localhost:${NGINX_PORT}           "
+fi
+echo ""
 echo -e "${NC}"
 echo ""
 
-# if [ "${BUILDTYPE}" = "production" ]; then
-#forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
-#nginx -g 'daemon off;';
-#else
+if [ "${DEV_MODE}" = true ]; then
 # Legacy watch with nodemoan to make it work with docker.
 nginx -g 'daemon on;';
 forever -w --watchDirectory=/gauntface/site /gauntface/site/index.js
-#fi
+else
+forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
+nginx -g 'daemon off;';
+fi

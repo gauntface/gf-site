@@ -2,4 +2,6 @@ FROM gauntface-base
 
 COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
 
+ENV DEV_MODE=true
+
 CMD /gauntface/docker/startup.sh
