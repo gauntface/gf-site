@@ -19,7 +19,7 @@ class SitemapController {
           return `https://gauntface.com${url}`;
         }
 
-        return `http://localhost:${process.env.DEV_PORT}${url}`;
+        return `http://localhost:3006${url}`;
       });
 
       return {

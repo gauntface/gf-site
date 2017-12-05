@@ -15,7 +15,6 @@ const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
 const BASE_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'base');
 
 const DEV_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'dev');
-const DEV_PORT = 3006;
 
 const PROD_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'prod');
 const PROD_PORT = 3008;
@@ -223,13 +222,11 @@ class DockerHelper {
       PRIMARY_TAG,
       PRIMARY_TAG,
       [
-        '-p', `${DEV_PORT}:80`,
-
-        // This is non-critical, used for the log message.
-        '--env', `DEV_PORT=${DEV_PORT}`,
+        '-p', `3006:80`,
 
         // Link the mysql container to this instance
-        '--link', DB_EXAMPLE_TAG,
+        // TODO: Link via docker compose
+        // '--link', DB_EXAMPLE_TAG,
 
         // Make Docker see the src index
         '--volume', `${path.join(__dirname, '..', '..', 'src')}:` +
@@ -240,7 +237,7 @@ class DockerHelper {
           `/gauntface/site/node_modules`,
 
         // Make container aware of MySQL name
-        '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
+        // '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
       ],
       false
     )
@@ -248,13 +245,15 @@ class DockerHelper {
       this.log(``);
       this.log(``);
       this.log(`    Running Dev`);
-      this.log(`    http://localhost/${DEV_PORT}`);
+      this.log(`    http://localhost/3006`);
       this.log(``);
       this.log(``);
     });
   }
 
   runTesting() {
+    const config = require('../../src/config/testing');
+
     this.log(``);
     this.log(``);
     this.log(`    Building testing container`);
@@ -265,7 +264,7 @@ class DockerHelper {
       PRIMARY_TAG,
       PRIMARY_TAG,
       [
-        '-p', `${PROD_PORT}:80`,
+        '-p', `${config.port}:80`,
 
         // Link the mysql container to this instance
         '--link', DB_TEST_TAG,
@@ -279,7 +278,7 @@ class DockerHelper {
       this.log(``);
       this.log(``);
       this.log(`    Running Testing`);
-      this.log(`    http://localhost/${PROD_PORT}`);
+      this.log(`    http://localhost:${config.port}`);
       this.log(``);
       this.log(``);
     });

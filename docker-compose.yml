@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  base:
+    build:
+      context: .
+      dockerfile: ./infra/docker/base
+  dev:
+    build:
+      context: .
+      dockerfile: ./infra/docker/dev
+    depends_on:
+      - "base"
+    ports:
+     - "3006:3006"
+    volumes:
+      - type: volume
+        source: ./src
+        target: /gauntface/site
+      - type: volume
+        source: ./node_modules
+        target: /gauntface/site/node_modules

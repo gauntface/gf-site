@@ -5,3 +5,5 @@ COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface
 # RUN apt-get install mysql-client
 
 ENV BUILDTYPE 'development'
+
+ENV PORT 3006

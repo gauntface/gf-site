@@ -1,5 +1,5 @@
 const siteServer = require('./site-server');
-siteServer.start(3000);
+siteServer.start(process.env.PORT);
 /* eslint-disable no-console */
-console.log('Server started on http://localhost:3000/');
+console.log(`Server started on http://localhost:${process.env.PORT}/`);
 /* eslint-enable no-console */

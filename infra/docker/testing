@@ -1,0 +1,13 @@
+FROM gauntface-base
+
+# Copy over all the build files.
+COPY build /gauntface/site
+
+RUN cd /gauntface/site && npm install
+
+# Add the production nginx config.
+COPY infra/nginx/gauntface-prod.conf /etc/nginx/sites-available/gauntface.tmpl
+
+# Set the prod environment variable
+ENV BUILDTYPE 'testing'
+

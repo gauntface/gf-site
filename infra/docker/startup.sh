@@ -33,7 +33,7 @@ envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-availabl
 #done
 
 # Create a symbolic link between sites-available and sites-enabled
-ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
+ln -s -f /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
@@ -54,13 +54,13 @@ echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
 echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
 echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
 echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
-if [ -z "$DEV_PORT" ]; then
+if [ -z "$PORT" ]; then
 echo ""
-echo -e "${CYAN}                No DEV_PORT Defined                "
+echo -e "${CYAN}                No 'PORT' value Defined                "
 echo ""
 else
 echo ""
-echo -e "${CYAN}            http://localhost:${DEV_PORT}           "
+echo -e "${CYAN}            http://localhost:${PORT}           "
 echo ""
 fi
 echo -e "${NC}"

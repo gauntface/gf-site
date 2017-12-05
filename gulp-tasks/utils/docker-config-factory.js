@@ -81,7 +81,6 @@ const getSrcContainer = (config) => {
       customArgs: [
         '--link', mysqlContainer.name,
         '-p', `${config.port}:80`,
-        '--env', `DEV_PORT=${config.port}`,
         '--env', `CONFIG_NAME=${config.name}`,
         '--env', `MYSQL_NAME=${mysqlContainer.name}`,
         '--volume', `${path.join(__dirname, '..', '..', 'src')}:/gauntface/site`,

@@ -53,6 +53,7 @@ class DatabaseHelper {
 
   _getDBDetails() {
     let mysqlOptions;
+    console.log('>>>>>>>>>>>>>>> BUILDTYPE: ', process.emit.BUILDTYPE);
     switch(process.env.BUILDTYPE) {
       case 'testing': {
         const testingConfig = require('../config/testing');
