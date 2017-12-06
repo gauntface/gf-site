@@ -8,10 +8,9 @@ cache:
     - "node_modules"
     - "~/.selenium-assistant"
 
-services:
-  - docker
-
 before_install:
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/3.4/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
