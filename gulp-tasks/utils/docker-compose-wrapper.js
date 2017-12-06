@@ -1,11 +1,14 @@
+const fs = require('fs-extra');
 const spawn = require('./spawn');
 
 class DockerComposeWrapper {
   constructor(dockerComposeFiles = []) {
     this._cmdFlags = [];
     dockerComposeFiles.forEach((composeFile) => {
-      this._cmdFlags.push('-f');
-      this._cmdFlags.push(composeFile);
+      if (fs.existsSync(composeFile)) {
+        this._cmdFlags.push('-f');
+        this._cmdFlags.push(composeFile);
+      }
     });
   }
 
