@@ -7,7 +7,6 @@ const parseMarkdown = require('../../src/utils/parse-markdown');
 const blogModel = require('../../src/models/blog-model.js');
 const SinglePostModel = require('../../src/models/single-post-model.js');
 const dbHelper = require('../../src/utils/database-helper.js');
-const testingConfig = require('../../src/config/testing');
 
 describe('Test Blog Index Page', () => {
   before(function() {

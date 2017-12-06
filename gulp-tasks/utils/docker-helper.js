@@ -114,16 +114,22 @@ class DockerHelper {
     await this._dockerCompose.build('prod');
   }
 
-  async runDev() {
-    await this._dockerCompose.up('dev');
+  async runDev(detach = false) {
+    await this._dockerCompose.up('dev', {
+      detach,
+    });
   }
 
-  async runTesting() {
-    await this._dockerCompose.up('test');
+  async runTesting(detach = false) {
+    await this._dockerCompose.up('test', {
+      detach,
+    });
   }
 
-  async runProd() {
-    await this._dockerCompose.up('prod');
+  async runProd(detach = false) {
+    await this._dockerCompose.up('prod', {
+      detach,
+    });
   }
 
   saveProd() {

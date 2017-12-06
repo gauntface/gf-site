@@ -25,6 +25,8 @@ services:
         source: ./node_modules
         target: /gauntface/site/node_modules
     environment:
+      # DEV_MODE means that it'll block on the node script and not NGINX.
+      DEV_MODE: 'true'
       NODE_PORT: 3006
       NGINX_PORT: 3000
       DB_HOST: mysql_dev
@@ -70,6 +72,9 @@ services:
   mysql_test:
     image: mysql:5.7
     restart: always
+    ports:
+     # Expose the MYSQL port locally for tests to manipulate the DB
+     - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: testing-db

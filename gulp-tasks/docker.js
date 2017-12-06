@@ -33,7 +33,7 @@ gulp.task('docker:run:dev', gulp.series([
 
 gulp.task('docker:run:testing', gulp.series([
   'docker:clean',
-  () => dockerHelper.runTesting(),
+  () => dockerHelper.runTesting(true),
 ]));
 
 gulp.task('docker:run:prod', gulp.series([

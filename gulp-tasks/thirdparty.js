@@ -21,13 +21,12 @@ gulp.task('thirdparty:workbox', () => {
 
 gulp.task('thirdparty:private', () => {
   return gulp.src([
-    path.join(global.config.private, 'public', '**/*.*'),
+    path.join(global.config.private, 'src', 'public', '**', '*.*'),
   ])
   .pipe(gulp.dest(
     path.join(
       global.config.src,
       'public',
-      'third_party'
     )
   ));
 });

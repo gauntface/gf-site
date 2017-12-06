@@ -3,7 +3,7 @@
 const gulp = require('gulp');
 const fs = require('fs-extra');
 const path = require('path');
-const constants = require('./models/constants');
+const constants = require('./gulp-tasks/models/constants');
 
 global.config = {
   src: path.join(__dirname, 'src'),

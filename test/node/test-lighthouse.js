@@ -3,7 +3,6 @@ const URL = require('url');
 
 const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 
-const testingConfig = require('../../src/config/testing');
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
 

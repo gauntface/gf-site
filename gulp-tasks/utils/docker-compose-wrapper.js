@@ -30,11 +30,14 @@ class DockerComposeWrapper {
     return spawn('docker-compose', cmdFlags);
   }
 
-  up(serviceName) {
+  up(serviceName, options = {}) {
     const cmdFlags = this._getFlagsCopy();
     cmdFlags.push('up');
     cmdFlags.push('--force-recreate');
     cmdFlags.push('--build');
+    if (options.detach) {
+      cmdFlags.push('-d');
+    }
     cmdFlags.push(serviceName);
 
     return spawn('docker-compose', cmdFlags);

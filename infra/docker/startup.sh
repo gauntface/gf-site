@@ -65,11 +65,17 @@ echo ""
 echo -e "${NC}"
 echo ""
 
-if [ "${DEV_MODE}" = true ]; then
+if [ "${DEV_MODE}" = "true" ]; then
+echo ""
+echo "DEV_MODE: ON"
+echo ""
 # Legacy watch with nodemoan to make it work with docker.
 nginx -g 'daemon on;';
 forever -w --watchDirectory=/gauntface/site /gauntface/site/index.js
 else
+echo ""
+echo "DEV_MODE: OFF"
+echo ""
 forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
 nginx -g 'daemon off;';
 fi

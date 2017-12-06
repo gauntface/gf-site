@@ -3,10 +3,9 @@ const seleniumAssistant = require('selenium-assistant');
 const logging = require('selenium-webdriver').logging;
 const fs = require('fs-extra');
 const path = require('path');
+const expect = require('chai').expect;
 
-const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 const getSitemapUrls = require('../utils/get-sitemap-urls');
-const testingConfig = require('../../src/config/testing');
 const dbHelper = require('../../src/utils/database-helper.js');
 
 describe('Test Sitemap', function() {
@@ -14,35 +13,32 @@ describe('Test Sitemap', function() {
   let serverUrl = null;
   let globalDriver = null;
 
-  before(function() {
+  before(async function() {
     this.timeout(5 * 60 * 1000);
 
-    // This env is set for the local db helper
-    process.env.CONFIG_NAME = 'testing';
+    const localBrowser = seleniumAssistant.getLocalBrowser('chrome', 'stable');
+    globalDriver = await localBrowser.getSeleniumDriver();
 
-    return dockerHelper.runTesting()
-    .then(() => {
-      const localBrowser = seleniumAssistant.getLocalBrowser('chrome', 'stable');
-      return localBrowser.getSeleniumDriver();
-    })
-    .then((driver) => {
-      globalDriver = driver;
-    })
-    .then(() => {
-      return dbHelper.__TEST_ONLY_DROP_TABLES();
-    })
-    .then(() => {
-      const sqlFile = path.join(__dirname, '..', '..', 'src', 'sql-dumps', 'test-sql-dump');
-      const buffer = fs.readFileSync(sqlFile);
-      return dbHelper.executeQuery(buffer.toString());
-    })
-    .then(() => {
-      serverUrl = testingConfig.url;
-      // This is here to wait for the mysql container to be fully up and running
-      return new Promise((resolve) => {
-        setTimeout(resolve, 15 * 1000);
-      });
-    });
+    process.env.DB_HOST = 'localhost';
+    process.env.DB_PORT = 3306;
+    process.env.DB_USER = 'testing-user';
+    process.env.DB_PASSWORD = 'testing-password';
+    process.env.DB_NAME = 'testing-db';
+
+    await dbHelper.__TEST_ONLY_DROP_TABLES();
+
+    const sqlFile = path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports', 'test-sql-dump');
+    const fileContents = fs.readFileSync(sqlFile).toString();
+    const sqlCommands = fileContents.split('\n');
+    for (const sqlCommand of sqlCommands) {
+      if (!sqlCommand) {
+        // Skip empty strings
+        continue;
+      }
+      await dbHelper.executeQuery(sqlCommand);
+    }
+
+    serverUrl = `http://localhost:3000`;
   });
 
   after(function() {
@@ -55,6 +51,8 @@ describe('Test Sitemap', function() {
     return getSitemapUrls(serverUrl)
     .then((urls) => {
       sitemapUrls = urls;
+      expect(sitemapUrls).to.exist;
+      expect(sitemapUrls.length).to.equal(135);
     });
   });
 
@@ -69,10 +67,9 @@ describe('Test Sitemap', function() {
 
     let severeMessagesOnUrls = {};
 
-    return sitemapUrls.reduce((promiseChain, partialUrl) => {
+    return sitemapUrls.reduce((promiseChain, sitemapUrl) => {
       return promiseChain.then(() => {
-        const fullUrl = `${serverUrl}${partialUrl}`;
-        return fetch(fullUrl)
+        return fetch(sitemapUrl)
         .then((response) => {
           if (!response.ok) {
             return response.text()
@@ -83,7 +80,7 @@ describe('Test Sitemap', function() {
           }
         })
         .then(() => {
-          return globalDriver.get(fullUrl);
+          return globalDriver.get(sitemapUrl);
         })
         .then(() => {
           return globalDriver.manage().logs().get(logging.Type.BROWSER)
@@ -92,6 +89,11 @@ describe('Test Sitemap', function() {
               if (entry.level === logging.Level.SEVERE) {
                 if (entry.message.indexOf('chrome-extension://') === 0) {
                   // Skip the chrome extension
+                  return false;
+                }
+
+                if (entry.message.indexOf('https://s2-f.scribdassets.com') === 0) {
+                  // Skip the scribd errors
                   return false;
                 }
 
@@ -113,7 +115,7 @@ describe('Test Sitemap', function() {
             });
 
             if (currentSevereMessages.length > 0) {
-              severeMessagesOnUrls[partialUrl] = currentSevereMessages;
+              severeMessagesOnUrls[sitemapUrl] = currentSevereMessages;
             }
           });
         });
