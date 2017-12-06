@@ -28,14 +28,16 @@ describe('Test Sitemap', function() {
     await dbHelper.__TEST_ONLY_DROP_TABLES();
 
     const sqlFile = path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports', 'test-sql-dump');
-    const fileContents = fs.readFileSync(sqlFile).toString();
-    const sqlCommands = fileContents.split('\n');
-    for (const sqlCommand of sqlCommands) {
-      if (!sqlCommand) {
-        // Skip empty strings
-        continue;
+    if (fs.existsSync(sqlFile)) {
+      const fileContents = fs.readFileSync(sqlFile).toString();
+      const sqlCommands = fileContents.split('\n');
+      for (const sqlCommand of sqlCommands) {
+        if (!sqlCommand) {
+          // Skip empty strings
+          continue;
+        }
+        await dbHelper.executeQuery(sqlCommand);
       }
-      await dbHelper.executeQuery(sqlCommand);
     }
 
     serverUrl = `http://localhost:3000`;

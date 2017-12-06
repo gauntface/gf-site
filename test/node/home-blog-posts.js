@@ -151,7 +151,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       return response.text()
       .then((textResponse) => {
         if (!response.ok) {
-          throw new Error('Unable to get home screen: ' + textResponse);
+          throw new Error('Bad status code: ' + textResponse);
         }
 
         return textResponse;

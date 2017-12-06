@@ -52,7 +52,7 @@ console.log('it has code too.')
       return response.text()
       .then((textResponse) => {
         if (!response.ok) {
-          throw new Error('Unable to get home screen: ' + textResponse);
+          throw new Error('Bad status code: ' + textResponse);
         }
 
         return textResponse;
