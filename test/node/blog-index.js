@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 const expect = require('chai').expect;
+const minifyHTML = require('html-minifier').minify;
 
 const parseMarkdown = require('../../src/utils/parse-markdown');
 const blogModel = require('../../src/models/blog-model.js');
@@ -176,7 +177,14 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     })
     .then((response) => {
       return Promise.all(postModels.map((postModel) => {
-        return parseMarkdown(postModel.excerptMarkdown);
+        return parseMarkdown(postModel.excerptMarkdown)
+        .then((renderedContent) => {
+          renderedContent.html = minifyHTML(renderedContent.html, {
+            collapseWhitespace: true,
+            removeComments: true,
+          });
+          return renderedContent;
+        });
       }))
       .then((excerptHTMLs) => {
         return {
@@ -187,32 +195,32 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     })
     .then(({response, excerptHTMLs}) => {
       expect(response.indexOf(postModels[0].title)).to.not.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[0].html)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[0].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[1].title)).to.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[1].html)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[1].html)).to.equal(-1);
 
       expect(response.indexOf(postModels[2].title)).to.not.equal(-1);
       // expect(response.indexOf(excerptHTMLs[2].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[3].title)).to.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[3].html)).to.equal(-1);
+      expect(response.indexOf(excerptHTMLs[3].html)).to.equal(-1);
 
       expect(response.indexOf(postModels[4].title)).to.not.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[4].html)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[4].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[5].title)).to.not.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[5].html)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[5].html)).to.not.equal(-1);
 
       for (let i = 0; i < POSTS_TO_ADD + ADDITIONAL_POSTS; i++) {
         const postModel = postModels[initialPosts.length + i];
-        // const excerpt = excerptHTMLs[initialPosts.length + i];
+        const excerpt = excerptHTMLs[initialPosts.length + i];
         if (i < POSTS_TO_ADD) {
           expect(response.indexOf(postModel.title)).to.not.equal(-1);
-          // expect(response.indexOf(excerpt.html)).to.not.equal(-1);
+          expect(response.indexOf(excerpt.html)).to.not.equal(-1);
         } else {
           expect(response.indexOf(postModel.title)).to.equal(-1);
-          // expect(response.indexOf(excerpt.html)).to.equal(-1);
+          expect(response.indexOf(excerpt.html)).to.equal(-1);
         }
       }
     });

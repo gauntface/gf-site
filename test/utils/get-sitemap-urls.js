@@ -32,7 +32,7 @@ module.exports = (siteUrl) => {
     responseBody = rBody;
     return new Promise((resolve, reject) => {
       xml2js.parseString(responseBody, (err, data) => {
-        if(err) {
+        if (err) {
           printDebugLogs();
           return reject(err);
         }

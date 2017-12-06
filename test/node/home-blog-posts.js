@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const moment = require('moment');
 const expect = require('chai').expect;
+const minifyHTML = require('html-minifier').minify;
 
 const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 const parseMarkdown = require('../../src/utils/parse-markdown');
@@ -9,21 +10,16 @@ const SinglePostModel = require('../../src/models/single-post-model.js');
 const dbHelper = require('../../src/utils/database-helper.js');
 
 describe('Test Home Page + Blog Posts', () => {
-  before(function() {
+  before(async function() {
     this.timeout(5 * 60 * 1000);
 
-    // This env is set for the local db helper
-    process.env.CONFIG_NAME = 'testing';
+    process.env.DB_HOST = 'localhost';
+    process.env.DB_PORT = 3306;
+    process.env.DB_USER = 'testing-user';
+    process.env.DB_PASSWORD = 'testing-password';
+    process.env.DB_NAME = 'testing-db';
 
-    return dockerHelper.runTesting()
-    .then(() => {
-      return new Promise((resolve) => {
-        setTimeout(resolve, 15 * 1000);
-      });
-    })
-    .then(() => {
-      return dbHelper.__TEST_ONLY_DROP_TABLES();
-    });
+    await dbHelper.__TEST_ONLY_DROP_TABLES();
   });
 
   after(function() {
@@ -149,12 +145,12 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       throw err;
     })
     .then(() => {
-      return fetch(`${testingConfig.url}`);
+      return fetch(`http://localhost:3000`);
     })
     .then((response) => {
       return response.text()
       .then((textResponse) => {
-        if(!response.ok) {
+        if (!response.ok) {
           throw new Error('Unable to get home screen: ' + textResponse);
         }
 
@@ -163,7 +159,14 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     })
     .then((response) => {
       return Promise.all(postModels.map((postModel) => {
-        return parseMarkdown(postModel.excerptMarkdown);
+        return parseMarkdown(postModel.excerptMarkdown)
+        .then((renderedContent) => {
+          renderedContent.html = minifyHTML(renderedContent.html, {
+            collapseWhitespace: true,
+            removeComments: true,
+          });
+          return renderedContent;
+        });
       }))
       .then((excerptHTMLs) => {
         return {
