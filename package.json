@@ -6,7 +6,7 @@
   "scripts": {
     "build": "gulp build",
     "lint": "eslint '.'",
-    "test": "gulp testing && mocha ./test/node/**/*.js ./test/integration/**/*.js"
+    "test": "gulp testing && mocha --delay ./test/node/**/*.js"
   },
   "author": "gauntface",
   "license": "Apache-2.0",

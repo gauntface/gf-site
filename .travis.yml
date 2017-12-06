@@ -31,6 +31,4 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
-  - which docker-compose
-  - echo $PATH
   - npm run test
