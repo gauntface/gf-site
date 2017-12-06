@@ -5,6 +5,7 @@ class DockerComposeWrapper {
   constructor(dockerComposeFiles = []) {
     this._cmdFlags = [];
     dockerComposeFiles.forEach((composeFile) => {
+      // This is required for travis to work.
       if (fs.existsSync(composeFile)) {
         this._cmdFlags.push('-f');
         this._cmdFlags.push(composeFile);
