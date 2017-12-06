@@ -1,66 +1,29 @@
 const gulp = require('gulp');
-const fs = require('fs');
-const path = require('path');
+const fetch = require('node-fetch');
 const dockerHelper = require('./utils/docker-helper');
 
-/**
+function getHealth() {
+  return fetch('http://localhost:3000/.health-check')
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Response not ok.');
+    }
+  })
+  .catch(() => getHealth());
+}
 
-gulp.task(`docker-cli:build`, () => {
-  return dockerHelper.accessCLI('BUILD')
-  .catch(() => {
-    // NOOP for errors.
+function waitForHealth() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject(new Error('Timeout threw while waiting for health.'));
+    }, 10 * 1000);
+
+    getHealth().then(resolve, reject);
   });
-});
-
-const runDocker = (buildName) => {
-  let customArgs = [];
-  try {
-    const envBuffer = fs.readFileSync(
-      path.join(__dirname, '..', global.config.private, 'env.json')
-    );
-    const envJson = JSON.parse(envBuffer.toString());
-    Object.keys(envJson).forEach((key) => {
-      customArgs.push('--env', `${key}=${envJson[key]}`);
-    });
-  } catch (err) {
-    throw new Error('Unable to read env.json file');
-  }
-
-  return dockerHelper.run(buildName, {
-    customArgs,
-  });
-};
-
-const saveDocker = (buildName) => {
-  let customArgs = [];
-  try {
-    const envBuffer = fs.readFileSync(
-      path.join(__dirname, '..', global.config.private, 'env.json')
-    );
-    const envJson = JSON.parse(envBuffer.toString());
-    Object.keys(envJson).forEach((key) => {
-      customArgs.push('--env', `${key}=${envJson[key]}`);
-    });
-  } catch (err) {
-    throw new Error('Unable to read env.json file');
-  }
-
-  return dockerHelper.save(buildName, {
-    customArgs,
-  });
-};
-
-gulp.task('docker-run:mysql', () => runDocker('dev-mysql'));
-gulp.task('docker-run:dev', () => runDocker('development'));
-gulp.task('docker-run:testing', () => runDocker('testing'));
-gulp.task('docker-run:prod', () => runDocker('prod'));
-gulp.task('docker-save:prod', () => saveDocker('prod'));
-**/
+}
 
 gulp.task('docker:remove', () => dockerHelper.remove());
-
 gulp.task('docker:stop', () => dockerHelper.stop());
-
 gulp.task('docker:clean', () => dockerHelper.clean());
 
 gulp.task(`docker:cli`, () => {
@@ -71,34 +34,39 @@ gulp.task(`docker:cli`, () => {
 });
 
 gulp.task('docker:build:base', () => dockerHelper.buildBase());
-
-gulp.task('docker:build:dev', () => dockerHelper.buildDev());
+gulp.task('docker:build:dev', gulp.series([
+  () => dockerHelper.buildBase(),
+  () => dockerHelper.buildDev(),
+]));
+gulp.task('docker:build:test', gulp.series([
+  () => dockerHelper.buildBase(),
+  () => dockerHelper.buildTest(),
+]));
+gulp.task('docker:build:prod', gulp.series([
+  () => dockerHelper.buildBase(),
+  () => dockerHelper.buildProd(),
+]));
 
 gulp.task('docker:run:dev', gulp.series([
   'docker:clean',
-  'docker:build:base',
-  'docker:build:dev',
-  () => dockerHelper.runDevMysql(),
   () => dockerHelper.runDev(),
+  () => waitForHealth(),
 ]));
 
-gulp.task('docker:build:testing', () => {
-
-});
-
-gulp.task('docker:build:prod', () => dockerHelper.buildProd());
+gulp.task('docker:run:testing', gulp.series([
+  'docker:clean',
+  () => dockerHelper.runTesting(true),
+  () => waitForHealth(),
+]));
 
 gulp.task('docker:run:prod', gulp.series([
   'docker:clean',
-  'docker:build:base',
-  'docker:build:prod',
-  () => dockerHelper.runProdMysql(),
   () => dockerHelper.runProd(),
+  () => waitForHealth(),
 ]));
 
 gulp.task('docker:save:prod', gulp.series([
   'docker:clean',
-  'docker:build:base',
   'docker:build:prod',
   () => dockerHelper.saveProd(),
 ]));

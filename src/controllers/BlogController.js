@@ -72,13 +72,20 @@ class BlogController {
           content: 'TODO: Show 404 Page',
         };
       }
-      return Promise.all([
+      const promises = [
         parseMarkdown(blogPost.bodyMarkdown),
-        srcSetGen(
-          blogPost.mainImage,
-          `Key Art for &#34;${blogPost.title}&#34; by Matthew Gaunt`
-        ),
-      ])
+      ];
+      if (blogPost.mainImage) {
+        promises.push(
+          srcSetGen(
+            blogPost.mainImage,
+            `Key Art for &#34;${blogPost.title}&#34; by Matthew Gaunt`
+          ),
+        );
+      } else {
+        promises.push(null);
+      }
+      return Promise.all(promises)
       .then((results) => {
         const parsedMarkdown = results[0];
         const srcSetImage = results[1];

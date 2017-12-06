@@ -67,10 +67,18 @@ class BlogModel {
     .then((rawResults) => {
       return rawResults.map((rawResult) => {
         rawResult.title = urldecode(rawResult.title);
-        rawResult.excerptMarkdown = urldecode(rawResult.excerptMarkdown);
-        rawResult.bodyMarkdown = urldecode(rawResult.bodyMarkdown);
-        rawResult.mainImageBgColor = urldecode(rawResult.mainImageBgColor);
-        rawResult.mainImage = urldecode(rawResult.mainImage);
+        rawResult.excerptMarkdown =
+          rawResult.excerptMarkdown ?
+          urldecode(rawResult.excerptMarkdown) : null;
+        rawResult.bodyMarkdown =
+          rawResult.bodyMarkdown ?
+          urldecode(rawResult.bodyMarkdown) : null;
+        rawResult.mainImageBgColor =
+          rawResult.mainImageBgColor ?
+          urldecode(rawResult.mainImageBgColor) : null;
+        rawResult.mainImage =
+          rawResult.mainImage ?
+          urldecode(rawResult.mainImage) : null;
         return new SinglePostModel(rawResult);
       });
     });
@@ -123,7 +131,6 @@ class BlogModel {
         throw new Error('More than one result when retrieving blog post' +
           whereArgs.join(', '));
       }
-
       return posts[0];
     });
   }

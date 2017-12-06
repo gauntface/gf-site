@@ -15,11 +15,11 @@ class SitemapController {
       });
 
       const parsedUrls = urls.map((url) => {
-        if (process.env.BUILDTYPE === 'production') {
+        /** if (process.env.BUILDTYPE === 'production') {
           return `https://gauntface.com${url}`;
-        }
+        }**/
 
-        return `http://localhost:${process.env.DEV_PORT}${url}`;
+        return `http://localhost:${process.env.NGINX_PORT}${url}`;
       });
 
       return {

@@ -28,4 +28,3 @@ COPY infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
 
 COPY infra/docker/startup.sh /gauntface/docker/startup.sh
 RUN chmod +x /gauntface/docker/startup.sh
-CMD /gauntface/docker/startup.sh

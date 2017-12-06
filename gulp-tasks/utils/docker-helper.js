@@ -1,27 +1,10 @@
 const path = require('path');
-const chalk = require('chalk');
 const fs = require('fs-extra');
+
 const dockerCLIWrapper = require('./docker-cli-wrapper');
-const dockerConfigFactory = require('./docker-config-factory');
-
-const BASE_TAG = 'gauntface-base'
-const PRIMARY_TAG = 'gauntface-site';
-const DB_EXAMPLE_TAG = 'gauntface-mysql-example';
-const DB_EXAMPLE_DATA_TAG = 'gauntface-mysql-data-example';
-const DB_TEST_TAG = 'gauntface-mysql-test';
-const DB_TEST_DATA_TAG = 'gauntface-mysql-test';
-
-const DOCKER_CONFIG_PATH = path.join(__dirname, '../../infra/docker');
-const BASE_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'base');
-
-const DEV_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'dev');
-const DEV_PORT = 3006;
-
-const PROD_DOCKER_FILE = path.join(DOCKER_CONFIG_PATH, 'prod');
-const PROD_PORT = 3008;
-
-const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..',
-  'gf-deploy', 'docker-build');
+const DockerComposeWrapper = require('./docker-compose-wrapper');
+const Logger = require('./logger');
+const constants = require('../models/constants');
 
 /**
  * This class does the orchestrating of docker processes (build, running,
@@ -30,43 +13,23 @@ const DOCKER_BUILD_PATH = path.join(__dirname, '..', '..', '..',
  * Can be used by tests and gulp.
  */
 class DockerHelper {
-  /* eslint-disable no-console */
-  /**
-   * @param {Object} message to print
-   */
-  log(message) {
-    console.log(chalk.green('🐳 [DockerHelper]:'), message);
+  constructor() {
+    this._dockerCompose = new DockerComposeWrapper([
+      './docker-compose.yml',
+      '../gf-deploy/docker-compose.yml',
+    ]);
+    this._logger = new Logger('🐳 [DockerHelper]:');
   }
-
-  /**
-   * @param {Object} message to print
-   */
-  warn(message) {
-    console.log(chalk.yellow('🐳 [DockerHelper]:'), message);
-  }
-
-  error(message) {
-    console.log(chalk.red('🐳 [DockerHelper]:'), message);
-  }
-  /* eslint-enable no-console */
 
   /**
    * @return {Promise} Resolves once all docker containers are removed.
    */
-  remove(factoryId) {
-    const containersToStop = [
-      BASE_TAG,
-      PRIMARY_TAG,
-      DB_EXAMPLE_TAG,
-      DB_TEST_TAG,
-      DB_TEST_DATA_TAG,
-    ];
-
-    return containersToStop.reduce((promiseChain, containerName) => {
+  remove() {
+    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
-        this.log(`        Removing container: ${containerName}`);
-        return dockerCLIWrapper.removeContainer(
-          containerName
+        this._logger.log(`        Removing service: ${serviceName}`);
+        return this._dockerCompose.remove(
+          serviceName
         )
         .catch(() => {});
       });
@@ -77,21 +40,12 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are stopped.
    */
   stop() {
-    const containersToStop = [
-      BASE_TAG,
-      PRIMARY_TAG,
-      DB_EXAMPLE_TAG,
-      DB_EXAMPLE_DATA_TAG,
-      DB_TEST_TAG,
-      DB_TEST_DATA_TAG,
-    ];
-
-    return containersToStop.reduce((promiseChain, containerName) => {
+    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
-        this.log(`        Stopping container: ${containerName}`);
+        this._logger.log(`        Stopping service: ${serviceName}`);
 
-        return dockerCLIWrapper.stopContainer(
-          containerName
+        return this._dockerCompose.stop(
+          serviceName
         )
         .catch(() => {});
       });
@@ -103,11 +57,11 @@ class DockerHelper {
    * removed.
    */
   clean() {
-    this.log(``);
-    this.log(``);
-    this.log('    Cleaning containers');
-    this.log(``);
-    this.log(``);
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log('    Cleaning containers');
+    this._logger.log(``);
+    this._logger.log(``);
     return this.stop()
     .then(() => this.remove());
   }
@@ -117,330 +71,78 @@ class DockerHelper {
    * @return {Promise} Resolves once access to CLI has ended.
    */
   accessCLI() {
-    return dockerCLIWrapper.accessContainerCLI(PRIMARY_TAG);
+    return dockerCLIWrapper.accessContainerCLI(constants.PROD_IMAGE_NAME);
   }
 
-  buildBase() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building base container`);
-    this.log(``);
-    this.log(``);
+  async buildBase() {
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building base container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
-    return dockerCLIWrapper.buildContainer(
-      BASE_DOCKER_FILE,
-      BASE_TAG
-    );
+    await this._dockerCompose.build('base');
   }
 
-  runDevMysql() {
-    const config = require('../../src/config/development');
+  async buildDev() {
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building dev container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
-    return dockerCLIWrapper.runContainer(
-      'mysql',
-      DB_EXAMPLE_TAG,
-      [
-        // Ensure that the external port matches the expected config
-        `-p`, `${config.database.port}:3306`,
-
-        // Define the MYSQL variables
-        '--env', `MYSQL_ROOT_PASSWORD=${config.database.rootPassword}`,
-        '--env', `MYSQL_USER=${config.database.user}`,
-        '--env', `MYSQL_PASSWORD=${config.database.password}`,
-        '--env', `MYSQL_DATABASE=${config.database.database}`,
-
-        // Initialise the database with sql
-        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports')}:` +
-          `/docker-entrypoint-initdb.d`,
-      ],
-      true
-    );
+    await this._dockerCompose.build('dev');
   }
 
-  runProdMysql() {
-    const config = require(path.join(__dirname, '..', '..', '..', 'gf-deploy', 'src', 'config', 'production'));
+  async buildTest() {
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building test container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
-    return dockerCLIWrapper.runContainer(
-      'mysql',
-      DB_EXAMPLE_TAG,
-      [
-        // Ensure that the external port matches the expected config
-        `-p`, `${config.database.port}:3306`,
-
-        // Define the MYSQL variables
-        '--env', `MYSQL_ROOT_PASSWORD=${config.database.rootPassword}`,
-        '--env', `MYSQL_USER=${config.database.user}`,
-        '--env', `MYSQL_PASSWORD=${config.database.password}`,
-        '--env', `MYSQL_DATABASE=${config.database.database}`,
-
-        // Initialise the database with sql
-        '--volume', `${path.join(__dirname, '..', '..', '..', 'gf-deploy', 'sql-exports')}:` +
-          `/docker-entrypoint-initdb.d`,
-      ],
-      true
-    );
+    await this._dockerCompose.build('test');
   }
 
-  buildDev() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building dev container`);
-    this.log(``);
-    this.log(``);
+  async buildProd() {
+    this._logger.log(``);
+    this._logger.log(``);
+    this._logger.log(`    Building prod container`);
+    this._logger.log(``);
+    this._logger.log(``);
 
-    return dockerCLIWrapper.buildContainer(
-      DEV_DOCKER_FILE,
-      PRIMARY_TAG
-    );
+    await this._dockerCompose.build('prod');
   }
 
-  runDev() {
-    return dockerCLIWrapper.runContainer(
-      PRIMARY_TAG,
-      PRIMARY_TAG,
-      [
-        '-p', `${DEV_PORT}:80`,
-
-        // This is non-critical, used for the log message.
-        '--env', `DEV_PORT=${DEV_PORT}`,
-
-        // Link the mysql container to this instance
-        '--link', DB_EXAMPLE_TAG,
-
-        // Make Docker see the src index
-        '--volume', `${path.join(__dirname, '..', '..', 'src')}:` +
-          `/gauntface/site`,
-
-        // Make node_modules be in the expected place (they are outside of src)
-        '--volume', `${path.join(__dirname, '..', '..', 'node_modules')}:` +
-          `/gauntface/site/node_modules`,
-
-        // Make container aware of MySQL name
-        '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
-      ],
-      false
-    )
-    .then(() => {
-      this.log(``);
-      this.log(``);
-      this.log(`    Running Dev`);
-      this.log(`    http://localhost/${DEV_PORT}`);
-      this.log(``);
-      this.log(``);
+  async runDev(detach = false) {
+    await this._dockerCompose.up('dev', {
+      detach,
     });
   }
 
-  /**
-   * @return {Promise} Resolves once all docker containers are built.
-   */
-  buildProd() {
-    this.log(``);
-    this.log(``);
-    this.log(`    Building prod container`);
-    this.log(``);
-    this.log(``);
-
-    return dockerCLIWrapper.buildContainer(
-      PROD_DOCKER_FILE,
-      PRIMARY_TAG
-    );
+  async runTesting(detach = false) {
+    await this._dockerCompose.up('test', {
+      detach,
+    });
   }
 
-  runProd() {
-    return dockerCLIWrapper.runContainer(
-      PRIMARY_TAG,
-      PRIMARY_TAG,
-      [
-        '-p', `${PROD_PORT}:80`,
-
-        // Link the mysql container to this instance
-        '--link', DB_EXAMPLE_TAG,
-
-        // Make container aware of MySQL name
-        '--env', `MYSQL_NAME=${DB_EXAMPLE_TAG}`,
-      ],
-      true
-    )
-    .then(() => {
-      this.log(``);
-      this.log(``);
-      this.log(`    Running Prod`);
-      this.log(`    http://localhost/${PROD_PORT}`);
-      this.log(``);
-      this.log(``);
+  async runProd(detach = false) {
+    await this._dockerCompose.up('prod', {
+      detach,
     });
   }
 
   saveProd() {
-    return fs.ensureDir(DOCKER_BUILD_PATH)
+    return fs.ensureDir(constants.DOCKER_BUILD_PATH)
     .then(() => {
       return dockerCLIWrapper.saveContainer(
-        PRIMARY_TAG,
+        constants.PROD_IMAGE_NAME,
         [
-          '-o', path.join(DOCKER_BUILD_PATH, `prod.tar`)
+          '-o', path.join(constants.DOCKER_BUILD_PATH, `prod.tar`),
         ]
       );
-    })
-    .then(() => {
-      this.log(``);
-      this.log(``);
-      this.log(`    Running Prod`);
-      this.log(`    http://localhost/${PROD_PORT}`);
-      this.log(``);
-      this.log(``);
     });
   }
-
-  /**
-   * @param {string} environment The environment of the container to run.
-   * @param {Object} options Options for running.
-   * @return {Promise} Resolves once all docker containers are running.
-   */
-  /** run(factoryId, options) {
-    this.log(``);
-    this.log(``);
-    this.log(`     Running Factory ID: '${factoryId}'`, options);
-    this.log(``);
-    this.log(``);
-    let forceDetached = false;
-    if (options) {
-      forceDetached = options.forceDetached === true;
-    }
-
-    const primaryContainer = dockerConfigFactory(factoryId);
-
-    return this.clean(factoryId)
-    .then(() => {
-      const dependencyContainers = primaryContainer.dependencies || [];
-      return dependencyContainers.reduce((promiseChain, containerInfo) => {
-        return promiseChain.then(() => this.build(containerInfo))
-        .then(() => {
-          if (!containerInfo.name) {
-            // No name - nothing to run.
-            return promiseChain;
-          }
-
-          if (containerInfo.run) {
-            this.log(`Running dependency '${containerInfo.name}'`);
-            return promiseChain.then(() => {
-              return dockerCLIWrapper.runContainer(
-                containerInfo.tag,
-                containerInfo.name,
-                containerInfo.run.customArgs,
-                forceDetached || containerInfo.run.detached
-              );
-            });
-          } else {
-            return promiseChain.then(() => {
-              return dockerCLIWrapper.createContainer(
-                containerInfo.name,
-                containerInfo.create.customArgs,
-              )
-              .catch((err) => {
-                if (containerInfo.persist === true) {
-                  return;
-                }
-
-                this.error(err);
-                throw err;
-              });
-            });
-          }
-        });
-      }, Promise.resolve())
-      .then(() => this.build(primaryContainer))
-      .then(() => {
-        let customArgs = primaryContainer.run.customArgs || [];
-        if (options && options.customArgs) {
-          customArgs = customArgs.concat(options.customArgs);
-        }
-
-        return dockerCLIWrapper.runContainer(
-          primaryContainer.tag,
-          primaryContainer.name,
-          customArgs,
-          primaryContainer.run.detached
-        );
-      });
-    });
-  }**/
-
-  /**
-   * @param {string} environment The environment of the container to run.
-   * @param {Object} options Options for running.
-   * @return {Promise} Resolves once all docker containers are running.
-   */
-  /** save(factoryId, options) {
-    this.log(``);
-    this.log(``);
-    this.log(`     Saving Factory ID: '${factoryId}'`, options);
-    this.log(``);
-    this.log(``);
-    let forceDetached = false;
-    if (options) {
-      forceDetached = options.forceDetached === true;
-    }
-
-    const primaryContainer = dockerConfigFactory(factoryId);
-
-    return this.clean(factoryId)
-    .then(() => {
-      const dependencyContainers = primaryContainer.dependencies || [];
-      return dependencyContainers.reduce((promiseChain, containerInfo) => {
-        return promiseChain.then(() => this.build(containerInfo))
-        .then(() => {
-          if (!containerInfo.name) {
-            // No name - nothing to run.
-            return promiseChain;
-          }
-
-          if (containerInfo.run) {
-            this.log(`Running dependency '${containerInfo.name}'`);
-            return promiseChain.then(() => {
-              return dockerCLIWrapper.runContainer(
-                containerInfo.tag,
-                containerInfo.name,
-                containerInfo.run.customArgs,
-                forceDetached || containerInfo.run.detached
-              );
-            });
-          } else {
-            return promiseChain.then(() => {
-              return dockerCLIWrapper.createContainer(
-                containerInfo.name,
-                containerInfo.create.customArgs,
-              )
-              .catch((err) => {
-                if (containerInfo.persist === true) {
-                  return;
-                }
-
-                this.error(err);
-                throw err;
-              });
-            });
-          }
-        });
-      }, Promise.resolve())
-      .then(() => this.build(primaryContainer))
-      .then(() => {
-        let customArgs = primaryContainer.run.customArgs || [];
-        if (options && options.customArgs) {
-          customArgs = customArgs.concat(options.customArgs);
-        }
-
-        return dockerCLIWrapper.saveContainer(
-          primaryContainer.tag,
-          primaryContainer.name,
-          [
-            '-o',
-            'docker-container.tar'
-          ],
-          primaryContainer.run.detached
-        );
-      });
-    });
-  }**/
 }
 
 module.exports = new DockerHelper();

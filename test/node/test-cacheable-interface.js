@@ -1,4 +1,5 @@
 const sinon = require('sinon');
+const expect = require('chai').expect;
 
 const CacheableInterface = require('../../src/models/cacheable-interface');
 
@@ -68,8 +69,8 @@ describe('Test CacheableInterface', function() {
         expiryTimeSeconds: CACHE_EXPIRATION,
       })
       .then((result) => {
-        result.should.deep.equal(CACHE_UPDATE);
-        updateCalled.should.equal(false);
+        expect(result).to.deep.equal(CACHE_UPDATE);
+        expect(updateCalled).to.equal(false);
       });
     })
     .then(() => {
@@ -88,8 +89,8 @@ describe('Test CacheableInterface', function() {
         expiryTimeSeconds: CACHE_EXPIRATION,
       })
       .then((result) => {
-        result.should.deep.equal(CACHE_UPDATE);
-        updateCalled.should.equal(false);
+        expect(result).to.deep.equal(CACHE_UPDATE);
+        expect(updateCalled).to.equal(false);
       });
     })
     .then(() => {
@@ -109,8 +110,8 @@ describe('Test CacheableInterface', function() {
         expiryTimeSeconds: CACHE_EXPIRATION,
       })
       .then((result) => {
-        result.should.deep.equal(CACHE_UPDATE);
-        updateCalled.should.equal(true);
+        expect(result).to.deep.equal(CACHE_UPDATE);
+        expect(updateCalled).to.equal(true);
       })
       .then(() => {
         updateCalled = false;
@@ -125,7 +126,7 @@ describe('Test CacheableInterface', function() {
           expiryTimeSeconds: CACHE_EXPIRATION,
         })
         .then(() => {
-          updateCalled.should.equal(false);
+          expect(updateCalled).to.equal(false);
           promiseResolve(CACHE_UPDATE_2);
         });
       });
@@ -141,7 +142,7 @@ describe('Test CacheableInterface', function() {
         expiryTimeSeconds: CACHE_EXPIRATION,
       })
       .then((result) => {
-        result.should.deep.equal(CACHE_UPDATE_2);
+        expect(result).to.deep.equal(CACHE_UPDATE_2);
       });
     });
   });

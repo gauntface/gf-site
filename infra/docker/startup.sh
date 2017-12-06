@@ -6,13 +6,9 @@ if [ "${BASH_VERSION}" = '' ]; then
  exit 1;
 fi
 
-if [ "${BUILDTYPE}" = '' ]; then
- echo "    No BUILDTYPE set."
- exit 1;
-fi
-
 # Replace environment variables in these files.
-envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
+envsubst '${NGINX_PORT}' < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-available/gauntface.conf;
+envsubst '${NODE_PORT}' < /etc/nginx/gauntface-shared.conf > /etc/nginx/gauntface-shared.conf;
 
 #environmentVariables=(
 #  'BUILDTYPE'
@@ -33,7 +29,7 @@ envsubst < /etc/nginx/sites-available/gauntface.tmpl > /etc/nginx/sites-availabl
 #done
 
 # Create a symbolic link between sites-available and sites-enabled
-ln -s /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
+ln -s -f /etc/nginx/sites-available/gauntface.conf /etc/nginx/sites-enabled/gauntface.conf;
 
 CYAN='\033[1;36m'
 NC='\033[0m' # No Color
@@ -54,23 +50,32 @@ echo -e "${CYAN}      /::\:\__\ /::\:\__\ /:/\:\__\ /::\:\__\      "
 echo -e "${CYAN}      \/\:\/__/ \/\::/  / \:\ \/__/ \:\:\/  /      "
 echo -e "${CYAN}         \/__/    /:/  /   \:\__\    \:\/  /       "
 echo -e "${CYAN}                  \/__/     \/__/     \/__/        "
-if [ -z "$DEV_PORT" ]; then
 echo ""
-echo -e "${CYAN}                No DEV_PORT Defined                "
-echo ""
+if [ -z "$NODE_PORT" ]; then
+echo -e "${CYAN}                No 'NODE_PORT' value Defined                "
 else
-echo ""
-echo -e "${CYAN}            http://localhost:${DEV_PORT}           "
-echo ""
+echo -e "${CYAN}            [NODE]:  http://localhost:${NODE_PORT}           "
 fi
+if [ -z "$NGINX_PORT" ]; then
+echo -e "${CYAN}                No 'NGINX_PORT' value Defined                "
+else
+echo -e "${CYAN}            [NGINX]: http://localhost:${NGINX_PORT}           "
+fi
+echo ""
 echo -e "${NC}"
 echo ""
 
-if [ "${BUILDTYPE}" = "production" ]; then
-forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
-nginx -g 'daemon off;';
-else
+if [ "${DEV_MODE}" = "true" ]; then
+echo ""
+echo "DEV_MODE: ON"
+echo ""
 # Legacy watch with nodemoan to make it work with docker.
 nginx -g 'daemon on;';
 forever -w --watchDirectory=/gauntface/site /gauntface/site/index.js
+else
+echo ""
+echo "DEV_MODE: OFF"
+echo ""
+forever start /gauntface/site/index.js -l /gauntface/logs/forever.log -o /gauntface/logs/site.log -e /gauntface/logs/site-err.log
+nginx -g 'daemon off;';
 fi

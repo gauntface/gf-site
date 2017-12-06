@@ -1,11 +1,12 @@
 const fetch = require('node-fetch');
 const URL = require('url');
 
-const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
-
-const testingConfig = require('../../src/config/testing');
-const getSitemapUrls = require('../utils/get-sitemap-urls');
+// const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
+
+if (process.env['TRAVIS']) {
+  return run();
+}
 
 // For some URLs errors are to be expected and ignored
 const lighthouseRuleIgnores = {
@@ -30,6 +31,9 @@ const lighthouseRuleIgnores = {
   '/styleguide/display/views/grid-overlay/': [
     'without-javascript',
   ],
+  '/styleguide': [
+    'speed-index-metric',
+  ],
 };
 
 const lighthouseAuditOptimalCorrection = {
@@ -52,9 +56,9 @@ function testFailing(audit, testedUrl) {
   }
 
   let auditIsFailing = false;
-  switch(audit.scoringMode) {
+  switch (audit.scoringMode) {
     case 'binary':
-      if(audit.score !== true) {
+      if (audit.score !== true) {
         if (audit.score === 100) {
           // sometimes binary isn't a boolean.
           return;
@@ -63,7 +67,7 @@ function testFailing(audit, testedUrl) {
       }
       break;
     case 'numeric':
-      if(audit.score !== 100) {
+      if (audit.score !== 100) {
         auditIsFailing = true;
       }
       break;
@@ -133,6 +137,7 @@ function testUrlThroughLighthouse(lighthouseWrapper, urlToTest) {
 
       // Can't pass
       'html-has-lang',
+      'critical-request-chains',
     ];
 
     const failingTests = [];
@@ -150,7 +155,7 @@ function testUrlThroughLighthouse(lighthouseWrapper, urlToTest) {
       }
     });
 
-    if(failingTests.length > 0) {
+    if (failingTests.length > 0) {
       const auditStrings = failingTests.map((failingTest) => {
         return `'${failingTest.key}': '${failingTest.score}' -> '${failingTest.description}'`;
       });
@@ -187,7 +192,7 @@ function registerTests(allUrls) {
           this.retries(1);
         }
 
-        return testUrlThroughLighthouse(lighthouseWrapper, testingConfig.url + urlToTest);
+        return testUrlThroughLighthouse(lighthouseWrapper, urlToTest);
       });
     });
   });
@@ -209,20 +214,16 @@ function getComponents(serverUrl) {
   });
 }
 
-dockerHelper.run('testing')
-.then(() => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 10 * 1000);
-  });
-})
-.then(() => {
-  return Promise.all([
-    getSitemapUrls(testingConfig.url),
-    getComponents(testingConfig.url),
-  ]);
-})
+return Promise.all([
+  // getSitemapUrls('http://localhost:3000'),
+  // getComponents('http://localhost:3000'),
+])
 .then((results) => {
-  let allUrls = [];
+  let allUrls = [
+    'http://localhost:3000',
+    'http://localhost:3000/blog',
+    'http://localhost:3000/styleguide'
+  ];
   results.forEach((result) => {
     allUrls = allUrls.concat(result);
   });

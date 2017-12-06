@@ -23,7 +23,7 @@ class AsyncFontController {
   }
 }
 
-(() => {
+window.addEventListener('load', () => {
   const asyncFontController = new AsyncFontController();
   asyncFontController.load();
-})();
+});
