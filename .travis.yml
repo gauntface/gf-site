@@ -11,6 +11,12 @@ cache:
 services:
   - docker
 
+install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/3.4/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 before_script:
   # Stop local mysql so docker mysql works. TODO: Try moving to docker socket name
   - sudo /etc/init.d/mysql stop
