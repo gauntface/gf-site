@@ -2,7 +2,7 @@ const chalk = require('chalk');
 
 class Logger {
   constructor(prefix) {
-    this._prefix;
+    this._prefix = prefix;
   }
 
   log(...args) {
