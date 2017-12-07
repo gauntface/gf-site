@@ -5,20 +5,6 @@
 const path = require('path');
 const gulp = require('gulp');
 
-gulp.task('thirdparty:workbox', () => {
-  return gulp.src([
-    './node_modules/workbox-sw/build/importScripts/*.*',
-  ])
-  .pipe(gulp.dest(
-    path.join(
-      global.config.src,
-      'public',
-      'third_party',
-      'workbox-sw'
-    )
-  ));
-});
-
 gulp.task('thirdparty:private', () => {
   return gulp.src([
     path.join(global.config.private, 'src', 'public', '**', '*.*'),
@@ -45,6 +31,6 @@ gulp.task('thirdparty:build', () => {
 });
 
 gulp.task('thirdparty', gulp.series([
-  gulp.parallel('thirdparty:workbox', 'thirdparty:private'),
+  gulp.parallel('thirdparty:private'),
   'thirdparty:build',
 ]));
