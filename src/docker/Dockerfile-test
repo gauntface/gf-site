@@ -1,3 +1,0 @@
-FROM gauntface/gf-site:base
-
-ADD src/docker/nginx/dev.conf /etc/nginx/sites-available/gauntface.tmpl

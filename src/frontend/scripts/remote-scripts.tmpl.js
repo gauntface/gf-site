@@ -1,1 +1,0 @@
-"use strict";window.GauntFace=window.GauntFace||{},window.GauntFace._remoteStylesheets=[/**@ GF-REMOTE-STYLESHEETS @**/],window.GauntFace.events&&window.GauntFace.events.onRemoteStylesheetsAvailable&&window.GauntFace.events.onRemoteStylesheetsAvailable();

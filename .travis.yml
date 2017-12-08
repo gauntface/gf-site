@@ -1,50 +1,34 @@
 sudo: required
-dist: trusty
+
 language: node_js
 node_js:
-  - '5'
-services:
-- docker
-- mysql
+  - "8"
 cache:
   directories:
-  - node_modules
-env:
-  global:
-    - PATH=${HOME}/google-cloud-sdk/bin:$PATH
-    - CLOUDSDK_CORE_DISABLE_PROMPTS=1
-before_install:
-# TIMEZONE options here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-- export TZ=Europe/London
-- openssl aes-256-cbc -K $encrypted_d68f0083a6dc_key -iv $encrypted_d68f0083a6dc_iv
-  -in travis-encrypt.tar.gz.enc -out travis-encrypt.tar.gz -d
-- tar -xzf travis-encrypt.tar.gz
+    - "node_modules"
+    - "~/.selenium-assistant"
 
-# docker and mysql service can't be installed at the same time
-# https://github.com/travis-ci/travis-ci/issues/4870
-- sudo apt-get install -y mysql-server-5.6 mysql-client-5.6 mysql-client-core-5.6
-- mysql -e "CREATE DATABASE IF NOT EXISTS gauntface_site_db_test;" -u root
-- mysql -e "USE gauntface_site_db_test;" -u root
-- mysql -e "CREATE USER 'gf_site_test'@'localhost' IDENTIFIED BY 'test_password';" -u root
-- mysql -e "GRANT ALL PRIVILEGES ON gauntface_site_db_test.* TO 'gf_site_test'@'localhost';" -u root
+before_install:
+  # Install latest docker
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+
+  # Install latest docker-compose
+  - sudo curl -L https://github.com/docker/compose/releases/download/1.17.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
+
 install:
-- curl https://sdk.cloud.google.com | bash;
-- which gcloud
-- gcloud --version
-- gcloud auth activate-service-account --key-file client-secret.json
-- gcloud config set project $CLOUD_PROJECT
-- npm install -g gulp
-- npm install
+  - npm install
+  - sudo apt-get -y install graphicsmagick
+
 before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-# - npm run test
-- sudo rm -rf ./build
-- if [[ $TRAVIS_BRANCH == "master" ]] ; then export BUILDTYPE="production"; else export BUILDTYPE=$TRAVIS_BRANCH; fi
-- if [[ $BUILDTYPE == "production" ]] ; then export CERT_DOMAIN=gauntface.com; else export CERT_DOMAIN=$BUILDTYPE.gauntface.com; fi
-- gulp "$BUILDTYPE"
-- ls -l build
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"; fi
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then docker push gauntface/gf-site:$BUILDTYPE; fi
+  # Stop local mysql so docker mysql works. TODO: Try moving to docker socket name
+  - sudo /etc/init.d/mysql stop
+
+  # Read more here: https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start || echo \"Unable to start virtual display.\""
+  - sleep 3 # give xvfb some time to start
+
 script:
-- if [[ ( $BUILDTYPE = "staging" || $BUILDTYPE = "production" ) && "$TRAVIS_PULL_REQUEST" = "false" ]]; then ./deployment/create-image-instance.sh; fi
+  - npm run test

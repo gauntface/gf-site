@@ -1,0 +1,19 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
+.footer {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  text-align: center;
+  color: var(--footer-color);
+  padding: 0 calc(var(--content-padding) * 3);
+}
+
+.footer__license {
+  font-size: var(--footer-license-font-size);
+}
+
+.footer__link {
+  padding: calc(var(--grid) / 2) 0;
+  text-decoration: none;
+}

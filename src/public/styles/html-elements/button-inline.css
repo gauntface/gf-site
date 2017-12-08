@@ -1,0 +1,29 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+
+button, .button {
+  display: inline-block;
+  background-color: var(--button-background-color);
+  text-decoration: none;
+  color: var(--button-text-color);
+  padding: var(--grid);
+  border: none;
+  font-size: var(--button-font-size);
+  line-height: var(--button-font-size);
+  outline:none;
+}
+
+button:hover, .button:hover {
+  background-color: var(--button-background-hover-color);
+  cursor: pointer;
+}
+
+button:focus, .button:focus {
+  background-color: var(--focus-highlight-color);
+  color: var(--button-text-color);
+}
+
+button:active, .button:active {
+  background-color: var(--button-background-active-color);
+  color: var(--button-text-color);
+}

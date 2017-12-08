@@ -1,0 +1,11 @@
+{
+  "env": {
+    "mocha": true,
+    "node": true,
+  },
+  "rules": {
+    "max-len": 0,
+    "no-console": 0,
+    "no-invalid-this": 0,
+  }
+}

@@ -1,0 +1,26 @@
+---
+styles:
+  inline:
+    - ../../../public/styles/unique/blog-index.css
+---
+{{#data.blogPosts.length}}
+<ol class="blog__section">
+  {{#data.blogPosts}}
+  <li>
+    <a href="{{publishedUrl}}" class="blog__index-link">
+    <div class="blog-li__wrapper">
+      <h2>{{title}}</h2>
+      {{{excerptHTML}}}
+    </div>
+    </a>
+  </li>
+  {{/data.blogPosts}}
+</ol>
+{{/data.blogPosts.length}}
+
+{{^data.blogPosts.length}}
+<p style="text-align: center">
+  {{{data.noBlogImage}}}
+</p>
+<p style="text-align: center">Error | Unable to connect to the Database</p>
+{{/data.blogPosts.length}}

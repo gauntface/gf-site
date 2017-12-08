@@ -1,61 +1,66 @@
 'use strict';
 
+const gulp = require('gulp');
+const fs = require('fs-extra');
+const path = require('path');
+const constants = require('./gulp-tasks/models/constants');
+
 global.config = {
-  src: './src',
-  private: './../gf-deploy',
-  dest: './build',
-  env: 'prod',
-  dockerport: 5123
+  src: path.join(__dirname, 'src'),
+  dest: path.join(__dirname, 'build'),
+  private: path.join(__dirname, '..', 'gf-deploy'),
 };
 
-const gulp = require('gulp');
-const runSequence = require('run-sequence');
-
-// Load custom tasks from the `tasks` directory
-require('require-dir')('gulp-tasks');
-
-var commonBuildTasks = [
-  'copy',
-  'codeigniter',
-  'styles',
-  'images',
-  'scripts',
-];
-
-gulp.task('dev', (cb) => {
-  global.config.env = 'development';
-  runSequence(
-    commonBuildTasks,
-    'docker:start:development',
-    'watch',
-    cb);
+const gulpTaskFiles = fs.readdirSync(path.join(__dirname, 'gulp-tasks'));
+gulpTaskFiles.forEach((taskFile) => {
+  const completePath = path.join(__dirname, 'gulp-tasks', taskFile);
+  if (fs.lstatSync(completePath).isFile() && taskFile.indexOf('.') !== 0) {
+    require(completePath);
+  }
 });
 
-gulp.task('test', (cb) => {
-  global.config.env = 'dev';
-  runSequence(
-    commonBuildTasks,
-    'docker:start:test',
-    cb);
-});
+gulp.task('build', gulp.series([
+  'clean',
+  'thirdparty',
+  gulp.parallel([
+    'styles',
+    'templates',
+    'images',
+    'scripts',
+    'extras',
+  ]),
+]));
 
-gulp.task('staging', (cb) => {
-  global.config.env = 'dev';
-  runSequence(
-    commonBuildTasks,
-    'docker:build:staging',
-    cb);
-});
+gulp.task('dev', gulp.series([
+  'build',
+  'docker:run:dev',
+]));
 
-gulp.task('production', (cb) => {
-  runSequence(
-    commonBuildTasks,
-    'docker:build:production',
-    cb);
-});
+gulp.task('testing', gulp.series([
+  'build',
+  'docker:run:testing',
+]));
 
-gulp.task('default', (cb) => {
-  runSequence(
-    commonBuildTasks,
-    cb);
-});
+gulp.task('prod', gulp.series([
+  'build',
+  'docker:run:prod',
+]));
+
+gulp.task('prod:save', gulp.series([
+  'build',
+  'docker:save:prod',
+  async () => {
+    await fs.remove(constants.DOCKER_BUILD_PATH);
+
+    return Promise.all([
+      fs.copy(
+        path.join(__dirname, 'docker-compose.yml'),
+        path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.yml'),
+      ),
+      fs.copy(
+        path.join(__dirname, '..', 'gf-deploy', 'docker-compose.yml'),
+        path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.prod.yml'),
+      ),
+    ]);
+  },
+]));

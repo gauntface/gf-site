@@ -1,0 +1,48 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+@import "/styles/variables/fonts.css";
+
+.header {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+}
+
+.header__container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.home__logo {
+  display: inline-block;
+  padding: var(--content-padding);
+}
+
+.home__logo:focus svg {
+  fill: var(--focus-highlight-color);
+}
+
+.home__logo svg {
+  display: block;
+  width: var(--header-logo-size);
+  height: var(--header-logo-size);
+  fill: var(--header-logo-color);
+}
+
+.header__links {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.header__links a {
+  text-decoration: none;
+  font-family: var(--title-font-family);
+  font-weight: normal;
+  padding: calc(var(--grid) * 2);
+}
+
+.header__links a:focus {
+  font-style: normal;
+}

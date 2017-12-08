@@ -1,0 +1,52 @@
+:root {
+  --focus-highlight-color: #ff6e9f;
+
+  --page-bg-color: white;
+  --font-color: #323232;
+  --title-font-color: #303030;
+
+  --code-background-color: #e3e0df;
+  --pre-background-color: #303030;
+  --iframe-border-color: var(--font-color);
+
+  --button-background-color: #303030;
+  --button-background-hover-color: #000000;
+  --button-background-active-color: #909090;
+  --button-text-color: var(--page-bg-color);
+
+  --link-text-color: #303030;
+
+  --header-bg-color: var(--primary-highlight-color);
+  --header-logo-color: #303030;
+
+  --footer-color: #656565;
+
+  /**
+  --dark-bg-color: #2B262E;
+  --light-grey-color: #BFBEC0;
+
+  --styleguide-bg-color: #eeeeee;
+  --styleguide-btn-color: rgba(100, 100, 100, 0.8);
+
+  --toolbar-btn-hover-color: rgba(0, 0, 0, 0.1);
+  --toolbar-btn-active-color: rgba(0, 0, 0, 0.3);
+  --header-bg-color: #1e1621;
+
+  --footer-bg-color: var(--dark-bg-color);
+  --footer-text-color: var(--light-grey-color);
+
+  --youtube-block-bg-color: #433e47;
+  --youtube-block-font-color: rgba(255, 255, 255, 0.7);
+  --youtube-block-icon-color: var(--youtube-block-font-color);
+
+  --divider-color: rgba(0, 0, 0, 0.3);
+  --divider-color-light: rgba(255, 255, 255, 0.3);
+
+  --twitter-block-bg-color: #1a1420;
+  --twitter-block-font-color: #bab8bc;
+
+  --toggle-on-color: var(--light-grey-color);
+  --toggle-off-color: #8f8d91;
+  --toggle-text-color: var(--page-bg-color);
+  **/
+}

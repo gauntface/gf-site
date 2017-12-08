@@ -1,0 +1,20 @@
+@import "/styles/variables/dimens.css";
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.styleguide-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.styleguide-controls button {
+  margin: var(--grid);
+}
+
+.styleguide-iframe {
+  flex: 1;
+}

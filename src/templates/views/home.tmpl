@@ -1,0 +1,56 @@
+---
+styles:
+  inline:
+    - ../../public/styles/unique/home-inline.css
+---
+<h1>Hello.</h1>
+
+<p>My name is Matt, I'm a software engineer who works on various things and
+this is my personal site which has my blog and info on recent projects.</p>
+
+{{#data.blogPosts.length}}
+<section class="home__section">
+  <h5>Latest Blog Posts</h5>
+
+  {{#data.blogPosts}}
+  <a href="{{url}}" class="home__section-entry">
+    <h2>{{title}}</h2>
+    {{{excerptHTML}}}
+  </a>
+  {{/data.blogPosts}}
+</section>
+{{/data.blogPosts.length}}
+
+<!-- <section class="home__section">
+  <h5>Latest Videos</h5>
+
+  <div class="home__section-entry">
+    <h2>Code-splitting your way to better perf with Webpack</h2>
+    <p>Using Webpack want to learn more about code splitting? Then check out
+    this weeks Totally Tool Tips where Addy gives you his top tips and Matt,
+    unhelpfully, questions it.....totes a webpack noob.</p>
+  </div>
+
+  <div class="home__section-entry">
+    <h2>Selenium</h2>
+    <p>Matt does a rather brief brain dump of using selenium webdriver with
+    Mocha and how the two work together in his testing workflows. </p>
+  </div>
+</section>-->
+
+
+<section class="home__section">
+  <h5>Side Projects</h5>
+
+  <a href="https://web-push-book.gauntface.com/" class="home__section-title-link"><h2>Web Push Book</h2></a>
+  <p>Having spent a large amount of time playing with web push I put together
+  a collection of information into "a kind of book" that you can grab
+  <a href="https://web-push-book.gauntface.com/"
+  title="View Web Push Book here">here</a>.</p>
+
+  <a href="https://shop.smashingmagazine.com/products/smashing-book-5-real-life-responsive-web-design" class="home__section-title-link"><h2>Smashing Book 5</h2></a>
+  <p>I've been writing a chapter in this book about service worker and it's
+  no available in print or ebook
+  <a href="https://shop.smashingmagazine.com/products/smashing-book-5-real-life-responsive-web-design"
+  title="Get Smashing Book 5 here">here</a>.</p>
+</section>

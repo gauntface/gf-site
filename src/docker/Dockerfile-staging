@@ -1,5 +1,0 @@
-FROM gauntface/gf-site:base
-
-ADD src/docker/nginx/staging.conf /etc/nginx/sites-available/gauntface.tmpl
-
-COPY build /gauntface/site

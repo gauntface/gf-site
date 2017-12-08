@@ -1,0 +1,55 @@
+:root {
+  --grid: 8px;
+
+  --primary-font-size: calc(var(--grid) * 2);
+  --primary-line-height: 1.5rem;
+
+  --code-font-size: 0.875rem;
+  --code-line-height: var(--primary-line-height);
+
+  --p-margin-bottom: 1rem;
+  --list-margin-bottom: 1rem;
+  --pre-margin-bottom: var(--p-margin-bottom);
+  --blockquote-margin: 2rem;
+
+  --font-size-h1: 2rem;
+  --font-line-height-h1: 2rem;
+  --h1-margin-top: 2rem;
+  --h1-margin-bottom: 1rem;
+
+  --font-size-h2: 1.7rem;
+  --font-line-height-h2: 2rem;
+  --h2-margin-top: 2rem;
+  --h2-margin-bottom: 1rem;
+
+  --font-size-h3: 1.5rem;
+  --font-line-height-h3: 2rem;
+  --h3-margin-top: 2rem;
+  --h3-margin-bottom: 1rem;
+
+  --font-size-h4: 1.2rem;
+  --font-line-height-h4: 2rem;
+  --h4-margin-top: 1rem;
+  --h4-margin-bottom: 0.5rem;
+
+  --font-size-h5: 1rem;
+  --font-line-height-h5: 1rem;
+  --h5-margin-top: 1rem;
+  --h5-margin-bottom: 0.5rem;
+
+  --font-size-h6: 0.875rem;
+  --font-line-height-h6: 1rem;
+  --h6-margin-top: 1rem;
+  --h6-margin-bottom: 0.5rem;
+
+  --button-font-size: 1rem;
+
+  --content-padding: calc(var(--grid) * 2);
+  --footer-link-size: calc(var(--grid) * 4);
+  --footer-license-font-size: calc(var(--grid) * 1.5);
+
+  --max-content-width: calc(var(--grid) * 100);
+  --header-footer-max-left-offset: calc(var(--grid) * 6);
+
+  --header-logo-size: calc(var(--grid) * 8);
+}

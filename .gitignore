@@ -1,10 +1,4 @@
-.DS_Store
-build/
-node_modules/
-src/fonts/
-src/private/
-configs/
-deploy/
-client-secret.json
-travis-encrypt.tar.gz
+node_modules
 npm-debug.log
+lerna-debug.log
+third_party

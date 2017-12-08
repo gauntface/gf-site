@@ -1,15 +1,33 @@
 'use strict';
 
-const gulp = require('gulp');
-const imagemin = require('gulp-imagemin');
+/* eslint-env node */
 
-gulp.task('images', () => {
-  let imageStream = gulp.src(global.config.src + '/frontend/**/*.{png,jpg,jpeg,svg,gif}');
-  if (global.config.env === 'prod') {
-    imageStream = imageStream.pipe(imagemin({
-      progressive: true,
-      interlaced: true
-    }));
-  }
-  return imageStream.pipe(gulp.dest(global.config.dest));
+const gulp = require('gulp');
+const glob = require('glob');
+const path = require('path');
+const imgGenerator = require('../src/utils/img-generator');
+
+gulp.task('images:copy', () => {
+  return gulp.src([
+    global.config.src + '/public/**/*.{jpg,jpeg,png,webp,svg,ico,gif}',
+  ])
+  .pipe(gulp.dest(
+    path.join(global.config.dest, 'public')
+  ));
 });
+
+gulp.task('images:minified', () => {
+  const imgFiles = glob.sync(`${global.config.src}/../assets/+(uploads|images)/**/*.+(jpg|jpeg|png|gif)`, {
+    absolute: true,
+  });
+  return imgGenerator.optimiseImageFiles(imgFiles)
+  .catch((err) => {
+    console.error('Unable able to optimise images.');
+    console.error(err);
+  });
+});
+
+gulp.task('images', gulp.series([
+  'images:minified',
+  'images:copy',
+]));

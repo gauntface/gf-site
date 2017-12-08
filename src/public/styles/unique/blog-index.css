@@ -1,0 +1,9 @@
+.blog__section {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.blog__index-link {
+  text-decoration: none;
+}
