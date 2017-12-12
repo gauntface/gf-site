@@ -1,5 +1,5 @@
 FROM gauntface-base
 
-COPY infra/nginx/gauntface-development.conf /etc/nginx/sites-available/gauntface.tmpl
+COPY infra/nginx/gauntface-development.conf /etc/nginx/conf.d/gauntface.conf
 
-CMD /gauntface/docker/startup.sh
+CMD ["/gauntface/docker/startup.sh"]

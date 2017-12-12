@@ -6,6 +6,6 @@ COPY build /gauntface/site
 RUN cd /gauntface/site && npm install --only=production
 
 # Add the production nginx config.
-COPY infra/nginx/gauntface-prod.conf /etc/nginx/sites-available/gauntface.tmpl
+COPY infra/nginx/gauntface-prod.conf /etc/nginx/conf.d/gauntface.conf
 
 CMD /gauntface/docker/startup.sh

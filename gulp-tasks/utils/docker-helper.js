@@ -71,7 +71,7 @@ class DockerHelper {
    * @return {Promise} Resolves once access to CLI has ended.
    */
   accessCLI() {
-    return dockerCLIWrapper.accessContainerCLI(constants.PROD_IMAGE_NAME);
+    return dockerCLIWrapper.accessContainerCLI('gfsite_dev');// constants.PROD_IMAGE_NAME);
   }
 
   async buildBase() {

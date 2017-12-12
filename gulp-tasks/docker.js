@@ -49,18 +49,21 @@ gulp.task('docker:build:prod', gulp.series([
 
 gulp.task('docker:run:dev', gulp.series([
   'docker:clean',
+  'docker:build:base',
   () => dockerHelper.runDev(),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:testing', gulp.series([
   'docker:clean',
+  'docker:build:base',
   () => dockerHelper.runTesting(true),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:prod', gulp.series([
   'docker:clean',
+  'docker:build:base',
   () => dockerHelper.runProd(),
   () => waitForHealth(),
 ]));
