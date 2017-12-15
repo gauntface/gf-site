@@ -2,10 +2,13 @@ const fs = require('fs-extra');
 const path = require('path');
 const glob = require('glob');
 
+const BACKUP_PATH = path.join(path.sep, 'gauntface', 'backup');
+const GENERATED_PATH = path.join(BACKUP_PATH, 'generated');
+
 module.exports = (imagePath, text) => {
-  const generatedPath = path.join(
-    __dirname, '..', 'public', 'generated', imagePath);
-  stats = fs.statSync(generatedPath);
+  try {
+  const generatedPath = path.join(GENERATED_PATH, imagePath);
+  const stats = fs.statSync(generatedPath);
   if (!stats.isDirectory()) {
     throw new Error(`Src-set image doesn't have a generated folder ` +
       `${generatedPath}`);
@@ -14,7 +17,7 @@ module.exports = (imagePath, text) => {
   const availableImages = glob.sync(path.join(generatedPath, '*.*'));
   if (availableImages.length === 1) {
     const imgUrl = path.relative(
-      path.join(__dirname, '..', 'public'),
+      GENERATED_PATH,
       availableImages[0]
     );
     return `<img src="/${imgUrl}" alt="${text}" />`;
@@ -32,7 +35,7 @@ module.exports = (imagePath, text) => {
 
   const srcSet = nonWebPImages.map((imagePath) => {
     const imgUrl = path.relative(
-      path.join(__dirname, '..', 'public'),
+      GENERATED_PATH,
       imagePath
     );
     const imgWidth = parseInt(
@@ -48,7 +51,7 @@ module.exports = (imagePath, text) => {
 
   const webpSrcSet = webPImages.map((imagePath) => {
     const imgUrl = path.relative(
-      path.join(__dirname, '..', 'public'),
+      GENERATED_PATH,
       imagePath
     );
     const imgWidth = parseInt(
@@ -62,7 +65,10 @@ module.exports = (imagePath, text) => {
     htmlMarkup += `<source srcset="${webpSrcSet}" type="image/webp">`;
   }
   htmlMarkup += `<source srcset="${srcSet}">`;
-  htmlMarkup += `<img src="${largestSrc}" alt="${text}" />`;
+  htmlMarkup += `<img src="/${largestSrc}" alt="${text}" />`;
   htmlMarkup += '</picture>';
   return htmlMarkup;
+} catch (err) {
+  console.log(err);
+}
 };

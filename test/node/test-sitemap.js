@@ -107,7 +107,7 @@ describe('Test Sitemap', function() {
 
                 const corsResult = corsErrRegexp.exec(entry.message);
                 if (corsResult && corsResult[1].indexOf(serverUrl) !== 0) {
-                  console.log('External CORs request being ignored: ', corsResult[0]);
+                  // console.log('External CORs request being ignored: ', corsResult[0]);
                   return false;
                 }
 
