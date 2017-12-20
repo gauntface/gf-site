@@ -4,6 +4,12 @@ const URL = require('url');
 // const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
 
+process.env.DB_HOST = 'localhost';
+process.env.DB_PORT = 3306;
+process.env.DB_USER = 'testing-user';
+process.env.DB_PASSWORD = 'testing-password';
+process.env.DB_NAME = 'testing-db';
+
 // For some URLs errors are to be expected and ignored
 const lighthouseRuleIgnores = {
   '/styleguide/display/documents/html/': [
