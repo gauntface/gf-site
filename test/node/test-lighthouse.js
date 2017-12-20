@@ -4,10 +4,6 @@ const URL = require('url');
 // const getSitemapUrls = require('../utils/get-sitemap-urls');
 const lighthouseWrapper = require('../utils/lighthouse-wrapper');
 
-if (process.env['TRAVIS']) {
-  return run();
-}
-
 // For some URLs errors are to be expected and ignored
 const lighthouseRuleIgnores = {
   '/styleguide/display/documents/html/': [
