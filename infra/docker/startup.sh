@@ -8,6 +8,7 @@ envsubst '${NODE_PORT}' < /etc/nginx/gauntface-shared.conf > /etc/nginx/gauntfac
 # Needed to make Nginx run on Alphine (11/12/2017)
 mkdir -p /run/nginx
 
+
 if [ "${DEV_MODE}" = "true" ]; then
     echo ""
     echo "DEV_MODE: ON"

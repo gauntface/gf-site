@@ -47,11 +47,12 @@ gulp.task('prod', gulp.series([
 ]));
 
 gulp.task('prod:save', gulp.series([
+  async () => {
+    await fs.remove(constants.DOCKER_BUILD_PATH);
+  },
   'build',
   'docker:save:prod',
   async () => {
-    await fs.remove(constants.DOCKER_BUILD_PATH);
-
     return Promise.all([
       fs.copy(
         path.join(__dirname, 'docker-compose.yml'),

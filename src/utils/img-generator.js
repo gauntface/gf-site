@@ -6,6 +6,7 @@ const imageminJpegtran = require('imagemin-jpegtran');
 const imageminOptipng = require('imagemin-optipng');
 const imageminWebp = require('imagemin-webp');
 const imageminGifsicle = require('imagemin-gifsicle');
+const glob = require('glob');
 
 class ImageGenerator {
   _handleJpegPng(imagePath, outputPath) {
@@ -50,6 +51,7 @@ class ImageGenerator {
         );
 
         return promiseChain.then(() => {
+          // This will throw if the file doesn't currently exist.
           return fs.access(outputFilepath)
           .catch(() => {
             console.log(`Generating image: ${path.relative(process.cwd(), outputFilepath)}`);
@@ -104,15 +106,18 @@ class ImageGenerator {
     return this._handleJpegPng(imagePath, outputPath);
   }
 
-  optimiseImageFiles(arrayOfFiles) {
+  optimiseImageFiles(directoryToGenerate, outputDirectory) {
+    const arrayOfFiles = glob.sync(`${directoryToGenerate}/**/*.+(jpg|jpeg|png|gif)`, {
+      absolute: true,
+    });
     return arrayOfFiles.reduce((promiseChain, filePath) => {
       return promiseChain.then(() => {
         const relativeFilePath = path.relative(
-          path.join(__dirname, '..', '..', 'assets'),
+          directoryToGenerate,
           filePath
         );
         const outputPath = path.join(
-          __dirname, '..', 'public', 'generated', relativeFilePath
+          outputDirectory, relativeFilePath
         );
         return this.generateAllImageVariations(filePath, outputPath);
       });

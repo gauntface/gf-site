@@ -22,6 +22,7 @@ module.exports = (siteUrl) => {
     if (!response.ok) {
       return response.text()
       .then((responseText) => {
+        console.error(responseText);
         throw new Error(`Response for sitemap invalid. [Status Code: ${response.status}]`);
       });
     }

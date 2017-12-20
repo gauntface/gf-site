@@ -8,7 +8,7 @@ const expect = require('chai').expect;
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 const dbHelper = require('../../src/utils/database-helper.js');
 
-describe('Test Sitemap', function() {
+describe.skip('Test Sitemap', function() {
   let sitemapUrls = null;
   let serverUrl = null;
   let globalDriver = null;
@@ -107,7 +107,7 @@ describe('Test Sitemap', function() {
 
                 const corsResult = corsErrRegexp.exec(entry.message);
                 if (corsResult && corsResult[1].indexOf(serverUrl) !== 0) {
-                  console.log('External CORs request being ignored: ', corsResult[0]);
+                  // console.log('External CORs request being ignored: ', corsResult[0]);
                   return false;
                 }
 

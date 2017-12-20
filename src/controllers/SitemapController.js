@@ -2,6 +2,7 @@ const blogModel = require('../models/blog-model');
 
 class SitemapController {
   index(args) {
+    console.log(`<--------------------`);
     const urls = [
       '/',
       '/styleguide',
