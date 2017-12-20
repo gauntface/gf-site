@@ -8,7 +8,7 @@ const expect = require('chai').expect;
 const getSitemapUrls = require('../utils/get-sitemap-urls');
 const dbHelper = require('../../src/utils/database-helper.js');
 
-describe('Test Sitemap', function() {
+describe.skip('Test Sitemap', function() {
   let sitemapUrls = null;
   let serverUrl = null;
   let globalDriver = null;
