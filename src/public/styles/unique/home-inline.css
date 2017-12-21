@@ -8,21 +8,6 @@
   margin: calc(var(--grid) * 6) 0;
 }
 
-.home__section h5 {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 0 0 calc(var(--grid) * 2) 0;
-}
-
-.home__section h5:after {
-  content: '';
-  background-color: var(--title-font-color);
-  height: 1px;
-  flex: 1;
-  margin-left: calc(var(--grid) * 2);
-}
-
 .home__section h2 {
   margin: 0;
 }

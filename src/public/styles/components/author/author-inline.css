@@ -1,0 +1,49 @@
+.author {
+  max-width: var(--max-content-width);
+  margin: 0 auto calc(var(--grid) * 2) auto;
+  color: var(--footer-color);
+  padding: 0 var(--content-padding);
+}
+
+.author::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: var(--title-font-color);
+  margin-top: calc(var(--grid) * 2);
+}
+
+.author__row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: var(--grid) 0;
+}
+
+.author__flex {
+  flex: 1;
+}
+
+.author__avatar {
+  width: 64px;
+  height: 64px;
+
+  /* margin to left indents the image, making it account for the box shadow */
+  margin-left: 6px;
+  margin-right: calc(6px + (var(--grid) * 2));
+
+  /* First box shadow is white and lays on top of the colors radius */
+  box-shadow: 0 0 0 4px var(--page-bg-color), 0 0 0 6px var(--font-color);
+}
+
+.author__name {
+  color: var(--title-font-color);
+  font-family: var(--title-font-family);
+  font-weight: normal;
+  font-size: var(--font-size-h4);
+}
+
+.author__title {
+  font-size: var(--font-size-h6);
+}

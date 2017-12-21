@@ -2,14 +2,42 @@
 styles:
   inline:
     - ../../public/styles/components/footer/footer-inline.css
+partials:
+  - ../../public/images/footer/notifications.svg
+  - ../../public/images/footer/settings.svg
+  - ../../public/images/footer/twitter.svg
+  - ../../public/images/footer/github.svg
+  - ../../public/images/footer/rss.svg
+  - ../../public/images/footer/email.svg
 ---
 <footer class="footer">
-  <p class="footer__license">Except as otherwise noted, the content of this page is licensed under the
-  Creative Commons Attribution 3.0 License, and code samples are licensed
-  under the Apache 2.0 License.</p>
+  <!--
+  <div class="footer__settings-icons">
+    <button class="footer__icon">
+      {{> ../../public/images/footer/notifications.svg}}
+    </button>
+    <a class="footer__icon" title="Settings" href="/settings">
+      {{> ../../public/images/footer/settings.svg}}
+    </a>
+  </div>
+  -->
 
-  <p><a class="footer__link" title="Twitter Profile" href="https://twitter.com/gauntface">Twitter</a> |
-    <a class="footer__link" title="Github Profile" href="https://github.com/gauntface">Github</a> |
-    <a class="footer__link" title="Email Matt Gaunt" href="mailto:matt@gauntface.co.uk">Email</a>
-  </p>
+  <div class="footer__spacer"></div>
+
+  <div class="footer__contact-icons">
+    <a class="footer__icon" title="Twitter Profile" href="https://twitter.com/gauntface">
+      {{> ../../public/images/footer/twitter.svg}}
+    </a>
+    <a class="footer__icon" title="Github Profile" href="https://github.com/gauntface">
+      {{> ../../public/images/footer/github.svg}}
+    </a>
+    <!--
+    <a class="footer__icon" title="RSS" href="/rss.xml">
+      {{> ../../public/images/footer/rss.svg}}
+    </a>
+    -->
+    <a class="footer__icon" title="Email Matt Gaunt" href="mailto:matt@gauntface.co.uk">
+      {{> ../../public/images/footer/email.svg}}
+    </a>
+  </div>
 </footer>
