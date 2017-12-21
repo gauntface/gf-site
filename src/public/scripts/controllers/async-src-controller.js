@@ -10,6 +10,11 @@ class AsyncSrcController {
     elementsNodeList.forEach((element) => {
       if (element.dataset && element.dataset.src) {
         element.src = element.dataset.src;
+        element.style.opacity = '0';
+        element.addEventListener('load', function(event) {
+          event.target.style.opacity = 1;
+          event.target.removeAttribute('data-src');
+        });
       }
     });
   }
