@@ -4,7 +4,7 @@
 
 .header {
   max-width: var(--max-content-width);
-  margin: 0 auto;
+  margin: calc(var(--grid) * 3) auto;
 }
 
 .header__container {

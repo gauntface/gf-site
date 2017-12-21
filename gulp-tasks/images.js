@@ -17,10 +17,11 @@ gulp.task('images:copy', () => {
 });
 
 gulp.task('images:minified', () => {
-  const imgFiles = glob.sync(`${global.config.src}/../assets/+(uploads|images)/**/*.+(jpg|jpeg|png|gif)`, {
-    absolute: true,
-  });
-  return imgGenerator.optimiseImageFiles(imgFiles)
+  const backupPath = path.join(__dirname, '..', '..', 'gf-backup');
+  return imgGenerator.optimiseImageFiles(
+    path.join(backupPath, 'raw'),
+    path.join(backupPath, 'generated'),
+  )
   .catch((err) => {
     console.error('Unable able to optimise images.');
     console.error(err);

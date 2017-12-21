@@ -13,7 +13,7 @@ module.exports = (code, lang) => {
   if (!lang) {
     const lines = code.split('\n');
     const firstLine = lines.splice(0,1)[0].trim();
-    switch(firstLine) {
+    switch (firstLine) {
       case 'javascript': {
         lang = firstLine;
         code = lines.join('\n');

@@ -2,18 +2,37 @@
 @import "/styles/variables/colors.css";
 
 .footer {
+  display: flex;
+  flex-direction: row;
+
   max-width: var(--max-content-width);
-  margin: 0 auto;
-  text-align: center;
+  margin: calc(var(--grid) * 4) auto;
   color: var(--footer-color);
-  padding: 0 calc(var(--content-padding) * 3);
+  padding: 0 var(--content-padding);
 }
 
-.footer__license {
-  font-size: var(--footer-license-font-size);
+.footer__settings-icons {
+  display: flex;
+  flex-direction: column;
 }
 
-.footer__link {
-  padding: calc(var(--grid) / 2) 0;
+.footer__spacer {
+  flex: 1;
+}
+
+.footer__contact-icons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 120px;
+}
+
+.footer__icon {
+  width: 40px;
+  height: 40px;
+  background: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
   text-decoration: none;
 }

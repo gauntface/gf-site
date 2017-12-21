@@ -105,8 +105,12 @@ class BlogController {
           title: `${blogPost.title} - GauntFace | Matthew Gaunt`,
         },
         templatePath: 'templates/documents/html.tmpl',
-        views: [{
-            templatePath: 'templates/shells/header-footer.tmpl',
+        views: [
+          {
+            templatePath: 'templates/views/header.tmpl',
+          },
+          {
+            templatePath: 'templates/shells/content.tmpl',
             views: [
               {
                 templatePath: 'templates/views/blog/post.tmpl',
@@ -116,6 +120,12 @@ class BlogController {
                 },
               },
             ],
+          },
+          {
+            templatePath: 'templates/views/author.tmpl',
+          },
+          {
+            templatePath: 'templates/views/footer.tmpl',
           },
         ],
       };

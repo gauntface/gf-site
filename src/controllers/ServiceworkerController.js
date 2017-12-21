@@ -4,7 +4,7 @@ const path = require('path');
 class ServiceWorkerController {
   index() {
     return fs.readFile(
-      path.join(__dirname, '..', 'static', 'scripts',
+      path.join(__dirname, '..', 'public', 'scripts',
         'templates', 'serviceworker.tmpl.js'
       )
     )

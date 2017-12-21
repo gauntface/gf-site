@@ -1,5 +1,0 @@
-# To login to DB via docker host
-mysql -h gauntface-mysql -u root -p
-
-# To import the sql dump
-mysql -h 127.0.0.1 -u development-user -p development-db < ./src/sql-dumps/sql-altered-dump-....

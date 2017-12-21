@@ -24,6 +24,9 @@ services:
       - type: volume
         source: ./node_modules
         target: /gauntface/site/node_modules
+      - type: volume
+        source: ../gf-backup/
+        target: /gauntface/backup/
     environment:
       # DEV_MODE means that it'll block on the node script and not NGINX.
       DEV_MODE: 'true'
@@ -47,6 +50,10 @@ services:
     ports:
      - "3007:3007"
      - "3000:3000"
+    volumes:
+      - type: volume
+        source: ../gf-backup/
+        target: /gauntface/backup/
     environment:
       NODE_PORT: 3007
       NGINX_PORT: 3000
