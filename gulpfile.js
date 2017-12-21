@@ -55,11 +55,7 @@ gulp.task('prod:save', gulp.series([
   async () => {
     return Promise.all([
       fs.copy(
-        path.join(__dirname, 'docker-compose.yml'),
-        path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.yml'),
-      ),
-      fs.copy(
-        path.join(__dirname, '..', 'gf-deploy', 'docker-compose.yml'),
+        path.join(__dirname, '..', 'gf-deploy', 'docker-compose.prod.yml'),
         path.join(constants.DOCKER_BUILD_PATH, 'docker-compose.prod.yml'),
       ),
     ]);

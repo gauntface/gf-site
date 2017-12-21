@@ -38,7 +38,7 @@ class DockerComposeWrapper {
     const cmdFlags = this._getFlagsCopy();
     cmdFlags.push('up');
     cmdFlags.push('--force-recreate');
-    cmdFlags.push('--build');
+    cmdFlags.push('--no-build');
     if (options.detach) {
       cmdFlags.push('-d');
     }

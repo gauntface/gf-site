@@ -35,35 +35,32 @@ gulp.task(`docker:cli`, () => {
 
 gulp.task('docker:build:base', () => dockerHelper.buildBase());
 gulp.task('docker:build:dev', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildDev(),
 ]));
 gulp.task('docker:build:test', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildTest(),
 ]));
 gulp.task('docker:build:prod', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildProd(),
 ]));
 
 gulp.task('docker:run:dev', gulp.series([
   'docker:clean',
-  'docker:build:base',
+  'docker:build:dev',
   () => dockerHelper.runDev(),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:testing', gulp.series([
   'docker:clean',
-  'docker:build:base',
-  () => dockerHelper.runTesting(true),
+  'docker:build:test',
+  () => dockerHelper.runTesting(),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:prod', gulp.series([
   'docker:clean',
-  'docker:build:base',
+  'docker:build:prod',
   () => dockerHelper.runProd(),
   () => waitForHealth(),
 ]));

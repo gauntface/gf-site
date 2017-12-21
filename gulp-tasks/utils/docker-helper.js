@@ -16,7 +16,7 @@ class DockerHelper {
   constructor() {
     this._dockerCompose = new DockerComposeWrapper([
       './docker-compose.yml',
-      '../gf-deploy/docker-compose.yml',
+      '../gf-deploy/docker-compose.prod.yml',
     ]);
     this._logger = new Logger('🐳 [DockerHelper]:');
   }
