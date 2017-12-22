@@ -33,7 +33,6 @@ gulp.task(`docker:cli`, () => {
   });
 });
 
-gulp.task('docker:build:base', () => dockerHelper.buildBase());
 gulp.task('docker:build:dev', gulp.series([
   () => dockerHelper.buildDev(),
 ]));

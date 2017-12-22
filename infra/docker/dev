@@ -1,15 +1,16 @@
 FROM mhart/alpine-node:8
 
 RUN apk update
-RUN apk add nginx gettext
+RUN apk add nginx
 
 # Node Env
 RUN npm install forever --global
 
 # NGINX Conf
+RUN mkdir -p /run/nginx
 RUN rm /etc/nginx/conf.d/default.conf
-COPY infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.tmpl
-COPY infra/nginx/gauntface-development.conf /etc/nginx/conf.d/gauntface.tmpl
+COPY infra/nginx/gauntface-shared.conf /etc/nginx/gauntface-shared.conf
+COPY infra/nginx/gauntface-development.conf /etc/nginx/conf.d/gauntface.conf
 
 # Startup Script
 COPY infra/docker/startup.sh /gauntface/docker/startup.sh

@@ -1,13 +1,6 @@
 #!/bin/sh
 set -e
 
-# Replace environment variables in these files.
-envsubst '${NGINX_PORT}' < /etc/nginx/conf.d/gauntface.tmpl > /etc/nginx/conf.d/gauntface.conf;
-envsubst '${NODE_PORT}' < /etc/nginx/gauntface-shared.tmpl > /etc/nginx/gauntface-shared.conf;
-
-# Needed to make Nginx run on Alpine (11/12/2017)
-mkdir -p /run/nginx
-
 nginx -v
 # Test the nginx config before starting daemon
 nginx -t

@@ -74,16 +74,6 @@ class DockerHelper {
     return dockerCLIWrapper.accessContainerCLI('gfsite_dev');// constants.PROD_IMAGE_NAME);
   }
 
-  async buildBase() {
-    this._logger.log(``);
-    this._logger.log(``);
-    this._logger.log(`    Building base container`);
-    this._logger.log(``);
-    this._logger.log(``);
-
-    await this._dockerCompose.build('base');
-  }
-
   async buildDev() {
     this._logger.log(``);
     this._logger.log(``);
