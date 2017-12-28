@@ -40,7 +40,7 @@ describe.skip('Test Sitemap', function() {
       }
     }
 
-    serverUrl = `http://localhost:3000`;
+    serverUrl = `http://localhost`;
   });
 
   after(function() {

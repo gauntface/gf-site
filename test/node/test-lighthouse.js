@@ -175,6 +175,7 @@ function registerTests(allUrls) {
 
       return lighthouseWrapper.downloadChrome()
       .then(() => {
+        console.log('Starting Chrome');
         return lighthouseWrapper.startChrome();
       });
     });
@@ -217,14 +218,14 @@ function getComponents(serverUrl) {
 }
 
 return Promise.all([
-  // getSitemapUrls('http://localhost:3000'),
-  // getComponents('http://localhost:3000'),
+  // getSitemapUrls('http://localhost'),
+  // getComponents('http://localhost'),
 ])
 .then((results) => {
   let allUrls = [
-    'http://localhost:3000',
-    'http://localhost:3000/blog',
-    'http://localhost:3000/styleguide'
+    'http://localhost',
+    'http://localhost/blog',
+    'http://localhost/styleguide'
   ];
   results.forEach((result) => {
     allUrls = allUrls.concat(result);

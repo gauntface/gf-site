@@ -46,7 +46,7 @@ console.log('it has code too.')
       throw err;
     })
     .then(() => {
-      return fetch(`http://localhost:3000${blogPost.getPublishedUrl()}`);
+      return fetch(`http://localhost${blogPost.getPublishedUrl()}`);
     })
     .then((response) => {
       return response.text()

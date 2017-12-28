@@ -145,7 +145,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       throw err;
     })
     .then(() => {
-      return fetch(`http://localhost:3000`);
+      return fetch(`http://localhost`);
     })
     .then((response) => {
       return response.text()

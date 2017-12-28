@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const dockerHelper = require('./utils/docker-helper');
 
 function getHealth() {
-  return fetch('http://localhost:3000/.health-check')
+  return fetch('http://localhost/.health-check')
   .then((response) => {
     if (!response.ok) {
       throw new Error('Response not ok.');
@@ -33,37 +33,33 @@ gulp.task(`docker:cli`, () => {
   });
 });
 
-gulp.task('docker:build:base', () => dockerHelper.buildBase());
 gulp.task('docker:build:dev', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildDev(),
 ]));
 gulp.task('docker:build:test', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildTest(),
 ]));
 gulp.task('docker:build:prod', gulp.series([
-  () => dockerHelper.buildBase(),
   () => dockerHelper.buildProd(),
 ]));
 
 gulp.task('docker:run:dev', gulp.series([
   'docker:clean',
-  'docker:build:base',
+  'docker:build:dev',
   () => dockerHelper.runDev(),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:testing', gulp.series([
   'docker:clean',
-  'docker:build:base',
+  'docker:build:test',
   () => dockerHelper.runTesting(true),
   () => waitForHealth(),
 ]));
 
 gulp.task('docker:run:prod', gulp.series([
   'docker:clean',
-  'docker:build:base',
+  'docker:build:prod',
   () => dockerHelper.runProd(),
   () => waitForHealth(),
 ]));

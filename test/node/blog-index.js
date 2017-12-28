@@ -163,7 +163,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       throw err;
     })
     .then(() => {
-      return fetch(`http://localhost:3000/blog/`);
+      return fetch(`http://localhost/blog/`);
     })
     .then((response) => {
       return response.text()

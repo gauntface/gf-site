@@ -16,7 +16,7 @@ class DockerHelper {
   constructor() {
     this._dockerCompose = new DockerComposeWrapper([
       './docker-compose.yml',
-      '../gf-deploy/docker-compose.yml',
+      '../gf-deploy/docker-compose.prod.yml',
     ]);
     this._logger = new Logger('🐳 [DockerHelper]:');
   }
@@ -72,16 +72,6 @@ class DockerHelper {
    */
   accessCLI() {
     return dockerCLIWrapper.accessContainerCLI('gfsite_dev');// constants.PROD_IMAGE_NAME);
-  }
-
-  async buildBase() {
-    this._logger.log(``);
-    this._logger.log(``);
-    this._logger.log(`    Building base container`);
-    this._logger.log(``);
-    this._logger.log(``);
-
-    await this._dockerCompose.build('base');
   }
 
   async buildDev() {

@@ -2,6 +2,15 @@
 @import "/styles/variables/colors.css";
 @import "/styles/variables/fonts.css";
 
+@font-face {
+  font-family: 'hallosans';
+  src: url('/third_party/fonts/hallo-sans/hallo-sans-webfont.woff2') format('woff2'),
+       url('/third_party/fonts/hallo-sans/hallo-sans-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: optional;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;

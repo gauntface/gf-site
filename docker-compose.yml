@@ -1,22 +1,16 @@
 version: '3.4'
 services:
-  base:
-    image: gauntface-base
-    build:
-      context: .
-      dockerfile: ./infra/docker/base
   dev:
     build:
       context: .
       dockerfile: ./infra/docker/dev
     depends_on:
-      - "base"
       - "mysql_dev"
     links:
       - mysql_dev
     ports:
      - "3006:3006"
-     - "3000:3000"
+     - "80:80"
     volumes:
       - type: volume
         source: ./src
@@ -31,7 +25,6 @@ services:
       # DEV_MODE means that it'll block on the node script and not NGINX.
       DEV_MODE: 'true'
       NODE_PORT: 3006
-      NGINX_PORT: 3000
       DB_HOST: mysql_dev
       DB_PORT: 3306
       DB_USER: development-user
@@ -40,7 +33,6 @@ services:
 
   test:
     depends_on:
-      - "base"
       - "mysql_test"
     build:
       context: .
@@ -48,15 +40,14 @@ services:
     links:
       - mysql_test
     ports:
-     - "3007:3007"
-     - "3000:3000"
+     - "3006:3006"
+     - "80:80"
     volumes:
       - type: volume
         source: ../gf-backup/
         target: /gauntface/backup/
     environment:
-      NODE_PORT: 3007
-      NGINX_PORT: 3000
+      NODE_PORT: 3006
       DB_HOST: mysql_test
       DB_PORT: 3306
       DB_USER: testing-user
@@ -73,7 +64,7 @@ services:
       MYSQL_PASSWORD: development-password
     volumes:
       - type: volume
-        source: ../gf-deploy/sql-exports
+        source: ../gf-backup/sql-exports
         target: /docker-entrypoint-initdb.d
 
   mysql_test:
@@ -89,5 +80,5 @@ services:
       MYSQL_PASSWORD: testing-password
     volumes:
       - type: volume
-        source: ../gf-deploy/sql-exports
+        source: ../gf-backup/sql-exports
         target: /docker-entrypoint-initdb.d

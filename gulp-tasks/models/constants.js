@@ -6,7 +6,6 @@ module.exports = {
   ),
   PROD_IMAGE_NAME: 'gauntface-site',
   ALL_SERVICES: [
-    'base',
     'dev',
     'mysql_dev',
     'test',
