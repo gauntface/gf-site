@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const dockerHelper = require('./utils/docker-helper');
 
 function getHealth() {
-  return fetch('http://localhost:3000/.health-check')
+  return fetch('http://localhost/.health-check')
   .then((response) => {
     if (!response.ok) {
       throw new Error('Response not ok.');
@@ -53,7 +53,7 @@ gulp.task('docker:run:dev', gulp.series([
 gulp.task('docker:run:testing', gulp.series([
   'docker:clean',
   'docker:build:test',
-  () => dockerHelper.runTesting(),
+  () => dockerHelper.runTesting(true),
   () => waitForHealth(),
 ]));
 

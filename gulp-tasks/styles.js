@@ -22,7 +22,9 @@ gulp.task('styles', () => {
     cssnext({
       warnForDuplicates: false,
     }),
-    cssnano(),
+    cssnano({
+      discardUnused: false,
+    }),
   ];
 
   return gulp.src(global.config.src + '/**/*.css')

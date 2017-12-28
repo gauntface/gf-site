@@ -45,7 +45,7 @@ services:
     volumes:
       - type: volume
         source: ../gf-backup/
-        target: /gauntface/gf-backup/
+        target: /gauntface/backup/
     environment:
       NODE_PORT: 3006
       DB_HOST: mysql_test
