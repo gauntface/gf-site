@@ -175,6 +175,7 @@ function registerTests(allUrls) {
 
       return lighthouseWrapper.downloadChrome()
       .then(() => {
+        console.log('Starting Chrome');
         return lighthouseWrapper.startChrome();
       });
     });
