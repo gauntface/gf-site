@@ -1,0 +1,89 @@
+<h1>Hello.</h1>
+
+<button class="signin-btn">Sign In</button>
+
+<!-- Taken from: https://developers.google.com/identity/sign-in/web/listeners -->
+<script>
+  function onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log('Full Name: ' + profile.getName());
+    console.log('Given Name: ' + profile.getGivenName());
+    console.log('Family Name: ' + profile.getFamilyName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail());
+
+    // The ID token you need to pass to your backend:
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log("ID Token: " + id_token);
+  };
+
+  function signinChanged() {
+    console.log(`signinChanged()`);
+  }
+
+  function userChanged() {
+    console.log(`userChanged()`);
+  }
+
+  function onLoad() {
+    gapi.load('auth2', function() {
+      const auth2 = gapi.auth2.init({
+        client_id: '82486131026-4brhdq1lk2h5osb649i5loesq7f5hchp.apps.googleusercontent.com',
+      });
+
+      /**
+      * Updates the properties in the Google User table using the current user.
+      */
+      var updateGoogleUser = function () {
+        if (googleUser) {
+          console.log(`googleUser id:`, googleUser.getId());
+          console.log(`googleUser getGrantedScopes:`, googleUser.getGrantedScopes());
+          console.log(`googleUser getAuthResponse:`, googleUser.getAuthResponse());
+        } else {
+          console.log(`No Google User.`);
+        }
+      };
+
+      /**
+      * Retrieves the current user and signed in states from the GoogleAuth
+      * object.
+      */
+      var refreshValues = function() {
+        if (auth2){
+          console.log('Refreshing values...');
+
+          googleUser = auth2.currentUser.get();
+
+          console.log(`googleUser:`, JSON.stringify(googleUser, undefined, 2));
+          console.log(`isSignedIn:`, auth2.isSignedIn.get());
+
+          updateGoogleUser();
+        }
+      }
+
+      // Listen for sign-in state changes.
+      auth2.isSignedIn.listen(signinChanged);
+
+      // Listen for changes to current user.
+      auth2.currentUser.listen(userChanged);
+
+      // Sign in the user if they are currently signed in.
+      if (auth2.isSignedIn.get() == true) {
+        auth2.signIn();
+      }
+
+      // Start with the current live values.
+      refreshValues();
+
+      auth2.attachClickHandler(document.querySelector('.signin-btn'), {},
+        function(googleUser) {
+          console.log(`googleUser: `, JSON.stringify(googleUser, null, 2));
+        }, function(error) {
+          console.error(JSON.stringify(error, undefined, 2));
+        });
+    });
+  }
+</script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
