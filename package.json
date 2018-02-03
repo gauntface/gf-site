@@ -44,7 +44,7 @@
     "lighthouse": "^2.0.0",
     "mocha": "^4.0.1",
     "node-cache": "^4.1.1",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.0.0",
     "postcss-cssnext": "^3.0.0",
     "postcss-import": "^11.0.0",
     "selenium-assistant": "^5.0.4",
