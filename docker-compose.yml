@@ -13,7 +13,7 @@ services:
      - "80:80"
     volumes:
       - type: volume
-        source: ./src
+        source: ./build
         target: /gauntface/site
       - type: volume
         source: ./node_modules
