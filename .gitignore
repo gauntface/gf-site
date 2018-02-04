@@ -3,3 +3,5 @@ npm-debug.log
 lerna-debug.log
 third_party
 build/
+src/**/*.ts.js
+src/**/*.ts.js.map

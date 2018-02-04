@@ -1,0 +1,38 @@
+@import "/styles/variables/dimens.css";
+@import "/styles/variables/colors.css";
+@import "/styles/variables/fonts.css";
+
+.tabs__tab-btn-container {
+  display: flex;
+
+  width: 100%;
+
+  flex-shrink: 0;
+
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+
+  margin-bottom: -1px;
+}
+
+.tabs__tab-btn {
+  background-color: #aaaaaa;
+}
+
+.tabs__content-container {
+  display: flex;
+
+  flex: 1;
+
+  overflow-y: auto;
+}
+
+.tabs__tab-content {
+  display: none;
+
+  width: 100%;
+}
+
+.tabs__tab-content.tab-view__is-selected {
+  display: block;
+}

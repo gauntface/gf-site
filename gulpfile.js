@@ -28,6 +28,7 @@ gulp.task('build', gulp.series([
     'images',
     'scripts',
     'extras',
+    'typescript',
   ]),
 ]));
 

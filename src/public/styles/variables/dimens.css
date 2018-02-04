@@ -52,4 +52,6 @@
   --header-footer-max-left-offset: calc(var(--grid) * 6);
 
   --header-logo-size: calc(var(--grid) * 8);
+
+  --spinner-size: calc(var(--grid) * 8);
 }

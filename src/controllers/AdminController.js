@@ -45,6 +45,20 @@ class AdminController {
       ],
     };
   }
+
+  edit(postID) {
+    return {
+      data: {
+        title: 'Edit GauntFace Blog',
+      },
+      templatePath: 'templates/documents/html.tmpl',
+      views: [
+        {
+          templatePath: 'templates/views/admin/blog-editor.tmpl',
+        },
+      ],
+    };
+  }
 }
 
 module.exports = new AdminController();

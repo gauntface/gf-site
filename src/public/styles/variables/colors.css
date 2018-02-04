@@ -21,6 +21,8 @@
 
   --footer-color: #656565;
 
+  --loading-color: var(--focus-highlight-color);
+
   /**
   --dark-bg-color: #2B262E;
   --light-grey-color: #BFBEC0;
