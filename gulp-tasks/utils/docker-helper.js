@@ -4,7 +4,16 @@ const fs = require('fs-extra');
 const dockerCLIWrapper = require('./docker-cli-wrapper');
 const DockerComposeWrapper = require('./docker-compose-wrapper');
 const Logger = require('./logger');
-const constants = require('../models/constants');
+
+const PROD_IMAGE_NAME = 'gauntface-site';
+const ALL_SERVICES = [
+  'dev',
+  'mysql_dev',
+  'test',
+  'mysql_test',
+  'prod',
+  'mysql_prod',
+];
 
 /**
  * This class does the orchestrating of docker processes (build, running,
@@ -25,7 +34,7 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are removed.
    */
   remove() {
-    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
+    return ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
         this._logger.log(`        Removing service: ${serviceName}`);
         return this._dockerCompose.remove(
@@ -40,7 +49,7 @@ class DockerHelper {
    * @return {Promise} Resolves once all docker containers are stopped.
    */
   stop() {
-    return constants.ALL_SERVICES.reduce((promiseChain, serviceName) => {
+    return ALL_SERVICES.reduce((promiseChain, serviceName) => {
       return promiseChain.then(() => {
         this._logger.log(`        Stopping service: ${serviceName}`);
 
@@ -71,7 +80,7 @@ class DockerHelper {
    * @return {Promise} Resolves once access to CLI has ended.
    */
   accessCLI() {
-    return dockerCLIWrapper.accessContainerCLI('gfsite_dev');// constants.PROD_IMAGE_NAME);
+    return dockerCLIWrapper.accessContainerCLI('gfsite_dev');
   }
 
   async buildDev() {
@@ -123,12 +132,12 @@ class DockerHelper {
   }
 
   saveProd() {
-    return fs.ensureDir(constants.DOCKER_BUILD_PATH)
+    return fs.ensureDir(global.__buildConfig.DOCKER_BUILD_PATH)
     .then(() => {
       return dockerCLIWrapper.saveContainer(
-        constants.PROD_IMAGE_NAME,
+        PROD_IMAGE_NAME,
         [
-          '-o', path.join(constants.DOCKER_BUILD_PATH, `prod.tar`),
+          '-o', path.join(global.__buildConfig.DOCKER_BUILD_PATH, `prod.tar`),
         ]
       );
     });

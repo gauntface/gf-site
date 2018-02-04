@@ -1,22 +1,27 @@
-'use strict';
-
-/* eslint-env node */
-
 const gulp = require('gulp');
-const glob = require('glob');
 const path = require('path');
 const imgGenerator = require('../src/utils/img-generator');
 
-gulp.task('images:copy', () => {
+const extensions = [
+  'jpeg',
+  'jpg',
+  'png',
+  'webp',
+  'gif',
+  'svg',
+  'ico',
+];
+
+const copyImages = () => {
   return gulp.src([
-    global.config.src + '/public/**/*.{jpg,jpeg,png,webp,svg,ico,gif}',
+    global.__buildConfig.src + '/public/**/*.{jpg,jpeg,png,webp,svg,ico,gif}',
   ])
   .pipe(gulp.dest(
-    path.join(global.config.dest, 'public')
+    path.join(global.__buildConfig.dest, 'public')
   ));
-});
+};
 
-gulp.task('images:minified', () => {
+const minifiedImages = () => {
   const backupPath = path.join(__dirname, '..', '..', 'gf-backup');
   return imgGenerator.optimiseImageFiles(
     path.join(backupPath, 'raw'),
@@ -26,9 +31,17 @@ gulp.task('images:minified', () => {
     console.error('Unable able to optimise images.');
     console.error(err);
   });
-});
+};
 
-gulp.task('images', gulp.series([
-  'images:minified',
-  'images:copy',
-]));
+const images = (done) => {
+  return gulp.parallel([
+    copyImages,
+    minifiedImages,
+  ])(done);
+};
+
+module.exports = {
+  task: images,
+  build: images,
+  watchGlobs: `${global.__buildConfig.src}/**/*.{${extensions.join(',')}}`,
+};

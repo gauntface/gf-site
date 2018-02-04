@@ -1,36 +1,46 @@
 'use strict';
 
-/* eslint-env node */
-
 const path = require('path');
 const gulp = require('gulp');
 
-gulp.task('thirdparty:private', () => {
+/**
+ * Note this copying from private to public and public to build
+ * means watching will be tricky to do. This maybe should be seperate
+ * tasks.
+ */
+
+const privateThirdParty = () => {
   return gulp.src([
-    path.join(global.config.private, 'src', 'public', '**', '*.*'),
+    path.join(global.__buildConfig.private, 'src', 'public', '**', '*.*'),
   ])
   .pipe(gulp.dest(
     path.join(
-      global.config.src,
+      global.__buildConfig.src,
       'public',
     )
   ));
-});
+};
 
-gulp.task('thirdparty:build', () => {
+const buildThirdParty = () => {
   return gulp.src([
-    path.join(global.config.src, 'public', 'third_party', '**', '*.*'),
+    path.join(global.__buildConfig.src, 'public', 'third_party', '**', '*.*'),
   ])
   .pipe(gulp.dest(
     path.join(
-      global.config.dest,
+      global.__buildConfig.dest,
       'public',
       'third_party'
     )
   ));
-});
+};
 
-gulp.task('thirdparty', gulp.series([
-  gulp.parallel('thirdparty:private'),
-  'thirdparty:build',
-]));
+const thirdparty = (done) => {
+  return gulp.series([
+    privateThirdParty,
+    buildThirdParty,
+  ])(done);
+};
+
+module.exports = {
+  task: thirdparty,
+};

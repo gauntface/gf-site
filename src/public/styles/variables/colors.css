@@ -16,7 +16,6 @@
 
   --link-text-color: #303030;
 
-  --header-bg-color: var(--primary-highlight-color);
   --header-logo-color: #303030;
 
   --footer-color: #656565;
@@ -32,7 +31,6 @@
 
   --toolbar-btn-hover-color: rgba(0, 0, 0, 0.1);
   --toolbar-btn-active-color: rgba(0, 0, 0, 0.3);
-  --header-bg-color: #1e1621;
 
   --footer-bg-color: var(--dark-bg-color);
   --footer-text-color: var(--light-grey-color);

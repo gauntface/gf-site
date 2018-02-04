@@ -5,13 +5,17 @@ const sourcemaps = require('gulp-sourcemaps');
 const tsProject = ts.createProject('tsconfig.json');
 
 const typescript = () => {
-  const tsResult = gulp.src(global.config.src + '/**/*.ts')
+  const tsResult = gulp.src(global.__buildConfig.src + '/**/*.ts')
     .pipe(sourcemaps.init())
     .pipe(tsProject());
 
     return tsResult.js
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(global.config.dest));
+    .pipe(gulp.dest(global.__buildConfig.dest));
 };
 
-gulp.task(typescript);
+module.exports = {
+  task: typescript,
+  build: typescript,
+  watchGlobs: global.__buildConfig.src + '/**/*.ts',
+};

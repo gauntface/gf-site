@@ -5,11 +5,20 @@
 const path = require('path');
 const gulp = require('gulp');
 
-gulp.task('extras', () => {
+const extras = () => {
   return gulp.src([
     './package.json',
-    global.config.src + '/**/*.json',
+    global.__buildConfig.src + '/**/*.json',
     path.join(__dirname, '..', '..', 'gf-deploy', 'src', '**/*'),
   ])
-  .pipe(gulp.dest(global.config.dest));
-});
+  .pipe(gulp.dest(global.__buildConfig.dest));
+};
+
+module.exports = {
+  task: extras,
+  build: extras,
+  watchGlobs: [
+    global.__buildConfig.src + '/**/*.json',
+    path.join(__dirname, '..', '..', 'gf-deploy', 'src', '**/*')
+  ],
+}
