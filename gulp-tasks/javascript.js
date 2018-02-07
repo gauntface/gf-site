@@ -16,7 +16,7 @@ const processScript = (scriptPath, relativePath) => {
     rollup,
     input: scriptPath,
     output: {
-      format: 'cjs',
+      format: 'iife',
       sourcemap: true,
     },
     plugins: [
@@ -55,7 +55,7 @@ const javascript = (done) => {
       );
 
       const cb = () => processScript(filePath, relativePath);
-      cb.displayName = `scripts: ${relativePath}`;
+      cb.displayName = `javascript: ${relativePath}`;
       return cb;
     });
 

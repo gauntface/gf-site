@@ -48,13 +48,23 @@ class AdminController {
 
   edit(postID) {
     return {
+      templatePath: 'templates/documents/html.tmpl',
       data: {
         title: 'Edit GauntFace Blog',
       },
-      templatePath: 'templates/documents/html.tmpl',
       views: [
         {
           templatePath: 'templates/views/admin/blog-editor.tmpl',
+          data: {
+            blogPostJSON: JSON.stringify({
+              postId: 999,
+              title: 'Example Title',
+              excerpt: 'Example Excerpt',
+              mainImg: '/uploads/images/example.png',
+              mainImgBGColor: '#ff0000',
+              markdown: '# Example Markdown',
+            }),
+          },
         },
       ],
     };

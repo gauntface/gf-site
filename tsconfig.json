@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-      "noImplicitAny": true,
-      "target": "es5",
-      "module": "umd"
+      "target": "es2017",
+      "module": "commonjs",
   }
 }
