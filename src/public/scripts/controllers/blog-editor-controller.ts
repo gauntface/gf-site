@@ -10,6 +10,8 @@ class BlogEditorController {
   private mainImgPreview: HTMLImageElement;
   private mainImgBGColorPreview: HTMLElement;
 
+  private iframePreview: HTMLIFrameElement;
+
   constructor() {
     this.spinner = document.querySelector('.js-saving-spinner');
     this.titleInput = document.querySelector('.js-title-input');
@@ -17,6 +19,8 @@ class BlogEditorController {
     this.markdownTextArea = document.querySelector('.js-markdown-textarea');
     this.mainImgPreview = document.querySelector('.js-main-img');
     this.mainImgBGColorPreview = document.querySelector('.js-main-img-current-color');
+
+    this.iframePreview = document.querySelector('.js-blogcreate__preview');
 
     this.showSpinner(true);
 
@@ -51,6 +55,8 @@ class BlogEditorController {
     this.markdownTextArea.textContent = this.blogModel.markdown;
     this.mainImgPreview.src = this.blogModel.mainImg;
     this.mainImgBGColorPreview.style.background = this.blogModel.mainImgBGColor;
+
+    this.iframePreview.src = '/blog/'
   }
 }
 

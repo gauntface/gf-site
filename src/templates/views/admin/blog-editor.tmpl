@@ -40,10 +40,10 @@ scripts:
 
       <div class="image-manager">
         <div class="image-container">
-          <img class="blogcreate__main-img js-main-img" crossorigin="anonymous" src="<?php echo $post->getMainImg(); ?>" alt="Main image for blog post." />
+          <img class="blogcreate__main-img js-main-img" crossorigin="anonymous" alt="Main image for blog post." />
         </div>
         <div class="colors-container">
-          <div class="selected-color js-main-img-current-color" style="background-color: <?php echo $post->getMainImgBgColor(); ?>;"></div>
+          <div class="selected-color js-main-img-current-color"></div>
           <div class="color-options js-main-img-bg-color-options"></div>
         </div>
       </div>
@@ -52,11 +52,12 @@ scripts:
 
     <!-- Markdown Tab -->
     <div class="tabs__tab-content blogcreate__tabs-contents--markdown  js-tab-view__markdown-content">
-      <textarea class="blogcreate__markdown-textarea js-markdown-textarea"><?php echo $post->getContentMarkdown(); ?></textarea>
+      <textarea class="blogcreate__markdown-textarea js-markdown-textarea"></textarea>
     </div>
 
     <!-- Media Tab -->
     <div class="tabs__tab-content blogcreate__tabs-contents--media js-tab-view__media-content">
+      <!--
       <?php
       for($i = 0; $i < count($images); $i++) {
         $image = $images[$i];
@@ -72,19 +73,18 @@ scripts:
           <button class="media-button js-copy-clipboard" data-copy="<?php echo($markdown); ?>">Copy to Clipboard</button>
         </div>
       <?php } ?>
+      -->
     </div>
 
     <!-- Publish Tab-->
     <div class="tabs__tab-content blogcreate__tabs-contents--publish  js-tab-view__publish-content">
-      <p>Current Status: <span class="js-publish__current-status"><?php echo $post->getPostStatus(); ?></span></p>
-      <?php if($post->isPublished()) { ?>
-      <p>Published On: <?php echo $post->getPublishTime(); ?></p>
-      <?php } ?>
-      <p><button class="js-publish-btn"<?php if($post->isPublished()) { echo 'disabled'; } ?>>Publish that Bad Boy</button></p>
+      <p>Current Status: <span class="js-publish__current-status"></span></p>
+      <p>Published On: <span class="js-published-on"></span></p>
+      <p><button class="js-publish-btn">Publish that Bad Boy</button></p>
     </div>
   </div>
 </section>
-<iframe class="blogcreate__preview js-blogcreate__preview" src="/blog/view/<?php echo $post->getPostId(); ?>"></iframe>
+<iframe class="blogcreate__preview js-blogcreate__preview"></iframe>
 
 <div class="full-page-overlay js-drag-over-view__drag-container">
   <h1 class="drag-over-view__message">
