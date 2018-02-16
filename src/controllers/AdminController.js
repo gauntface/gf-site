@@ -5,7 +5,10 @@ const ID_COOKIE_NAME = 'gf-id';
 const signInCheck = (args) => {
   const userId = args.request.cookies[ID_COOKIE_NAME];
   if (!adminUsers.isUserSignedIn(userId)) {
-    return args.response.redirect(302, `/admin/signin/?gf-redirect=${encodeURI(args.request.originalUrl)}`);
+    return args.response.redirect(
+      302,
+      `/admin/signin/?gf-redirect=${encodeURI(args.request.originalUrl)}`,
+    );
   }
 }
 
@@ -64,6 +67,14 @@ class AdminController {
   edit(args) {
     signInCheck(args);
 
+    let postId = null;
+    if (args.urlSegments) {
+      if (args.urlSegments.length > 1) {
+        throw new Error('Not Found.');
+      }
+      postId = parseInt(args.urlSegments[0], 10);
+    }
+
     return {
       templatePath: 'templates/documents/html.tmpl',
       data: {
@@ -74,7 +85,7 @@ class AdminController {
           templatePath: 'templates/views/admin/blog-editor.tmpl',
           data: {
             blogPostJSON: JSON.stringify({
-              postId: 999,
+              postId,
               title: 'Example Title',
               excerpt: 'Example Excerpt',
               mainImg: '/uploads/images/example.png',

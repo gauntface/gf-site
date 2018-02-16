@@ -44,7 +44,10 @@ class BlogEditorController {
 
     this._forceModelOntoViews();
 
-    // this.showSpinner(false);
+    this.titleInput.disabled = false;
+    this.excerptTextArea.disabled = false;
+    this.markdownTextArea.disabled = false;
+    this.showSpinner(false);
   }
 
   showSpinner(isVisible: boolean) {
