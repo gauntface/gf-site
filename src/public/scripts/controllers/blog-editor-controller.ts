@@ -14,7 +14,11 @@ class BlogEditorController {
   private iframePreview: HTMLIFrameElement;
 
   constructor() {
-    new TabComponent();
+    // tslint:disable-next-line:no-any
+    if (!window['gauntface'] || !window['gauntface'].blogPostJSON) {
+      throw new Error('Blog editor requires `window.gauntface.blogPostJSON` ' +
+        'to exist.');
+    }
 
     this.spinner = document.querySelector('.js-saving-spinner');
     this.titleInput = document.querySelector('.js-title-input');
@@ -22,18 +26,13 @@ class BlogEditorController {
     this.markdownTextArea = document.querySelector('.js-markdown-textarea');
     this.mainImgPreview = document.querySelector('.js-main-img');
     this.mainImgBGColorPreview = document.querySelector('.js-main-img-current-color');
-
     this.iframePreview = document.querySelector('.js-blogcreate__preview');
 
-    this.showSpinner(true);
+    // TODO: Find a better place for this to live - it just needs
+    // to be instantiated and it'll figure itself out.
+    new TabComponent();
 
-    // tslint:disable-next-line:no-any
-    if (!window['gauntface'] || !window['gauntface'].blogPostJSON) {
-      throw new Error('Blog editor requires `window.gauntface.blogPostJSON` ' +
-        'to exist.');
-    }
     const blogPostData = JSON.parse(window['gauntface'].blogPostJSON);
-
     this.blogModel = {
       postId: blogPostData.postId || null,
       title: blogPostData.title || null,
@@ -44,6 +43,8 @@ class BlogEditorController {
     };
 
     this._forceModelOntoViews();
+
+    // this.showSpinner(false);
   }
 
   showSpinner(isVisible: boolean) {
@@ -57,6 +58,7 @@ class BlogEditorController {
     this.mainImgPreview.src = this.blogModel.mainImg;
     this.mainImgBGColorPreview.style.background = this.blogModel.mainImgBGColor;
 
+    // TODO: Set to a value based on the ID.
     this.iframePreview.src = '/blog/'
   }
 }

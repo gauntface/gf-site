@@ -8,6 +8,23 @@ class AdminUsers {
     this.signedInUsers = {};
   }
 
+  isUserSignedIn(userId) {
+    if (!userId) {
+      return false;
+    }
+
+    if (!this.signedInUsers[userId]) {
+      return false;
+    }
+
+    const userInfo = this.signedInUsers[userId];
+    if (userInfo.expirationTime <= Date.now()) {
+      return false;
+    }
+
+    return true;
+  }
+
   async addNewUser(githubCode) {
     const response = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
