@@ -1,4 +1,5 @@
 import {BlogPost} from '../models/blog-post';
+import {TabComponent} from '../components/tab-controller';
 
 class BlogEditorController {
   private blogModel: BlogPost;
@@ -13,6 +14,8 @@ class BlogEditorController {
   private iframePreview: HTMLIFrameElement;
 
   constructor() {
+    new TabComponent();
+
     this.spinner = document.querySelector('.js-saving-spinner');
     this.titleInput = document.querySelector('.js-title-input');
     this.excerptTextArea = document.querySelector('.js-excerpt-textarea');
@@ -25,11 +28,11 @@ class BlogEditorController {
     this.showSpinner(true);
 
     // tslint:disable-next-line:no-any
-    if (!window['gauntface'] || !window.gauntface.blogPostJSON) {
+    if (!window['gauntface'] || !window['gauntface'].blogPostJSON) {
       throw new Error('Blog editor requires `window.gauntface.blogPostJSON` ' +
         'to exist.');
     }
-    const blogPostData = JSON.parse(window.gauntface.blogPostJSON);
+    const blogPostData = JSON.parse(window['gauntface'].blogPostJSON);
 
     this.blogModel = {
       postId: blogPostData.postId || null,
@@ -39,8 +42,6 @@ class BlogEditorController {
       mainImgBGColor: blogPostData.mainImgBGColor || null,
       markdown: blogPostData.markdown || null,
     };
-
-    console.log(this.blogModel);
 
     this._forceModelOntoViews();
   }

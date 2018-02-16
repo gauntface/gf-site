@@ -2,7 +2,9 @@
 styles:
   inline:
     - ../../../public/styles/html-elements/button-inline.css
+    - ../../../public/styles/html-elements/iframe-inline.css
     - ../../../public/styles/components/tabs/tabs-inline.css
+    - ../../../public/styles/components/full-page-overlay/full-page-overlay.css
     - ../../../public/styles/unique/blog-editor.css
 partials:
 - ../spinner.tmpl
@@ -13,7 +15,7 @@ scripts:
 
 <section class="blogcreate__create-section">
   <div class="tabs__tab-btn-container">
-    <button class="tabs__tab-btn js-tab-view__tab-btn tab-view__is-selected" data-tab-view-content="js-tab-view__meta-content">Meta Data</button>
+    <button class="tabs__tab-btn js-tab-view__tab-btn is-selected" data-tab-view-content="js-tab-view__meta-content">Meta Data</button>
     <button class="tabs__tab-btn js-tab-view__tab-btn" data-tab-view-content="js-tab-view__markdown-content">Markdown</button>
     <button class="tabs__tab-btn js-tab-view__tab-btn" data-tab-view-content="js-tab-view__media-content">Media</button>
     <button class="tabs__tab-btn js-tab-view__tab-btn" data-tab-view-content="js-tab-view__publish-content">Publish</button>
@@ -27,7 +29,7 @@ scripts:
   <div class="tabs__content-container">
 
     <!-- Meta Data Tab -->
-    <div class="tabs__tab-content blogcreate__tabs-contents--meta-data js-tab-view__meta-content tab-view__is-selected">
+    <div class="tabs__tab-content blogcreate__tabs-contents--meta-data js-tab-view__meta-content is-selected">
       <h6 class="blog-editor__form-heading">Title</h6>
 
       <input class="js-title-input is-dark" type="text" value="" disabled />

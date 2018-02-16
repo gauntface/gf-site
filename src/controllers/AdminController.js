@@ -1,3 +1,4 @@
+const adminUsers = require('../models/admin-users');
 
 const isLoggedIn = () => {
   return false;
@@ -41,6 +42,36 @@ class AdminController {
       views: [
         {
           templatePath: 'templates/views/admin/signin.tmpl',
+        },
+      ],
+    };
+  }
+
+  async oauth(args) {
+    if (!args.request.query.code) {
+      throw new Error('No code parameter.');
+    }
+
+    const code = args.request.query.code;
+
+
+    const userId = await adminUsers.addNewUser(code);
+    console.log(`Cookie Time: ${userId}`);
+    console.log(Object.keys(args));
+
+    args.response.cookie('gf-id', userId, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+
+    return {
+      data: {
+        title: 'GauntFace | Matthew Gaunt - Blog',
+      },
+      templatePath: 'templates/documents/html.tmpl',
+      views: [
+        {
+          templatePath: 'templates/views/admin/oauth.tmpl',
         },
       ],
     };

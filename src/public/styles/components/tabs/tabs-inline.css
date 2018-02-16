@@ -16,7 +16,13 @@
 }
 
 .tabs__tab-btn {
-  background-color: #aaaaaa;
+  color: var(--button-background-color);
+  background-color: var(--code-background-color);
+}
+
+.tabs__tab-btn.is-selected {
+  color: var(--page-bg-color);
+  background-color: var(--button-background-color);
 }
 
 .tabs__content-container {
@@ -33,6 +39,6 @@
   width: 100%;
 }
 
-.tabs__tab-content.tab-view__is-selected {
+.tabs__tab-content.is-selected {
   display: block;
 }

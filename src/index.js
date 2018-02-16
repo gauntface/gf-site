@@ -5,7 +5,7 @@ process.on('uncaughtException', (err) => {
 });
 
 process.on('unhandledRejection', (reason, p) => {
-  console.err('Unhandled Rejection at:', p, 'reason:', reason);
+  console.error('Unhandled Rejection at:', p, 'reason:', reason);
   throw reason;
 });
 /* eslint-enable no-console */

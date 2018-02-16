@@ -23,7 +23,7 @@ const processScript = (scriptPath, relativePath) => {
       replacePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
       }),
-      uglifyPlugin({}, esMinify),
+      // uglifyPlugin({}, esMinify),
     ],
   })
   .pipe(source(relativePath))
