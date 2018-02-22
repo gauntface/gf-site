@@ -1,1 +1,21 @@
+---
+styles:
+  inline:
+    - ../../../public/styles/unique/blog-index.css
+---
 <h1>Admin</h1>
+
+{{#data.blogPosts.length}}
+<ol class="blog__section">
+  {{#data.blogPosts}}
+  <li>
+    <a href="/admin/edit/{{id}}" class="blog__index-link">
+    <div class="blog-li__wrapper">
+      <h2>{{title}}</h2>
+      {{{excerptHTML}}}
+    </div>
+    </a>
+  </li>
+  {{/data.blogPosts}}
+</ol>
+{{/data.blogPosts.length}}

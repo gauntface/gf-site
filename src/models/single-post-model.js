@@ -15,6 +15,10 @@ class SinglePostModel {
     this._status = input.status;
   }
 
+  get id() {
+    return this._id || null;
+  }
+
   get publishDate() {
     return this._publishDate || null;
   }

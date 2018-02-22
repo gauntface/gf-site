@@ -15,8 +15,8 @@ class BlogEditorController {
 
   constructor() {
     // tslint:disable-next-line:no-any
-    if (!window['gauntface'] || !window['gauntface'].blogPostJSON) {
-      throw new Error('Blog editor requires `window.gauntface.blogPostJSON` ' +
+    if (!window['gauntface'] || !window['gauntface'].blogPostData) {
+      throw new Error('Blog editor requires `window.gauntface.blogPostData` ' +
         'to exist.');
     }
 
@@ -32,14 +32,17 @@ class BlogEditorController {
     // to be instantiated and it'll figure itself out.
     new TabComponent();
 
-    const blogPostData = JSON.parse(window['gauntface'].blogPostJSON);
+    const blogPostData = window['gauntface'].blogPostData;
     this.blogModel = {
-      postId: blogPostData.postId || null,
+      id: blogPostData.id || null,
       title: blogPostData.title || null,
-      excerpt: blogPostData.excerpt || null,
+      excerptMarkdown: blogPostData.excerptMarkdown || null,
       mainImg: blogPostData.mainImg || null,
-      mainImgBGColor: blogPostData.mainImgBGColor || null,
-      markdown: blogPostData.markdown || null,
+      mainImageBgColor: blogPostData.mainImageBgColor || null,
+      bodyMarkdown: blogPostData.bodyMarkdown || null,
+      status: blogPostData.status || null,
+      publishDate: blogPostData.publishDate || null,
+      draftDate: blogPostData.draftDate || null,
     };
 
     this._forceModelOntoViews();
@@ -56,13 +59,13 @@ class BlogEditorController {
 
   _forceModelOntoViews() {
     this.titleInput.value = this.blogModel.title;
-    this.excerptTextArea.textContent = this.blogModel.excerpt;
-    this.markdownTextArea.textContent = this.blogModel.markdown;
+    this.excerptTextArea.textContent = this.blogModel.excerptMarkdown;
+    this.markdownTextArea.textContent = this.blogModel.bodyMarkdown;
     this.mainImgPreview.src = this.blogModel.mainImg;
-    this.mainImgBGColorPreview.style.background = this.blogModel.mainImgBGColor;
+    this.mainImgBGColorPreview.style.background = this.blogModel.mainImageBgColor;
 
     // TODO: Set to a value based on the ID.
-    this.iframePreview.src = '/blog/'
+    this.iframePreview.src = `/admin/preview/${this.blogModel.id}`;
   }
 }
 

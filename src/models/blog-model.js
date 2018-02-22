@@ -134,6 +134,30 @@ class BlogModel {
       return posts[0];
     });
   }
+
+  async getPostFromId(id) {
+    const whereClauses = [
+      'id = ?',
+    ];
+    const whereArgs = [
+      id,
+    ];
+
+    const posts = await this.getPosts({
+      where: {
+        clauses: whereClauses,
+        args: whereArgs,
+      },
+    });
+
+    if (posts.length === 0) {
+      return null;
+    } else if (posts.length !== 1) {
+      throw new Error('More than one result when retrieving blog post' +
+        whereArgs.join(', '));
+    }
+    return posts[0];
+  }
 }
 
 module.exports = new BlogModel();

@@ -1,8 +1,11 @@
 export type BlogPost = {
-  postId: number | null;
+  id: number | null;
   title: string;
-  excerpt: string;
-  markdown: string;
+  excerptMarkdown: string;
   mainImg: string;
-  mainImgBGColor: string;
+  mainImageBgColor: string;
+  bodyMarkdown: string;
+  status: string;
+  publishDate: string;
+  draftDate: string;
 }
