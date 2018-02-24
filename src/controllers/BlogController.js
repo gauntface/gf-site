@@ -1,6 +1,6 @@
 const path = require('path');
 
-const blogModel = require('../models/blog-model');
+const blogModel = require('../models/published-posts-model');
 const parseMarkdown = require('../utils/parse-markdown');
 const srcSetGen = require('../utils/src-set-gen');
 

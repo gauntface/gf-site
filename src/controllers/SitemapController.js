@@ -1,4 +1,4 @@
-const blogModel = require('../models/blog-model');
+const blogModel = require('../models/published-posts-model');
 
 class SitemapController {
   index(args) {

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const blogModel = require('../../src/models/blog-model.js');
+const blogModel = require('../../src/models/published-posts-model.js');
 const SinglePostModel = require('../../src/models/single-post-model.js');
 const dbHelper = require('../../src/utils/database-helper.js');
 
@@ -34,8 +34,7 @@ It has two paragraphs.`,
 console.log('it has code too.')
 \`\`\`
 `,
-      publishDate: postDate,
-      draftDate: postDate,
+      lastUpdate: postDate,
       status: 'published',
       slug: 'example-slug',
     });

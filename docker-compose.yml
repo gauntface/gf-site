@@ -57,6 +57,9 @@ services:
   mysql_dev:
     image: mysql:5.7
     restart: always
+    ports:
+     # Expose the MYSQL port locally to manipulate the DB
+     - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: development-db

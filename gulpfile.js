@@ -40,7 +40,6 @@ gulp.task('testing', (done) => {
     'thirdparty',
     // 'serviceWorker',
     gulp.parallel([
-      'watch',
       'docker:run:testing',
     ]),
   ])(done);

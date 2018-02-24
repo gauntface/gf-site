@@ -5,7 +5,7 @@ const minifyHTML = require('html-minifier').minify;
 
 const dockerHelper = require('../../gulp-tasks/utils/docker-helper');
 const parseMarkdown = require('../../src/utils/parse-markdown');
-const blogModel = require('../../src/models/blog-model.js');
+const blogModel = require('../../src/models/published-posts-model.js');
 const SinglePostModel = require('../../src/models/single-post-model.js');
 const dbHelper = require('../../src/utils/database-helper.js');
 
@@ -36,8 +36,7 @@ New Paragraph.`,
         bodyMarkdown: `Body 1
 
 New Paragraph.`,
-        publishDate: moment().subtract(30, 'days').toDate(),
-        draftDate: moment().subtract(30, 'days').toDate(),
+        lastUpdate: moment().subtract(30, 'days').toDate(),
         status: 'published',
         slug: 'published-1',
       }),
@@ -45,7 +44,7 @@ New Paragraph.`,
         title: 'Example Title 2. Draft',
         excerptMarkdown: `Excerpt 2`,
         bodyMarkdown: `Body 2.`,
-        draftDate: new Date(),
+        lastUpdate: new Date(),
         slug: 'draft-1',
       }),
       new SinglePostModel({
@@ -77,8 +76,7 @@ Testing Paragraph.
 
 - Example List
 - With Two Items`,
-        publishDate: moment().subtract(25, 'days').toDate(),
-        draftDate: moment().subtract(25, 'days').toDate(),
+        lastUpdate: moment().subtract(25, 'days').toDate(),
         status: 'published',
         slug: 'published-3',
       }),
@@ -86,7 +84,7 @@ Testing Paragraph.
         title: 'Example Title 4. Draft',
         excerptMarkdown: `Excerpt 4.`,
         bodyMarkdown: `Body 4.`,
-        draftDate: new Date(),
+        lastUpdate: new Date(),
         slug: 'draft-4',
       }),
       new SinglePostModel({
@@ -103,8 +101,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
 
     Code Block
 `,
-        publishDate: moment().subtract(20, 'days').toDate(),
-        draftDate: moment().subtract(20, 'days').toDate(),
+        lastUpdate: moment().subtract(20, 'days').toDate(),
         status: 'published',
         slug: 'published-5',
       }),
@@ -112,8 +109,7 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         title: 'Example Title 6. Published',
         excerptMarkdown: `Excerpt 6.`,
         bodyMarkdown: `Body 6.`,
-        publishDate: moment().subtract(15, 'days').toDate(),
-        draftDate: moment().subtract(15, 'days').toDate(),
+        lastUpdate: moment().subtract(15, 'days').toDate(),
         status: 'published',
         slug: 'published-6',
       }),
@@ -121,15 +117,13 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         title: 'Example Title 7. No Slug. Published',
         excerptMarkdown: `This shouldn't be displayed due to no slug.`,
         bodyMarkdown: `This shouldn't be displayed due to no slug.`,
-        publishDate: moment().subtract(1, 'days').toDate(),
-        draftDate: moment().subtract(1, 'days').toDate(),
+        lastUpdate: moment().subtract(1, 'days').toDate(),
         status: 'published',
       }),
       new SinglePostModel({
         title: 'Example Title 8. No Body. Published',
         excerptMarkdown: `This shouldn't be displayed due to no body.`,
-        publishDate: moment().subtract(1, 'days').toDate(),
-        draftDate: moment().subtract(1, 'days').toDate(),
+        lastUpdate: moment().subtract(1, 'days').toDate(),
         status: 'published',
         slug: 'published-8',
       }),

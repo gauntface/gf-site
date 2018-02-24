@@ -1,14 +1,14 @@
 const adminUsers = require('../models/admin-users');
-const blogModel = require('../models/blog-model');
+const draftsPostModel = require('../models/draft-posts-model');
 const parseMarkdown = require('../utils/parse-markdown');
 const srcSetGen = require('../utils/src-set-gen');
 
 const ID_COOKIE_NAME = 'gf-id';
 
-const signInCheck = (args) => {
+const signInCheck = async (args) => {
   const userId = args.request.cookies[ID_COOKIE_NAME];
 
-  const isSignedIn = adminUsers.isUserSignedIn(userId);
+  const isSignedIn = await adminUsers.isUserSignedIn(userId);
   if (!isSignedIn) {
     args.response.redirect(
       302,
@@ -17,26 +17,26 @@ const signInCheck = (args) => {
   }
 
   return isSignedIn;
-}
+};
 
 class AdminController {
   async index(args) {
-    if (!signInCheck(args)) {
+    if (!await signInCheck(args)) {
       return;
     }
 
-    const rawBlogPosts = await blogModel.getPosts({
-      order: `draftDate DESC`,
+    const rawDraftPosts = await draftsPostModel.getPosts({
+      order: `lastUpdate DESC`,
       count: 20,
     });
 
-    const blogPosts = await Promise.all(
-      rawBlogPosts.map((blogPost) => {
+    const draftPosts = await Promise.all(
+      rawDraftPosts.map((blogPost) => {
         return parseMarkdown(blogPost.excerptMarkdown)
         .then((parsedMarkdown) => {
           return {
             id: blogPost.id,
-            title: blogPost.title,
+            title: blogPost.title ? blogPost.title : 'Untitled Post',
             excerptHTML: parsedMarkdown ? parsedMarkdown.html : '',
             publishedUrl: blogPost.getPublishedUrl(),
           };
@@ -53,7 +53,7 @@ class AdminController {
         {
           templatePath: 'templates/views/admin/index.tmpl',
           data: {
-            blogPosts,
+            draftPosts,
           },
         },
       ],
@@ -95,41 +95,54 @@ class AdminController {
   }
 
   async edit(args) {
-    if (!signInCheck(args)) {
+    if (!await signInCheck(args)) {
       return;
     }
 
     let postId = null;
-    if (args.urlSegments) {
+    if (args.urlSegments && Array.isArray(args.urlSegments)) {
       if (args.urlSegments.length > 1) {
         throw new Error('Not Found.');
       }
       postId = parseInt(args.urlSegments[0], 10);
     }
 
-    const whereClauses = [
-      'id = ?',
-    ];
-    const whereArgs = [
-      postId,
-    ];
+    let blogPostJSON = '{}';
+    if (postId !== null) {
+      const whereClauses = [
+        'id = ?',
+      ];
+      const whereArgs = [
+        postId,
+      ];
 
-    const rawBlogPosts = await blogModel.getPosts({
-      where: {
-        clauses: whereClauses,
-        args: whereArgs,
-      },
-    });
+      const rawBlogPosts = await draftsPostModel.getPosts({
+        where: {
+          clauses: whereClauses,
+          args: whereArgs,
+        },
+      });
 
-    if (rawBlogPosts.length > 1) {
-      throw new Error(`Found multiple blog posts.`);
+      if (rawBlogPosts.length > 1) {
+        throw new Error(`Found multiple blog posts.`);
+      }
+
+      if (rawBlogPosts.length !== 1) {
+        throw new Error(`Blog post not found.`);
+      }
+
+      const blogPost = rawBlogPosts[0];
+      blogPostJSON = JSON.stringify({
+        id: blogPost.id,
+        title: blogPost.title,
+        excerptMarkdown: blogPost.excerptMarkdown,
+        mainImg: blogPost.mainImage,
+        mainImageBgColor: blogPost.mainImageBgColor,
+        bodyMarkdown: blogPost.bodyMarkdown,
+        lastUpdate: blogPost.lastUpdate,
+      });
     }
 
-    if (rawBlogPosts.length !== 1) {
-      throw new Error(`Blog post not found.`);
-    }
-
-    const blogPost = rawBlogPosts[0];
 
     return {
       templatePath: 'templates/documents/html.tmpl',
@@ -140,17 +153,7 @@ class AdminController {
         {
           templatePath: 'templates/views/admin/blog-editor.tmpl',
           data: {
-            blogPostJSON: JSON.stringify({
-              id: blogPost.id,
-              title: blogPost.title,
-              excerptMarkdown: blogPost.excerptMarkdown,
-              mainImg: blogPost.mainImage,
-              mainImageBgColor: blogPost.mainImageBgColor,
-              bodyMarkdown: blogPost.bodyMarkdown,
-              status: blogPost.status,
-              publishDate: blogPost.publishDate,
-              draftDate: blogPost.draftDate,
-            }),
+            blogPostJSON,
           },
         },
       ],
@@ -158,7 +161,7 @@ class AdminController {
   }
 
   async preview(args) {
-    if (!signInCheck(args)) {
+    if (!await signInCheck(args)) {
       return;
     }
 
@@ -169,7 +172,7 @@ class AdminController {
       inline: [],
     };
 
-    const rawBlogPost = await blogModel.getPostFromId(id);
+    const rawBlogPost = await draftsPostModel.getPostFromId(id);
     if (!rawBlogPost) {
       return {
         content: 'TODO: Show 404 Page',
@@ -231,6 +234,48 @@ class AdminController {
         },
       ],
     };
+  }
+
+  async save(args) {
+    const body = args.request.body;
+    if (!body) {
+      args.response.status(400).json({
+        error: {
+          code: 'no-body',
+          message: 'No body.',
+        },
+      });
+      return;
+    }
+
+    if (!body.title) {
+      args.response.status(400).json({
+        error: {
+          code: 'no-title',
+          message: 'No title.',
+        },
+      });
+      return;
+    }
+
+    let newId = body.id;
+    if (body.id) {
+      draftsPostModel.updatePost(body);
+      args.response.status(200).json({
+        data: {
+          id: body.id,
+        },
+      });
+    } else {
+      const result = await draftsPostModel.addPost(body);
+      newId = result.insertId;
+    }
+
+    args.response.status(200).json({
+      data: {
+        id: newId,
+      },
+    });
   }
 }
 

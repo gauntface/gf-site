@@ -1,23 +1,42 @@
 const crypto = require('crypto');
 const fetch = require('node-fetch');
+const fs = require('fs-extra');
+const path = require('path');
 
 const githubCredentials = require('../github-oauth-credentials.json');
 
+// Writing in the build directory will break forever
+const USERS_FILE = path.join(__dirname, '..', '..', 'users.json');
+
 class AdminUsers {
-  constructor() {
-    this.signedInUsers = {};
+  async _readUsers() {
+    const fileExists = await fs.exists(USERS_FILE);
+    if (!fileExists) {
+      return {};
+    }
+
+    try {
+      return await fs.readJSON(USERS_FILE);
+    } catch (err) {
+      return {};
+    }
   }
 
-  isUserSignedIn(userId) {
+  async _writeUsers(users) {
+    await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
+  }
+
+  async isUserSignedIn(userId) {
     if (!userId) {
       return false;
     }
 
-    if (!this.signedInUsers[userId]) {
+    const signedInUsers = await this._readUsers();
+    if (!signedInUsers[userId]) {
       return false;
     }
 
-    const userInfo = this.signedInUsers[userId];
+    const userInfo = signedInUsers[userId];
     if (userInfo.expirationTime <= Date.now()) {
       return false;
     }
@@ -71,11 +90,18 @@ class AdminUsers {
     }
 
     const userId = crypto.randomBytes(20).toString('hex');
-    this.signedInUsers[userId] = {
+
+    const signedInUsers = await this._readUsers();
+    signedInUsers[userId] = {
       accessToken,
-      userData,
-      expirationTime: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      userData: {
+        id: userData.id,
+        login: userData.login,
+      },
+      expirationTime: (Date.now() + 24 * 60 * 60 * 1000),
     };
+
+    await this._writeUsers(signedInUsers);
 
     return userId;
   }

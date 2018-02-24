@@ -5,7 +5,5 @@ export type BlogPost = {
   mainImg: string;
   mainImageBgColor: string;
   bodyMarkdown: string;
-  status: string;
-  publishDate: string;
-  draftDate: string;
+  lastUpdate: string;
 }

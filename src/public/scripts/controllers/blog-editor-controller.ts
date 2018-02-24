@@ -40,17 +40,24 @@ class BlogEditorController {
       mainImg: blogPostData.mainImg || null,
       mainImageBgColor: blogPostData.mainImageBgColor || null,
       bodyMarkdown: blogPostData.bodyMarkdown || null,
-      status: blogPostData.status || null,
-      publishDate: blogPostData.publishDate || null,
-      draftDate: blogPostData.draftDate || null,
+      lastUpdate: blogPostData.lastUpdate || null,
     };
+
+    window.addEventListener('keydown', (event) => {
+      if (event.ctrlKey || event.metaKey) {
+          switch (String.fromCharCode(event.which).toLowerCase()) {
+          case 's':
+              event.preventDefault();
+              this._savePost();
+              break;
+          }
+      }
+  });
 
     this._forceModelOntoViews();
 
-    this.titleInput.disabled = false;
-    this.excerptTextArea.disabled = false;
-    this.markdownTextArea.disabled = false;
     this.showSpinner(false);
+    this._setDisabledUI(false);
   }
 
   showSpinner(isVisible: boolean) {
@@ -64,8 +71,58 @@ class BlogEditorController {
     this.mainImgPreview.src = this.blogModel.mainImg;
     this.mainImgBGColorPreview.style.background = this.blogModel.mainImageBgColor;
 
-    // TODO: Set to a value based on the ID.
-    this.iframePreview.src = `/admin/preview/${this.blogModel.id}`;
+    this._refreshIframe();
+  }
+
+  _refreshIframe() {
+    if (this.blogModel.id) {
+      this.iframePreview.src = `/admin/preview/${this.blogModel.id}?t=${Date.now()}`;
+    }
+  }
+
+  _updateBlogModel() {
+    this.blogModel.title = this.titleInput.value;
+    this.blogModel.excerptMarkdown = this.excerptTextArea.textContent;
+    this.blogModel.bodyMarkdown = this.markdownTextArea.textContent;
+    // this.blogModel.mainImg = this.mainImgPreview.src;
+    // this.blogModel.mainImageBgColor = this.mainImgBGColorPreview.style.background;
+  }
+
+  async _savePost() {
+    this.showSpinner(true);
+    this._setDisabledUI(true);
+
+    this._updateBlogModel();
+
+    const response = await fetch('/admin/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(this.blogModel),
+    });
+    const result = await response.json();
+    if (result.error) {
+      console.warn(`Blog post wasn't saved: `, result.error.message);
+    }
+
+    if (result.data.id) {
+      if (result.data.id !== this.blogModel.id) {
+        window.location.href = window.location.href + result.data.id;
+        this.blogModel.id = result.data.id;
+      }
+    }
+
+    this._refreshIframe();
+
+    this.showSpinner(false);
+    this._setDisabledUI(false);
+  }
+
+  _setDisabledUI(isDisabled: boolean) {
+    this.titleInput.disabled = isDisabled;
+    this.excerptTextArea.disabled = isDisabled;
+    this.markdownTextArea.disabled = isDisabled;
   }
 }
 

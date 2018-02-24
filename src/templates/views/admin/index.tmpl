@@ -3,11 +3,11 @@ styles:
   inline:
     - ../../../public/styles/unique/blog-index.css
 ---
-<h1>Admin</h1>
+<p><a href="/admin/edit/">New Blog Post</a></p>
 
-{{#data.blogPosts.length}}
+{{#data.draftPosts.length}}
 <ol class="blog__section">
-  {{#data.blogPosts}}
+  {{#data.draftPosts}}
   <li>
     <a href="/admin/edit/{{id}}" class="blog__index-link">
     <div class="blog-li__wrapper">
@@ -16,6 +16,6 @@ styles:
     </div>
     </a>
   </li>
-  {{/data.blogPosts}}
+  {{/data.draftPosts}}
 </ol>
-{{/data.blogPosts.length}}
+{{/data.draftPosts.length}}

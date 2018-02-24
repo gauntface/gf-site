@@ -1,24 +1,24 @@
 const dbHelper = require('../utils/database-helper');
 const SinglePostModel = require('./single-post-model');
 
-const TABLE_NAME = 'posts_table';
-
 const urldecode = function(str) {
   return decodeURIComponent((str + '').replace(/\+/g, '%20'));
 };
 
 class BlogModel {
+  constructor(tableName) {
+    this.tableName = tableName;
+  }
+
   addPost(post) {
-    return dbHelper.executeQuery(`INSERT INTO posts_table (
-        draftDate,
-        publishDate,
+    return dbHelper.executeQuery(`INSERT INTO ${this.tableName} (
+        lastUpdate,
         title,
         excerptMarkdown,
         bodyMarkdown,
         mainImage,
         mainImageBgColor,
-        slug,
-        status
+        slug
       ) VALUES (
         NOW(),
         ?,
@@ -26,23 +26,19 @@ class BlogModel {
         ?,
         ?,
         ?,
-        ?,
-        ?,
         ?
       )`, [
-        post.publishDate,
         post.title,
         post.excerptMarkdown,
         post.bodyMarkdown,
         post.mainImage,
         post.mainImageBgColor,
         post.slug,
-        post.status,
       ]);
   }
 
   getPosts(options) {
-    let sqlQuery = `SELECT * FROM ${TABLE_NAME}`;
+    let sqlQuery = `SELECT * FROM ${this.tableName}`;
     let args = [];
     if (options.where) {
       // TODO: Convert this to question marks
@@ -88,23 +84,21 @@ class BlogModel {
     return this.getPosts({
       where: {
         clauses: [
-          'status = ?',
           'slug IS NOT NULL',
           'bodyMarkdown IS NOT NULL',
         ],
         args: [
-          'published',
         ],
       },
       count,
       offset,
-      order: `publishDate DESC`,
+      order: `lastUpdate DESC`,
     });
   }
 
   getPostFromDetails(year, month, day, slug, status) {
     const whereClauses = [
-      'DATE(publishDate) = ?',
+      'DATE(lastUpdate) = ?',
       'slug = ?',
       'bodyMarkdown IS NOT NULL',
     ];
@@ -112,11 +106,6 @@ class BlogModel {
       `${year}-${month}-${day}`,
       slug,
     ];
-
-    if (status) {
-      whereClauses.push('status = ?');
-      whereArgs.push(status);
-    }
 
     return this.getPosts({
       where: {
@@ -160,4 +149,4 @@ class BlogModel {
   }
 }
 
-module.exports = new BlogModel();
+module.exports = BlogModel;

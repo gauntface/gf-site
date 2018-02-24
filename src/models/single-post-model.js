@@ -3,8 +3,7 @@ const moment = require('moment');
 class SinglePostModel {
   constructor(input) {
     this._id = input.id;
-    this._publishDate = input.publishDate;
-    this._draftDate = input.draftDate;
+    this._lastUpdate = input.lastUpdate;
     this._title = input.title;
     this._author = input.author;
     this._excerptMarkdown = input.excerptMarkdown;
@@ -12,19 +11,14 @@ class SinglePostModel {
     this._mainImage = input.mainImage;
     this._mainImageBgColor = input.mainImageBgColor;
     this._slug = input.slug;
-    this._status = input.status;
   }
 
   get id() {
     return this._id || null;
   }
 
-  get publishDate() {
-    return this._publishDate || null;
-  }
-
-  get draftDate() {
-    return this._draftDate;
+  get lastUpdate() {
+    return this._lastUpdate;
   }
 
   get title() {
@@ -49,10 +43,6 @@ class SinglePostModel {
 
   get slug() {
     return this._slug || null;
-  }
-
-  get status() {
-    return this._status || 'draft';
   }
 
   getPublishedUrl() {

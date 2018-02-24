@@ -1,13 +1,14 @@
 const mysql = require('mysql');
 
 const TABLES = {
-  post: 'posts_table',
+  publishedPosts: 'published_posts_table',
+  draftPosts: 'draft_posts_table',
 };
 
-const CREATE_POSTS_TABLE = `CREATE TABLE IF NOT EXISTS ${TABLES.post} (
+const CREATE_PUB_POSTS_TABLE = `CREATE TABLE IF NOT EXISTS
+  ${TABLES.publishedPosts} (
   id int(11) unsigned NOT NULL AUTO_INCREMENT,
-  publishDate datetime DEFAULT NULL,
-  draftDate datetime NOT NULL,
+  lastUpdate datetime NOT NULL,
   title text,
   author varchar(100) NOT NULL DEFAULT 'Matt Gaunt',
   excerptMarkdown text,
@@ -15,12 +16,26 @@ const CREATE_POSTS_TABLE = `CREATE TABLE IF NOT EXISTS ${TABLES.post} (
   mainImage text,
   mainImageBgColor text,
   slug text,
-  status varchar(100) NOT NULL DEFAULT 'draft',
+  PRIMARY KEY (id)
+)`;
+
+const CREATE_DRAFT_POSTS_TABLE = `CREATE TABLE IF NOT EXISTS
+  ${TABLES.draftPosts} (
+  id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  lastUpdate datetime NOT NULL,
+  title text,
+  author varchar(100) NOT NULL DEFAULT 'Matt Gaunt',
+  excerptMarkdown text,
+  bodyMarkdown text,
+  mainImage text,
+  mainImageBgColor text,
+  slug text,
   PRIMARY KEY (id)
 )`;
 
 const CREATE_TABLES = [
-  CREATE_POSTS_TABLE,
+  CREATE_PUB_POSTS_TABLE,
+  CREATE_DRAFT_POSTS_TABLE,
 ];
 
 class DatabaseHelper {

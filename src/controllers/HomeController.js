@@ -1,4 +1,4 @@
-const blogModel = require('../models/blog-model');
+const publishedPostsModel = require('../models/published-posts-model');
 const parseMarkdown = require('../utils/parse-markdown');
 
 class HomeController {
@@ -65,7 +65,7 @@ class HomeController {
       };
     });**/
 
-    return blogModel.getPublishedPosts(3)
+    return publishedPostsModel.getPublishedPosts(3)
     .catch((err) => {
       console.error('HomeController.index(): Failed to get blog posts:', err);
       return [];
