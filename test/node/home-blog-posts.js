@@ -37,15 +37,7 @@ New Paragraph.`,
 
 New Paragraph.`,
         lastUpdate: moment().subtract(30, 'days').toDate(),
-        status: 'published',
         slug: 'published-1',
-      }),
-      new SinglePostModel({
-        title: 'Example Title 2. Draft',
-        excerptMarkdown: `Excerpt 2`,
-        bodyMarkdown: `Body 2.`,
-        lastUpdate: new Date(),
-        slug: 'draft-1',
       }),
       new SinglePostModel({
         title: 'Example Title 3. Published',
@@ -77,15 +69,7 @@ Testing Paragraph.
 - Example List
 - With Two Items`,
         lastUpdate: moment().subtract(25, 'days').toDate(),
-        status: 'published',
         slug: 'published-3',
-      }),
-      new SinglePostModel({
-        title: 'Example Title 4. Draft',
-        excerptMarkdown: `Excerpt 4.`,
-        bodyMarkdown: `Body 4.`,
-        lastUpdate: new Date(),
-        slug: 'draft-4',
       }),
       new SinglePostModel({
         title: 'Example Title 5. Published',
@@ -102,7 +86,6 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     Code Block
 `,
         lastUpdate: moment().subtract(20, 'days').toDate(),
-        status: 'published',
         slug: 'published-5',
       }),
       new SinglePostModel({
@@ -110,7 +93,6 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         excerptMarkdown: `Excerpt 6.`,
         bodyMarkdown: `Body 6.`,
         lastUpdate: moment().subtract(15, 'days').toDate(),
-        status: 'published',
         slug: 'published-6',
       }),
       new SinglePostModel({
@@ -118,13 +100,11 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         excerptMarkdown: `This shouldn't be displayed due to no slug.`,
         bodyMarkdown: `This shouldn't be displayed due to no slug.`,
         lastUpdate: moment().subtract(1, 'days').toDate(),
-        status: 'published',
       }),
       new SinglePostModel({
         title: 'Example Title 8. No Body. Published',
         excerptMarkdown: `This shouldn't be displayed due to no body.`,
         lastUpdate: moment().subtract(1, 'days').toDate(),
-        status: 'published',
         slug: 'published-8',
       }),
     ];

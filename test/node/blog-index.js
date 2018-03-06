@@ -36,7 +36,6 @@ New Paragraph.`,
 
 New Paragraph.`,
         lastUpdate: moment().subtract(30, 'days').toDate(),
-        status: 'published',
         slug: 'published-1',
       }),
       new SinglePostModel({
@@ -76,7 +75,6 @@ Testing Paragraph.
 - Example List
 - With Two Items`,
         lastUpdate: moment().subtract(25, 'days').toDate(),
-        status: 'published',
         slug: 'published-3',
       }),
       new SinglePostModel({
@@ -101,7 +99,6 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     Code Block
 `,
         lastUpdate: moment().subtract(20, 'days').toDate(),
-        status: 'published',
         slug: 'published-5',
       }),
       new SinglePostModel({
@@ -109,7 +106,6 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         excerptMarkdown: `Excerpt 6.`,
         bodyMarkdown: `Body 6.`,
         lastUpdate: moment().subtract(15, 'days').toDate(),
-        status: 'published',
         slug: 'published-6',
       }),
       new SinglePostModel({
@@ -117,13 +113,11 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         excerptMarkdown: `This shouldn't be displayed due to no slug.`,
         bodyMarkdown: `This shouldn't be displayed due to no slug.`,
         lastUpdate: moment().subtract(1, 'days').toDate(),
-        status: 'published',
       }),
       new SinglePostModel({
         title: 'Example Title 8. No Body. Published',
         excerptMarkdown: `This shouldn't be displayed due to no body.`,
         lastUpdate: moment().subtract(1, 'days').toDate(),
-        status: 'published',
         slug: 'published-8',
       }),
     ];
@@ -131,9 +125,9 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
     // Create a clone.
     const postModels = [].concat(initialPosts);
 
-    // 4 Published above, max of 20 posts, so need 16 more to max, then
+    // 6 Published above, max of 20 posts, so need 14 more to max, then
     // add 5 more
-    const POSTS_TO_ADD = 16;
+    const POSTS_TO_ADD = 14;
     const ADDITIONAL_POSTS = 5;
     for (let i = 0; i < POSTS_TO_ADD + ADDITIONAL_POSTS; i++) {
       postModels.push(new SinglePostModel({
@@ -141,7 +135,6 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
         excerptMarkdown: `Hello World for auto generated ${i}.`,
         bodyMarkdown: `Hello World for auto generates ${i}`,
         lastUpdate: moment().subtract(60, 'days').toDate(),
-        status: 'published',
         slug: `auto-generated-${i}`,
       }));
     }
@@ -190,20 +183,26 @@ New Paragraph. New Paragraph. \`Example Code Snippet\`
       expect(response.indexOf(postModels[0].title)).to.not.equal(-1);
       expect(response.indexOf(excerptHTMLs[0].html)).to.not.equal(-1);
 
-      expect(response.indexOf(postModels[1].title)).to.equal(-1);
-      expect(response.indexOf(excerptHTMLs[1].html)).to.equal(-1);
+      expect(response.indexOf(postModels[1].title)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[1].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[2].title)).to.not.equal(-1);
-      // expect(response.indexOf(excerptHTMLs[2].html)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[2].html)).to.not.equal(-1);
 
-      expect(response.indexOf(postModels[3].title)).to.equal(-1);
-      expect(response.indexOf(excerptHTMLs[3].html)).to.equal(-1);
+      expect(response.indexOf(postModels[3].title)).to.not.equal(-1);
+      expect(response.indexOf(excerptHTMLs[3].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[4].title)).to.not.equal(-1);
       expect(response.indexOf(excerptHTMLs[4].html)).to.not.equal(-1);
 
       expect(response.indexOf(postModels[5].title)).to.not.equal(-1);
       expect(response.indexOf(excerptHTMLs[5].html)).to.not.equal(-1);
+
+      // expect(response.indexOf(postModels[6].title)).to.not.equal(-1);
+      // expect(response.indexOf(excerptHTMLs[6].html)).to.not.equal(-1);
+
+      // expect(response.indexOf(postModels[7].title)).to.not.equal(-1);
+      // expect(response.indexOf(excerptHTMLs[7].html)).to.not.equal(-1);
 
       for (let i = 0; i < POSTS_TO_ADD + ADDITIONAL_POSTS; i++) {
         const postModel = postModels[initialPosts.length + i];
