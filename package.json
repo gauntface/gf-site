@@ -23,7 +23,7 @@
     "twitter": "^1.7.0"
   },
   "devDependencies": {
-    "autoprefixer": "^7.1.2",
+    "autoprefixer": "^8.2.0",
     "chai": "^4.1.0",
     "chromedriver": "^2.29.2",
     "cssnano": "^3.10.0",
