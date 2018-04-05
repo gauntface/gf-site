@@ -31,7 +31,7 @@
     "eslint-config-google": "^0.9.1",
     "execsql": "0.0.3",
     "gm": "^1.23.0",
-    "googleapis": "^23.0.0",
+    "googleapis": "^28.1.0",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-imagemin": "^4.0.0",
     "gulp-postcss": "^7.0.0",
